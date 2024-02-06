@@ -13,6 +13,7 @@ class RekomendasiController extends Controller
     public function index()
     {
         return view('livewire.kelola-rekomendasi.index', [
+            'title' => 'Kelola Rekomendasi',
             'rekomendasi' => Rekomendasi::all(),
         ]);
     }
@@ -22,7 +23,9 @@ class RekomendasiController extends Controller
      */
     public function create()
     {
-        return view('livewire.kelola-rekomendasi.create');
+        return view('livewire.kelola-rekomendasi.create', [
+            'title' => 'Tambah Rekomendasi',
+        ]);
     }
 
     /**
@@ -47,7 +50,7 @@ class RekomendasiController extends Controller
 
         Rekomendasi::create($validatedData);
 
-        return redirect('/kelola-rekomendasi');
+        return redirect('/kelola-rekomendasi')->with('create', 'Data berhasil ditambahkan!');
     }
 
     /**
@@ -56,6 +59,7 @@ class RekomendasiController extends Controller
     public function show(Rekomendasi $rekomendasi)
     {
         return view('livewire.kelola-rekomendasi.show', [
+            'title' => 'Detail Rekomendasi',
             'rekomendasi' => $rekomendasi,
         ]);
     }
@@ -66,6 +70,7 @@ class RekomendasiController extends Controller
     public function edit(Rekomendasi $rekomendasi)
     {
         return view('livewire.kelola-rekomendasi.edit', [
+            'title' => 'Edit Rekomendasi',
             'rekomendasi' => $rekomendasi,
         ]);
     }
@@ -92,7 +97,7 @@ class RekomendasiController extends Controller
 
         $rekomendasi->update($validatedData);
 
-        return redirect('/kelola-rekomendasi');
+        return redirect('/kelola-rekomendasi')->with('update', 'Data berhasil diubah!');
     }
 
     /**
@@ -102,6 +107,6 @@ class RekomendasiController extends Controller
     {
         Rekomendasi::destroy($rekomendasi->id);
 
-        return redirect('/kelola-rekomendasi');
+        return redirect('/kelola-rekomendasi')->with('delete', 'Data berhasil dihapus!');
     }
 }

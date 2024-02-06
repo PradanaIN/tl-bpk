@@ -4,11 +4,6 @@
 @section('section')
 
 <section class="row">
-    <div class="row d-flex justify-content-end mb-3">
-        <div class="col-2">
-            <a href="/kelola-kamus/create" class="btn btn-primary">Tambah Kamus</a>
-        </div>
-    </div>
     <div class="card">
         <div class="card-header">
         </div>
@@ -32,12 +27,18 @@
                             <td>{{ $kamus->jenis }}</td>
                             <td>{{ $kamus->created_at }}</td>
                             <td>
-                                <a href="/kelola-kamus/{{ $kamus->id }}/edit" class="btn btn-warning">Edit</a>
-                                <form action="/kelola-kamus/{{ $kamus->id }}" method="post" class="d-inline">
-                                    @method('delete')
-                                    @csrf
-                                    <button class="btn btn-danger" onclick="return confirm('Hapus Data?')">Hapus</button>
-                                </form>
+                                <div class="d-flex justify-content-around align-items-center">
+                                    <a href="/kelola-kamus/{{ $kamus->id }}/edit" class="btn btn-warning">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <form action="/kelola-kamus/{{ $kamus->id }}" method="post" class="d-inline" id="deleteForm">
+                                        @method('delete')
+                                        @csrf
+                                        <button class="btn btn-danger" type="button" id="deleteButton">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         @endforeach
@@ -48,4 +49,45 @@
     </div>
 </section>
 
+@endsection
+
+
+@section('script')
+    // DataTable
+    <script>
+    new DataTable('#table1', {
+            info: true,
+            ordering: true,
+            paging: true,
+            searching: true,
+            lengthChange: true,
+            lengthMenu: [5, 10, 25, 50, 75, 100],
+            destroy: true,
+
+            // bahasa indonesia
+            language: {
+                "info": "<sup><big>dari _TOTAL_ entri</big></sup>",
+                "infoEmpty": "<sup><big>0 entri</big></sup>",
+                "infoFiltered": "<sup><big>(filter dari _MAX_ total entri)</big></sup>",
+                "lengthMenu": "_MENU_ &nbsp;",
+                "search": "<i class='bi bi-search'></i>  ",
+                "zeroRecords": "Tidak ada data yang cocok",
+                "paginate": {
+                    "next": "<i class='bi bi-chevron-right'></i>",
+                    "previous": "<i class='bi bi-chevron-left'></i>"
+                }
+            },
+
+            dom: '<"d-flex justify-content-between mb-4"fB>rt<"d-flex justify-content-between mt-4"<"d-flex justify-content-start"li><"col-md-6"p>>',
+            buttons: [
+                {
+                    text: '<i class="bi bi-plus"></i> Tambah Kamus',
+                    className: 'btn btn-primary',
+                    action: function ( e, dt, node, config ) {
+                        window.location.href = '/kelola-kamus/create';
+                    }
+                }
+            ]
+        });
+    </script>
 @endsection

@@ -13,6 +13,7 @@ class KamusController extends Controller
     public function index()
     {
         return view('livewire.kamus.index', [
+            'title' => 'Kelola Kamus',
             'kamus' => Kamus::all(),
         ]);
     }
@@ -22,7 +23,9 @@ class KamusController extends Controller
      */
     public function create()
     {
-        return view('livewire.kamus.create');
+        return view('livewire.kamus.create', [
+            'title' => 'Tambah Kamus',
+        ]);
     }
 
     /**
@@ -38,7 +41,7 @@ class KamusController extends Controller
 
         Kamus::create($validatedData);
 
-        return redirect('/kelola-kamus');
+        return redirect('/kelola-kamus')->with('create', 'Data berhasil ditambahkan!');
     }
 
     /**
@@ -55,6 +58,7 @@ class KamusController extends Controller
     public function edit(Kamus $kamus)
     {
         return view('livewire.kamus.edit', [
+            'title' => 'Edit Kamus',
             'kamus' => $kamus,
         ]);
     }
@@ -71,7 +75,7 @@ class KamusController extends Controller
 
         $kamus->update($validatedData);
 
-        return redirect('/kelola-kamus');
+        return redirect('/kelola-kamus')->with('update', 'Data berhasil diubah!');
     }
 
     /**
@@ -81,6 +85,6 @@ class KamusController extends Controller
     {
         Kamus::destroy($kamus->id);
 
-        return redirect('/kelola-kamus');
+        return redirect('/kelola-kamus')->with('delete', 'Data berhasil dihapus!');
     }
 }

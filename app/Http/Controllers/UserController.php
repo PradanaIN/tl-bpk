@@ -15,6 +15,7 @@ class UserController extends Controller
         $users = User::all();
 
         return view('livewire.kelola-pengguna.index', [
+            'title' => 'Kelola Pengguna',
             'users' => $users,
         ]);
     }
@@ -24,7 +25,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('livewire.kelola-pengguna.create');
+        return view('livewire.kelola-pengguna.create', [
+            'title' => 'Tambah Pengguna',
+        ]);
     }
 
     /**
@@ -45,7 +48,7 @@ class UserController extends Controller
 
         User::create($validatedData);
 
-        return redirect('/kelola-pengguna');
+        return redirect('/kelola-pengguna')->with('create', 'Data berhasil ditambahkan!');
     }
 
     /**
@@ -62,6 +65,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
         return view('livewire.kelola-pengguna.edit', [
+            'title' => 'Edit Pengguna',
             'user' => $user,
         ]);
     }
@@ -84,7 +88,7 @@ class UserController extends Controller
         User::where('id', $user->id)
             ->update($validatedData);
 
-        return redirect('/kelola-pengguna');
+        return redirect('/kelola-pengguna')->with('update', 'Data berhasil diubah!');
     }
 
     /**
@@ -94,6 +98,6 @@ class UserController extends Controller
     {
         User::destroy($user->id);
 
-        return redirect('/kelola-pengguna');
+        return redirect('/kelola-pengguna')->with('delete', 'Data berhasil dihapus!');
     }
 }
