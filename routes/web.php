@@ -17,7 +17,10 @@ use App\Http\Controllers\RekomendasiController;
 */
 
 Route::get('/dashboard', function () {
-    return view('livewire.dashboard');
+    return view('livewire.dashboard', [
+        'title' => 'Dashboard'
+
+    ]);
 });
 
 Route::get('/dashboard2', function () {
