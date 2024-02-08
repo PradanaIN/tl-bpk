@@ -94,40 +94,40 @@
                                     </div>
                                     <h4 class="card-title mt-3">C. Tindak Lanjut</h4>
                                     <div class="mt-2">
+                                        @foreach($rekomendasi->tindakLanjut as $index => $tindakLanjut)
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="first-name-vertical">Tindak Lanjut</label>
-                                                <input type="text" id="first-name-vertical" class="form-control"
-                                                    name="tindak_lanjut" placeholder="Tindak lanjut" value="{{ old('tindak_lanjut', $rekomendasi->tindak_lanjut) }}">
+                                                <label for="tindak_lanjut{{$index}}">Tindak Lanjut</label>
+                                                <input type="text" id="tindak_lanjut{{$index}}" class="form-control" name="tindak_lanjut[]" placeholder="Tindak lanjut" value="{{ old('tindak_lanjut', $tindakLanjut->tindak_lanjut) }}">
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="contact-info-vertical">Unit Kerja</label>
-                                                <select class="form-select" id="basicSelect" name="unit_kerja" value="{{ old('unit_kerja', $rekomendasi->unit_kerja) }}">
-                                                    <option value="Unit Kerja A">Unit Kerja A</option>
-                                                    <option value="Unit Kerja B">Unit Kerja B</option>
-                                                    <option value="Unit Kerja C">Unit Kerja C</option>
+                                                <label for="unit_kerja{{$index}}">Unit Kerja</label>
+                                                <select class="form-select" id="unit_kerja{{$index}}" name="unit_kerja[]">
+                                                    <option value="Unit Kerja A" {{ (old('unit_kerja', $tindakLanjut->unit_kerja) == 'Unit Kerja A') ? 'selected' : '' }}>Unit Kerja A</option>
+                                                    <option value="Unit Kerja B" {{ (old('unit_kerja', $tindakLanjut->unit_kerja) == 'Unit Kerja B') ? 'selected' : '' }}>Unit Kerja B</option>
+                                                    <option value="Unit Kerja C" {{ (old('unit_kerja', $tindakLanjut->unit_kerja) == 'Unit Kerja C') ? 'selected' : '' }}>Unit Kerja C</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="contact-info-vertical">Tim Pemantauan</label>
-                                                <select class="form-select" id="basicSelect" name="tim_pemantauan" value="{{ old('tim_pemantauan', $rekomendasi->tim_pemantauan) }}">
-                                                    <option value="Tim Pemantauan A">Tim Pemantauan A</option>
-                                                    <option value="Tim Pemantauan B">Tim Pemantauan B</option>
-                                                    <option value="Tim Pemantauan C">Tim Pemantauan C</option>
+                                                <label for="tim_pemantauan{{$index}}">Tim Pemantauan</label>
+                                                <select class="form-select" id="tim_pemantauan{{$index}}" name="tim_pemantauan[]">
+                                                    <option value="Tim Pemantauan A" {{ (old('tim_pemantauan', $tindakLanjut->tim_pemantauan) == 'Tim Pemantauan A') ? 'selected' : '' }}>Tim Pemantauan A</option>
+                                                    <option value="Tim Pemantauan B" {{ (old('tim_pemantauan', $tindakLanjut->tim_pemantauan) == 'Tim Pemantauan B') ? 'selected' : '' }}>Tim Pemantauan B</option>
+                                                    <option value="Tim Pemantauan C" {{ (old('tim_pemantauan', $tindakLanjut->tim_pemantauan) == 'Tim Pemantauan C') ? 'selected' : '' }}>Tim Pemantauan C</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="contact-info-vertical">Tenggat Waktu</label>
-                                                <input type="date" id="contact-info-vertical" class="form-control"
-                                                    name="tenggat_waktu" placeholder="Tenggat Waktu" value="{{ old('tenggat_waktu', $rekomendasi->tenggat_waktu) }}">
+                                                <label for="tenggat_waktu{{$index}}">Tenggat Waktu</label>
+                                                <input type="date" id="tenggat_waktu{{$index}}" class="form-control" name="tenggat_waktu[]" placeholder="Tenggat Waktu" value="{{ old('tenggat_waktu', $tindakLanjut->tenggat_waktu) }}">
                                             </div>
                                         </div>
+                                        @endforeach
                                     </div>
                                     <div class="col-12 d-flex justify-between justify-content-end mt-3">
                                         <button type="reset" class="btn btn-light-secondary me-3 mb-1">Batal</button>

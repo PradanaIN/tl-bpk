@@ -3,7 +3,6 @@
 
 @section('section')
 
-
 <section class="row">
     <div class="card">
         <div class="card-header">
@@ -58,8 +57,6 @@
         });
     </script>
 
-
-
     <script>
     new DataTable('#table1', {
             info: true,
@@ -95,5 +92,46 @@
                 }
             ]
         });
+    </script>
+
+    <script>
+
+        @if (session()->has('create'))
+            Swal.fire({
+                title: 'Success',
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500,
+                text: '{{ session('create') }}'
+            });
+
+        @elseif (session()->has('update'))
+            Swal.fire({
+                title: 'Success',
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500,
+                text: '{{ session('update') }}'
+            });
+
+        @elseif (session()->has('delete'))
+            Swal.fire({
+                title: 'Success',
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500,
+                text: '{{ session('delete') }}'
+            });
+
+        @elseif (session()->has('error'))
+            Swal.fire({
+                title: 'Error',
+                icon: 'error',
+                showConfirmButton: false,
+                timer: 1500,
+                text: '{{ session('error') }}'
+            });
+        @endif
+
     </script>
 @endsection

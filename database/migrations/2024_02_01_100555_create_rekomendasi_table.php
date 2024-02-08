@@ -21,10 +21,7 @@ return new class extends Migration
             $table->text('uraian_temuan');
             $table->text('rekomendasi');
             $table->text('catatan_rekomendasi');
-            $table->string('tindak_lanjut');
-            $table->string('unit_kerja');
-            $table->string('tim_pemantauan');
-            $table->date('tenggat_waktu');
+            $table->string('status_rekomendasi')->default('Dalami Proses');
             $table->timestamps();
         });
     }

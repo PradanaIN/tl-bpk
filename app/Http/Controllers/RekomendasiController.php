@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rekomendasi;
+use App\Models\TindakLanjut;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RekomendasiController extends Controller
 {
@@ -15,6 +17,7 @@ class RekomendasiController extends Controller
         return view('livewire.kelola-rekomendasi.index', [
             'title' => 'Kelola Rekomendasi',
             'rekomendasi' => Rekomendasi::all(),
+
         ]);
     }
 
@@ -42,15 +45,30 @@ class RekomendasiController extends Controller
             'uraian_temuan' => 'required',
             'rekomendasi' => 'required',
             'catatan_rekomendasi' => 'required',
-            'tindak_lanjut' => 'required',
-            'unit_kerja' => 'required',
-            'tim_pemantauan' => 'required',
-            'tenggat_waktu' => 'required',
         ]);
 
-        Rekomendasi::create($validatedData);
+        DB::beginTransaction();
 
-        return redirect('/kelola-rekomendasi')->with('create', 'Data berhasil ditambahkan!');
+        try {
+            $rekomendasi = Rekomendasi::create($validatedData);
+
+            foreach ($request->tindak_lanjut as $key => $tindak_lanjut) {
+                TindakLanjut::create([
+                    'rekomendasi_id' => $rekomendasi->id,
+                    'tindak_lanjut' => $tindak_lanjut,
+                    'unit_kerja' => $request->unit_kerja[$key],
+                    'tim_pemantauan' => $request->tim_pemantauan[$key],
+                    'tenggat_waktu' => $request->tenggat_waktu[$key],
+                ]);
+            }
+
+            DB::commit();
+
+            return redirect('/kelola-rekomendasi')->with('create', 'Data berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Terjadi kesalahan. Data gagal disimpan.');
+        }
     }
 
     /**
@@ -58,6 +76,9 @@ class RekomendasiController extends Controller
      */
     public function show(Rekomendasi $rekomendasi)
     {
+
+        $rekomendasi = Rekomendasi::with('tindakLanjut')->find($rekomendasi->id);
+
         return view('livewire.kelola-rekomendasi.show', [
             'title' => 'Detail Rekomendasi',
             'rekomendasi' => $rekomendasi,
@@ -69,6 +90,9 @@ class RekomendasiController extends Controller
      */
     public function edit(Rekomendasi $rekomendasi)
     {
+
+        $rekomendasi = Rekomendasi::with('tindakLanjut')->find($rekomendasi->id);
+
         return view('livewire.kelola-rekomendasi.edit', [
             'title' => 'Edit Rekomendasi',
             'rekomendasi' => $rekomendasi,
@@ -89,13 +113,25 @@ class RekomendasiController extends Controller
             'uraian_temuan' => 'required',
             'rekomendasi' => 'required',
             'catatan_rekomendasi' => 'required',
-            'tindak_lanjut' => 'required',
-            'unit_kerja' => 'required',
-            'tim_pemantauan' => 'required',
-            'tenggat_waktu' => 'required',
         ]);
 
         $rekomendasi->update($validatedData);
+
+        if ($request->has('tindak_lanjut')) {
+            foreach ($request->tindak_lanjut as $key => $tindak_lanjutData) {
+                TindakLanjut::updateOrCreate(
+                    ['id' => $key],
+                    [
+                        'rekomendasi_id' => $rekomendasi->id,
+                        'tindak_lanjut' => $tindak_lanjutData,
+                        'unit_kerja' => $request->unit_kerja[$key],
+                        'tim_pemantauan' => $request->tim_pemantauan[$key],
+                        'tenggat_waktu' => $request->tenggat_waktu[$key]
+                    ]
+                );
+            }
+        }
+
 
         return redirect('/kelola-rekomendasi')->with('update', 'Data berhasil diubah!');
     }
@@ -105,6 +141,8 @@ class RekomendasiController extends Controller
      */
     public function destroy(Rekomendasi $rekomendasi)
     {
+
+        TindakLanjut::where('rekomendasi_id', $rekomendasi->id)->delete();
         Rekomendasi::destroy($rekomendasi->id);
 
         return redirect('/kelola-rekomendasi')->with('delete', 'Data berhasil dihapus!');

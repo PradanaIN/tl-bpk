@@ -25,10 +25,7 @@ class RekomendasiFactory extends Factory
             'uraian_temuan' => $this->faker->paragraph(),
             'rekomendasi' => $this->faker->paragraph(),
             'catatan_rekomendasi' => $this->faker->paragraph(),
-            'tindak_lanjut' => $this->faker->sentence(),
-            'unit_kerja' => $this->faker->randomElement(['Unit Kerja A', 'Unit Kerja B', 'Unit Kerja C']),
-            'tim_pemantauan' => $this->faker->randomElement(['Tim Pemantauan A', 'Tim Pemantauan B', 'Tim Pemantauan C']),
-            'tenggat_waktu' => $this->faker->dateTimeBetween('now', '+1 year')->format('Y-m-d'), // Tenggat waktu dalam setahun ke depan dari sekarang
+            'status_rekomendasi' => $this->faker->randomElement(['Belum Sesuai', 'Sudah Sesuai', 'Dalam Proses', 'Tidak Ditindaklanjuti']),
         ];
     }
 }

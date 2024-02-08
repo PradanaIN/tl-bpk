@@ -25,9 +25,13 @@ class Rekomendasi extends Model
         'uraian_temuan',
         'rekomendasi',
         'catatan_rekomendasi',
-        'tindak_lanjut',
-        'unit_kerja',
-        'tim_pemantauan',
-        'tenggat_waktu',
+        'status_rekomendasi',
     ];
+
+
+    // Rekomendasi memiliki banyak tindak lanjut
+    public function tindakLanjut()
+    {
+        return $this->hasMany(TindakLanjut::class);
+    }
 }
