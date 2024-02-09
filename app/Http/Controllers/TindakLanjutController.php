@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\TindakLanjut;
-use App\Http\Requests\StoreTindakLanjutRequest;
-use App\Http\Requests\UpdateTindakLanjutRequest;
+use Illuminate\Http\Request;
+use App\Models\Rekomendasi;
 
 class TindakLanjutController extends Controller
 {
@@ -13,7 +13,10 @@ class TindakLanjutController extends Controller
      */
     public function index()
     {
-        //
+        return view('livewire.kelola-tindak-lanjut.index', [
+            'title' => 'Kelola Tindak Lanjut',
+            'tindak_lanjut' => TindakLanjut::all(),
+        ]);
     }
 
     /**
@@ -21,7 +24,7 @@ class TindakLanjutController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -37,7 +40,12 @@ class TindakLanjutController extends Controller
      */
     public function show(TindakLanjut $tindakLanjut)
     {
-        //
+        $rekomendasi = Rekomendasi::find($tindakLanjut->rekomendasi_id);
+        return view('livewire.kelola-tindak-lanjut.show', [
+            'title' => 'Detail Tindak Lanjut',
+            'tindak_lanjut' => $tindakLanjut,
+            'rekomendasi' => $rekomendasi,
+        ]);
     }
 
     /**
@@ -51,9 +59,17 @@ class TindakLanjutController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTindakLanjutRequest $request, TindakLanjut $tindakLanjut)
+    public function update(Request $request, TindakLanjut $tindakLanjut)
     {
-        //
+
+        $validatedData = $request->validate([
+            'dokumen_tindak_lanjut' => 'required',
+            'detail_dokumen_tindak_lanjut' => 'required',
+        ]);
+
+        $tindakLanjut->update($validatedData);
+
+        return redirect('/kelola-tindak-lanjut/' . $tindakLanjut->id)->with('update', 'Upload Berhasil!');
     }
 
     /**

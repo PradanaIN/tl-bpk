@@ -19,9 +19,10 @@ return new class extends Migration
             $table->string('tim_pemantauan');
             $table->date('tenggat_waktu');
             $table->string('dokumen_tindak_lanjut')->nullable();
+            $table->string('detail_dokumen_tindak_lanjut')->nullable();
             $table->string('uploader')->nullable();
             $table->date('tanggal_upload')->nullable();
-            $table->string('status_tindak_lanjut')->default('Dalam Proses');
+            $table->string('status_tindak_lanjut')->default('Proses');
             $table->foreignId('rekomendasi_id')->constrained('rekomendasi')->onUpdate('cascade')->onDelete('cascade');
         });
     }

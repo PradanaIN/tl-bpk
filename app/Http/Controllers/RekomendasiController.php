@@ -59,6 +59,8 @@ class RekomendasiController extends Controller
                     'unit_kerja' => $request->unit_kerja[$key],
                     'tim_pemantauan' => $request->tim_pemantauan[$key],
                     'tenggat_waktu' => $request->tenggat_waktu[$key],
+                    'dokumen_tindak_lanjut' => 'Belum Diunggah!',
+                    'status_tindak_lanjut' => 'Proses'
                 ]);
             }
 
@@ -126,7 +128,7 @@ class RekomendasiController extends Controller
                         'tindak_lanjut' => $tindak_lanjutData,
                         'unit_kerja' => $request->unit_kerja[$key],
                         'tim_pemantauan' => $request->tim_pemantauan[$key],
-                        'tenggat_waktu' => $request->tenggat_waktu[$key]
+                        'tenggat_waktu' => $request->tenggat_waktu[$key],
                     ]
                 );
             }

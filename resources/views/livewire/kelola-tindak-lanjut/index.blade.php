@@ -1,5 +1,36 @@
 @extends('layouts.vertical')
 
+@section('style')
+<style>
+    .status-badge {
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: 500;
+        text-align: center;
+    }
+
+    .status-proses {
+        background-color: #FFD700;
+        color: #000000;
+    }
+
+    .status-belum-sesuai {
+        background-color: #FF0000;
+        color: #FFFFFF;
+    }
+
+    .status-sesuai {
+        background-color: #008000;
+        color: #FFFFFF;
+    }
+
+    .status-tidak-ditindaklanjuti {
+        background-color: #000000;
+        color: #FFFFFF;
+    }
+</style>
+@endsection
 
 @section('section')
 
@@ -14,23 +45,27 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Pemeriksaan</th>
-                            <th>Tahun</th>
-                            <th>Temuan</th>
-                            <th>Uraian</th>
-                            <th>Rekomendasi</th>
+                            <th>Tindak Lanjut</th>
+                            {{-- <th>Unit Kerja</th>
+                            <th>Tim Pemantauan</th> --}}
+                            <th>Tenggat Waktu</th>
+                            <th>Dokumen TL</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($rekomendasi as $rekomendasi)
-                        <tr class='clickable-row' data-href="/kelola-rekomendasi/{{ $rekomendasi->id }}}}">
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $rekomendasi->pemeriksaan }}</td>
-                            <td>{{ $rekomendasi->tahun_pemeriksaan }}</td>
-                            <td>{{ $rekomendasi->jenis_temuan }}</td>
-                            <td>{{ $rekomendasi->uraian_temuan }}</td>
-                            <td>{{ $rekomendasi->rekomendasi }}</td>
-                        </tr>
+                        @foreach ($tindak_lanjut as $tindak_lanjut)
+                            <tr class="clickable-row" data-href="/kelola-tindak-lanjut/{{ $tindak_lanjut->id }}">
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $tindak_lanjut->tindak_lanjut }}</td>
+                                {{-- <td>{{ $tindak_lanjut->unit_kerja }}</td>
+                                <td>{{ $tindak_lanjut->tim_pemantauan }}</td> --}}
+                                <td>{{ $tindak_lanjut->tenggat_waktu }}</td>
+                                <td>{{ $tindak_lanjut->dokumen_tindak_lanjut }}</td>
+                                <td>
+                                    <span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }}">{{ $tindak_lanjut->status_tindak_lanjut }}</span>
+                                </td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -97,3 +132,24 @@
         });
     </script>
 @endsection
+
+@php
+function getStatusClass($status) {
+    switch ($status) {
+        case 'Proses':
+            return 'status-proses';
+            break;
+        case 'Belum Sesuai':
+            return 'status-belum-sesuai';
+            break;
+        case 'Sesuai':
+            return 'status-sesuai';
+            break;
+        case 'Tidak Ditindaklanjuti':
+            return 'status-tidak-ditindaklanjuti';
+            break;
+        default:
+            return '';
+    }
+}
+@endphp

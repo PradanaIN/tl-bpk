@@ -22,6 +22,7 @@ class TindakLanjut extends Model
         'tim_pemantauan',
         'tenggat_waktu',
         'dokumen_tindak_lanjut',
+        'detail_dokumen_tindak_lanjut',
         'uploader',
         'tanggal_upload',
         'status_tindak_lanjut',

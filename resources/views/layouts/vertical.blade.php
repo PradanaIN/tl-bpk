@@ -22,6 +22,8 @@
         #table1 th, td {text-align: center;}
     </style>
 
+    @yield('style')
+
 </head>
 
 <body>

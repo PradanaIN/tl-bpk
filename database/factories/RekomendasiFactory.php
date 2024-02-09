@@ -25,7 +25,7 @@ class RekomendasiFactory extends Factory
             'uraian_temuan' => $this->faker->paragraph(),
             'rekomendasi' => $this->faker->paragraph(),
             'catatan_rekomendasi' => $this->faker->paragraph(),
-            'status_rekomendasi' => $this->faker->randomElement(['Belum Sesuai', 'Sudah Sesuai', 'Dalam Proses', 'Tidak Ditindaklanjuti']),
+            'status_rekomendasi' => $this->faker->randomElement(['Belum Sesuai', 'Sudah Sesuai', 'Proses', 'Tidak Ditindaklanjuti']),
         ];
     }
 }
