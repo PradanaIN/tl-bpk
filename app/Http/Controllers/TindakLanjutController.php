@@ -30,7 +30,7 @@ class TindakLanjutController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTindakLanjutRequest $request)
+    public function store(Request $request)
     {
         //
     }

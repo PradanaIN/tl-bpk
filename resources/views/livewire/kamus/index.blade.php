@@ -28,7 +28,7 @@
                             <td>{{ $kamus->created_at }}</td>
                             <td>
                                 <div class="d-flex justify-content-around align-items-center">
-                                    <a href="/kelola-kamus/{{ $kamus->id }}/edit" class="btn btn-warning">
+                                    <a href="/kelola-kamus/{{ $kamus->id }}/edit" class="btn btn-light">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
                                     <form action="/kelola-kamus/{{ $kamus->id }}" method="post" class="d-inline" id="deleteForm">

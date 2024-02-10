@@ -30,8 +30,8 @@
                             <td>{{ $user->role }}</td>
                             <td>
                                 <div class="d-flex justify-content-around align-items-center">
-                                    <a href="/kelola-pengguna/{{ $user->id }}/edit" class="btn btn-warning">
-                                        <i class="bi bi-pencil-square"></i>
+                                    <a href="/kelola-pengguna/{{ $user->id }}/edit" class="btn btn-light">
+                                        <i class="bi bi-pencil"></i>
                                     </a>
                                     <form action="/kelola-pengguna/{{ $user->id }}" method="post" class="d-inline" id="deleteForm">
                                         @method('delete')

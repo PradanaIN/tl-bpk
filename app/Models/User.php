@@ -44,4 +44,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+    public function unitKerja()
+    {
+        return $this->belongsTo(UnitKerja::class);
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+
+    }
+
 }
