@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\UnitKerja;
 use App\Models\User;
 use Illuminate\Http\Request;
-use SebastianBergmann\CodeCoverage\Report\Xml\Unit;
 
 class UserController extends Controller
 {
@@ -28,10 +28,12 @@ class UserController extends Controller
     public function create()
     {
         $unit_kerja = UnitKerja::all();
+        $role = Role::all();
 
         return view('livewire.kelola-pengguna.create', [
             'title' => 'Tambah Pengguna',
             'unit_kerja' => $unit_kerja,
+            'role' => $role,
         ]);
     }
 
@@ -69,9 +71,14 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $unit_kerja = UnitKerja::all();
+        $role = Role::all();
+
         return view('livewire.kelola-pengguna.edit', [
             'title' => 'Edit Pengguna',
             'user' => $user,
+            'unit_kerja' => $unit_kerja,
+            'role' => $role,
         ]);
     }
 

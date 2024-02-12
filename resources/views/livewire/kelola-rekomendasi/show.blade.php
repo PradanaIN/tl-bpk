@@ -1,14 +1,36 @@
 @extends('layouts.vertical')
 
+@section('style')
+<style>
+    /* CSS untuk menyejajarkan titik dua */
+    .label {
+        display: inline-block;
+        width: 150px; /* Atur lebar label sesuai kebutuhan */
+        font-weight: bold;
+    }
+
+    /* CSS untuk menampilkan baris teks */
+    .text {
+        display: inline-block;
+        width: calc(100% - 150px); /* Atur lebar teks */
+    }
+</style>
+@endsection
 
 @section('section')
 
 <section class="row">
-    <div class="card">
-        <div class="row d-flex justify-content-end mb-3">
+    <div class="row mb-3 flex-wrap">
+        <div class="col-auto d-flex me-auto">
+            <a href="/kelola-rekomendasi" class="btn btn-primary">
+                <i class="bi bi-arrow-left"></i>
+                Kembali
+            </a>
+        </div>
+        <div class="col-auto d-flex ms-auto">
             <div class="col-auto">
-                <a href="/kelola-rekomendasi/{{ $rekomendasi->id }}/edit" class="btn btn-primary">
-                    <i class="bi bi-pencil-square"></i>
+                <a href="/kelola-rekomendasi/{{ $rekomendasi->id }}/edit" class="btn btn-light">
+                    <i class="bi bi-pencil"></i>
                 </a>
                 <form action="/kelola-rekomendasi/{{ $rekomendasi->id }}" method="post" class="d-inline" id="deleteForm">
                     @method('delete')
@@ -19,23 +41,89 @@
                 </form>
             </div>
         </div>
+    </div>
+    <div class="card">
         <div class="card-header">
             <h4 class="card-title"><b>A. Detail Pemeriksaan</b></h4>
         </div>
         <div class="card-body">
-            <p><b>Pemeriksaan : </b>{{ $rekomendasi->pemeriksaan }}</p>
-            <p><b>Tahun : </b>{{ $rekomendasi->tahun_pemeriksaan }}</p>
-            <p><b>Jenis Pemeriksaan : </b>{{ $rekomendasi->jenis_pemeriksaan }}</p>
-            <p><b>Hasil Pemeriksaan : </b>{{ $rekomendasi->hasil_pemeriksaan }}</p>
+            <div class="row">
+                <div class="col-3">
+                    <p class="fw-bold">Pemeriksaan</p>
+                </div>
+                <div class="col-auto">:</div>
+                <div class="col">
+                    <p>{{ $rekomendasi->pemeriksaan }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <p class="fw-bold">Tahun</p>
+                </div>
+                <div class="col-auto">:</div>
+                <div class="col">
+                    <p>{{ $rekomendasi->tahun_pemeriksaan }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <p class="fw-bold">Jenis Pemeriksaan</p>
+                </div>
+                <div class="col-auto">:</div>
+                <div class="col">
+                    <p>{{ $rekomendasi->jenis_pemeriksaan }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <p class="fw-bold">Hasil Pemeriksaan</p>
+                </div>
+                <div class="col-auto">:</div>
+                <div class="col">
+                    <p>{{ $rekomendasi->hasil_pemeriksaan }}</p>
+                </div>
+            </div>
         </div>
         <div class="card-header">
             <h4 class="card-title"><b>B. Detail Rekomendasi</b></h4>
         </div>
         <div class="card-body">
-            <p><b>Jenis Temuan : </b>{{ $rekomendasi->jenis_temuan }}</p>
-            <p><b>Uraian Temuan : </b>{{ $rekomendasi->uraian_temuan }}</p>
-            <p><b>Rekomendasi : </b>{{ $rekomendasi->rekomendasi }}</p>
-            <p><b>Catatan Rekomendasi : </b>{{ $rekomendasi->catatan_rekomendasi }}</p>
+            <div class="row">
+                <div class="col-3">
+                    <p class="fw-bold">Jenis Temuan</p>
+                </div>
+                <div class="col-auto">:</div>
+                <div class="col">
+                    <p>{{ $rekomendasi->jenis_temuan }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <p class="fw-bold">Uraian Temuan</p>
+                </div>
+                <div class="col-auto">:</div>
+                <div class="col">
+                    <p>{{ $rekomendasi->uraian_temuan }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <p class="fw-bold">Rekomendasi</p>
+                </div>
+                <div class="col-auto">:</div>
+                <div class="col">
+                    <p>{{ $rekomendasi->rekomendasi }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <p class="fw-bold">Catatan Rekomendasi</p>
+                </div>
+                <div class="col-auto">:</div>
+                <div class="col">
+                    <p>{{ $rekomendasi->catatan_rekomendasi }}</p>
+                </div>
+            </div>
         </div>
         <div class="card-header">
             <h4 class="card-title"><b>C. Tindak Lanjut</b></h4>

@@ -64,6 +64,3 @@ Route::get('/kelola-tindak-lanjut/{tindak_lanjut:id}', [TindakLanjutController::
 Route::get('/kelola-tindak-lanjut/{tindak_lanjut:id}/edit', [TindakLanjutController::class, 'edit']);
 Route::put('/kelola-tindak-lanjut/{tindak_lanjut:id}', [TindakLanjutController::class, 'update']);
 Route::delete('/kelola-tindak-lanjut/{tindak_lanjut:id}', [TindakLanjutController::class, 'destroy']);
-
-// Unit Kerja Import Data
-Route::get('/import', [App\Http\Controllers\UnitKerjaController::class, 'import']);

@@ -16,8 +16,8 @@
                             <th>Pemeriksaan</th>
                             <th>Tahun</th>
                             <th>Temuan</th>
-                            <th>Uraian</th>
                             <th>Rekomendasi</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -27,8 +27,14 @@
                             <td>{{ $rekomendasi->pemeriksaan }}</td>
                             <td>{{ $rekomendasi->tahun_pemeriksaan }}</td>
                             <td>{{ $rekomendasi->jenis_temuan }}</td>
-                            <td>{{ $rekomendasi->uraian_temuan }}</td>
                             <td>{{ $rekomendasi->rekomendasi }}</td>
+                            <td>
+                                <div class="d-flex justify-content-around align-items-center">
+                                    <a href="/kelola-rekomendasi/{{ $rekomendasi->id }}" class="btn btn-light">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </div>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>

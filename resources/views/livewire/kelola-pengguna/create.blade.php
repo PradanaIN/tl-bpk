@@ -1,6 +1,8 @@
-@
 @extends('layouts.vertical')
 
+{{-- @section('style')
+<link rel="stylesheet" href="https://unpkg.com/@jarstone/dselect/dist/css/dselect.css">
+@endsection --}}
 
 @section('section')
 
@@ -31,10 +33,11 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="contact-info-vertical">Unit Kerja</label>
-                                                <select class="form-select" id="basicSelect" name="unit_kerja">
-                                                    <option value="Unit Kerja A">Unit Kerja A</option>
-                                                    <option value="Unit Kerja B">Unit Kerja B</option>
-                                                    <option value="Unit Kerja C">Unit Kerja C</option>
+                                                <select class="form-select" id="unit_kerja" name="unit_kerja">
+                                                    <option value="">Pilih Unit Kerja</option>
+                                                    @foreach($unit_kerja as $unit)
+                                                        <option value="{{ $unit->nama }}">{{ $unit->nama }}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
@@ -42,9 +45,10 @@
                                             <div class="form-group">
                                                 <label for="password-vertical">Role</label>
                                                 <select class="form-select" id="basicSelect" name="role">
-                                                    <option value="Tim Koordinator">Tim Koordinator</option>
-                                                    <option value="Unit Kerja">Unit Kerja</option>
-                                                    <option value="Pimpinan">Pimpinan</option>
+                                                    <option value="">Pilih Role</option>
+                                                    @foreach ($role as $role)
+                                                        <option value="{{ $role->role }}">{{ $role->role }}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         <div class="col-12">
@@ -70,4 +74,18 @@
     </div>
 </section>
 
+@endsection
+
+
+@section('scripts')
+
+<script src="https://unpkg.com/@jarstone/dselect/dist/js/dselect.js"></script>
+
+<script>
+    var formSelect = document.querySelector('#unit_kerja');
+
+    dselect(formSelect, {
+        search : true
+    });
+</script>
 @endsection

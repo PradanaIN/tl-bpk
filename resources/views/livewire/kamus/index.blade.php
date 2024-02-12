@@ -29,7 +29,7 @@
                             <td>
                                 <div class="d-flex justify-content-around align-items-center">
                                     <a href="/kelola-kamus/{{ $kamus->id }}/edit" class="btn btn-light">
-                                        <i class="bi bi-pencil-square"></i>
+                                        <i class="bi bi-pencil"></i>
                                     </a>
                                     <form action="/kelola-kamus/{{ $kamus->id }}" method="post" class="d-inline" id="deleteForm">
                                         @method('delete')

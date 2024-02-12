@@ -58,6 +58,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <h4 class="card-title mt-3">B. Detail Rekomendasi</h4>
                                     <div class="mt-2">
                                         <div class="col-12">
@@ -72,8 +73,8 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="contact-info-vertical">Uraian Temuan</label>
-                                                <input type="text" id="contact-info-vertical" class="form-control"
-                                                    name="uraian_temuan" placeholder="Uraian Temuan">
+                                                <textarea class="form-control" id="contact-info-vertical" rows="3"
+                                                    name="uraian_temuan" placeholder="Uraian Temuan"></textarea>
                                             </div>
                                         </div>
                                         <div class="col-12">
@@ -86,49 +87,13 @@
                                         <div class="col-12">
                                             <div class="form-group
                                                 <label for="password-vertical">Catatan Rekomendasi</label>
-                                                <input type="text" id="first-name-vertical" class="form-control"
-                                                name="catatan_rekomendasi" placeholder="Catatan Rekomendasi">
+                                                <textarea class="form-control" id="contact-info-vertical" rows="3"
+                                                    name="catatan_rekomendasi" placeholder="Catatan Rekomendasi"></textarea>
                                             </div>
                                         </div>
                                     </div>
+
                                     <h4 class="card-title mt-3">C. Tindak Lanjut</h4>
-                                    {{-- <div class="mt-2">
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label for="first-name-vertical">Tindak Lanjut</label>
-                                                <input type="text" id="first-name-vertical" class="form-control"
-                                                    name="tindak_lanjut" placeholder="Tindak lanjut">
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label for="contact-info-vertical">Unit Kerja</label>
-                                                <select class="form-select" id="basicSelect" name="unit_kerja">
-                                                    <option value="Unit Kerja A">Unit Kerja A</option>
-                                                    <option value="Unit Kerja B">Unit Kerja B</option>
-                                                    <option value="Unit Kerja C">Unit Kerja C</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label for="contact-info-vertical">Tim Pemantauan</label>
-                                                <select class="form-select" id="basicSelect" name="tim_pemantauan">
-                                                    <option value="Tim Pemantauan A">Tim Pemantauan A</option>
-                                                    <option value="Tim Pemantauan B">Tim Pemantauan B</option>
-                                                    <option value="Tim Pemantauan C">Tim Pemantauan C</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label for="contact-info-vertical">Tenggat Waktu</label>
-                                                <input type="date" id="contact-info-vertical" class="form-control"
-                                                    name="tenggat_waktu" placeholder="Tenggat Waktu">
-                                            </div>
-                                        </div>
-                                    </div> --}}
-                                    <!-- form repeater -->
                                     <div class="col-12 mt-3">
                                         <div class="repeater-default">
                                             <div data-repeater-list="group-a">
