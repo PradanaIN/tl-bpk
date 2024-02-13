@@ -2,17 +2,32 @@
 
 @section('style')
 <style>
-    /* CSS untuk menyejajarkan titik dua */
-    .label {
-        display: inline-block;
-        width: 150px; /* Atur lebar label sesuai kebutuhan */
-        font-weight: bold;
+    .status-badge {
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: 500;
+        text-align: center;
     }
 
-    /* CSS untuk menampilkan baris teks */
-    .text {
-        display: inline-block;
-        width: calc(100% - 150px); /* Atur lebar teks */
+    .status-proses {
+        background-color: #FFD700;
+        color: #000000;
+    }
+
+    .status-belum-sesuai {
+        background-color: #FF0000;
+        color: #FFFFFF;
+    }
+
+    .status-sesuai {
+        background-color: #008000;
+        color: #FFFFFF;
+    }
+
+    .status-tidak-ditindaklanjuti {
+        background-color: #000000;
+        color: #FFFFFF;
     }
 </style>
 @endsection
@@ -138,6 +153,7 @@
                             <th>Unit Kerja</th>
                             <th>Tim Pemantauan</th>
                             <th>Tenggat Waktu</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -148,6 +164,9 @@
                                 <td>{{ $tindakLanjut->unit_kerja }}</td>
                                 <td>{{ $tindakLanjut->tim_pemantauan }}</td>
                                 <td>{{ $tindakLanjut->tenggat_waktu }}</td>
+                                <td>
+                                    <span class="status-badge {{ getStatusClass($tindakLanjut->status_tindak_lanjut) }}">{{ $tindakLanjut->status_tindak_lanjut }}</span>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -181,8 +200,56 @@ document.getElementById('deleteButton').addEventListener('click', function() {
                 }
             });
         });
+</script>
 
+<script>
+    new DataTable('#table1', {
+        info: true,
+        ordering: true,
+        paging: true,
+        searching: true,
+        lengthChange: true,
+        lengthMenu: [5, 10, 25, 50, 75, 100],
+        destroy: true,
 
+        // bahasa indonesia
+        language: {
+            "info": "<sup><big>dari _TOTAL_ entri</big></sup>",
+            "infoEmpty": "<sup><big>0 entri</big></sup>",
+            "infoFiltered": "<sup><big>(filter dari _MAX_ total entri)</big></sup>",
+            "lengthMenu": "_MENU_ &nbsp;",
+            "search": "<i class='bi bi-search'></i>  ",
+            "zeroRecords": "Tidak ada data yang cocok",
+            "paginate": {
+                "next": "<i class='bi bi-chevron-right'></i>",
+                "previous": "<i class='bi bi-chevron-left'></i>"
+            }
+        },
+
+        dom: '<"d-flex justify-content-between mb-4"fB>rt<"d-flex justify-content-between mt-4"<"d-flex justify-content-start"li><"col-md-6"p>>',
+    });
 </script>
 
 @endsection
+
+
+@php
+function getStatusClass($status) {
+    switch ($status) {
+        case 'Proses':
+            return 'status-proses';
+            break;
+        case 'Belum Sesuai':
+            return 'status-belum-sesuai';
+            break;
+        case 'Sesuai':
+            return 'status-sesuai';
+            break;
+        case 'Tidak Ditindaklanjuti':
+            return 'status-tidak-ditindaklanjuti';
+            break;
+        default:
+            return '';
+    }
+}
+@endphp

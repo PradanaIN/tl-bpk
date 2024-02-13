@@ -51,6 +51,7 @@
                             <th>Tenggat Waktu</th>
                             <th>Dokumen TL</th>
                             <th>Status</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -65,6 +66,14 @@
                                 <td>
                                     <span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }}">{{ $tindak_lanjut->status_tindak_lanjut }}</span>
                                 </td>
+                                <td>
+                                    <div class="d-flex justify-content-around align-items-center">
+                                        <a href="/kelola-tindak-lanjut/{{ $tindak_lanjut->id }}" class="btn btn-light">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                    </div>
+                                </td>
+
                             </tr>
                         @endforeach
                     </tbody>
@@ -92,8 +101,6 @@
             });
         });
     </script>
-
-
 
     <script>
     new DataTable('#table1', {

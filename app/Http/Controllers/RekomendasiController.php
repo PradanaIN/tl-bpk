@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UnitKerja;
 use App\Models\Rekomendasi;
 use App\Models\TindakLanjut;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use SebastianBergmann\CodeCoverage\Report\Xml\Unit;
 
 class RekomendasiController extends Controller
 {
@@ -26,8 +28,11 @@ class RekomendasiController extends Controller
      */
     public function create()
     {
+        $unit_kerja = UnitKerja::all();
+
         return view('livewire.kelola-rekomendasi.create', [
             'title' => 'Tambah Rekomendasi',
+            'unit_kerja' => $unit_kerja,
         ]);
     }
 
@@ -94,10 +99,12 @@ class RekomendasiController extends Controller
     {
 
         $rekomendasi = Rekomendasi::with('tindakLanjut')->find($rekomendasi->id);
+        $unit_kerja = UnitKerja::all();
 
         return view('livewire.kelola-rekomendasi.edit', [
             'title' => 'Edit Rekomendasi',
             'rekomendasi' => $rekomendasi,
+            'unit_kerja' => $unit_kerja,
         ]);
     }
 
@@ -106,6 +113,7 @@ class RekomendasiController extends Controller
      */
     public function update(Request $request, Rekomendasi $rekomendasi)
     {
+
         $validatedData = $request->validate([
             'pemeriksaan' => 'required',
             'jenis_pemeriksaan' => 'required',
@@ -119,23 +127,30 @@ class RekomendasiController extends Controller
 
         $rekomendasi->update($validatedData);
 
-        if ($request->has('tindak_lanjut')) {
-            foreach ($request->tindak_lanjut as $key => $tindak_lanjutData) {
-                TindakLanjut::updateOrCreate(
-                    ['id' => $key],
-                    [
-                        'rekomendasi_id' => $rekomendasi->id,
-                        'tindak_lanjut' => $tindak_lanjutData,
-                        'unit_kerja' => $request->unit_kerja[$key],
-                        'tim_pemantauan' => $request->tim_pemantauan[$key],
-                        'tenggat_waktu' => $request->tenggat_waktu[$key],
-                    ]
-                );
-            }
-        }
 
+        foreach ($request->tindak_lanjut as $key => $tindak_lanjut) {
+            if ($request->id[$key] == null) {
+                TindakLanjut::create([
+                    'rekomendasi_id' => $rekomendasi->id,
+                    'tindak_lanjut' => $tindak_lanjut,
+                    'unit_kerja' => $request->unit_kerja[$key],
+                    'tim_pemantauan' => $request->tim_pemantauan[$key],
+                    'tenggat_waktu' => $request->tenggat_waktu[$key],
+                    'dokumen_tindak_lanjut' => 'Belum Diunggah!',
+                    'status_tindak_lanjut' => 'Proses'
+                ]);
+            } else {
+                TindakLanjut::where('id', $request->id[$key])->update([
+                    'tindak_lanjut' => $tindak_lanjut,
+                    'unit_kerja' => $request->unit_kerja[$key],
+                    'tim_pemantauan' => $request->tim_pemantauan[$key],
+                    'tenggat_waktu' => $request->tenggat_waktu[$key],
+                    'dokumen_tindak_lanjut' => 'Belum Diunggah!',
+                    'status_tindak_lanjut' => 'Proses'
+                ]);
+            }}
 
-        return redirect('/kelola-rekomendasi')->with('update', 'Data berhasil diubah!');
+        return redirect('/kelola-rekomendasi/'.$rekomendasi->id)->with('update', 'Data berhasil diubah!');
     }
 
     /**

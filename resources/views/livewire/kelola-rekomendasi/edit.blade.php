@@ -94,42 +94,65 @@
                                     </div>
                                     <h4 class="card-title mt-3">C. Tindak Lanjut</h4>
                                     <div class="mt-2">
-                                        @foreach($rekomendasi->tindakLanjut as $index => $tindakLanjut)
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label for="tindak_lanjut{{$index}}">Tindak Lanjut</label>
-                                                <input type="text" id="tindak_lanjut{{$index}}" class="form-control" name="tindak_lanjut[]" placeholder="Tindak lanjut" value="{{ old('tindak_lanjut', $tindakLanjut->tindak_lanjut) }}">
+                                        <div class="repeater-default">
+                                            <div data-repeater-list="group-a">
+                                                @foreach($rekomendasi->tindakLanjut as $index => $tindakLanjut)
+                                                <div data-repeater-item>
+                                                    <div class="row d-flex justify-content-between">
+                                                        <input type="hidden" name="id[]" value="{{ $tindakLanjut->id }}">
+                                                        <div class="col-md-3 col-12">
+                                                            <div class="form-group">
+                                                                <label for="tindak_lanjut{{$index}}">Tindak Lanjut</label>
+                                                                <input type="text" id="tindak_lanjut{{$index}}" class="form-control" name="tindak_lanjut[]" value="{{ $tindakLanjut->tindak_lanjut }}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3 col-12">
+                                                            <div class="form-group">
+                                                                <label for="unit_kerja{{$index}}">Unit Kerja</label>
+                                                                <select class="form-select" id="unit_kerja{{$index}}" name="unit_kerja[]">
+                                                                    <option value="{{ $tindakLanjut->unit_kerja }}">{{ $tindakLanjut->unit_kerja }}</option>
+                                                                    @foreach ($unit_kerja as $unit)
+                                                                        <option value="{{ $unit->nama }}">{{ $unit->nama }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3 col-12">
+                                                            <div class="form-group">
+                                                                <label for="contact-info-vertical">Tim Pemantauan</label>
+                                                                <select class="form-select" id="basicSelect" name="tim_pemantauan[]">
+                                                                    <option value="{{ $tindakLanjut->tim_pemantauan }}">{{ $tindakLanjut->tim_pemantauan }}</option>
+                                                                    <option value="Tim Pemantauan Wilayah I">Tim Pemantauan Wilayah I</option>
+                                                                    <option value="Tim Pemantauan Wilayah II">Tim Pemantauan Wilayah II</option>
+                                                                    <option value="Tim Pemantauan Wilayah III">Tim Pemantauan Wilayah II</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3 col-12">
+                                                            <div class="form-group">
+                                                                <label for="contact-info-vertical">Tenggat Waktu</label>
+                                                                <input type="date" id="contact-info-vertical" class="form-control"
+                                                                    name="tenggat_waktu[]" placeholder="Tenggat Waktu" value="{{ $tindakLanjut->tenggat_waktu }}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-auto d-flex ms-auto">
+                                                            <div class="col-auto">
+                                                            <button class="btn btn-icon btn-primary" type="button" data-repeater-create>
+                                                                <i data-feather="plus" class="me-25"></i>
+                                                            </button>
+                                                            <button class="btn btn-icon btn-danger" type="button" id="btnDelete" data-repeater-delete>
+                                                                <i data-feather="trash-2" class="me-25"></i>
+                                                            </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @endforeach
                                             </div>
                                         </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label for="unit_kerja{{$index}}">Unit Kerja</label>
-                                                <select class="form-select" id="unit_kerja{{$index}}" name="unit_kerja[]">
-                                                    <option value="Unit Kerja A" {{ (old('unit_kerja', $tindakLanjut->unit_kerja) == 'Unit Kerja A') ? 'selected' : '' }}>Unit Kerja A</option>
-                                                    <option value="Unit Kerja B" {{ (old('unit_kerja', $tindakLanjut->unit_kerja) == 'Unit Kerja B') ? 'selected' : '' }}>Unit Kerja B</option>
-                                                    <option value="Unit Kerja C" {{ (old('unit_kerja', $tindakLanjut->unit_kerja) == 'Unit Kerja C') ? 'selected' : '' }}>Unit Kerja C</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label for="tim_pemantauan{{$index}}">Tim Pemantauan</label>
-                                                <select class="form-select" id="tim_pemantauan{{$index}}" name="tim_pemantauan[]">
-                                                    <option value="Tim Pemantauan A" {{ (old('tim_pemantauan', $tindakLanjut->tim_pemantauan) == 'Tim Pemantauan A') ? 'selected' : '' }}>Tim Pemantauan A</option>
-                                                    <option value="Tim Pemantauan B" {{ (old('tim_pemantauan', $tindakLanjut->tim_pemantauan) == 'Tim Pemantauan B') ? 'selected' : '' }}>Tim Pemantauan B</option>
-                                                    <option value="Tim Pemantauan C" {{ (old('tim_pemantauan', $tindakLanjut->tim_pemantauan) == 'Tim Pemantauan C') ? 'selected' : '' }}>Tim Pemantauan C</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label for="tenggat_waktu{{$index}}">Tenggat Waktu</label>
-                                                <input type="date" id="tenggat_waktu{{$index}}" class="form-control" name="tenggat_waktu[]" placeholder="Tenggat Waktu" value="{{ old('tenggat_waktu', $tindakLanjut->tenggat_waktu) }}">
-                                            </div>
-                                        </div>
-                                        @endforeach
+
                                     </div>
-                                    <div class="col-12 d-flex justify-between justify-content-end mt-3">
+                                    <div class="col-12 d-flex justify-between justify-content-end mt-5">
                                         <button type="reset" class="btn btn-light-secondary me-3 mb-1">Batal</button>
                                         <button type="submit" class="btn btn-primary me-1 mb-1">Simpan</button>
                                     </div>
@@ -144,3 +167,51 @@
 </section>
 
 @endsection
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var repeaterDefault = document.querySelector('.repeater-default');
+        var btnTambah = repeaterDefault.querySelector('[data-repeater-create]');
+
+        // Event listener untuk tombol Tambah
+        btnTambah.addEventListener('click', function () {
+            var repeaterList = repeaterDefault.querySelector('[data-repeater-list="group-a"]');
+            var newItem = repeaterList.querySelector('[data-repeater-item]').cloneNode(true);
+
+            // Bersihkan nilai input pada item baru
+            var inputs = newItem.querySelectorAll('input, select');
+            inputs.forEach(function(input) {
+                input.value = '';
+            });
+
+            repeaterList.appendChild(newItem);
+
+            // Inisialisasi ulang select
+            var select = newItem.querySelectorAll('select');
+            select.forEach(function(item) {
+                new Choices(item);
+            });
+        });
+
+        // Event listener untuk tombol Hapus
+        repeaterDefault.addEventListener('click', function (e) {
+            if (e.target && e.target.matches('[data-repeater-delete]')) {
+                e.target.closest('[data-repeater-item]').remove();
+            }
+        });
+
+        // Inisialisasi select
+        var select = repeaterDefault.querySelectorAll('select');
+        select.forEach(function(item) {
+            new Choices(item);
+        });
+    });
+
+    // document.getElementById('btnDelete').addEventListener('click', function () {
+    //     if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+    //         document.getElementById('deleteForm').submit();
+    //     }
+    // });
+
+    </script>

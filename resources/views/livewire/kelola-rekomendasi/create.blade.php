@@ -53,8 +53,8 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="password-vertical">Hasil Pemeriksaan</label>
-                                                <input type="text" id="first-name-vertical" class="form-control"
-                                                name="hasil_pemeriksaan" placeholder="Hasil Pemeriksaan">
+                                                <textarea class="form-control" id="contact-info-vertical" rows="3"
+                                                    name="hasil_pemeriksaan" placeholder="Hasil Pemeriksaan"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -111,9 +111,10 @@
                                                             <div class="form-group">
                                                                 <label for="contact-info-vertical">Unit Kerja</label>
                                                                 <select class="form-select" id="basicSelect" name="unit_kerja[]">
-                                                                    <option value="Unit Kerja A">Unit Kerja A</option>
-                                                                    <option value="Unit Kerja B">Unit Kerja B</option>
-                                                                    <option value="Unit Kerja C">Unit Kerja C</option>
+                                                                    <option value="">Pilih PIC Unit Kerja</option>
+                                                                    @foreach ($unit_kerja as $unit_kerja)
+                                                                        <option value="{{ $unit_kerja->nama }}">{{ $unit_kerja->nama }}</option>
+                                                                    @endforeach
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -121,9 +122,10 @@
                                                             <div class="form-group">
                                                                 <label for="contact-info-vertical">Tim Pemantauan</label>
                                                                 <select class="form-select" id="basicSelect" name="tim_pemantauan[]">
-                                                                    <option value="Tim Pemantauan A">Tim Pemantauan A</option>
-                                                                    <option value="Tim Pemantauan B">Tim Pemantauan B</option>
-                                                                    <option value="Tim Pemantauan C">Tim Pemantauan C</option>
+                                                                    <option value="">Pilih PIC Tim Pemantauan</option>
+                                                                    <option value="Tim Pemantauan Wilayah I">Tim Pemantauan Wilayah I</option>
+                                                                    <option value="Tim Pemantauan Wilayah II">Tim Pemantauan Wilayah II</option>
+                                                                    <option value="Tim Pemantauan Wilayah III">Tim Pemantauan Wilayah II</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -134,19 +136,17 @@
                                                                     name="tenggat_waktu[]" placeholder="Tenggat Waktu">
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-1 col-12">
-                                                            <button class="btn btn-icon btn-danger" type="button" data-repeater-delete>
+                                                        <div class="col-auto d-flex ms-auto">
+                                                            <div class="col-auto">
+                                                            <button class="btn btn-icon btn-primary" type="button" data-repeater-create>
+                                                                <i data-feather="plus" class="me-25"></i>
+                                                            </button>
+                                                            <button class="btn btn-icon btn-danger" type="button" id="btnDelete" data-repeater-delete>
                                                                 <i data-feather="trash-2" class="me-25"></i>
                                                             </button>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="d-flex justify-between">
-                                                    <button class="btn btn-icon btn-primary" type="button" data-repeater-create>
-                                                        <i data-feather="plus" class="me-25"></i>
-                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -188,39 +188,32 @@ document.addEventListener('DOMContentLoaded', function () {
 
         repeaterList.appendChild(newItem);
 
-        // Periksa apakah jumlah item repeater lebih dari 1 untuk menampilkan tombol hapus
-        var items = repeaterList.querySelectorAll('[data-repeater-item]');
-        if (items.length > 1) {
-            toggleDeleteButtons(true);
-        }
+        // Inisialisasi ulang select
+        var select = newItem.querySelectorAll('select');
+        select.forEach(function(item) {
+            new Choices(item);
+        });
     });
 
     // Event listener untuk tombol Hapus
-    repeaterDefault.addEventListener('click', function (event) {
-        if (event.target && event.target.matches('[data-repeater-delete]')) {
-            var itemToDelete = event.target.closest('[data-repeater-item]');
-            itemToDelete.parentNode.removeChild(itemToDelete);
-
-            // Periksa kembali jumlah item repeater setelah penghapusan untuk menampilkan/menyembunyikan tombol hapus
-            var items = document.querySelectorAll('[data-repeater-item]');
-            if (items.length <= 1) {
-                toggleDeleteButtons(false);
-            }
+    repeaterDefault.addEventListener('click', function (e) {
+        if (e.target && e.target.matches('[data-repeater-delete]')) {
+            e.target.closest('[data-repeater-item]').remove();
         }
     });
 
-    // Fungsi untuk menampilkan/menyembunyikan tombol hapus
-    function toggleDeleteButtons(show) {
-        var deleteButtons = document.querySelectorAll('[data-repeater-delete]');
-        deleteButtons.forEach(function(button) {
-            if (show) {
-                button.style.display = 'inline-block';
-            } else {
-                button.style.display = 'none';
-            }
-        });
-    }
+    // Inisialisasi select
+    var select = repeaterDefault.querySelectorAll('select');
+    select.forEach(function(item) {
+        new Choices(item);
+    });
 });
+
+// document.getElementById('btnDelete').addEventListener('click', function () {
+//     if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+//         document.getElementById('deleteForm').submit();
+//     }
+// });
 
 </script>
 

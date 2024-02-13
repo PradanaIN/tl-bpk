@@ -61,13 +61,22 @@ class TindakLanjutController extends Controller
      */
     public function update(Request $request, TindakLanjut $tindakLanjut)
     {
+        $file = $request->file('dokumen_tindak_lanjut');
+        $fileName = time() . '_' . $file->getClientOriginalName();
+        $file->move(public_path('uploads/tindak_lanjut'), $fileName);
 
-        $validatedData = $request->validate([
-            'dokumen_tindak_lanjut' => 'required',
-            'detail_dokumen_tindak_lanjut' => 'required',
+        $tindakLanjut->update([
+            'rekomendasi_id' => $tindakLanjut->rekomendasi_id,
+            'tindak_lanjut' => $tindakLanjut->tindak_lanjut,
+            'unit_kerja' => $tindakLanjut->unit_kerja,
+            'tim_pemantauan' => $tindakLanjut->tim_pemantauan,
+            'dokumen_tindak_lanjut' => $fileName,
+            'catatan_tindak_lanjut' => $request->catatan_tindak_lanjut,
+            // 'upload_by' => auth()->user()->name,
+            'upload_by' => 'admin',
+            'upload_at' => now(),
+            'status' => 'Selesai',
         ]);
-
-        $tindakLanjut->update($validatedData);
 
         return redirect('/kelola-tindak-lanjut/' . $tindakLanjut->id)->with('update', 'Upload Berhasil!');
     }
