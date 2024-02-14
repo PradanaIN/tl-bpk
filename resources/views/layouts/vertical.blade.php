@@ -79,7 +79,7 @@
                         <li class="sidebar-title">Menu</li>
 
                         <li class="sidebar-item">
-                            <a href="{{ url('/dashboard') }}" class='sidebar-link'>
+                            <a href="/dashboard" class='sidebar-link'>
                                 <i class="bi bi-grid"></i>
                                 <span>Dashboard</span>
                             </a>
@@ -276,9 +276,9 @@
     <script src="{{ asset('mazer/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('mazer/assets/compiled/js/app.js') }}"></script>
 
-    <!-- chartjs -->
+    {{-- <!-- chartjs -->
     <script src="{{ asset('mazer/assets/extensions/chart.js/chart.umd.js') }}"></script>
-    <script src="{{ asset('mazer/assets/static/js/pages/ui-chartjs.js') }}"></script>
+    <script src="{{ asset('mazer/assets/static/js/pages/ui-chartjs.js') }}"></script> --}}
 
     <!-- data tables -->
     <script src="{{ asset('mazer/assets/extensions/jquery/jquery.min.js') }}"></script>

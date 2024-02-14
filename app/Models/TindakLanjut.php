@@ -23,9 +23,10 @@ class TindakLanjut extends Model
         'tenggat_waktu',
         'dokumen_tindak_lanjut',
         'detail_dokumen_tindak_lanjut',
-        'uploader',
-        'tanggal_upload',
+        'upload_by',
+        'upload_at',
         'status_tindak_lanjut',
+        'catatan_tindak_lanjut',
         'rekomendasi_id',
     ];
 

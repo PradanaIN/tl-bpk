@@ -1,8 +1,4 @@
-@extends('layouts.vertical')
-
-{{-- @section('style')
-<link rel="stylesheet" href="https://unpkg.com/@jarstone/dselect/dist/css/dselect.css">
-@endsection --}}
+@extends('layouts.horizontal')
 
 @section('section')
 

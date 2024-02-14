@@ -52,19 +52,19 @@
 <section class="row">
     <div class="row mb-3 flex-wrap">
         <div class="col-auto d-flex me-auto">
-            <a href="/kelola-tindak-lanjut" class="btn btn-primary">
+            <a href="/identifikasi-dokumen" class="btn btn-primary">
                 <i class="bi bi-arrow-left"></i>
                 &nbsp;Kembali
             </a>
         </div>
         <div class="col-auto d-flex ms-auto">
             <button class="btn btn-primary" id="uploadBtn">
-                @if (($tindak_lanjut->dokumen_tindak_lanjut === null || $tindak_lanjut->dokumen_tindak_lanjut === 'Belum Diupload!'))
+                @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Belum Diidentifikasi!'))
                     <i class="bi bi-plus"></i>
-                    Dokumen Tindak Lanjut
+                    Hasil Identifikasi
                 @else
                     <i class="bi bi-pencil"></i>
-                    &nbsp;Dokumen Tindak Lanjut
+                    &nbsp;Hasil Identifikasi
                 @endif
             </button>
         </div>
@@ -202,6 +202,11 @@
                 <div class="col">
                     <p>{{ $tindak_lanjut->dokumen_tindak_lanjut }}</p>
                 </div>
+                <div class="col-auto">
+                    <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->dokumen_tindak_lanjut) }}" class="btn btn-primary" download>
+                        <i class="bi bi-download"></i>
+                    </a>
+                </div>
             </div>
             <div class="row">
                 <div class="col-3">
@@ -247,10 +252,10 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="uploadModalLabel">Upload Dokumen Tindak Lanjut</h5>
+                <h5 class="modal-title" id="uploadModalLabel">Hasil Identifikasi Tindak Lanjut</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="/kelola-tindak-lanjut/{{ $tindak_lanjut->id }}" method="post" enctype="multipart/form-data">
+            <form action="/identifikasi-dokumen/{{ $tindak_lanjut->id }}" method="post">
                 @csrf
                 @method('put')
                 <div class="modal-body
@@ -261,23 +266,31 @@
                 <input type="hidden" name="tim_pemantauan" value="{{ $tindak_lanjut->tim_pemantauan }}">
                 <input type="hidden" name="tenggat_waktu" value="{{ $tindak_lanjut->tenggat_waktu }}">
                 <input type="hidden" name="rekomendasi_id" value="{{ $tindak_lanjut->rekomendasi_id }}">
+                <input type="hidden" name="dokumen_tindak_lanjut" value="{{ $tindak_lanjut->dokumen_tindak_lanjut }}">
+                <input type="hidden" name="detail_dokumen_tindak_lanjut" value="{{ $tindak_lanjut->detail_dokumen_tindak_lanjut }}">
+                <input type="hidden" name="upload_by" value="{{ $tindak_lanjut->upload_by }}">
+                <input type="hidden" name="upload_at" value="{{ $tindak_lanjut->upload_at }}">
 
                 <div class="mb-3">
-                    <label for="dokumen_tindak_lanjut" class="form-label">Dokumen Tindak Lanjut</label>
-                    <input type="file" class="with-validation-filepond" required multiple
-                            data-max-file-size="1MB" data-max-files="3" name="dokumen_tindak_lanjut">
+                    <label for="dokumen_tindak_lanjut" class="form-label">Hasil Identifikasi</label>
+                    <select class="form-select" name="status_tindak_lanjut" id="status_tindak_lanjut" required>
+                        <option value="Proses" {{ $tindak_lanjut->status_tindak_lanjut === 'Proses' ? 'selected' : '' }}>Proses</option>
+                        <option value="Belum Sesuai" {{ $tindak_lanjut->status_tindak_lanjut === 'Belum Sesuai' ? 'selected' : '' }}>Belum Sesuai</option>
+                        <option value="Sesuai" {{ $tindak_lanjut->status_tindak_lanjut === 'Sesuai' ? 'selected' : '' }}>Sesuai</option>
+                        <option value="Tidak Ditindaklanjuti" {{ $tindak_lanjut->status_tindak_lanjut === 'Tidak Ditindaklanjuti' ? 'selected' : '' }}>Tidak Ditindaklanjuti</option>
+                    </select>
                 </div>
                 <div class="mb-3">
-                    <label for="dokumen_tindak_lanjut" class="form-label">Detail Dokumen Tindak Lanjut</label>
+                    <label for="dokumen_tindak_lanjut" class="form-label">Catatan Identifikasi</label>
                     <div class="card-body">
-                        <textarea class="form-control" name="detail_dokumen_tindak_lanjut" id="detail_dokumen_tindak_lanjut" rows="3" required></textarea>
+                        <textarea class="form-control" name="catatan_tindak_lanjut" id="catatan_tindak_lanjut" rows="3" required></textarea>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-auto ms-auto">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Upload</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </div>
             </form>

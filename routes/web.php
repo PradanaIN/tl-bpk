@@ -3,8 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\KamusController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RekomendasiController;
 use App\Http\Controllers\TindakLanjutController;
+use App\Http\Controllers\IdentifikasiDokumenController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,18 +18,8 @@ use App\Http\Controllers\TindakLanjutController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/dashboard', function () {
-    return view('livewire.dashboard', [
-        'title' => 'Dashboard'
-
-    ]);
-});
-
-Route::get('/dashboard2', function () {
-    return view('livewire.dashboard2');
-});
-
+// dashboard
+Route::get('/dashboard', [DashboardController::class, 'index']);
 
 // Kelola Pengguna
 Route::resource('/kelola-pengguna', UserController::class)->except([
@@ -64,3 +56,11 @@ Route::get('/kelola-tindak-lanjut/{tindak_lanjut:id}', [TindakLanjutController::
 Route::get('/kelola-tindak-lanjut/{tindak_lanjut:id}/edit', [TindakLanjutController::class, 'edit']);
 Route::put('/kelola-tindak-lanjut/{tindak_lanjut:id}', [TindakLanjutController::class, 'update']);
 Route::delete('/kelola-tindak-lanjut/{tindak_lanjut:id}', [TindakLanjutController::class, 'destroy']);
+
+// Identifikasi Dokumen
+Route::resource('/identifikasi-dokumen', IdentifikasiDokumenController::class)->except([
+    'show', 'edit', 'update', 'destroy']);
+    // 'show', 'edit', 'update', 'destroy' manual karena route resource tidak bisa menangani route dengan parameter
+Route::get('/identifikasi-dokumen/{tindak_lanjut:id}', [IdentifikasiDokumenController::class, 'show']);
+Route::get('/identifikasi-dokumen/{tindak_lanjut:id}/edit', [IdentifikasiDokumenController::class, 'edit']);
+Route::put('/identifikasi-dokumen/{tindak_lanjut:id}', [IdentifikasiDokumenController::class, 'update']);

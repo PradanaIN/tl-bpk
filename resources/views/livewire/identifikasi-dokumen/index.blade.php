@@ -49,26 +49,26 @@
                             {{-- <th>Unit Kerja</th>
                             <th>Tim Pemantauan</th> --}}
                             <th>Tenggat Waktu</th>
-                            <th>Dokumen TL</th>
+                            <th>Unit Kerja</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($tindak_lanjut as $tindak_lanjut)
-                            <tr class="clickable-row" data-href="/kelola-tindak-lanjut/{{ $tindak_lanjut->id }}">
+                            <tr class="clickable-row" data-href="/identifikasi-dokumen/{{ $tindak_lanjut->id }}">
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $tindak_lanjut->tindak_lanjut }}</td>
                                 {{-- <td>{{ $tindak_lanjut->unit_kerja }}</td>
                                 <td>{{ $tindak_lanjut->tim_pemantauan }}</td> --}}
                                 <td>{{ $tindak_lanjut->tenggat_waktu }}</td>
-                                <td>{{ $tindak_lanjut->dokumen_tindak_lanjut }}</td>
+                                <td>{{ $tindak_lanjut->unit_kerja }}</td>
                                 <td>
                                     <span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }}">{{ $tindak_lanjut->status_tindak_lanjut }}</span>
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-around align-items-center">
-                                        <a href="/kelola-tindak-lanjut/{{ $tindak_lanjut->id }}" class="btn btn-light">
+                                        <a href="/identifikasi-dokumen/{{ $tindak_lanjut->id }}" class="btn btn-light">
                                             <i class="bi bi-eye"></i>
                                         </a>
                                     </div>

@@ -1,5 +1,4 @@
-@extends('layouts.vertical')
-
+@extends('layouts.horizontal')
 
 @section('section')
 

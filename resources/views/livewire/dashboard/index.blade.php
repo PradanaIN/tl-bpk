@@ -1,7 +1,7 @@
 @extends('layouts.horizontal')
 
-
 @section('section')
+
 <section class="row">
     <div class="row">
         <div class="col-6 col-lg-3 col-md-6">
@@ -77,7 +77,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Bar Chart</h4>
+                    <h4 class="card-title">Jumlah Rekomendasi Belum Selesai</h4>
                 </div>
                 <div class="card-body">
                     <canvas id="bar"></canvas>
@@ -87,7 +87,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Line Chart</h4>
+                    <h4 class="card-title">Jumlah Rekomendasi Belum Selesai Pertahun Pemeriksaan</h4>
                 </div>
                 <div class="card-body">
                     <canvas id="line"></canvas>
@@ -99,3 +99,40 @@
 @endsection
 
 
+
+@section('script')
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    var ctx = document.getElementById('line').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020'],
+            datasets: [{
+                label: 'Jumlah Rekomendasi Belum Selesai Pertahun Pemeriksaan',
+                data: {!! json_encode($rekomendasi_belum_selesai_pertahun_pemeriksaan) !!},
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            indexAxis: 'x',
+            scales: {
+                x: {
+                    beginAtZero: true
+                }
+            }
+        }
+
+    });
+
+</script>
+
+@endsection

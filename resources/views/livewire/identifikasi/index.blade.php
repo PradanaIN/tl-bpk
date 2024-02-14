@@ -127,15 +127,15 @@
             },
 
             dom: '<"d-flex justify-content-between mb-4"fB>rt<"d-flex justify-content-between mt-4"<"d-flex justify-content-start"li><"col-md-6"p>>',
-            // buttons: [
-            //     {
-            //         text: '<i class="bi bi-plus"></i> Tambah Rekomendasi',
-            //         className: 'btn btn-primary',
-            //         action: function ( e, dt, node, config ) {
-            //             window.location.href = '/kelola-rekomendasi/create';
-            //         }
-            //     }
-            // ]
+            buttons: [
+                {
+                    text: '<i class="bi bi-plus"></i> Tambah Rekomendasi',
+                    className: 'btn btn-primary',
+                    action: function ( e, dt, node, config ) {
+                        window.location.href = '/kelola-rekomendasi/create';
+                    }
+                }
+            ]
         });
     </script>
 @endsection
