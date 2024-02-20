@@ -59,12 +59,12 @@
         </div>
         <div class="col-auto d-flex ms-auto">
             <button class="btn btn-primary" id="uploadBtn">
-                @if (($tindak_lanjut->dokumen_tindak_lanjut === null || $tindak_lanjut->dokumen_tindak_lanjut === 'Belum Diupload!'))
+                @if (($tindak_lanjut->dokumen_tindak_lanjut === null || $tindak_lanjut->dokumen_tindak_lanjut === 'Belum Diunggah!'))
                     <i class="bi bi-plus"></i>
-                    Dokumen Tindak Lanjut
+                    Upload Dokumen
                 @else
                     <i class="bi bi-pencil"></i>
-                    &nbsp;Dokumen Tindak Lanjut
+                    &nbsp;Ubah Dokumen
                 @endif
             </button>
         </div>
@@ -202,6 +202,17 @@
                 <div class="col">
                     <p>{{ $tindak_lanjut->dokumen_tindak_lanjut }}</p>
                 </div>
+                {{-- <div class="col-auto d-flex ms-auto">
+                    <button class="btn btn-primary" id="uploadBtn">
+                        @if (($tindak_lanjut->dokumen_tindak_lanjut === null || $tindak_lanjut->dokumen_tindak_lanjut === 'Belum Diupload!'))
+                            <i class="bi bi-plus"></i>
+                            Upload Dokumen
+                        @else
+                            <i class="bi bi-pencil"></i>
+                            &nbsp;Ubah Dokumen
+                        @endif
+                    </button>
+                </div> --}}
             </div>
             <div class="row">
                 <div class="col-3">
@@ -213,29 +224,31 @@
                 </div>
             </div>
         </div>
-
-        <div class="card-header">
-            <h4 class="card-title"><b>D. Hasil Pemeriksaan</b></h4>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Status Tindak Lanjut</p>
+        @if ($tindak_lanjut->status_tindak_lanjut !== 'Proses')
+            <div class="card-header">
+                <h4 class="card-title"><b>D. Hasil Pemeriksaan</b></h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-3">
+                        <p class="fw-bold">Status Tindak Lanjut</p>
+                    </div>
+                    <div class="col-auto">:</div>
+                    <div class="col">
+                        <p><span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }}">{{ $tindak_lanjut->status_tindak_lanjut }}</span></p>
+                    </div>
                 </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p><span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }}">{{ $tindak_lanjut->status_tindak_lanjut }}</span></p>
+                <div class="row">
+                    <div class="col-3">
+                        <p class="fw-bold">Catatan Tindak Lanjut</p>
+                    </div>
+                    <div class="col-auto">:</div>
+                    <div class="col">
+                        <p>{{ $tindak_lanjut->catatan_tindak_lanjut }}</p>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Catatan Tindak Lanjut</p>
-                </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p>{{ $tindak_lanjut->catatan_tindak_lanjut }}</p>
-                </div>
-            </div>
+        @endif
     </div>
 </section>
 

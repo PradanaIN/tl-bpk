@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kamus;
 use App\Models\UnitKerja;
 use App\Models\Rekomendasi;
 use App\Models\TindakLanjut;
@@ -28,11 +29,15 @@ class RekomendasiController extends Controller
      */
     public function create()
     {
+        $kamus_temuan = Kamus::where('jenis', 'Temuan')->get();
+        $kamus_pemeriksaan = Kamus::where('jenis', 'Pemeriksaan')->get();
         $unit_kerja = UnitKerja::all();
 
         return view('livewire.kelola-rekomendasi.create', [
             'title' => 'Tambah Rekomendasi',
             'unit_kerja' => $unit_kerja,
+            'kamus_temuan' => $kamus_temuan,
+            'kamus_pemeriksaan' => $kamus_pemeriksaan,
         ]);
     }
 
@@ -98,11 +103,15 @@ class RekomendasiController extends Controller
     public function edit(Rekomendasi $rekomendasi)
     {
 
+        $kamus_temuan = Kamus::where('jenis', 'Temuan')->get();
+        $kamus_pemeriksaan = Kamus::where('jenis', 'Pemeriksaan')->get();
         $rekomendasi = Rekomendasi::with('tindakLanjut')->find($rekomendasi->id);
         $unit_kerja = UnitKerja::all();
 
         return view('livewire.kelola-rekomendasi.edit', [
             'title' => 'Edit Rekomendasi',
+            'kamus_temuan' => $kamus_temuan,
+            'kamus_pemeriksaan' => $kamus_pemeriksaan,
             'rekomendasi' => $rekomendasi,
             'unit_kerja' => $unit_kerja,
         ]);

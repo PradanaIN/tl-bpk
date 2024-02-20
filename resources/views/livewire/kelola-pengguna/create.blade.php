@@ -1,5 +1,10 @@
 @extends('layouts.horizontal')
 
+@section('style')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+@endsection
+
 @section('section')
 
 <section id="basic-vertical-layouts">
@@ -14,22 +19,22 @@
                                 <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="first-name-vertical">Nama</label>
-                                                <input type="text" id="first-name-vertical" class="form-control"
-                                                    name="nama" placeholder="Nama">
+                                                <label for="nama">Nama</label>
+                                                <input type="text" id="nama" class="form-control"
+                                                    name="nama" placeholder="Nama" required>
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="email-id-vertical">Email</label>
-                                                <input type="email" id="email-id-vertical" class="form-control"
-                                                    name="email" placeholder="Email">
+                                                <label for="email">Email</label>
+                                                <input type="email" id="email" class="form-control"
+                                                    name="email" placeholder="Email" required>
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="contact-info-vertical">Unit Kerja</label>
-                                                <select class="form-select" id="unit_kerja" name="unit_kerja">
+                                                <label for="unit_kerja">Unit Kerja</label>
+                                                <select class="form-select"  id="unit_kerja" name="unit_kerja" required>
                                                     <option value="">Pilih Unit Kerja</option>
                                                     @foreach($unit_kerja as $unit)
                                                         <option value="{{ $unit->nama }}">{{ $unit->nama }}</option>
@@ -39,8 +44,8 @@
                                         </div>
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="password-vertical">Role</label>
-                                                <select class="form-select" id="basicSelect" name="role">
+                                                <label for="role">Role</label>
+                                                <select class="form-select" id="role" name="role" required>
                                                     <option value="">Pilih Role</option>
                                                     @foreach ($role as $role)
                                                         <option value="{{ $role->role }}">{{ $role->role }}</option>
@@ -49,14 +54,18 @@
                                             </div>
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="password-vertical">Password</label>
-                                                <input type="password" id="password-vertical" class="form-control"
-                                                    name="password" placeholder="Password">
+                                                <label for="password">Password</label>
+                                                <div class="input-group">
+                                                    <input type="password" id="password" class="form-control" name="password" placeholder="Password" required>
+                                                    <button class="btn btn-secondary" type="button" id="togglePassword">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
-                                    <div class="col-12 d-flex justify-between justify-content-end mt-3">
+                                    <div class="col-12 d-flex justify-between justify-content-end mt-5">
                                         <button type="reset" class="btn btn-light-secondary me-3 mb-1">
-                                            <a href="/kelola-pengguna" style="text-decoration: none; color: black;">Batal</a>
+                                            Batal
                                         </button>
                                         <button type="submit" class="btn btn-primary me-1 mb-1">Tambah</button>
                                     </div>
@@ -73,15 +82,51 @@
 @endsection
 
 
-@section('scripts')
-
-<script src="https://unpkg.com/@jarstone/dselect/dist/js/dselect.js"></script>
-
+@section('script')
 <script>
-    var formSelect = document.querySelector('#unit_kerja');
+    document.addEventListener('DOMContentLoaded', function() {
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
 
-    dselect(formSelect, {
-        search : true
+        togglePassword.addEventListener('click', function() {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            this.classList.toggle('active');
+        });
     });
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+// select2
+$(document).ready(function() {
+    $('.form-select').select2({
+        theme: 'bootstrap-5',
+    });
+});
+</script>
+
+
+<script>
+    // warning batal button
+    document.querySelector('.btn-light-secondary').addEventListener('click', function(e) {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Apakah Anda Yakin?',
+            text: "Data yang sudah diinputkan tidak akan tersimpan",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Batalkan!',
+            cancelButtonText: 'Tidak'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "/kelola-pengguna";
+            }
+        })
+    });
+</script>
+
 @endsection

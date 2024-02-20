@@ -125,43 +125,6 @@
                 </div>
             </header>
 
-                            {{-- <nav class="main-navbar">
-                    <div class="container">
-                        <ul>
-                            <li class="menu-item">
-                                <a href="/dashboard" class='menu-link'>
-                                    <span><i class="bi bi-grid"></i>&ensp;Dashboard</span>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="/kelola-pengguna" class='menu-link'>
-                                    <span><i class="bi bi-people"></i>&ensp;Kelola Pengguna</span>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="/kelola-kamus" class='menu-link'>
-                                    <span><i class="bi bi-book"></i>&ensp;Kelola Kamus</span>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="/kelola-rekomendasi" class='menu-link'>
-                                    <span><i class="bi bi-award"></i>&ensp;Kelola Rekomendasi</span>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="/kelola-tindak-lanjut" class='menu-link'>
-                                    <span><i class="bi bi-gear-wide-connected"></i>&ensp;Kelola Tindak Lanjut</span>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="/identifikasi-dokumen-tl" class='menu-link'>
-                                    <span><i class="bi bi-search-heart"></i>&ensp;Identifikasi Tindak Lanjut</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav> --}}
-
 
             <div class="content-wrapper container">
                 <div class="page-heading">

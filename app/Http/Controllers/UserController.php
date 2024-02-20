@@ -95,7 +95,9 @@ class UserController extends Controller
             'password' => 'required',
         ]);
 
-        $validatedData['password'] = bcrypt($validatedData['password']);
+        if (substr($validatedData['password'], 0, 4) != '$2y$') {
+            $validatedData['password'] = bcrypt($validatedData['password']);
+        }
 
         User::where('id', $user->id)
             ->update($validatedData);
