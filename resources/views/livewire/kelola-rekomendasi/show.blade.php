@@ -44,13 +44,13 @@
         </div>
         <div class="col-auto d-flex ms-auto">
             <div class="col-auto">
-                <a href="/kelola-rekomendasi/{{ $rekomendasi->id }}/edit" class="btn btn-light">
+                <a href="/kelola-rekomendasi/{{ $rekomendasi->id }}/edit" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Rekomendasi">
                     <i class="bi bi-pencil"></i>
                 </a>
                 <form action="/kelola-rekomendasi/{{ $rekomendasi->id }}" method="post" class="d-inline" id="deleteForm">
                     @method('delete')
                     @csrf
-                    <button class="btn btn-danger" type="button" id="deleteButton">
+                    <button class="btn btn-danger" type="button" id="deleteButton" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Rekomendasi">
                         <i class="bi bi-trash"></i>
                     </button>
                 </form>
@@ -181,6 +181,15 @@
 
 
 @section('script')
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    }, false);
+</script>
 
 <script>
 

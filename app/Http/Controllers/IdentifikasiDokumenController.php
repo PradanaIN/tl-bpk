@@ -13,9 +13,12 @@ class IdentifikasiDokumenController extends Controller
      */
     public function index()
     {
+        // hanya mengambil tindak lanjut yang memiliki dokumennya sudah diupload, tidak null dan tidak "Belum Diunggah!"
+        $tindak_lanjut = TindakLanjut::whereNotNull('dokumen_tindak_lanjut')->where('dokumen_tindak_lanjut', '!=', 'Belum Diunggah!')->get();
+
         return view('livewire.identifikasi-dokumen.index', [
             'title' => 'Identifikasi Dokumen',
-            'tindak_lanjut' => TindakLanjut::all(),
+            'tindak_lanjut' => $tindak_lanjut,
         ]);
     }
 

@@ -58,15 +58,17 @@
             </a>
         </div>
         <div class="col-auto d-flex ms-auto">
-            <button class="btn btn-primary" id="uploadBtn">
                 @if (($tindak_lanjut->dokumen_tindak_lanjut === null || $tindak_lanjut->dokumen_tindak_lanjut === 'Belum Diunggah!'))
-                    <i class="bi bi-plus"></i>
-                    Upload Dokumen
+                <button class="btn btn-warning" id="btnStatus">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    &nbsp;Dokumen Belum Diunggah!
+                </button>
                 @else
-                    <i class="bi bi-pencil"></i>
-                    &nbsp;Ubah Dokumen
+                <button class="btn btn-success" id="btnStatus">
+                    <i class="bi bi-check-square"></i>
+                    &nbsp;Dokumen diunggah {{ $tindak_lanjut->updated_at->diffForHumans() }}
+                </button>
                 @endif
-            </button>
         </div>
     </div>
     <div class="card">
@@ -200,19 +202,31 @@
                 </div>
                 <div class="col-auto">:</div>
                 <div class="col">
-                    <p>{{ $tindak_lanjut->dokumen_tindak_lanjut }}</p>
+                    @if ($tindak_lanjut->dokumen_tindak_lanjut === null || $tindak_lanjut->dokumen_tindak_lanjut === 'Belum Diunggah!')
+                        <p><span class="status-badge bg-warning text-black">{{ $tindak_lanjut->dokumen_tindak_lanjut }}</span></p>
+                    @else
+                        <p><span class="status-badge bg-success text-white">{{ $tindak_lanjut->dokumen_tindak_lanjut }}</span></p>
+                    @endif
                 </div>
-                {{-- <div class="col-auto d-flex ms-auto">
-                    <button class="btn btn-primary" id="uploadBtn">
-                        @if (($tindak_lanjut->dokumen_tindak_lanjut === null || $tindak_lanjut->dokumen_tindak_lanjut === 'Belum Diupload!'))
+                <div class="col-auto d-flex ms-auto">
+                        @if (($tindak_lanjut->dokumen_tindak_lanjut === null || $tindak_lanjut->dokumen_tindak_lanjut === 'Belum Diunggah!'))
+                        <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="top" title="Unggah Dokumen">
                             <i class="bi bi-plus"></i>
-                            Upload Dokumen
+                        </button>
                         @else
-                            <i class="bi bi-pencil"></i>
-                            &nbsp;Ubah Dokumen
+                        <div class="col-auto d-flex ms-auto">
+                            <div class="col-auto">
+                                <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->dokumen_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Download Dokumen">
+                                    <i class="bi bi-download"></i>
+                                </a>
+                                <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="top" title="Ubah Dokumen">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                            </div>
+                        </div>
                         @endif
                     </button>
-                </div> --}}
+                </div>
             </div>
             <div class="row">
                 <div class="col-3">
@@ -300,6 +314,26 @@
 
 
 @section('script')
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    }, false);
+</script>
+
+<script>
+    // Tangani klik tombol
+    document.getElementById('btnStatus').addEventListener('click', function() {
+    // Dapatkan elemen target yang ingin diarahkan atau di-scroll
+    var uploadSection = document.getElementById('uploadBtn');
+
+    // Lakukan scroll ke elemen target
+    uploadSection.scrollIntoView({ behavior: 'smooth' });
+});
+</script>
 
 <script>
     // Ambil tombol "Upload Dokumen TL"

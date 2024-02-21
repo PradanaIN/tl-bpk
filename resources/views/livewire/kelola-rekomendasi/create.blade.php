@@ -108,7 +108,7 @@
                                             <div class="col-auto d-flex justify-content-end ms-auto">
                                                 <div class="col-auto">
                                                     <div data-repeater-create>
-                                                        <button class="btn btn-primary" type="button" id="btnTambah">
+                                                        <button class="btn btn-primary" type="button" id="btnTambah" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Form">
                                                             <i data-feather="plus" class="me-25"></i>
                                                         </button>
                                                     </div>
@@ -155,7 +155,7 @@
                                                         </div>
                                                         <div class="col-auto d-flex ms-auto">
                                                             <div class="col-auto">
-                                                            <button class="btn btn-icon btn-danger" type="button" id="btnDelete" data-repeater-delete>
+                                                            <button class="btn btn-icon btn-danger" type="button" id="btnDelete" data-repeater-delete data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Form">
                                                                 <i data-feather="trash-2" class="me-25"></i>
                                                             </button>
                                                             </div>
@@ -183,6 +183,15 @@
 
 
 @section('script')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    }, false);
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>

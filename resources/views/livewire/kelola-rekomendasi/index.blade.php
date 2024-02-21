@@ -29,7 +29,7 @@
                             <td>{{ $rekomendasi->rekomendasi }}</td>
                             <td>
                                 <div class="d-flex justify-content-around align-items-center">
-                                    <a href="/kelola-rekomendasi/{{ $rekomendasi->id }}" class="btn btn-light">
+                                    <a href="/kelola-rekomendasi/{{ $rekomendasi->id }}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Rekomendasi">
                                         <i class="bi bi-eye"></i>
                                     </a>
                                 </div>
@@ -46,6 +46,15 @@
 @endsection
 
 @section('script')
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    }, false);
+</script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

@@ -29,13 +29,13 @@
                             <td>{{ $user->role }}</td>
                             <td>
                                 <div class="d-flex justify-content-around align-items-center">
-                                    <a href="/kelola-pengguna/{{ $user->id }}/edit" class="btn btn-light">
+                                    <a href="/kelola-pengguna/{{ $user->id }}/edit" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Pengguna">
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     <form action="/kelola-pengguna/{{ $user->id }}" method="post" class="d-inline" id="deleteForm">
                                         @method('delete')
                                         @csrf
-                                        <button class="btn btn-danger" type="button" id="deleteButton">
+                                        <button class="btn btn-danger" type="button" id="deleteButton" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Pengguna">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </form>
@@ -54,6 +54,16 @@
 
 
 @section('script')
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    }, false);
+</script>
+
     <script>
     new DataTable('#table1', {
             info: true,
