@@ -24,7 +24,7 @@
         text-align: center;
     }
 
-    .status-proses {
+    .status-identifikasi {
         background-color: #FFD700;
         color: #000000;
     }
@@ -64,9 +64,9 @@
                 &nbsp;Tindak Lanjut Belum Diidentifikasi!
             </button>
             @else
-            <button class="btn btn-success" id="btnStatus">
+            <button class="btn btn-success" id="btnStatus" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->tindak_lanjut_at)->format('H:i, d M Y') }}">
                 <i class="bi bi-check-square"></i>
-                &nbsp;Diidentifikasi {{ $tindak_lanjut->updated_at->diffForHumans() }}
+                &nbsp;Diidentifikasi {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->diffForHumans() }}
             </button>
             @endif
         </div>
@@ -209,7 +209,7 @@
                     @endif
                 </div>
                 <div class="col-auto">
-                    <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->dokumen_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Download Dokumen">
+                    <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->dokumen_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Dokumen">
                         <i class="bi bi-download"></i>
                     </a>
                 </div>
@@ -238,12 +238,12 @@
                     <p><span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }}">{{ $tindak_lanjut->status_tindak_lanjut }}</span></p>
                 </div>
                 <div class="col-auto d-flex ms-auto">
-                        @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Belum Diidentifikasi!'))
-                        <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="top" title="Hasil Identifikasi">
+                        @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Proses'))
+                        <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tambah Hasil Identifikasi">
                             <i class="bi bi-plus"></i>
                         </button>
                         @else
-                        <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="top" title="Ubah Hasil Identifikasi">
+                        <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Hasil Identifikasi">
                             <i class="bi bi-pencil"></i>
                         </button>
                         @endif
@@ -374,8 +374,8 @@
 @php
 function getStatusClass($status) {
     switch ($status) {
-        case 'Proses':
-            return 'status-proses';
+        case 'Identifikasi':
+            return 'status-identifikasi';
             break;
         case 'Belum Sesuai':
             return 'status-belum-sesuai';

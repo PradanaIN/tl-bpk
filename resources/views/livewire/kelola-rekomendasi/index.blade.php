@@ -12,8 +12,8 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Pemeriksaan</th>
                             <th>Tahun</th>
+                            <th>Pemeriksaan</th>
                             <th>Temuan</th>
                             <th>Rekomendasi</th>
                             <th>Aksi</th>
@@ -23,8 +23,8 @@
                         @foreach ($rekomendasi as $rekomendasi)
                         <tr class='clickable-row' data-href="/kelola-rekomendasi/{{ $rekomendasi->id }}}}">
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $rekomendasi->pemeriksaan }}</td>
                             <td>{{ $rekomendasi->tahun_pemeriksaan }}</td>
+                            <td>{{ $rekomendasi->pemeriksaan }}</td>
                             <td>{{ $rekomendasi->jenis_temuan }}</td>
                             <td>{{ $rekomendasi->rekomendasi }}</td>
                             <td>

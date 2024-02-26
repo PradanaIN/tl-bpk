@@ -10,7 +10,7 @@
         text-align: center;
     }
 
-    .status-proses {
+    .status-identifikasi {
         background-color: #FFD700;
         color: #000000;
     }
@@ -61,7 +61,7 @@
                                 <td>{{ $tindak_lanjut->tindak_lanjut }}</td>
                                 {{-- <td>{{ $tindak_lanjut->unit_kerja }}</td>
                                 <td>{{ $tindak_lanjut->tim_pemantauan }}</td> --}}
-                                <td>{{ $tindak_lanjut->tenggat_waktu }}</td>
+                                <td>{{ \Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu )->format(' d F Y') }}</td>
                                 <td>{{ $tindak_lanjut->unit_kerja }}</td>
                                 <td>
                                     <span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }}">{{ $tindak_lanjut->status_tindak_lanjut }}</span>
@@ -151,9 +151,12 @@
 @php
 function getStatusClass($status) {
     switch ($status) {
-        case 'Proses':
-            return 'status-proses';
+        case 'Identifikasi':
+            return 'status-identifikasi';
             break;
+        // case 'Identifikasi':
+        //     return 'status-identifikasi';
+        //     break;
         case 'Belum Sesuai':
             return 'status-belum-sesuai';
             break;

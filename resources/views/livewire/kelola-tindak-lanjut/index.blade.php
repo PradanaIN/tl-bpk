@@ -15,6 +15,11 @@
         color: #000000;
     }
 
+    .status-identifikasi {
+        background-color: #0d6efd;
+        color: #FFFFFF;
+    }
+
     .status-belum-sesuai {
         background-color: #FF0000;
         color: #FFFFFF;
@@ -61,7 +66,7 @@
                                 <td>{{ $tindak_lanjut->tindak_lanjut }}</td>
                                 {{-- <td>{{ $tindak_lanjut->unit_kerja }}</td>
                                 <td>{{ $tindak_lanjut->tim_pemantauan }}</td> --}}
-                                <td>{{ $tindak_lanjut->tenggat_waktu }}</td>
+                                <td>{{ \Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu )->format(' d F Y')}}</td>
                                 <td>{{ $tindak_lanjut->dokumen_tindak_lanjut }}</td>
                                 <td>
                                     <span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }}">{{ $tindak_lanjut->status_tindak_lanjut }}</span>
@@ -154,6 +159,9 @@ function getStatusClass($status) {
     switch ($status) {
         case 'Proses':
             return 'status-proses';
+            break;
+        case 'Identifikasi':
+            return 'status-identifikasi';
             break;
         case 'Belum Sesuai':
             return 'status-belum-sesuai';

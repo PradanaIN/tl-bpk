@@ -76,7 +76,7 @@ class TindakLanjutController extends Controller
             // 'upload_by' => auth()->user()->name,
             'upload_by' => 'admin',
             'upload_at' => now(),
-            'status' => 'Selesai',
+            'status_tindak_lanjut' => 'Identifikasi',
         ]);
 
         return redirect('/kelola-tindak-lanjut/' . $tindakLanjut->id)->with('update', 'Upload Berhasil!');

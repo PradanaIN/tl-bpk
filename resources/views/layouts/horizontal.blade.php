@@ -19,15 +19,53 @@
             cursor: pointer;
         }
 
-        #table1 th, td {text-align: center;}
+        #table1 th {text-align: center;}
 
         .menu a {
             text-decoration: none;
         }
 
-        .nav-link.active {
-            border-bottom: 2px solid black;
+        .nabar-toggler {
+            border: none;
+            font-size: 1.25rem;
         }
+
+        .navbar-toggler:focus, .btn-close:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        .nav-link {
+            color: #666777;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: black;
+        }
+
+        @media (min-width: 991.98px) {
+            .nav-link::before {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                width: 0;
+                height: 2px;
+                background-color: black;
+                transition: 0.3s;
+                visibility: hidden;
+                transform: translateX(-50%);
+                transition: 0.3s ease-in-out;
+            }
+
+            .nav-link:hover::before, .nav-link.active::before {
+                visibility: visible;
+                width: 100%;
+            }
+        }
+
 
     </style>
 
@@ -38,97 +76,107 @@
 <body>
     <div id="app">
         <div id="main" class="layout-horizontal">
-            <header class="mb-5">
-                <div class="header-top">
-                    <div class="container">
-                        <div class="logo" style="width:100%;">
-                            <a href="/dashboard" class="d-flex justify-content-start align-items-center" style="width:100%; text-decoration:none; color:black;">
+                    <nav class="navbar navbar-expand-lg header-top mb-5">
+                        <div class="container">
+                            <a href="/dashboard" class="navbar-brand me-auto d-flex justify-content-start align-items-center">
                                 <img src="{{ asset('mazer/assets/static/images/logo/logo-bps.png') }}" alt="Logo" style="width: 50px; height: auto;">
                                 <h3>&ensp;TL BPK</h3>
                             </a>
-                        </div>
-                        <div class="d-flex justify-content-center align-items-center" style="width:100%;">
-                            <ul class="nav">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/dashboard"><h6>Dashboard</h6></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/kelola-rekomendasi"><h6>Rekomendasi</h6></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/kelola-tindak-lanjut"><h6>Tindak Lanjut</h6></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/identifikasi-dokumen"><h6>Identifikasi</h6></a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="header-top-right">
-                            <div class="dropdown">
-                                <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <div class="user-menu d-flex">
-                                        <div class="user-name text-end me-3">
-                                            <h6 class="mb-0 text-gray-600">John Ducky</h6>
-                                            <p class="mb-0 text-sm text-gray-600">Administrator</p>
-                                        </div>
-                                        <div class="user-img d-flex align-items-center">
-                                            <div class="avatar avatar-md">
-                                                <img src="https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png">
-                                            </div>
-                                        </div>
+                            <div class="d-flex justify-content-end">
+                                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                                    <div class="offcanvas-header">
+                                        <img src="{{ asset('mazer/assets/static/images/logo/logo-bps.png') }}" alt="Logo" style="width: 50px; height: auto;">
+                                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">TL BPK</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                                     </div>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton" style="min-width: 11rem;">
-                                    <li class="d-flex justify-content-center align-items-center">
-                                        <div class="theme-toggle d-flex gap-2  align-items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
-                                                role="img" class="iconify iconify--system-uicons" width="20" height="20"
-                                                preserveAspectRatio="xMidYMid meet" viewBox="0 0 21 21">
-                                                <g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round"
-                                                    stroke-linejoin="round">
-                                                    <path
-                                                        d="M10.5 14.5c2.219 0 4-1.763 4-3.982a4.003 4.003 0 0 0-4-4.018c-2.219 0-4 1.781-4 4c0 2.219 1.781 4 4 4zM4.136 4.136L5.55 5.55m9.9 9.9l1.414 1.414M1.5 10.5h2m14 0h2M4.135 16.863L5.55 15.45m9.899-9.9l1.414-1.415M10.5 19.5v-2m0-14v-2"
-                                                        opacity=".3"></path>
-                                                    <g transform="translate(-210 -1)">
-                                                        <path d="M220.5 2.5v2m6.5.5l-1.5 1.5"></path>
-                                                        <circle cx="220.5" cy="11.5" r="4"></circle>
-                                                        <path d="m214 5l1.5 1.5m5 14v-2m6.5-.5l-1.5-1.5M214 18l1.5-1.5m-4-5h2m14 0h2"></path>
-                                                    </g>
-                                                </g>
-                                            </svg>
-                                            <div class="form-check form-switch fs-6">
-                                                <input class="form-check-input  me-0" type="checkbox" id="toggle-dark" style="cursor: pointer">
-                                                <label class="form-check-label"></label>
+                                    <div class="offcanvas-body">
+                                        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/dashboard"><h6>Dashboard</h6></a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/kelola-rekomendasi"><h6>Rekomendasi</h6></a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/kelola-tindak-lanjut"><h6>Tindak Lanjut</h6></a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/identifikasi-dokumen"><h6>Identifikasi</h6></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="header-top-right">
+                                    <div class="dropdown">
+                                        <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <div class="user-menu d-flex">
+                                                <div class="user-name text-end me-3">
+                                                    <h6 class="mb-0 text-gray-600">John Ducky</h6>
+                                                    <p class="mb-0 text-sm text-gray-600">Administrator</p>
+                                                </div>
+                                                <div class="user-img d-flex align-items-center">
+                                                    <div class="avatar avatar-md">
+                                                        <img src="https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png">
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
-                                                role="img" class="iconify iconify--mdi" width="20" height="20" preserveAspectRatio="xMidYMid meet"
-                                                viewBox="0 0 24 24">
-                                                <path fill="currentColor"
-                                                    d="m17.75 4.09l-2.53 1.94l.91 3.06l-2.63-1.81l-2.63 1.81l.91-3.06l-2.53-1.94L12.44 4l1.06-3l1.06 3l3.19.09m3.5 6.91l-1.64 1.25l.59 1.98l-1.7-1.17l-1.7 1.17l.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95l2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85c-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14c.4-.4.82-.76 1.27-1.08c.75-.53 1.93.36 1.85 1.19c-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82c-2.81 3.14-2.7 7.96.31 10.98c3.02 3.01 7.84 3.12 10.98.31Z">
-                                                </path>
-                                            </svg>
-                                        </div>
-                                    </li>
-                                    <hr class="dropdown-divider mt-2">
-                                    <li><a class="dropdown-item" href="#"><i
-                                                class="icon-mid bi bi-box-arrow-left me-2"></i> Logout</a></li>
-                                </ul>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton" style="min-width: 11rem;">
+                                            <li class="d-flex justify-content-center align-items-center">
+                                                <div class="theme-toggle d-flex gap-2  align-items-center">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+                                                        role="img" class="iconify iconify--system-uicons" width="20" height="20"
+                                                        preserveAspectRatio="xMidYMid meet" viewBox="0 0 21 21">
+                                                        <g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path
+                                                                d="M10.5 14.5c2.219 0 4-1.763 4-3.982a4.003 4.003 0 0 0-4-4.018c-2.219 0-4 1.781-4 4c0 2.219 1.781 4 4 4zM4.136 4.136L5.55 5.55m9.9 9.9l1.414 1.414M1.5 10.5h2m14 0h2M4.135 16.863L5.55 15.45m9.899-9.9l1.414-1.415M10.5 19.5v-2m0-14v-2"
+                                                                opacity=".3"></path>
+                                                            <g transform="translate(-210 -1)">
+                                                                <path d="M220.5 2.5v2m6.5.5l-1.5 1.5"></path>
+                                                                <circle cx="220.5" cy="11.5" r="4"></circle>
+                                                                <path d="m214 5l1.5 1.5m5 14v-2m6.5-.5l-1.5-1.5M214 18l1.5-1.5m-4-5h2m14 0h2"></path>
+                                                            </g>
+                                                        </g>
+                                                    </svg>
+                                                    <div class="form-check form-switch fs-6">
+                                                        <input class="form-check-input  me-0" type="checkbox" id="toggle-dark" style="cursor: pointer">
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+                                                        role="img" class="iconify iconify--mdi" width="20" height="20" preserveAspectRatio="xMidYMid meet"
+                                                        viewBox="0 0 24 24">
+                                                        <path fill="currentColor"
+                                                            d="m17.75 4.09l-2.53 1.94l.91 3.06l-2.63-1.81l-2.63 1.81l.91-3.06l-2.53-1.94L12.44 4l1.06-3l1.06 3l3.19.09m3.5 6.91l-1.64 1.25l.59 1.98l-1.7-1.17l-1.7 1.17l.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95l2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85c-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14c.4-.4.82-.76 1.27-1.08c.75-.53 1.93.36 1.85 1.19c-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82c-2.81 3.14-2.7 7.96.31 10.98c3.02 3.01 7.84 3.12 10.98.31Z">
+                                                        </path>
+                                                    </svg>
+                                                </div>
+                                            </li>
+                                            <hr class="dropdown-divider mt-2">
+                                            <li>
+                                                <form action="/auth/logout" method="post">
+                                                    @csrf
+                                                    <button type="submit" class="dropdown-item">
+                                                        <i class="icon-mid bi bi-box-arrow-left me-2"></i>
+                                                        Logout
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
                             </div>
-
-                            <!-- Burger button responsive -->
-                            <a href="#" class="burger-btn d-block d-xl-none">
-                                <i class="bi bi-justify fs-3"></i>
-                            </a>
                         </div>
-                    </div>
-                </div>
-            </header>
+                    </nav>
 
 
             <div class="content-wrapper container">
-                <div class="page-heading">
+                <div class="page-heading d-flex justify-content-between align-items-center" style="width: 97%">
                     <h3>{{ $title }}</h3>
+                    @yield('filter')
                 </div>
                 <div class="page-content">
                     @yield('section')
@@ -157,6 +205,30 @@
 
 <!-- sweetalert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@if (session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            showConfirmButton: false,
+            timer: 1500,
+            text: '{{ session('error') }}',
+        })
+    </script>
+@else
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                showConfirmButton: false,
+                timer: 1500,
+                text: '{{ session('success') }}',
+            })
+        </script>
+    @endif
+@endif
 
 <script>
     // warning delete
@@ -203,7 +275,6 @@
             timer: 1500,
             text: '{{ session('delete') }}'
         });
-
     @endif
 </script>
 

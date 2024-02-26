@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\KamusController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RekomendasiController;
 use App\Http\Controllers\TindakLanjutController;
@@ -18,6 +19,11 @@ use App\Http\Controllers\IdentifikasiDokumenController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+// Login
+Route::get('/auth/login', [LoginController::class, 'index']);
+Route::post('/auth/login', [LoginController::class, 'authenticate']);
+Route::post('/auth/logout', [LoginController::class, 'logout']);
+
 // dashboard
 Route::get('/dashboard', [DashboardController::class, 'index']);
 

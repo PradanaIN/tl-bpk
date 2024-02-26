@@ -24,9 +24,9 @@
         text-align: center;
     }
 
-    .status-proses {
-        background-color: #FFD700;
-        color: #000000;
+    .status-identifikasi {
+        background-color: #0d6efd;
+        color: #FFFFFF;
     }
 
     .status-belum-sesuai {
@@ -64,9 +64,9 @@
                     &nbsp;Dokumen Belum Diunggah!
                 </button>
                 @else
-                <button class="btn btn-success" id="btnStatus">
+                <button class="btn btn-success" id="btnStatus" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->format('H:i, d M Y') }}">
                     <i class="bi bi-check-square"></i>
-                    &nbsp;Dokumen diunggah {{ $tindak_lanjut->updated_at->diffForHumans() }}
+                    &nbsp;Dokumen diunggah {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->diffForHumans() }}
                 </button>
                 @endif
         </div>
@@ -210,22 +210,21 @@
                 </div>
                 <div class="col-auto d-flex ms-auto">
                         @if (($tindak_lanjut->dokumen_tindak_lanjut === null || $tindak_lanjut->dokumen_tindak_lanjut === 'Belum Diunggah!'))
-                        <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="top" title="Unggah Dokumen">
+                        <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unggah Dokumen">
                             <i class="bi bi-plus"></i>
                         </button>
                         @else
                         <div class="col-auto d-flex ms-auto">
                             <div class="col-auto">
-                                <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->dokumen_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Download Dokumen">
+                                <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->dokumen_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Dokumen">
                                     <i class="bi bi-download"></i>
                                 </a>
-                                <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="top" title="Ubah Dokumen">
+                                <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Dokumen">
                                     <i class="bi bi-pencil"></i>
                                 </button>
                             </div>
                         </div>
                         @endif
-                    </button>
                 </div>
             </div>
             <div class="row">
@@ -370,8 +369,8 @@
 @php
 function getStatusClass($status) {
     switch ($status) {
-        case 'Proses':
-            return 'status-proses';
+        case 'Identifikasi':
+            return 'status-identifikasi';
             break;
         case 'Belum Sesuai':
             return 'status-belum-sesuai';
