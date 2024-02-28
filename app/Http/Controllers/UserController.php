@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
-use App\Models\UnitKerja;
 use App\Models\User;
+use App\Models\UnitKerja;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -55,6 +55,10 @@ class UserController extends Controller
 
         User::create($validatedData);
 
+        // assign role
+        $user = User::where('email', $validatedData['email'])->first();
+        $user->assignRole($validatedData['role']);
+
         return redirect('/kelola-pengguna')->with('create', 'Data berhasil ditambahkan!');
     }
 
@@ -101,6 +105,10 @@ class UserController extends Controller
 
         User::where('id', $user->id)
             ->update($validatedData);
+
+        // update assign role
+        $user = User::where('id', $user->id)->first();
+        $user->syncRoles($validatedData['role']);
 
         return redirect('/kelola-pengguna')->with('update', 'Data berhasil diubah!');
     }

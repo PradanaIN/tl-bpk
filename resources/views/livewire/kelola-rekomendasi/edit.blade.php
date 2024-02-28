@@ -29,29 +29,17 @@
                                         </div>
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="jenis_pemeriksaan">Jenis Pemeriksaan</label>
-                                                <select class="form-select" id="jenis_pemeriksaan" name="jenis_pemeriksaan" value="{{ old('jenis_pemeriksaan', $rekomendasi->jenis_pemeriksaan) }}">
-                                                    <option value="Laporan Keuangan">Laporan Keuangan</option>
-                                                    <option value="Kinerja">Kinerja</option>
-                                                </select>
+                                                <label for="tahun_pemeriksaan">Tahun Pemeriksaan</label>
+                                                <input type="number" id="tahun_pemeriksaan" class="form-control"
+                                                    name="tahun_pemeriksaan" placeholder="Tahun Pemeriksaan" value="{{ old('tahun_pemeriksaan', $rekomendasi->tahun_pemeriksaan) }}">
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="tahun_pemeriksaan">Tahun Pemeriksaan</label>
-                                                <select class="form-select" id="tahun_pemeriksaan" name="tahun_pemeriksaan" value="{{ old('tahun_pemeriksaan', $rekomendasi->tahun_pemeriksaan) }}">
-                                                    <option value="2021">2021</option>
-                                                    <option value="2020">2020</option>
-                                                    <option value="2019">2019</option>
-                                                    <option value="2018">2018</option>
-                                                    <option value="2017">2017</option>
-                                                    <option value="2016">2016</option>
-                                                    <option value="2015">2015</option>
-                                                    <option value="2014">2014</option>
-                                                    <option value="2013">2013</option>
-                                                    <option value="2012">2012</option>
-                                                    <option value="2011">2011</option>
-                                                    <option value="2010">2010</option>
+                                                <label for="jenis_pemeriksaan">Jenis Pemeriksaan</label>
+                                                <select class="form-select" id="jenis_pemeriksaan" name="jenis_pemeriksaan" value="{{ old('jenis_pemeriksaan', $rekomendasi->jenis_pemeriksaan) }}">
+                                                    <option value="Laporan Keuangan">Laporan Keuangan</option>
+                                                    <option value="Kinerja">Kinerja</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -137,7 +125,7 @@
                                                                     <option value="{{ $tindakLanjut->tim_pemantauan }}">{{ $tindakLanjut->tim_pemantauan }}</option>
                                                                     <option value="Tim Pemantauan Wilayah I">Tim Pemantauan Wilayah I</option>
                                                                     <option value="Tim Pemantauan Wilayah II">Tim Pemantauan Wilayah II</option>
-                                                                    <option value="Tim Pemantauan Wilayah III">Tim Pemantauan Wilayah II</option>
+                                                                    <option value="Tim Pemantauan Wilayah III">Tim Pemantauan Wilayah III</option>
                                                                 </select>
                                                             </div>
                                                         </div>

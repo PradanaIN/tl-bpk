@@ -45,12 +45,10 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Tindak Lanjut</th>
-                            {{-- <th>Unit Kerja</th>
-                            <th>Tim Pemantauan</th> --}}
-                            <th>Tenggat Waktu</th>
                             <th>Unit Kerja</th>
-                            <th>Status</th>
+                            <th>Tindak Lanjut</th>
+                            <th>Tenggat Waktu</th>
+                            <th>Hasil Identifikasi</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -59,11 +57,9 @@
                             <tr class="clickable-row" data-href="/identifikasi-dokumen/{{ $tindak_lanjut->id }}">
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $tindak_lanjut->tindak_lanjut }}</td>
-                                {{-- <td>{{ $tindak_lanjut->unit_kerja }}</td>
-                                <td>{{ $tindak_lanjut->tim_pemantauan }}</td> --}}
-                                <td>{{ \Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu )->format(' d F Y') }}</td>
                                 <td>{{ $tindak_lanjut->unit_kerja }}</td>
-                                <td>
+                                <td style="text-align: center;">{{ \Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu )->format(' d F Y') }}</td>
+                                <td style="text-align: center;">
                                     <span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }}">{{ $tindak_lanjut->status_tindak_lanjut }}</span>
                                 </td>
                                 <td>
@@ -134,16 +130,7 @@
                 }
             },
 
-            dom: '<"d-flex justify-content-between mb-4"fB>rt<"d-flex justify-content-between mt-4"<"d-flex justify-content-start"li><"col-md-6"p>>',
-            // buttons: [
-            //     {
-            //         text: '<i class="bi bi-plus"></i> Tambah Rekomendasi',
-            //         className: 'btn btn-primary',
-            //         action: function ( e, dt, node, config ) {
-            //             window.location.href = '/kelola-rekomendasi/create';
-            //         }
-            //     }
-            // ]
+            dom: '<"d-flex justify-content-between mb-4"fB>rt<"d-flex justify-content-between mt-4"<"d-flex justify-content-start"li><"col-md-6"p>>'
         });
     </script>
 @endsection
@@ -154,9 +141,7 @@ function getStatusClass($status) {
         case 'Identifikasi':
             return 'status-identifikasi';
             break;
-        // case 'Identifikasi':
-        //     return 'status-identifikasi';
-        //     break;
+
         case 'Belum Sesuai':
             return 'status-belum-sesuai';
             break;

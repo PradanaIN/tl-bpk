@@ -26,6 +26,8 @@ class TindakLanjut extends Model
         'upload_by',
         'upload_at',
         'status_tindak_lanjut',
+        'status_tindak_lanjut_at',
+        'status_tindak_lanjut_by',
         'catatan_tindak_lanjut',
         'rekomendasi_id',
     ];

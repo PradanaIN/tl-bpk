@@ -50,7 +50,7 @@
                                                 <select class="form-select" id="role" name="role" required>
                                                     <option value="{{ old('role', $user->role) }}">{{ $user->role }}</option>
                                                     @foreach ($role as $role)
-                                                        <option value="{{ $role->role }}">{{ $role->role }}</option>
+                                                        <option value="{{ $role->name }}">{{ $role->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>

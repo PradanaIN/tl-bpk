@@ -16,8 +16,8 @@
     }
 
     .status-identifikasi {
-        background-color: #0d6efd;
-        color: #FFFFFF;
+        background-color: #FFD700;
+        color: #000000;
     }
 
     .status-belum-sesuai {
@@ -50,12 +50,13 @@
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th>Rekomendasi</th>
                             <th>Tindak Lanjut</th>
                             {{-- <th>Unit Kerja</th>
                             <th>Tim Pemantauan</th> --}}
                             <th>Tenggat Waktu</th>
-                            <th>Dokumen TL</th>
-                            <th>Status</th>
+                            <th>Dokumen Tindak Lanjut</th>
+                            <th>Status Tindak Lanjut</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -63,12 +64,17 @@
                         @foreach ($tindak_lanjut as $tindak_lanjut)
                             <tr class="clickable-row" data-href="/kelola-tindak-lanjut/{{ $tindak_lanjut->id }}">
                                 <td>{{ $loop->iteration }}</td>
+                                <td>{{ $tindak_lanjut->rekomendasi->rekomendasi }}</td>
                                 <td>{{ $tindak_lanjut->tindak_lanjut }}</td>
                                 {{-- <td>{{ $tindak_lanjut->unit_kerja }}</td>
                                 <td>{{ $tindak_lanjut->tim_pemantauan }}</td> --}}
                                 <td>{{ \Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu )->format(' d F Y')}}</td>
-                                <td>{{ $tindak_lanjut->dokumen_tindak_lanjut }}</td>
-                                <td>
+                                @if ($tindak_lanjut->dokumen_tindak_lanjut === null || $tindak_lanjut->dokumen_tindak_lanjut === 'Belum Diunggah!')
+                                    <td style="text-align:center;"><span class="status-badge bg-warning text-black">{{ $tindak_lanjut->dokumen_tindak_lanjut }}</span></td>
+                                @else
+                                    <td style="text-align:center;"><span class="status-badge bg-success text-white">{{ $tindak_lanjut->dokumen_tindak_lanjut }}</span></td>
+                                @endif
+                                <td style="text-align:center;">
                                     <span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }}">{{ $tindak_lanjut->status_tindak_lanjut }}</span>
                                 </td>
                                 <td>

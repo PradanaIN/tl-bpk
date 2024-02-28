@@ -94,15 +94,29 @@
                                             <li class="nav-item">
                                                 <a class="nav-link" href="/dashboard"><h6>Dashboard</h6></a>
                                             </li>
+                                            @can('Admin')
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/kelola-pengguna"><h6>Kelola Pengguna</h6></a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/kelola-kamus"><h6>Kelola Kamus</h6></a>
+                                            </li>
+                                            @endcan
+                                            @canany(['Tim Koordinator', 'Pimpinan'])
                                             <li class="nav-item">
                                                 <a class="nav-link" href="/kelola-rekomendasi"><h6>Rekomendasi</h6></a>
                                             </li>
+                                            @endcan
+                                            @canany(['Tim Koordinator', 'Pimpinan', 'Operator'])
                                             <li class="nav-item">
                                                 <a class="nav-link" href="/kelola-tindak-lanjut"><h6>Tindak Lanjut</h6></a>
                                             </li>
+                                            @endcan
+                                            @canany(['Ketua Tim Pemanantauan', 'Anggota Tim Pemanantauan'])
                                             <li class="nav-item">
-                                                <a class="nav-link" href="/identifikasi-dokumen"><h6>Identifikasi</h6></a>
+                                                <a class="nav-link" href="/identifikasi-dokumen"><h6>Identifikasi Dokumen</h6></a>
                                             </li>
+                                            @endcan
                                         </ul>
                                     </div>
                                 </div>
@@ -111,8 +125,9 @@
                                         <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
                                             <div class="user-menu d-flex">
                                                 <div class="user-name text-end me-3">
-                                                    <h6 class="mb-0 text-gray-600">John Ducky</h6>
-                                                    <p class="mb-0 text-sm text-gray-600">Administrator</p>
+                                                    <h6 class="mb-0 text-gray-600">{{ Auth::user()->nama }}</h6>
+                                                    {{-- <p class="mb-0 text-sm text-gray-600">{{ Auth::user()->role }}&nbsp;|&nbsp;{{ Auth::user()->unit_kerja }}</p> --}}
+                                                    <p class="mb-0 text-sm text-gray-600">{{ Auth::user()->role }}</p>
                                                 </div>
                                                 <div class="user-img d-flex align-items-center">
                                                     <div class="avatar avatar-md">

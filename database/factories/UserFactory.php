@@ -2,9 +2,11 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
+use App\Models\UnitKerja;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use SebastianBergmann\CodeCoverage\Report\Xml\Unit;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -24,8 +26,8 @@ class UserFactory extends Factory
     public function definition(): array
     {
 
-        $unit_kerja = ["Unit Kerja A", "Unit Kerja B", "Unit Kerja C"];
-        $role = ["Tim Koordinator", "Unit Kerja", "Pimpinan"];
+        $unit_kerja = UnitKerja::all()->pluck('nama')->toArray();
+        $role = ["Admin", "Pimpinan", "Operator", "Tim Koordinator", "Ketua Tim Pemanantauan", "Anggota Tim Pemanantauan", "Pengendali Teknis", "Badan Pemeriksa Keuangan"];
 
         return [
             'nama' => fake()->name(),

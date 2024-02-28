@@ -73,8 +73,7 @@ class TindakLanjutController extends Controller
             'tim_pemantauan' => $tindakLanjut->tim_pemantauan,
             'dokumen_tindak_lanjut' => $fileName,
             'detail_dokumen_tindak_lanjut' => $request->detail_dokumen_tindak_lanjut,
-            // 'upload_by' => auth()->user()->name,
-            'upload_by' => 'admin',
+            'upload_by' => auth()->user()->nama,
             'upload_at' => now(),
             'status_tindak_lanjut' => 'Identifikasi',
         ]);

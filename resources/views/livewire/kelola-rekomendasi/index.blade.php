@@ -1,5 +1,37 @@
 @extends('layouts.horizontal')
 
+@section('style')
+<style>
+    .status-badge {
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: 500;
+        text-align: center;
+    }
+
+    .status-proses {
+        background-color: #FFD700;
+        color: #000000;
+    }
+
+    .status-belum-sesuai {
+        background-color: #FF0000;
+        color: #FFFFFF;
+    }
+
+    .status-sesuai {
+        background-color: #008000;
+        color: #FFFFFF;
+    }
+
+    .status-tidak-ditindaklanjuti {
+        background-color: #000000;
+        color: #FFFFFF;
+    }
+</style>
+@endsection
+
 @section('section')
 
 <section class="row">
@@ -16,6 +48,7 @@
                             <th>Pemeriksaan</th>
                             <th>Temuan</th>
                             <th>Rekomendasi</th>
+                            <th>Status Rekomendasi</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -27,6 +60,9 @@
                             <td>{{ $rekomendasi->pemeriksaan }}</td>
                             <td>{{ $rekomendasi->jenis_temuan }}</td>
                             <td>{{ $rekomendasi->rekomendasi }}</td>
+                            <td style="text-align:center;">
+                                <span class="status-badge {{ getStatusClass($rekomendasi->status_rekomendasi) }}">{{ $rekomendasi->status_rekomendasi }}</span>
+                            </td>
                             <td>
                                 <div class="d-flex justify-content-around align-items-center">
                                     <a href="/kelola-rekomendasi/{{ $rekomendasi->id }}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Rekomendasi">
@@ -149,3 +185,27 @@
 
     </script>
 @endsection
+
+@php
+function getStatusClass($status) {
+    switch ($status) {
+        case 'Proses':
+            return 'status-proses';
+            break;
+        // case 'Identifikasi':
+        //     return 'status-identifikasi';
+        //     break;
+        case 'Belum Sesuai':
+            return 'status-belum-sesuai';
+            break;
+        case 'Sesuai':
+            return 'status-sesuai';
+            break;
+        case 'Tidak Ditindaklanjuti':
+            return 'status-tidak-ditindaklanjuti';
+            break;
+        default:
+            return '';
+    }
+}
+@endphp

@@ -55,6 +55,7 @@ class RekomendasiController extends Controller
             'uraian_temuan' => 'required',
             'rekomendasi' => 'required',
             'catatan_rekomendasi' => 'required',
+            'status_rekomendasi' => 'Proses'
         ]);
 
         DB::beginTransaction();
@@ -132,6 +133,7 @@ class RekomendasiController extends Controller
             'uraian_temuan' => 'required',
             'rekomendasi' => 'required',
             'catatan_rekomendasi' => 'required',
+            'status_rekomendasi' => 'required'
         ]);
 
         $rekomendasi->update($validatedData);

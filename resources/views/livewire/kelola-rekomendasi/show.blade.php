@@ -163,7 +163,7 @@
                                 <td>{{ $tindakLanjut->tindak_lanjut }}</td>
                                 <td>{{ $tindakLanjut->unit_kerja }}</td>
                                 <td>{{ $tindakLanjut->tim_pemantauan }}</td>
-                                <td>{{ $tindakLanjut->tenggat_waktu }}</td>
+                                <td>{{ \Carbon\Carbon::parse($tindakLanjut->tenggat_waktu )->format(' d F Y') }}</td>
                                 <td>
                                     <span class="status-badge {{ getStatusClass($tindakLanjut->status_tindak_lanjut) }}">{{ $tindakLanjut->status_tindak_lanjut }}</span>
                                 </td>

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->text('uraian_temuan');
             $table->text('rekomendasi');
             $table->text('catatan_rekomendasi');
-            $table->string('status_rekomendasi')->default('Dalami Proses');
+            $table->string('status_rekomendasi')->default('Proses');
             $table->timestamps();
         });
     }

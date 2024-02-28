@@ -58,13 +58,13 @@
             </a>
         </div>
         <div class="col-auto d-flex ms-auto">
-            @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Proses'))
+            @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi'))
             <button class="btn btn-warning" id="btnStatus">
                 <i class="bi bi-exclamation-triangle"></i>
                 &nbsp;Tindak Lanjut Belum Diidentifikasi!
             </button>
             @else
-            <button class="btn btn-success" id="btnStatus" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->tindak_lanjut_at)->format('H:i, d M Y') }}">
+            <button class="btn btn-success" id="btnStatus" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->format('H:i, d M Y') }}">
                 <i class="bi bi-check-square"></i>
                 &nbsp;Diidentifikasi {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->diffForHumans() }}
             </button>
@@ -223,6 +223,15 @@
                     <p>{{ $tindak_lanjut->detail_dokumen_tindak_lanjut }}</p>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-3">
+                    <p class="fw-bold">Informasi Lainnya</p>
+                </div>
+                <div class="col-auto">:</div>
+                <div class="col">
+                    <p>Diunggah oleh {{ $tindak_lanjut->upload_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at )->format(' d F Y')}}</p>
+                </div>
+            </div>
         </div>
 
         <div class="card-header">
@@ -238,7 +247,7 @@
                     <p><span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }}">{{ $tindak_lanjut->status_tindak_lanjut }}</span></p>
                 </div>
                 <div class="col-auto d-flex ms-auto">
-                        @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Proses'))
+                        @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi'))
                         <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tambah Hasil Identifikasi">
                             <i class="bi bi-plus"></i>
                         </button>
@@ -250,6 +259,8 @@
                     </button>
                 </div>
             </div>
+            @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi'))
+            @else
             <div class="row">
                 <div class="col-3">
                     <p class="fw-bold">Catatan Tindak Lanjut</p>
@@ -259,6 +270,16 @@
                     <p>{{ $tindak_lanjut->catatan_tindak_lanjut }}</p>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-3">
+                    <p class="fw-bold">Informasi Lainnya</p>
+                </div>
+                <div class="col-auto">:</div>
+                <div class="col">
+                    <p>Didentifikasi oleh {{ $tindak_lanjut->status_tindak_lanjut_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at )->format(' d F Y')}}</p>
+                </div>
+            </div>
+            @endif
     </div>
 </section>
 
@@ -292,7 +313,7 @@
                 <div class="mb-3">
                     <label for="dokumen_tindak_lanjut" class="form-label">Hasil Identifikasi</label>
                     <select class="form-select" name="status_tindak_lanjut" id="status_tindak_lanjut" required>
-                        <option value="Proses" {{ $tindak_lanjut->status_tindak_lanjut === 'Proses' ? 'selected' : '' }}>Proses</option>
+                        <option value="Identifikasi" {{ $tindak_lanjut->status_tindak_lanjut === 'Identifikasi' ? 'selected' : '' }}>Identifikasi</option>
                         <option value="Belum Sesuai" {{ $tindak_lanjut->status_tindak_lanjut === 'Belum Sesuai' ? 'selected' : '' }}>Belum Sesuai</option>
                         <option value="Sesuai" {{ $tindak_lanjut->status_tindak_lanjut === 'Sesuai' ? 'selected' : '' }}>Sesuai</option>
                         <option value="Tidak Ditindaklanjuti" {{ $tindak_lanjut->status_tindak_lanjut === 'Tidak Ditindaklanjuti' ? 'selected' : '' }}>Tidak Ditindaklanjuti</option>
@@ -388,6 +409,7 @@ function getStatusClass($status) {
             break;
         default:
             return '';
+            break;
     }
 }
 @endphp

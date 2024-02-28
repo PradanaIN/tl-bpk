@@ -46,6 +46,7 @@ class IdentifikasiDokumenController extends Controller
     public function show(TindakLanjut $tindakLanjut)
     {
         $rekomendasi = Rekomendasi::find($tindakLanjut->rekomendasi_id);
+
         return view('livewire.identifikasi-dokumen.show', [
             'title' => 'Detail Tindak Lanjut',
             'tindak_lanjut' => $tindakLanjut,
@@ -80,6 +81,7 @@ class IdentifikasiDokumenController extends Controller
             'upload_at' => $request->upload_at,
             'status_tindak_lanjut' => $request->status_tindak_lanjut,
             'status_tindak_lanjut_at' => now(),
+            'status_tindak_lanjut_by' => auth()->user()->nama,
             'catatan_tindak_lanjut' => $request->catatan_tindak_lanjut,
         ]);
 
