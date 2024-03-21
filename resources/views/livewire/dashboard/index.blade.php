@@ -34,18 +34,19 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>PIC</th>
-                                <th>Jumlah Rekomendasi</th>
+                                <th>Unit Kerja</th>
+                                <th>Rekomendasi</th>
                                 <th>Selesai</th>
                                 <th>Belum Selesai</th>
                                 <th>Belum Ditindaklanjuti</th>
                                 <th>Tidak Dapat Ditindaklanjuti</th>
                                 <th>Persentase</th>
-                                <th>Sudah Upload</th>
+                                <th>Bukti Tindak Lanjut</th>
                             </tr>
                         </thead>
                         <tbody id="tablebody">
-                            <!-- Data Table Filter-->
+                            <!-- Data Table Filter -->
+
                         </tbody>
                     </table>
                 </div>
@@ -125,14 +126,14 @@
         // Mendefinisikan data berdasarkan filter table
         var dataTable = {
             umum: [
-                { no: 1, pic: 'PIC 1', jumlah: 250, selesai: 100, belum_selesai: 50, belum_ditindaklanjuti: 75, tidak_dapat_ditindaklanjuti: 25, persentase: '40%', upload: 'Ya' },
-                { no: 2, pic: 'PIC 2', jumlah: 300, selesai: 150, belum_selesai: 50, belum_ditindaklanjuti: 50, tidak_dapat_ditindaklanjuti: 50, persentase: '60%', upload: 'Tidak' },
-                { no: 3, pic: 'PIC 3', jumlah: 200, selesai: 75, belum_selesai: 25, belum_ditindaklanjuti: 50, tidak_dapat_ditindaklanjuti: 50, persentase: '30%', upload: 'Ya' }
+                { no: 1, unit_kerja: 'Unit Kerja 1', jumlah: 250, selesai: 100, belum_selesai: 50, belum_ditindaklanjuti: 75, tidak_dapat_ditindaklanjuti: 25, persentase: '40%', upload: '50' },
+                { no: 2, unit_kerja: 'Unit Kerja 2', jumlah: 300, selesai: 150, belum_selesai: 50, belum_ditindaklanjuti: 50, tidak_dapat_ditindaklanjuti: 50, persentase: '60%', upload: '10' },
+                { no: 3, unit_kerja: 'Unit Kerja 3', jumlah: 200, selesai: 75, belum_selesai: 25, belum_ditindaklanjuti: 50, tidak_dapat_ditindaklanjuti: 50, persentase: '30%', upload: '100' }
             ],
             bps_daerah: [
-                { no: 1, pic: 'PIC 1', jumlah: 150, selesai: 70, belum_selesai: 30, belum_ditindaklanjuti: 40, tidak_dapat_ditindaklanjuti: 10, persentase: '50%', upload: 'Ya' },
-                { no: 2, pic: 'PIC 2', jumlah: 200, selesai: 90, belum_selesai: 40, belum_ditindaklanjuti: 40, tidak_dapat_ditindaklanjuti: 30, persentase: '45%', upload: 'Tidak' },
-                { no: 3, pic: 'PIC 3', jumlah: 180, selesai: 80, belum_selesai: 30, belum_ditindaklanjuti: 40, tidak_dapat_ditindaklanjuti: 30, persentase: '55%', upload: 'Ya' }
+                { no: 1, unit_kerja: 'Unit Kerja Daerah 1', jumlah: 150, selesai: 70, belum_selesai: 30, belum_ditindaklanjuti: 40, tidak_dapat_ditindaklanjuti: 10, persentase: '50%', upload: '30' },
+                { no: 2, unit_kerja: 'Unit Kerja Daerah 2', jumlah: 200, selesai: 90, belum_selesai: 40, belum_ditindaklanjuti: 40, tidak_dapat_ditindaklanjuti: 30, persentase: '45%', upload: '20' },
+                { no: 3, unit_kerja: 'Unit Kerja Daerah 3', jumlah: 180, selesai: 80, belum_selesai: 30, belum_ditindaklanjuti: 40, tidak_dapat_ditindaklanjuti: 30, persentase: '55%', upload: '15' }
             ]
         };
 
@@ -175,15 +176,15 @@
             dataToShow.forEach(function (item) {
                 var row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${item.no}</td>
-                    <td>${item.pic}</td>
-                    <td>${item.jumlah}</td>
-                    <td>${item.selesai}</td>
-                    <td>${item.belum_selesai}</td>
-                    <td>${item.belum_ditindaklanjuti}</td>
-                    <td>${item.tidak_dapat_ditindaklanjuti}</td>
-                    <td>${item.persentase}</td>
-                    <td>${item.upload}</td>
+                    <td style="text-align: center;">${item.no}</td>
+                    <td>${item.unit_kerja}</td>
+                    <td style="text-align: center;">${item.jumlah}</td>
+                    <td style="text-align: center;">${item.selesai}</td>
+                    <td style="text-align: center;">${item.belum_selesai}</td>
+                    <td style="text-align: center;">${item.belum_ditindaklanjuti}</td>
+                    <td style="text-align: center;">${item.tidak_dapat_ditindaklanjuti}</td>
+                    <td style="text-align: center;">${item.persentase}</td>
+                    <td style="text-align: center;">${item.upload}</td>
                 `;
                 tableBody.appendChild(row);
             });

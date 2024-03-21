@@ -16,6 +16,7 @@
                         <form class="form form-vertical" action="/kelola-rekomendasi/{{ $rekomendasi->id }}" method="post">
                             @method('put')
                             @csrf
+                            <input type="hidden" name="status_rekomendasi" value="{{ $rekomendasi->status_rekomendasi }}">
                             <div class="form-body">
                                 <div class="row">
                                     <h4 class="card-title">A. Detail Pemeriksaan</h4>
@@ -46,8 +47,7 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="hasil_pemeriksaan">Hasil Pemeriksaan</label>
-                                                <input type="text" id="hasil_pemeriksaan" class="form-control"
-                                                name="hasil_pemeriksaan" placeholder="Hasil Pemeriksaan" value="{{ old('hasil_pemeriksaan', $rekomendasi->hasil_pemeriksaan) }}">
+                                                <textarea class="form-control" id="hasil_pemeriksaan" name="hasil_pemeriksaan" rows="3" placeholder="Hasil Pemeriksaan">{{ old('hasil_pemeriksaan', $rekomendasi->hasil_pemeriksaan) }}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -65,8 +65,7 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="uraian_temuan">Uraian Temuan</label>
-                                                <input type="text" id="uraian_temuan" class="form-control"
-                                                    name="uraian_temuan" placeholder="Uraian Temuan" value="{{ old('uraian_temuan', $rekomendasi->uraian_temuan) }}">
+                                                <textarea class="form-control" id="uraian_temuan" name="uraian_temuan" rows="3" placeholder="Uraian Temuan">{{ old('uraian_temuan', $rekomendasi->uraian_temuan) }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-12">
@@ -79,8 +78,7 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="catatan_rekomendasi">Catatan Rekomendasi</label>
-                                                <input type="text" id="catatan_rekomendasi" class="form-control"
-                                                name="catatan_rekomendasi" placeholder="Catatan Rekomendasi" value="{{ old('catatan_rekomendasi', $rekomendasi->catatan_rekomendasi) }}">
+                                                <textarea class="form-control" id="catatan_rekomendasi" name="catatan_rekomendasi" rows="3" placeholder="Catatan Rekomendasi">{{ old('catatan_rekomendasi', $rekomendasi->catatan_rekomendasi) }}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -101,6 +99,8 @@
                                                 <div data-repeater-item>
                                                     <div class="row d-flex justify-content-between">
                                                         <input type="hidden" name="id[]" value="{{ $tindakLanjut->id }}">
+                                                        <input type="hidden" name="status_tindak_lanjut[]" value="{{ $tindakLanjut->status_tindak_lanjut }}">
+                                                        <input type="hidden" name="dokumen_tindak_lanjut[]" value="{{ $tindakLanjut->dokumen_tindak_lanjut }}">
                                                         <div class="col-md-3 col-12">
                                                             <div class="form-group">
                                                                 <label for="tindak_lanjut{{$index}}">Tindak Lanjut</label>

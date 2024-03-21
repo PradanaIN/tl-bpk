@@ -66,7 +66,18 @@
             }
         }
 
-
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.5); /* Warna latar belakang semi-transparan */
+        z-index: 9999; /* Pastikan spinner berada di atas konten lain */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
     </style>
 
     @yield('style')
@@ -74,9 +85,15 @@
 </head>
 
 <body>
+    <div id="loadingOverlay" class="overlay">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
     <div id="app">
         <div id="main" class="layout-horizontal">
-                    <nav class="navbar navbar-expand-lg header-top mb-5">
+                    <nav class="navbar navbar-expand-lg header-top fixed-top">
                         <div class="container">
                             <a href="/dashboard" class="navbar-brand me-auto d-flex justify-content-start align-items-center">
                                 <img src="{{ asset('mazer/assets/static/images/logo/logo-bps.png') }}" alt="Logo" style="width: 50px; height: auto;">
@@ -102,19 +119,19 @@
                                                 <a class="nav-link" href="/kelola-kamus"><h6>Kelola Kamus</h6></a>
                                             </li>
                                             @endcan
-                                            @canany(['Tim Koordinator', 'Pimpinan'])
+                                            @canany(['Tim Koordinator', 'Super Admin'])
                                             <li class="nav-item">
                                                 <a class="nav-link" href="/kelola-rekomendasi"><h6>Rekomendasi</h6></a>
                                             </li>
                                             @endcan
-                                            @canany(['Tim Koordinator', 'Pimpinan', 'Operator'])
+                                            @canany(['Super Admin', 'Tim Koordinator', 'Unit Kerja'])
                                             <li class="nav-item">
                                                 <a class="nav-link" href="/kelola-tindak-lanjut"><h6>Tindak Lanjut</h6></a>
                                             </li>
                                             @endcan
-                                            @canany(['Ketua Tim Pemanantauan', 'Anggota Tim Pemanantauan'])
+                                            @canany(['Tim Pemanantauan', 'Super Admin'])
                                             <li class="nav-item">
-                                                <a class="nav-link" href="/identifikasi-dokumen"><h6>Identifikasi Dokumen</h6></a>
+                                                <a class="nav-link" href="/identifikasi"><h6>Identifikasi</h6></a>
                                             </li>
                                             @endcan
                                         </ul>
@@ -188,12 +205,12 @@
                     </nav>
 
 
-            <div class="content-wrapper container">
+            <div class="content-wrapper container" style="margin-top: 110px;">
                 <div class="page-heading d-flex justify-content-between align-items-center" style="width: 97%">
                     <h3>{{ $title }}</h3>
                     @yield('filter')
                 </div>
-                <div class="page-content">
+                <div class="page-content" style="margin-top: -20px;">
                     @yield('section')
                 </div>
             </div>
@@ -322,6 +339,26 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 </script>
+
+<script>
+    // Tampilkan spinner sebagai overlay saat dokumen dimuat
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('loadingOverlay').classList.add('overlay');
+    });
+
+    setTimeout(function() {
+        var loadingOverlay = document.getElementById('loadingOverlay');
+        loadingOverlay.style.display = 'none';
+    }, 500);
+
+    // Tampilkan spinner sebagai overlay saat mengirim permintaan HTTP
+    document.addEventListener('click', function(event) {
+        if (event.target.tagName === 'A' || event.target.tagName === 'BUTTON') {
+            document.getElementById('loadingOverlay').classList.add('overlay');
+        }
+    });
+</script>
+
 
 @yield('script')
 

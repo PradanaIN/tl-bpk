@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Rekomendasi;
 use App\Models\TindakLanjut;
 use Illuminate\Http\Request;
-use App\Models\Rekomendasi;
+use Novay\WordTemplate\WordTemplate;
 
 class TindakLanjutController extends Controller
 {
@@ -87,5 +88,34 @@ class TindakLanjutController extends Controller
     public function destroy(TindakLanjut $tindakLanjut)
     {
         //
+    }
+
+    public static function word(TindakLanjut $tindakLanjut)
+    {
+        // get berita_acara.rtf ftom public folder
+        $file = public_path('berita_acara.rtf');
+
+        $array = array(
+			'[NOMOR_SURAT]' => '015/BT/SK/V/2023',
+            '[NAMA1]' => 'Budi',
+            '[NIP1]' => '1234567890',
+            '[JABATAN1]' => 'Inspektur Utama',
+            '[NAMA2]' => 'Anduk',
+            '[NIP2]' => '0987654321',
+            '[JABATAN2]' => 'Kepala Unit Kerja',
+            '[TINDAK_LANJUT]' => $tindakLanjut->tindak_lanjut,
+            '[UNIT_KERJA]' => $tindakLanjut->unit_kerja,
+            '[TENGGAT_WAKTU]' => $tindakLanjut->tenggat_waktu,
+            '[KOTA]' => 'Jakarta',
+            '[TANGGAL]' => now()->format('d F Y'),
+		);
+
+        $nama_file = 'berita-acara.doc';
+
+            // Create an instance of WordTemplate
+        $wordTemplate = new WordTemplate();
+
+    // Call the export method on the instance
+        return $wordTemplate->export($file, $array, $nama_file);
     }
 }

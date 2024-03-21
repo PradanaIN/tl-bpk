@@ -8,7 +8,8 @@ use App\Models\Rekomendasi;
 use App\Models\TindakLanjut;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use SebastianBergmann\CodeCoverage\Report\Xml\Unit;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DetailRekomendasiExport;
 
 class RekomendasiController extends Controller
 {
@@ -123,7 +124,6 @@ class RekomendasiController extends Controller
      */
     public function update(Request $request, Rekomendasi $rekomendasi)
     {
-
         $validatedData = $request->validate([
             'pemeriksaan' => 'required',
             'jenis_pemeriksaan' => 'required',
@@ -138,7 +138,6 @@ class RekomendasiController extends Controller
 
         $rekomendasi->update($validatedData);
 
-
         foreach ($request->tindak_lanjut as $key => $tindak_lanjut) {
             if ($request->id[$key] == null) {
                 TindakLanjut::create([
@@ -148,7 +147,7 @@ class RekomendasiController extends Controller
                     'tim_pemantauan' => $request->tim_pemantauan[$key],
                     'tenggat_waktu' => $request->tenggat_waktu[$key],
                     'dokumen_tindak_lanjut' => 'Belum Diunggah!',
-                    'status_tindak_lanjut' => 'Proses'
+                    'status_tindak_lanjut' => 'Proses',
                 ]);
             } else {
                 TindakLanjut::where('id', $request->id[$key])->update([
@@ -156,8 +155,8 @@ class RekomendasiController extends Controller
                     'unit_kerja' => $request->unit_kerja[$key],
                     'tim_pemantauan' => $request->tim_pemantauan[$key],
                     'tenggat_waktu' => $request->tenggat_waktu[$key],
-                    'dokumen_tindak_lanjut' => 'Belum Diunggah!',
-                    'status_tindak_lanjut' => 'Proses'
+                    'dokumen_tindak_lanjut' => $request->dokumen_tindak_lanjut[$key],
+                    'status_tindak_lanjut' => $request->status_tindak_lanjut[$key],
                 ]);
             }}
 
@@ -174,5 +173,10 @@ class RekomendasiController extends Controller
         Rekomendasi::destroy($rekomendasi->id);
 
         return redirect('/kelola-rekomendasi')->with('delete', 'Data berhasil dihapus!');
+    }
+
+    public function export(Rekomendasi $rekomendasi)
+    {
+        return Excel::download(new DetailRekomendasiExport($rekomendasi->id), 'rekomendasi.xlsx');
     }
 }

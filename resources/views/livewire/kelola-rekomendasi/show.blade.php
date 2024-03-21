@@ -41,17 +41,23 @@
                 <i class="bi bi-arrow-left"></i>
                 Kembali
             </a>
+            <a href="/kelola-rekomendasi/{{ $rekomendasi->id }}/export" class="btn btn-success ms-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Export Rekomendasi">
+                <i class="bi bi-file-earmark-excel"></i>
+                Export Rekomendasi
+            </a>
         </div>
         <div class="col-auto d-flex ms-auto">
             <div class="col-auto">
                 <a href="/kelola-rekomendasi/{{ $rekomendasi->id }}/edit" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Rekomendasi">
                     <i class="bi bi-pencil"></i>
+                    &nbsp;Ubah
                 </a>
                 <form action="/kelola-rekomendasi/{{ $rekomendasi->id }}" method="post" class="d-inline" id="deleteForm">
                     @method('delete')
                     @csrf
                     <button class="btn btn-danger" type="button" id="deleteButton" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Rekomendasi">
                         <i class="bi bi-trash"></i>
+                        &nbsp;Hapus
                     </button>
                 </form>
             </div>
@@ -99,7 +105,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-header">
+        <div class="card-header" style="margin-top: -35px;">
             <h4 class="card-title"><b>B. Detail Rekomendasi</b></h4>
         </div>
         <div class="card-body">
@@ -140,7 +146,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-header">
+        <div class="card-header" style="margin-top: -35px;">
             <h4 class="card-title"><b>C. Tindak Lanjut</b></h4>
         </div>
         <div class="card-body">
@@ -153,18 +159,28 @@
                             <th>Unit Kerja</th>
                             <th>Tim Pemantauan</th>
                             <th>Tenggat Waktu</th>
+                            <th>Dokumen</th>
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($rekomendasi->tindakLanjut as $index => $tindakLanjut)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $tindakLanjut->tindak_lanjut }}</td>
-                                <td>{{ $tindakLanjut->unit_kerja }}</td>
+                                <td style="text-align:center;">{{ $loop->iteration }}</td>
+                                <td >{{ $tindakLanjut->tindak_lanjut }}</td>
+                                <td >{{ $tindakLanjut->unit_kerja }}</td>
                                 <td>{{ $tindakLanjut->tim_pemantauan }}</td>
-                                <td>{{ \Carbon\Carbon::parse($tindakLanjut->tenggat_waktu )->format(' d F Y') }}</td>
-                                <td>
+                                <td style="text-align:center;">{{ \Carbon\Carbon::parse($tindakLanjut->tenggat_waktu )->format(' d F Y') }}</td>
+                                <td style="text-align:center;">
+                                    @if ($tindakLanjut->dokumen_tindak_lanjut === null || $tindakLanjut->dokumen_tindak_lanjut === 'Belum Diunggah!')
+                                        <span class="badge bg-danger">Belum Diunggah!</span>
+                                    @else
+                                    <a href="{{ asset('uploads/tindak_lanjut/' . $tindakLanjut->dokumen_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Dokumen">
+                                        <i class="bi bi-download"></i>
+                                    </a>
+                                    @endif
+                                </td>
+                                <td style="text-align:center;">
                                     <span class="status-badge {{ getStatusClass($tindakLanjut->status_tindak_lanjut) }}">{{ $tindakLanjut->status_tindak_lanjut }}</span>
                                 </td>
                             </tr>
@@ -239,9 +255,6 @@ document.getElementById('deleteButton').addEventListener('click', function() {
     });
 </script>
 
-@endsection
-
-
 @php
 function getStatusClass($status) {
     switch ($status) {
@@ -262,3 +275,6 @@ function getStatusClass($status) {
     }
 }
 @endphp
+
+@endsection
+

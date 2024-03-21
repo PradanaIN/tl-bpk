@@ -18,8 +18,8 @@ class IdentifikasiDokumenController extends Controller
             ->where('status_tindak_lanjut', '!=', 'Proses')
             ->get();
 
-        return view('livewire.identifikasi-dokumen.index', [
-            'title' => 'Identifikasi Dokumen',
+        return view('livewire.identifikasi.index', [
+            'title' => 'Identifikasi Tindak Lanjut',
             'tindak_lanjut' => $tindak_lanjut,
         ]);
     }
@@ -47,7 +47,7 @@ class IdentifikasiDokumenController extends Controller
     {
         $rekomendasi = Rekomendasi::find($tindakLanjut->rekomendasi_id);
 
-        return view('livewire.identifikasi-dokumen.show', [
+        return view('livewire.identifikasi.show', [
             'title' => 'Detail Tindak Lanjut',
             'tindak_lanjut' => $tindakLanjut,
             'rekomendasi' => $rekomendasi,
@@ -75,17 +75,17 @@ class IdentifikasiDokumenController extends Controller
             'tim_pemantauan' => $tindakLanjut->tim_pemantauan,
             'tenggat_waktu' => $tindakLanjut->tenggat_waktu,
             'dokumen_tindak_lanjut' => $tindakLanjut->dokumen_tindak_lanjut,
-            'detail_dokumen_tindak_lanjut' => $request->detail_dokumen_tindak_lanjut,
+            'detail_dokumen_tindak_lanjut' => $tindakLanjut->detail_dokumen_tindak_lanjut,
             // 'upload_by' => auth()->user()->name,
-            'upload_by' => $request->upload_by,
-            'upload_at' => $request->upload_at,
+            'upload_by' => $tindakLanjut->upload_by,
+            'upload_at' => $tindakLanjut->upload_at,
             'status_tindak_lanjut' => $request->status_tindak_lanjut,
             'status_tindak_lanjut_at' => now(),
             'status_tindak_lanjut_by' => auth()->user()->nama,
             'catatan_tindak_lanjut' => $request->catatan_tindak_lanjut,
         ]);
 
-        return redirect('/identifikasi-dokumen/' . $tindakLanjut->id)->with('update', 'Update Status Berhasil!');
+        return redirect('/identifikasi/' . $tindakLanjut->id)->with('update', 'Update Status Berhasil!');
     }
 
     /**

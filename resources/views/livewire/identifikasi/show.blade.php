@@ -2,11 +2,9 @@
 
 @section('style')
 
-<link rel="stylesheet" href="{{ asset('mazer/assets/extensions/filepond/filepond.css')}}" />
-<link rel="stylesheet" href="{{ asset('mazer/assets/extensions/toastify-js/src/toastify.css') }}"/>
+<link rel="stylesheet" href="{{ asset('mazer/assets/extensions/filepond/filepond.css') }}">
 
 <style>
-
     .status-badge {
             padding: 5px 10px;
             border-radius: 5px;
@@ -35,6 +33,11 @@
         color: #FFFFFF;
     }
 
+    .status-belum-ditindaklanjuti {
+        background-color: #FFD700;
+        color: #FFFFFF;
+    }
+
 </style>
 @endsection
 
@@ -43,27 +46,23 @@
 <section class="row">
     <div class="row mb-3 flex-wrap">
         <div class="col-auto d-flex me-auto">
-            <a href="/kelola-tindak-lanjut" class="btn btn-primary">
+            <a href="/identifikasi" class="btn btn-primary">
                 <i class="bi bi-arrow-left"></i>
                 &nbsp;Kembali
             </a>
-            <a href="/kelola-tindak-lanjut/{{ $tindak_lanjut->id }}/generate" class="btn btn-primary ms-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Generate Berita Acara">
-                <i class="bi bi-file-earmark-word"></i>
-                &nbsp;Generate Berita Acara
-            </a>
         </div>
         <div class="col-auto d-flex ms-auto">
-                @if (($tindak_lanjut->dokumen_tindak_lanjut === null || $tindak_lanjut->dokumen_tindak_lanjut === 'Belum Diunggah!'))
-                <button class="btn btn-warning" id="btnStatus">
-                    <i class="bi bi-exclamation-triangle"></i>
-                    &nbsp;Dokumen Belum Diunggah!
-                </button>
-                @else
-                <button class="btn btn-success" id="btnStatus" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->format('H:i, d M Y') }}">
-                    <i class="bi bi-check-square"></i>
-                    &nbsp;Dokumen diunggah {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->diffForHumans() }}
-                </button>
-                @endif
+            @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi'))
+            <button class="btn btn-warning" id="btnStatus">
+                <i class="bi bi-exclamation-triangle"></i>
+                &nbsp;Tindak Lanjut Belum Diidentifikasi!
+            </button>
+            @else
+            <button class="btn btn-success" id="btnStatus" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->format('H:i, d M Y') }}">
+                <i class="bi bi-check-square"></i>
+                &nbsp;Diidentifikasi {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->diffForHumans() }}
+            </button>
+            @endif
         </div>
     </div>
     <div class="card">
@@ -108,6 +107,7 @@
                 </div>
             </div>
         </div>
+
         <div class="card-header" style="margin-top: -35px;">
             <h4 class="card-title"><b>B. Detail Rekomendasi</b></h4>
         </div>
@@ -149,6 +149,7 @@
                 </div>
             </div>
         </div>
+
         <div class="card-header" style="margin-top: -35px;">
             <h4 class="card-title"><b>C. Tindak Lanjut</b></h4>
         </div>
@@ -186,7 +187,7 @@
                 </div>
                 <div class="col-auto">:</div>
                 <div class="col">
-                    <p>{{ \Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu )->format(' d F Y') }}</p>
+                    <p>{{ $tindak_lanjut->tenggat_waktu }}</p>
                 </div>
             </div>
             <div class="row">
@@ -201,32 +202,13 @@
                         <p><span class="status-badge bg-success text-white">{{ $tindak_lanjut->dokumen_tindak_lanjut }}</span></p>
                     @endif
                 </div>
-                @canany(['Unit Kerja', 'Super Admin'])
-                <div class="col-auto d-flex ms-auto">
-                        @if (($tindak_lanjut->dokumen_tindak_lanjut === null || $tindak_lanjut->dokumen_tindak_lanjut === 'Belum Diunggah!'))
-                        <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unggah Dokumen">
-                            <i class="bi bi-plus"></i>
-                            &nbsp;Tambah Dokumen
-                        </button>
-                        @else
-                        <div class="col-auto d-flex ms-auto">
-                            <div class="col-auto">
-                                <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->dokumen_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Dokumen">
-                                    <i class="bi bi-download"></i>
-                                    &nbsp;Unduh Dokumen
-                                </a>
-                                <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Dokumen">
-                                    <i class="bi bi-pencil"></i>
-                                    &nbsp;Ubah Dokumen
-                                </button>
-                            </div>
-                        </div>
-                        @endif
+                <div class="col-auto">
+                    <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->dokumen_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Dokumen">
+                        <i class="bi bi-download"></i>
+                        &nbsp;Unduh Dokumen
+                    </a>
                 </div>
-                @endcan
             </div>
-            @if ($tindak_lanjut->dokumen_tindak_lanjut === null || $tindak_lanjut->dokumen_tindak_lanjut === 'Belum Diunggah!')
-            @else
             <div class="row">
                 <div class="col-3">
                     <p class="fw-bold">Detail Dokumen Tindak Lanjut</p>
@@ -245,67 +227,75 @@
                     <p>Diunggah oleh {{ $tindak_lanjut->upload_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at )->format(' d F Y')}}</p>
                 </div>
             </div>
-            @endif
         </div>
-        @if ($tindak_lanjut->status_tindak_lanjut !== 'Proses')
-            <div class="card-header" style="margin-top: -35px;">
-                <h4 class="card-title"><b>D. Hasil Identifikasi Tindak Lanjut</b></h4>
+
+        <div class="card-header" style="margin-top: -35px;">
+            <h4 class="card-title"><b>D. Hasil Identifikasi Tindak Lanjut</b></h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-3">
+                    <p class="fw-bold">Status Identifikasi</p>
+                </div>
+                <div class="col-auto">:</div>
+                <div class="col">
+                    <p><span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }}">{{ $tindak_lanjut->status_tindak_lanjut }}</span></p>
+                </div>
+                <div class="col-auto d-flex ms-auto">
+                        @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi'))
+                        <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tambah Hasil Identifikasi">
+                            <i class="bi bi-plus"></i>
+                            &nbsp;Tambah Identifikasi
+                        </button>
+                        @else
+                        <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Hasil Identifikasi">
+                            <i class="bi bi-pencil"></i>
+                            &nbsp;Ubah Identifikasi
+                        </button>
+                        @endif
+                    </button>
+                </div>
             </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-3">
-                        <p class="fw-bold">Status Identifikasi</p>
-                    </div>
-                    <div class="col-auto">:</div>
-                    <div class="col">
-                        <p><span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }}">{{ $tindak_lanjut->status_tindak_lanjut }}</span></p>
-                    </div>
+            @if ($tindak_lanjut->catatan_tindak_lanjut !== '' && $tindak_lanjut->catatan_tindak_lanjut !== null)
+            <div class="row">
+                <div class="col-3">
+                    <p class="fw-bold">Catatan Identifikasi</p>
                 </div>
-                @if ($tindak_lanjut->catatan_tindak_lanjut === '' || $tindak_lanjut->catatan_tindak_lanjut === null)
-                @else
-                <div class="row">
-                    <div class="col-3">
-                        <p class="fw-bold">Catatan Identifikasi</p>
-                    </div>
-                    <div class="col-auto">:</div>
-                    <div class="col">
-                        <p>{{ $tindak_lanjut->catatan_tindak_lanjut }}</p>
-                    </div>
+                <div class="col-auto">:</div>
+                <div class="col">
+                    <p>{{ $tindak_lanjut->catatan_tindak_lanjut }}</p>
                 </div>
-                @endif
-                @if ($tindak_lanjut->status_tindak_lanjut !== 'Identifikasi')
-                <div class="row">
-                    <div class="col-3">
-                        <p class="fw-bold">Informasi Lainnya</p>
-                    </div>
-                    <div class="col-auto">:</div>
-                    <div class="col">
-                        <p>Diidentifikasi oleh {{ $tindak_lanjut->status_tindak_lanjut_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at )->format(' d F Y')}}</p>
-                    </div>
-                </div>
-                @endif
             </div>
-        @endif
+            @endif
+            @if ($tindak_lanjut->status_tindak_lanjut !== 'Identifikasi')
+            <div class="row">
+                <div class="col-3">
+                    <p class="fw-bold">Informasi Lainnya</p>
+                </div>
+                <div class="col-auto">:</div>
+                <div class="col">
+                    <p>Didentifikasi oleh {{ $tindak_lanjut->status_tindak_lanjut_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at )->format(' d F Y')}}</p>
+                </div>
+            </div>
+            @endif
     </div>
 </section>
 
 @endsection
 
+
+<!-- modal upload -->
 <div class="modal fade text-left" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                @if ($tindak_lanjut->dokumen_tindak_lanjut === null || $tindak_lanjut->dokumen_tindak_lanjut === 'Belum Diunggah!')
-                <h4 class="modal-title" id="uploadModalLabel">Tambah Dokumen Tindak Lanjut</h4>
-                @else
-                <h4 class="modal-title" id="uploadModalLabel">Ubah Dokumen Tindak Lanjut</h4>
-                @endif
+                <h5 class="modal-title" id="uploadModalLabel">Hasil Identifikasi Tindak Lanjut</h5>
                 <button type="button" class="close" data-bs-dismiss="modal"
                     aria-label="Close">
                     <i data-feather="x"></i>
                 </button>
             </div>
-            <form action="/kelola-tindak-lanjut/{{ $tindak_lanjut->id }}" method="post" enctype="multipart/form-data">
+            <form action="/identifikasi/{{ $tindak_lanjut->id }}" method="post" enctype="multipart/form-data">
                 <div class="modal-body">
                     @csrf
                     @method('put')
@@ -316,15 +306,25 @@
                 <input type="hidden" name="tim_pemantauan" value="{{ $tindak_lanjut->tim_pemantauan }}">
                 <input type="hidden" name="tenggat_waktu" value="{{ $tindak_lanjut->tenggat_waktu }}">
                 <input type="hidden" name="rekomendasi_id" value="{{ $tindak_lanjut->rekomendasi_id }}">
+                <input type="hidden" name="dokumen_tindak_lanjut" value="{{ $tindak_lanjut->dokumen_tindak_lanjut }}">
+                <input type="hidden" name="detail_dokumen_tindak_lanjut" value="{{ $tindak_lanjut->detail_dokumen_tindak_lanjut }}">
+                <input type="hidden" name="upload_by" value="{{ $tindak_lanjut->upload_by }}">
+                <input type="hidden" name="upload_at" value="{{ $tindak_lanjut->upload_at }}">
 
                     <div class="form-group">
-                        <label for="dokumen_tindak_lanjut" class="form-label">Dokumen Tindak Lanjut</label>
-                        <input type="file" class="multiple-files-filepond" multiple name="dokumen_tindak_lanjut">
+                        <label for="dokumen_tindak_lanjut" class="form-label">Hasil Identifikasi</label>
+                        <select class="form-select" name="status_tindak_lanjut" id="status_tindak_lanjut" required>
+                            <option value="Identifikasi" {{ $tindak_lanjut->status_tindak_lanjut === 'Identifikasi' ? 'selected' : '' }}>Proses Identifikasi</option>
+                            <option value="Sesuai" {{ $tindak_lanjut->status_tindak_lanjut === 'Sesuai' ? 'selected' : '' }}>Sesuai</option>
+                            <option value="Belum Sesuai" {{ $tindak_lanjut->status_tindak_lanjut === 'Belum Sesuai' ? 'selected' : '' }}>Belum Sesuai</option>
+                            <option value="Belum Ditindaklanjuti" {{ $tindak_lanjut->status_tindak_lanjut === 'Belum Ditindaklanjuti' ? 'selected' : '' }}>Belum Ditindaklanjuti</option>
+                            <option value="Tidak Ditindaklanjuti" {{ $tindak_lanjut->status_tindak_lanjut === 'Tidak Ditindaklanjuti' ? 'selected' : '' }}>Tidak Ditindaklanjuti</option>
+                        </select>
                     </div>
-                    <div class="form-group">
-                        <label for="dokumen_tindak_lanjut" class="form-label">Detail Dokumen Tindak Lanjut</label>
+                    <div class="form-group" id="catatan_tindak_lanjut_group" style="display: none;">
+                        <label for="dokumen_tindak_lanjut" class="form-label">Catatan Identifikasi</label>
                         <div class="card-body">
-                            <textarea class="form-control" name="detail_dokumen_tindak_lanjut" id="detail_dokumen_tindak_lanjut" rows="3" required></textarea>
+                            <textarea class="form-control" name="catatan_tindak_lanjut" id="catatan_tindak_lanjut" rows="5" required></textarea>
                         </div>
                     </div>
                 </div>
@@ -333,17 +333,9 @@
                         <i class="bx bx-x d-block d-sm-none"></i>
                         <span class="d-none d-sm-block">Batal</span>
                     </button>
-                    @if ($tindak_lanjut->dokumen_tindak_lanjut === null || $tindak_lanjut->dokumen_tindak_lanjut === 'Belum Diunggah!')
-                    <button type="submit" class="btn btn-primary ms-1" data-bs-dismiss="modal">
-                        <i class="bx bx-x d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Tambah</span>
-                    </button>
-                    @else
-                    <button type="submit" class="btn btn-primary ms-1" data-bs-dismiss="modal">
-                        <i class="bx bx-x d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Ubah</span>
-                    </button>
-                    @endif
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bx bx-check d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Simpan</span>
                     </button>
                 </div>
             </form>
@@ -353,6 +345,38 @@
 
 
 @section('script')
+
+<script>
+    $(document).ready(function () {
+        $('#status_tindak_lanjut').change(function () {
+            if ($(this).val() === 'Sesuai' || $(this).val() === 'Identifikasi' || $(this).val() === 'Proses Identifikasi') {
+                $('#catatan_tindak_lanjut_group').hide();
+                $('#catatan_tindak_lanjut').prop('required', false); // Catatan tidak wajib diisi
+            } else {
+                $('#catatan_tindak_lanjut_group').show();
+                $('#catatan_tindak_lanjut').prop('required', true); // Catatan wajib diisi
+            }
+        });
+    });
+</script>
+
+
+<script>
+    // Ambil tombol "Upload Dokumen TL"
+    var uploadBtn = document.getElementById('uploadBtn');
+
+    // Tambahkan event listener untuk menampilkan modal saat tombol diklik
+    uploadBtn.addEventListener('click', function() {
+        var uploadModal = new bootstrap.Modal(document.getElementById('uploadModal'));
+        uploadModal.show();
+    });
+
+</script>
+
+<script src="{{ asset('mazer/assets/extensions/filepond-plugin-file-validate-size/filepond-plugin-file-validate-size.min.js') }}"></script>
+<script src="{{ asset('mazer/assets/extensions/filepond-plugin-file-validate-type/filepond-plugin-file-validate-type.min.js') }}"></script>
+<script src="{{ asset('mazer/assets/extensions/filepond/filepond.js') }}"></script>
+<script src="{{ asset('mazer/assets/static/js/pages/filepond.js') }}"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -371,31 +395,8 @@
 
     // Lakukan scroll ke elemen target
     uploadSection.scrollIntoView({ behavior: 'smooth' });
-    });
+});
 </script>
-
-<script>
-    // Ambil tombol "Upload Dokumen TL"
-    var uploadBtn = document.getElementById('uploadBtn');
-
-    // Tambahkan event listener untuk menampilkan modal saat tombol diklik
-    uploadBtn.addEventListener('click', function() {
-        var uploadModal = new bootstrap.Modal(document.getElementById('uploadModal'));
-        uploadModal.show();
-    });
-
-</script>
-
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-file-validate-size/filepond-plugin-file-validate-size.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-file-validate-type/filepond-plugin-file-validate-type.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-crop/filepond-plugin-image-crop.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-exif-orientation/filepond-plugin-image-exif-orientation.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-filter/filepond-plugin-image-filter.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-preview/filepond-plugin-image-preview.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-resize/filepond-plugin-image-resize.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond/filepond.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/toastify-js/src/toastify.js') }}"></script>
-<script src="{{ asset('mazer/assets/static/js/pages/filepond.js') }}"></script>
 
 <script>
     @if (session()->has('update'))
@@ -424,11 +425,15 @@ function getStatusClass($status) {
         case 'Sesuai':
             return 'status-sesuai';
             break;
+        case 'Belum Ditindaklanjuti':
+            return 'status-belum-ditindaklanjuti';
+            break;
         case 'Tidak Ditindaklanjuti':
-            return 'status-tidak-ditindaklanjuti';
+            return 'status-tidak-dapat-ditindaklanjuti';
             break;
         default:
             return '';
+            break;
     }
 }
 @endphp

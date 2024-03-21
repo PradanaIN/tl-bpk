@@ -61,16 +61,18 @@ class AppServiceProvider extends ServiceProvider
         $roles = [
             'Admin',
             'Pimpinan',
-            'Operator',
+            'Unit Kerja',
             'Tim Koordinator',
             'Ketua Tim Pemanantauan',
             // 'Ketua Tim Pemanantauan II',
             // 'Ketua Tim Pemanantauan III',
             'Anggota Tim Pemanantauan',
+            'Tim Pemanantauan',
             // 'Anggota Tim Pemanantauan II',
             // 'Anggota Tim Pemanantauan III',
             'Pengendali Teknis',
-            'Badan Pemeriksa Keuangan'
+            'Badan Pemeriksa Keuangan',
+            'Super Admin'
         ];
 
         foreach ($roles as $role) {
