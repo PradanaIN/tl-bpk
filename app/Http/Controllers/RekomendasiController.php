@@ -19,9 +19,9 @@ class RekomendasiController extends Controller
     public function index()
     {
         return view('livewire.kelola-rekomendasi.index', [
-            'title' => 'Kelola Rekomendasi',
+            'title' => 'Rekomendasi',
             'rekomendasi' => Rekomendasi::all(),
-
+            'kamus_pemeriksaan' => Kamus::where('jenis', 'Pemeriksaan')->get(),
         ]);
     }
 

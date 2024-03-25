@@ -35,9 +35,47 @@
 @section('section')
 
 <section class="row">
-    <div class="card">
-        <div class="card-header">
+    {{-- <div class="card">
+        <div class="card-body">
+            <form id="filterForm">
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label for="tahun">Tahun Pemeriksaan</label>
+                        <input type="text" class="form-control" id="tahun" placeholder="Masukkan Tahun">
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="jenisPemeriksaan">Jenis Pemeriksaan</label>
+                        <select class="form-select" id="jenisPemeriksaan">
+                            <option value="">Semua</option>
+                            @foreach ($kamus_pemeriksaan as $kamus)
+                            <option value="{{ $kamus->nama }}">{{ $kamus->nama }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="unitKerja">Unit Kerja</label>
+                        <input type="text" class="form-control" id="unitKerja" placeholder="Masukkan Unit Kerja">
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="statusRekomendasi">Status Rekomendasi</label>
+                        <select class="form-select" id="statusRekomendasi">
+                            <option value="">Semua</option>
+                            <option value="Proses">Proses</option>
+                            <option value="Sesuai">Sesuai</option>
+                            <option value="Belum Sesuai">Belum Sesuai</option>
+                            <option value="Tidak Ditindaklanjuti">Tidak Ditindaklanjuti</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="text-end">
+                    <button type="button" class="btn btn-primary" id="applyFilter">Terapkan Filter</button>
+                    <button type="button" class="btn btn-secondary" id="resetFilter">Reset</button>
+                </div>
+            </form>
         </div>
+    </div> --}}
+
+    <div class="card">
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table" id="table1">
@@ -46,7 +84,6 @@
                             <th>No</th>
                             <th>Tahun</th>
                             <th>Pemeriksaan</th>
-                            <th>Temuan</th>
                             <th>Rekomendasi</th>
                             <th>Status Rekomendasi</th>
                             <th>Aksi</th>
@@ -58,7 +95,6 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $rekomendasi->tahun_pemeriksaan }}</td>
                             <td>{{ $rekomendasi->pemeriksaan }}</td>
-                            <td>{{ $rekomendasi->jenis_temuan }}</td>
                             <td>{{ $rekomendasi->rekomendasi }}</td>
                             <td style="text-align:center;">
                                 <span class="status-badge {{ getStatusClass($rekomendasi->status_rekomendasi) }}">{{ $rekomendasi->status_rekomendasi }}</span>
@@ -90,6 +126,46 @@
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
     }, false);
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var tableRows = document.querySelectorAll('.clickable-row');
+
+        function applyFilter() {
+            var tahun = document.getElementById('tahun').value.toLowerCase();
+            var jenisPemeriksaan = document.getElementById('jenisPemeriksaan').value.toLowerCase();
+            var unitKerja = document.getElementById('unitKerja').value.toLowerCase();
+            var statusRekomendasi = document.getElementById('statusRekomendasi').value.toLowerCase();
+
+            tableRows.forEach(function(row) {
+                var rowTahun = row.cells[1].textContent.toLowerCase();
+                var rowJenisPemeriksaan = row.cells[2].textContent.toLowerCase();
+                var rowUnitKerja = row.cells[3].textContent.toLowerCase();
+                var rowStatusRekomendasi = row.cells[4].textContent.toLowerCase();
+
+                var isFiltered =
+                    (tahun === '' || rowTahun.includes(tahun)) &&
+                    (jenisPemeriksaan === '' || rowJenisPemeriksaan.includes(jenisPemeriksaan)) &&
+                    (unitKerja === '' || rowUnitKerja.includes(unitKerja)) &&
+                    (statusRekomendasi === '' || rowStatusRekomendasi.includes(statusRekomendasi));
+
+                row.style.display = isFiltered ? '' : 'none';
+            });
+        }
+
+        document.getElementById('applyFilter').addEventListener('click', function() {
+            applyFilter();
+        });
+
+        document.getElementById('resetFilter').addEventListener('click', function() {
+            document.getElementById('tahun').value = '';
+            document.getElementById('jenisPemeriksaan').value = '';
+            document.getElementById('unitKerja').value = '';
+            document.getElementById('statusRekomendasi').value = '';
+            applyFilter();
+        });
+    });
 </script>
 
     <script>

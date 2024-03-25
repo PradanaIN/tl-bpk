@@ -78,6 +78,11 @@
         justify-content: center;
         align-items: center;
     }
+
+    .form-label {
+    font-weight: bold;
+    }
+
     </style>
 
     @yield('style')
@@ -109,29 +114,29 @@
                                     <div class="offcanvas-body">
                                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                                             <li class="nav-item">
-                                                <a class="nav-link" href="/dashboard"><h6>Dashboard</h6></a>
+                                                <a class="nav-link" id="navbar-link" href="/dashboard"><h6>Dashboard</h6></a>
                                             </li>
                                             @can('Admin')
                                             <li class="nav-item">
-                                                <a class="nav-link" href="/kelola-pengguna"><h6>Kelola Pengguna</h6></a>
+                                                <a class="nav-link" id="navbar-link" href="/kelola-pengguna"><h6>Kelola Pengguna</h6></a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" href="/kelola-kamus"><h6>Kelola Kamus</h6></a>
+                                                <a class="nav-link" id="navbar-link" href="/kelola-kamus"><h6>Kelola Kamus</h6></a>
                                             </li>
                                             @endcan
                                             @canany(['Tim Koordinator', 'Super Admin'])
                                             <li class="nav-item">
-                                                <a class="nav-link" href="/kelola-rekomendasi"><h6>Rekomendasi</h6></a>
+                                                <a class="nav-link" id="navbar-link" href="/kelola-rekomendasi"><h6>Rekomendasi</h6></a>
                                             </li>
                                             @endcan
                                             @canany(['Super Admin', 'Tim Koordinator', 'Unit Kerja'])
                                             <li class="nav-item">
-                                                <a class="nav-link" href="/kelola-tindak-lanjut"><h6>Tindak Lanjut</h6></a>
+                                                <a class="nav-link" id="navbar-link" href="/kelola-tindak-lanjut"><h6>Tindak Lanjut</h6></a>
                                             </li>
                                             @endcan
                                             @canany(['Tim Pemanantauan', 'Super Admin'])
                                             <li class="nav-item">
-                                                <a class="nav-link" href="/identifikasi"><h6>Identifikasi</h6></a>
+                                                <a class="nav-link" id="navbar-link" href="/identifikasi"><h6>Identifikasi</h6></a>
                                             </li>
                                             @endcan
                                         </ul>
@@ -228,6 +233,28 @@
 <script src="{{ asset('mazer/assets/extensions/chart.js/chart.umd.js') }}"></script>
 <script src="{{ asset('mazer/assets/static/js/pages/ui-chartjs.js') }}"></script> --}}
 
+<!-- tinymce -->
+<script src="{{ asset('mazer/assets/extensions/tinymce/tinymce.min.js') }}"></script>
+<script src="{{ asset('mazer/assets/static/js/pages/tinymce.js') }}"></script>
+
+<script>
+    tinymce.init({
+        selector: "textarea",
+        promotion: false,
+        height: 185,
+        plugins: "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+        toolbar: 'undo redo | formatselect | ' +
+            'bold italic backcolor | alignleft aligncenter ' +
+            'alignright alignjustify | bullist numlist outdent indent | ' +
+            'removeformat | help',
+        menubar: "table tools",
+    });
+</script>
+
+<!-- parsley -->
+<script src="{{ asset('mazer/assets/extensions/parsleyjs/parsley.min.js') }}"></script>
+<script src="{{ asset('mazer/assets/static/js/pages/parsley.js"') }}"></script>
+
 <!-- data tables -->
 <script src="{{ asset('mazer/assets/extensions/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('mazer/assets/extensions/datatables.net/js/jquery.dataTables.min.js') }}"></script>
@@ -312,7 +339,7 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    const navLinks = document.querySelectorAll('.nav-link');
+    const navLinks = document.querySelectorAll('#navbar-link');
 
     // Fungsi untuk menambahkan kelas 'active' ke tautan yang diklik
     function setActiveLink(link) {

@@ -42,8 +42,6 @@
 
 <section class="row">
     <div class="card">
-        <div class="card-header">
-        </div>
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table" id="table1">

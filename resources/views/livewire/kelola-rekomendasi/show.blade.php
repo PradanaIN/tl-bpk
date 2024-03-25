@@ -64,132 +64,159 @@
         </div>
     </div>
     <div class="card">
-        <div class="card-header">
-            <h4 class="card-title"><b>A. Detail Pemeriksaan</b></h4>
-        </div>
         <div class="card-body">
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Pemeriksaan</p>
-                </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p>{{ $rekomendasi->pemeriksaan }}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Tahun</p>
-                </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p>{{ $rekomendasi->tahun_pemeriksaan }}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Jenis Pemeriksaan</p>
-                </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p>{{ $rekomendasi->jenis_pemeriksaan }}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Hasil Pemeriksaan</p>
-                </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p>{{ $rekomendasi->hasil_pemeriksaan }}</p>
-                </div>
-            </div>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="pemeriksaan-tab" data-bs-toggle="tab" href="#pemeriksaan" role="tab"
+                        aria-controls="pemeriksaan" aria-selected="true"><h6>Pemeriksaan</h6></a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="rekomendasi-tab" data-bs-toggle="tab" href="#rekomendasi" role="tab"
+                        aria-controls="rekomendasi" aria-selected="false"><h6>Rekomendasi</h6></a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="tindaklanjut-tab" data-bs-toggle="tab" href="#tindaklanjut" role="tab"
+                        aria-controls="tindaklanjut" aria-selected="false"><h6>Tindak Lanjut</h6></a>
+                </li>
+            </ul>
         </div>
-        <div class="card-header" style="margin-top: -35px;">
-            <h4 class="card-title"><b>B. Detail Rekomendasi</b></h4>
-        </div>
+    </div>
+    <div class="card">
         <div class="card-body">
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Jenis Temuan</p>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="pemeriksaan" role="tabpanel" aria-labelledby="pemeriksaan-tab">
+                    {{-- <div class="card-header">
+                        <h4 class="card-title"><b>Detail Pemeriksaan</b></h4>
+                    </div> --}}
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-2">
+                                <p class="fw-bold">Pemeriksaan</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>{{ $rekomendasi->pemeriksaan }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <p class="fw-bold">Tahun</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>{{ $rekomendasi->tahun_pemeriksaan }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <p class="fw-bold">Jenis Pemeriksaan</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>{{ $rekomendasi->jenis_pemeriksaan }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <p class="fw-bold">Hasil Pemeriksaan</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>{{ $rekomendasi->hasil_pemeriksaan }}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p>{{ $rekomendasi->jenis_temuan }}</p>
+                <div class="tab-pane fade" id="rekomendasi" role="tabpanel" aria-labelledby="rekomendasi-tab">
+                    {{-- <div class="card-header">
+                        <h4 class="card-title"><b>Detail Rekomendasi</b></h4>
+                    </div> --}}
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-2">
+                                <p class="fw-bold">Jenis Temuan</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>{{ $rekomendasi->jenis_temuan }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <p class="fw-bold">Uraian Temuan</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>{{ $rekomendasi->uraian_temuan }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <p class="fw-bold">Rekomendasi</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>{{ $rekomendasi->rekomendasi }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <p class="fw-bold">Catatan Rekomendasi</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>{{ $rekomendasi->catatan_rekomendasi }}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Uraian Temuan</p>
-                </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p>{{ $rekomendasi->uraian_temuan }}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Rekomendasi</p>
-                </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p>{{ $rekomendasi->rekomendasi }}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Catatan Rekomendasi</p>
-                </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p>{{ $rekomendasi->catatan_rekomendasi }}</p>
+                <div class="tab-pane fade" id="tindaklanjut" role="tabpanel" aria-labelledby="tindaklanjut-tab">
+                    {{-- <div class="card-header">
+                        <h4 class="card-title"><b>Detail Tindak Lanjut</b></h4>
+                    </div> --}}
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table" id="table1">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Tindak Lanjut</th>
+                                        <th>Unit Kerja</th>
+                                        <th>Tim Pemantauan</th>
+                                        <th>Tenggat Waktu</th>
+                                        <th>Dokumen</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($rekomendasi->tindakLanjut as $index => $tindakLanjut)
+                                        <tr>
+                                            <td style="text-align:center;">{{ $loop->iteration }}</td>
+                                            <td >{{ $tindakLanjut->tindak_lanjut }}</td>
+                                            <td >{{ $tindakLanjut->unit_kerja }}</td>
+                                            <td>{{ $tindakLanjut->tim_pemantauan }}</td>
+                                            <td style="text-align:center;">{{ \Carbon\Carbon::parse($tindakLanjut->tenggat_waktu )->format(' d F Y') }}</td>
+                                            <td style="text-align:center;">
+                                                @if ($tindakLanjut->dokumen_tindak_lanjut === null || $tindakLanjut->dokumen_tindak_lanjut === 'Belum Diunggah!')
+                                                    <span class="badge bg-danger">Belum Diunggah!</span>
+                                                @else
+                                                <a href="{{ asset('uploads/tindak_lanjut/' . $tindakLanjut->dokumen_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Dokumen">
+                                                    <i class="bi bi-download"></i>
+                                                </a>
+                                                @endif
+                                            </td>
+                                            <td style="text-align:center;">
+                                                <span class="status-badge {{ getStatusClass($tindakLanjut->status_tindak_lanjut) }}">{{ $tindakLanjut->status_tindak_lanjut }}</span>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="card-header" style="margin-top: -35px;">
-            <h4 class="card-title"><b>C. Tindak Lanjut</b></h4>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive" style="border: 1px solid black; padding: 10px;">
-                <table class="table" id="table1">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Tindak Lanjut</th>
-                            <th>Unit Kerja</th>
-                            <th>Tim Pemantauan</th>
-                            <th>Tenggat Waktu</th>
-                            <th>Dokumen</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($rekomendasi->tindakLanjut as $index => $tindakLanjut)
-                            <tr>
-                                <td style="text-align:center;">{{ $loop->iteration }}</td>
-                                <td >{{ $tindakLanjut->tindak_lanjut }}</td>
-                                <td >{{ $tindakLanjut->unit_kerja }}</td>
-                                <td>{{ $tindakLanjut->tim_pemantauan }}</td>
-                                <td style="text-align:center;">{{ \Carbon\Carbon::parse($tindakLanjut->tenggat_waktu )->format(' d F Y') }}</td>
-                                <td style="text-align:center;">
-                                    @if ($tindakLanjut->dokumen_tindak_lanjut === null || $tindakLanjut->dokumen_tindak_lanjut === 'Belum Diunggah!')
-                                        <span class="badge bg-danger">Belum Diunggah!</span>
-                                    @else
-                                    <a href="{{ asset('uploads/tindak_lanjut/' . $tindakLanjut->dokumen_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Dokumen">
-                                        <i class="bi bi-download"></i>
-                                    </a>
-                                    @endif
-                                </td>
-                                <td style="text-align:center;">
-                                    <span class="status-badge {{ getStatusClass($tindakLanjut->status_tindak_lanjut) }}">{{ $tindakLanjut->status_tindak_lanjut }}</span>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
     </div>
 </section>
 
