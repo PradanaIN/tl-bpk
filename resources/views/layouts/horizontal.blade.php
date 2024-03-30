@@ -253,7 +253,7 @@
 
 <!-- parsley -->
 <script src="{{ asset('mazer/assets/extensions/parsleyjs/parsley.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/static/js/pages/parsley.js"') }}"></script>
+<script src="{{ asset('mazer/assets/static/js/pages/parsley.js') }}"></script>
 
 <!-- data tables -->
 <script src="{{ asset('mazer/assets/extensions/jquery/jquery.min.js') }}"></script>

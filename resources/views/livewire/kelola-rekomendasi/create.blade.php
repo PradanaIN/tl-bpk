@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="card">
-                <form class="form form-vertical" action="/kelola-rekomendasi" method="post" data-parsley-validate>
+                <form class="form form-vertical" action="/kelola-rekomendasi" method="post" data-parsley-validate id="formTambahRekomendasi">
                     @csrf
                     <div class="card-body">
                         <div class="tab-content" id="myTabContent">
@@ -102,33 +102,70 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="tindaklanjut" role="tabpanel" aria-labelledby="tindaklanjut-tab">
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <button type="button" class="btn btn-warning counter" disabled>
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-clipboard-data me-2 mb-3"></i>
+                                                <h6 class="mb-0 text-black">Jumlah Tindak Lanjut: <span id="repeaterCount">0</span></h6>
+                                            </div>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6 text-end">
+                                        <button type="button" class="btn btn-primary btn-tambah-repeater">
+                                            <i class="bi bi-plus"></i>&nbsp;Tambah Tindak Lanjut
+                                        </button>
+                                    </div>
+                                </div>
                                 <div id="formContainer">
-                                    <table class="table" id="formTable">
-                                        <thead>
-                                            <tr>
-                                                <th>Tindak Lanjut</th>
-                                                <th>Unit Kerja</th>
-                                                <th>Tim Pemantauan</th>
-                                                <th>Tenggat Waktu</th>
-                                                <th class="text-align-center">
-                                                    <button type="button" class="btn btn-primary btn-tambah-row">
-                                                        <i class="bi bi-plus"></i>
-                                                    </button>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
+                                    <div class="form-repeater mb-3">
+                                        <div class="form-row mb-3">
+                                            <div class="col-12 form-group mandatory">
+                                                <label class="form-label" for="tindak_lanjut">Tindak Lanjut</label>
+                                                <textarea class="form-control" rows="3" name="tindak_lanjut[]" placeholder="Tindak lanjut" data-parsley-required="true" required></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-4 mb-3 form-group mandatory">
+                                                <label class="form-label" for="unit_kerja">PIC Unit Kerja</label>
+                                                <select class="form-select select-unit-kerja" name="unit_kerja[]">
+                                                    <option value="">Pilih PIC Unit Kerja</option>
+                                                    @foreach ($unit_kerja as $unit)
+                                                    <option value="{{ $unit->nama }}">{{ $unit->nama }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4 mb-3 form-group mandatory">
+                                                <label class="form-label" for="tim_pemantauan">PIC Tim Pemantauan</label>
+                                                <select class="form-select select-tim-pemantauan" name="tim_pemantauan[]">
+                                                    <option value="">Pilih PIC Tim Pemantauan</option>
+                                                    <option value="Tim Pemantauan Wilayah I">Tim Pemantauan Wilayah I</option>
+                                                    <option value="Tim Pemantauan Wilayah II">Tim Pemantauan Wilayah II</option>
+                                                    <option value="Tim Pemantauan Wilayah III">Tim Pemantauan Wilayah III</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4 mb-3 form-group mandatory">
+                                                <label class="form-label" for="tenggat_waktu">Tenggat Waktu</label>
+                                                <input type="date" class="form-control" name="tenggat_waktu[]" placeholder="Tenggat Waktu">
+                                            </div>
+                                        </div>
+                                        <div class="form-row mb-3">
+                                            <div class="col-12 text-end">
+                                                <button type="button" class="btn btn-danger btn-delete-repeater" onclick="confirmDelete(event)">
+                                                    <i class="bi bi-trash"></i> Hapus
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 d-flex justify-between justify-content-end mt-5">
-                            <button type="reset" class="btn btn-light-secondary me-3 mb-1">Batal</button>
-                            <button type="submit" class="btn btn-primary me-1 mb-1">Tambah</button>
-                        </div>
                     </div>
                 </form>
+            </div>
+            <div class="col-12 d-flex justify-between justify-content-end mt-3 mb-3" id="formActions">
+                <button type="reset" class="btn btn-light-secondary me-3 mb-1" id="btnBatal">Batal</button>
+                <button type="submit" class="btn btn-primary me-1 mb-1" id="btnTambah">Tambah</button>
             </div>
         </div>
     </div>
@@ -148,108 +185,117 @@
     }, false);
 </script>
 
+<script>
+    // Sembunyikan tombol-tombol "Batal" dan "Tambah" secara default
+    document.getElementById('btnBatal').style.display = 'none';
+    document.getElementById('btnTambah').style.display = 'none';
+
+    // Fungsi untuk menampilkan tombol-tombol "Batal" dan "Tambah"
+    function showFormActions() {
+        document.getElementById('btnBatal').style.display = 'block';
+        document.getElementById('btnTambah').style.display = 'block';
+    }
+
+    // Fungsi untuk menyembunyikan tombol-tombol "Batal" dan "Tambah"
+    function hideFormActions() {
+        document.getElementById('btnBatal').style.display = 'none';
+        document.getElementById('btnTambah').style.display = 'none';
+    }
+
+    // Event listener untuk saat tab berubah
+    document.querySelectorAll('.nav-link').forEach(tab => {
+        tab.addEventListener('click', function() {
+            if (this.getAttribute('aria-controls') === 'tindaklanjut') {
+                showFormActions(); // Jika tab "Tindak Lanjut" aktif, tampilkan tombol-tombol
+            } else {
+                hideFormActions(); // Jika tab lain aktif, sembunyikan tombol-tombol
+            }
+        });
+    });
+
+    // Fungsi untuk menangani klik tombol Batal
+    document.getElementById('btnBatal').addEventListener('click', function() {
+        // Lakukan reset form
+        document.getElementById('formTambahRekomendasi').reset();
+    });
+
+    // Fungsi untuk menangani klik tombol Tambah
+    document.getElementById('btnTambah').addEventListener('click', function() {
+        // Lakukan pengiriman data form
+        document.getElementById('formTambahRekomendasi').submit();
+    });
+</script>
+
+
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-{{-- <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var formTableBody = document.querySelector('#formTable tbody');
-        addFormRow(formTableBody); // Tambahkan satu baris form di awal
-
-        // Event listener untuk tombol Tambah
-        document.querySelector('.btn-tambah-row').addEventListener('click', function() {
-            addFormRow(formTableBody); // Tambahkan baris form ketika tombol Tambah diklik
-        });
-
-        // Event listener untuk tombol Hapus
-        document.querySelectorAll('.btn-delete-row').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                this.closest('tr').remove(); // Hapus baris form saat tombol Hapus diklik
-            });
-        });
-
-        // Inisialisasi Select2 setelah menambahkan baris
-        $('.select-unit-kerja').select2({
-            theme: 'bootstrap-5',
-            placeholder: 'Pilih PIC Unit Kerja',
-        });
-
-        $('.select-tim-pemantauan').select2({
-            theme: 'bootstrap-5',
-            placeholder: 'Pilih PIC Tim Pemantauan'
-        });
-    });
-
-    function addFormRow(tableBody) {
-        var formItem = `
-            <tr>
-                <td>
-                    <input type="text" class="form-control" name="tindak_lanjut[]" placeholder="Tindak lanjut">
-                </td>
-                <td>
-                    <select class="form-select select-unit-kerja" name="unit_kerja[]">
-                        <option value="">Pilih PIC Unit Kerja</option>
-                        @foreach ($unit_kerja as $unit)
-                            <option value="{{ $unit->nama }}">{{ $unit->nama }}</option>
-                        @endforeach
-                    </select>
-                </td>
-                <td>
-                    <select class="form-select select-tim-pemantauan" name="tim_pemantauan[]">
-                        <option value="">Pilih PIC Tim Pemantauan</option>
-                        <option value="Tim Pemantauan Wilayah I">Tim Pemantauan Wilayah I</option>
-                        <option value="Tim Pemantauan Wilayah II">Tim Pemantauan Wilayah II</option>
-                        <option value="Tim Pemantauan Wilayah III">Tim Pemantauan Wilayah III</option>
-                    </select>
-                </td>
-                <td>
-                    <input type="date" class="form-control" name="tenggat_waktu[]" placeholder="Tenggat Waktu">
-                </td>
-                <td>
-                    <button type="button" class="btn btn-danger btn-delete-row">
-                        <i class="bi bi-trash"></i> Hapus
-                    </button>
-                </td>
-            </tr>`;
-        tableBody.insertAdjacentHTML('beforeend', formItem);
-    }
-</script> --}}
-
 <script>
-    document.querySelector('.btn-tambah-row').addEventListener('click', function() {
-        var formTableBody = document.querySelector('#formTable tbody');
-        var formItem = `
-            <tr>
-                <td>
-                    <input type="text" class="form-control" name="tindak_lanjut[]" placeholder="Tindak lanjut">
-                </td>
-                <td>
-                    <select class="form-select select-unit-kerja" name="unit_kerja[]">
-                        <option value="">Pilih PIC Unit Kerja</option>
-                        @foreach ($unit_kerja as $unit)
-                            <option value="{{ $unit->nama }}">{{ $unit->nama }}</option>
-                        @endforeach
-                    </select>
-                </td>
-                <td>
-                    <select class="form-select select-tim-pemantauan" name="tim_pemantauan[]">
-                        <option value="">Pilih PIC Tim Pemantauan</option>
-                        <option value="Tim Pemantauan Wilayah I">Tim Pemantauan Wilayah I</option>
-                        <option value="Tim Pemantauan Wilayah II">Tim Pemantauan Wilayah II</option>
-                        <option value="Tim Pemantauan Wilayah III">Tim Pemantauan Wilayah III</option>
-                    </select>
-                </td>
-                <td>
-                    <input type="date" class="form-control" name="tenggat_waktu[]" placeholder="Tenggat Waktu">
-                </td>
-                <td>
-                    <button type="button" class="btn btn-danger btn-delete-row">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </td>
-            </tr>`;
-        formTableBody.insertAdjacentHTML('beforeend', formItem);
+    // Fungsi untuk menghitung jumlah form repeater yang tersedia
+    function countRepeater() {
+        var repeaterCount = document.querySelectorAll('.form-repeater').length;
+        document.getElementById('repeaterCount').textContent = repeaterCount;
+    }
 
-        // Inisialisasi Select2 setelah menambahkan baris
+    // Event listener untuk menambahkan formulir tindak lanjut baru
+    document.querySelector('.btn-tambah-repeater').addEventListener('click', function() {
+        var formContainer = document.getElementById('formContainer');
+        var formItem = `
+            <div class="form-repeater mb-3">
+                <div class="form-row mb-3">
+                    <div class="col-12 form-group mandatory">
+                        <label class="form-label" for="tindak_lanjut">Tindak Lanjut</label>
+                        <textarea class="form-control" rows="3" name="tindak_lanjut[]" placeholder="Tindak lanjut" data-parsley-required="true" required></textarea>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4 mb-3 form-group mandatory">
+                        <label class="form-label" for="unit_kerja">PIC Unit Kerja</label>
+                        <select class="form-select select-unit-kerja" name="unit_kerja[]">
+                            <option value="">Pilih PIC Unit Kerja</option>
+                            @foreach ($unit_kerja as $unit)
+                            <option value="{{ $unit->nama }}">{{ $unit->nama }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3 form-group mandatory">
+                        <label class="form-label" for="tim_pemantauan">PIC Tim Pemantauan</label>
+                        <select class="form-select select-tim-pemantauan" name="tim_pemantauan[]">
+                            <option value="">Pilih PIC Tim Pemantauan</option>
+                            <option value="Tim Pemantauan Wilayah I">Tim Pemantauan Wilayah I</option>
+                            <option value="Tim Pemantauan Wilayah II">Tim Pemantauan Wilayah II</option>
+                            <option value="Tim Pemantauan Wilayah III">Tim Pemantauan Wilayah III</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3 form-group mandatory">
+                        <label class="form-label" for="tenggat_waktu">Tenggat Waktu</label>
+                        <input type="date" class="form-control" name="tenggat_waktu[]" placeholder="Tenggat Waktu">
+                    </div>
+                </div>
+                <div class="form-row mb-3">
+                    <div class="col-12 text-end">
+                        <button type="button" class="btn btn-danger btn-delete-repeater" onclick="confirmDelete(event)">
+                            <i class="bi bi-trash"></i> Hapus
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        formContainer.insertAdjacentHTML('beforeend', formItem);
+
+        // Inisialisasi TinyMCE di textarea yang baru ditambahkan
+        tinymce.init({
+            selector: "textarea",
+            promotion: false,
+            height: 185,
+            plugins: "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+            toolbar: 'undo redo | formatselect | ' +
+                'bold italic backcolor | alignleft aligncenter ' +
+                'alignright alignjustify | bullist numlist outdent indent | ' +
+                'removeformat | help',
+            menubar: "table tools",
+        });
+
+        // Initialize Select2 after adding the new repeater item
         $('.select-unit-kerja').select2({
             theme: 'bootstrap-5',
             placeholder: 'Pilih PIC Unit Kerja',
@@ -260,13 +306,36 @@
             placeholder: 'Pilih PIC Tim Pemantauan'
         });
 
-        // Event listener untuk tombol Hapus
-        document.querySelectorAll('.btn-delete-row').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                this.closest('tr').remove();
-            });
-        });
+        // Mengupdate counter setelah menambahkan repeater baru
+        countRepeater();
     });
+
+    // Fungsi untuk menampilkan pesan konfirmasi sebelum menghapus repeater
+    function confirmDelete(event) {
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: 'Anda tidak akan dapat mengembalikan tindakan ini!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Jika pengguna menekan tombol Ya pada pesan konfirmasi, hapus elemen form repeater
+                event.target.closest('.form-repeater').remove();
+                // Mengupdate counter setelah menghapus repeater
+                countRepeater();
+            } else {
+                // Jika pengguna memilih opsi "Batal", hentikan aksi default (tidak hapus)
+                event.preventDefault();
+            }
+        });
+    }
+
+    // Memanggil fungsi countRepeater saat halaman dimuat
+    countRepeater();
 </script>
 
 <script>
