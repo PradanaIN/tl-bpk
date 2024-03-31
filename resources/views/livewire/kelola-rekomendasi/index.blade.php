@@ -95,7 +95,7 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $rekomendasi->tahun_pemeriksaan }}</td>
                             <td>{{ $rekomendasi->pemeriksaan }}</td>
-                            <td>{{ $rekomendasi->rekomendasi }}</td>
+                            <td>{!! $rekomendasi->rekomendasi !!}</td>
                             <td style="text-align:center;">
                                 <span class="status-badge {{ getStatusClass($rekomendasi->status_rekomendasi) }}">{{ $rekomendasi->status_rekomendasi }}</span>
                             </td>

@@ -66,223 +66,258 @@
         </div>
     </div>
     <div class="card">
-        <div class="card-header">
-            <h4 class="card-title"><b>A. Detail Pemeriksaan</b></h4>
-        </div>
         <div class="card-body">
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Pemeriksaan</p>
-                </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p>{{ $rekomendasi->pemeriksaan }}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Tahun</p>
-                </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p>{{ $rekomendasi->tahun_pemeriksaan }}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Jenis Pemeriksaan</p>
-                </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p>{{ $rekomendasi->jenis_pemeriksaan }}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Hasil Pemeriksaan</p>
-                </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p>{{ $rekomendasi->hasil_pemeriksaan }}</p>
-                </div>
-            </div>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="pemeriksaan-tab" data-bs-toggle="tab" href="#pemeriksaan" role="tab"
+                        aria-controls="pemeriksaan" aria-selected="true"><h6>Pemeriksaan</h6></a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="rekomendasi-tab" data-bs-toggle="tab" href="#rekomendasi" role="tab"
+                        aria-controls="rekomendasi" aria-selected="false"><h6>Rekomendasi</h6></a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="tindaklanjut-tab" data-bs-toggle="tab" href="#tindaklanjut" role="tab"
+                        aria-controls="tindaklanjut" aria-selected="false"><h6>Tindak Lanjut</h6></a>
+                </li>
+                @if ($tindak_lanjut->status_tindak_lanjut !== 'Proses')
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="identifikasi-tab" data-bs-toggle="tab" href="#identifikasi" role="tab"
+                        aria-controls="identifikasi" aria-selected="false"><h6>Hasil Identifikasi</h6></a>
+                </li>
+                @endif
+            </ul>
         </div>
-
-        <div class="card-header" style="margin-top: -35px;">
-            <h4 class="card-title"><b>B. Detail Rekomendasi</b></h4>
-        </div>
+    </div>
+    <div class="card">
         <div class="card-body">
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Jenis Temuan</p>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade" id="pemeriksaan" role="tabpanel" aria-labelledby="pemeriksaan-tab">
+                    {{-- <div class="card-header">
+                        <h4 class="card-title"><b>Detail Pemeriksaan</b></h4>
+                    </div> --}}
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-2">
+                                <p class="fw-bold">Pemeriksaan</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>{{ $rekomendasi->pemeriksaan }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <p class="fw-bold">Tahun</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>{{ $rekomendasi->tahun_pemeriksaan }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <p class="fw-bold">Jenis Pemeriksaan</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>{{ $rekomendasi->jenis_pemeriksaan }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <p class="fw-bold">Hasil Pemeriksaan</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>{!! $rekomendasi->hasil_pemeriksaan !!}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p>{{ $rekomendasi->jenis_temuan }}</p>
+                <div class="tab-pane fade" id="rekomendasi" role="tabpanel" aria-labelledby="rekomendasi-tab">
+                    {{-- <div class="card-header">
+                        <h4 class="card-title"><b>Detail Rekomendasi</b></h4>
+                    </div> --}}
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-2">
+                                <p class="fw-bold">Jenis Temuan</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>{{ $rekomendasi->jenis_temuan }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <p class="fw-bold">Uraian Temuan</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>{!! $rekomendasi->uraian_temuan !!}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <p class="fw-bold">Rekomendasi</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>{!! $rekomendasi->rekomendasi !!}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <p class="fw-bold">Catatan Rekomendasi</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>{!! $rekomendasi->catatan_rekomendasi !!}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Uraian Temuan</p>
+                <div class="tab-pane fade show active" id="tindaklanjut" role="tabpanel" aria-labelledby="tindaklanjut-tab">
+                    {{-- <div class="card-header">
+                        <h4 class="card-title"><b>Tindak Lanjut</b></h4>
+                    </div> --}}
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-3">
+                                <p class="fw-bold">Tindak Lanjut</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>{!! $tindak_lanjut->tindak_lanjut !!}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                <p class="fw-bold">Unit Kerja</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>{{ $tindak_lanjut->unit_kerja }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                <p class="fw-bold">Tim Pemantauan</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>{{ $tindak_lanjut->tim_pemantauan }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                <p class="fw-bold">Tenggat Waktu</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>{{ $tindak_lanjut->tenggat_waktu }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                <p class="fw-bold">Dokumen Tindak Lanjut</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                @if ($tindak_lanjut->dokumen_tindak_lanjut === null || $tindak_lanjut->dokumen_tindak_lanjut === 'Belum Diunggah!')
+                                    <p><span class="status-badge bg-warning text-black">{{ $tindak_lanjut->dokumen_tindak_lanjut }}</span></p>
+                                @else
+                                    <p><span class="status-badge bg-success text-white">{{ $tindak_lanjut->dokumen_tindak_lanjut }}</span></p>
+                                @endif
+                            </div>
+                            <div class="col-auto">
+                                <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->dokumen_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Dokumen">
+                                    <i class="bi bi-download"></i>
+                                    &nbsp;Unduh Dokumen
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                <p class="fw-bold">Detail Dokumen Tindak Lanjut</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>{!! $tindak_lanjut->detail_dokumen_tindak_lanjut !!}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                <p class="fw-bold">Informasi Lainnya</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>Diunggah oleh {{ $tindak_lanjut->upload_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at )->format(' d F Y')}}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p>{{ $rekomendasi->uraian_temuan }}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Rekomendasi</p>
-                </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p>{{ $rekomendasi->rekomendasi }}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Catatan Rekomendasi</p>
-                </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p>{{ $rekomendasi->catatan_rekomendasi }}</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="card-header" style="margin-top: -35px;">
-            <h4 class="card-title"><b>C. Tindak Lanjut</b></h4>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Tindak Lanjut</p>
-                </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p>{{ $tindak_lanjut->tindak_lanjut }}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Unit Kerja</p>
-                </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p>{{ $tindak_lanjut->unit_kerja }}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Tim Pemantauan</p>
-                </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p>{{ $tindak_lanjut->tim_pemantauan }}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Tenggat Waktu</p>
-                </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p>{{ $tindak_lanjut->tenggat_waktu }}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Dokumen Tindak Lanjut</p>
-                </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    @if ($tindak_lanjut->dokumen_tindak_lanjut === null || $tindak_lanjut->dokumen_tindak_lanjut === 'Belum Diunggah!')
-                        <p><span class="status-badge bg-warning text-black">{{ $tindak_lanjut->dokumen_tindak_lanjut }}</span></p>
-                    @else
-                        <p><span class="status-badge bg-success text-white">{{ $tindak_lanjut->dokumen_tindak_lanjut }}</span></p>
-                    @endif
-                </div>
-                <div class="col-auto">
-                    <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->dokumen_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Dokumen">
-                        <i class="bi bi-download"></i>
-                        &nbsp;Unduh Dokumen
-                    </a>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Detail Dokumen Tindak Lanjut</p>
-                </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p>{{ $tindak_lanjut->detail_dokumen_tindak_lanjut }}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Informasi Lainnya</p>
-                </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p>Diunggah oleh {{ $tindak_lanjut->upload_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at )->format(' d F Y')}}</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="card-header" style="margin-top: -35px;">
-            <h4 class="card-title"><b>D. Hasil Identifikasi Tindak Lanjut</b></h4>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Status Identifikasi</p>
-                </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p><span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }}">{{ $tindak_lanjut->status_tindak_lanjut }}</span></p>
-                </div>
-                <div class="col-auto d-flex ms-auto">
-                        @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi'))
-                        <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tambah Hasil Identifikasi">
-                            <i class="bi bi-plus"></i>
-                            &nbsp;Tambah Identifikasi
-                        </button>
-                        @else
-                        <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Hasil Identifikasi">
-                            <i class="bi bi-pencil"></i>
-                            &nbsp;Ubah Identifikasi
-                        </button>
+                <div class="tab-pane fade" id="identifikasi" role="tabpanel" aria-labelledby="identifikasi-tab">
+                @if ($tindak_lanjut->status_tindak_lanjut !== 'Proses')
+                    {{-- <div class="card-header">
+                        <h4 class="card-title"><b>Hasil Identifikasi</b></h4>
+                    </div> --}}
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-3">
+                                <p class="fw-bold">Status Identifikasi</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p><span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }}">{{ $tindak_lanjut->status_tindak_lanjut }}</span></p>
+                            </div>
+                            <div class="col-auto d-flex ms-auto">
+                                    @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi'))
+                                    <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tambah Hasil Identifikasi">
+                                        <i class="bi bi-plus"></i>
+                                        &nbsp;Tambah Identifikasi
+                                    </button>
+                                    @else
+                                    <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Hasil Identifikasi">
+                                        <i class="bi bi-pencil"></i>
+                                        &nbsp;Ubah Identifikasi
+                                    </button>
+                                    @endif
+                                </button>
+                            </div>
+                        </div>
+                        @if ($tindak_lanjut->catatan_tindak_lanjut !== '' && $tindak_lanjut->catatan_tindak_lanjut !== null)
+                        <div class="row">
+                            <div class="col-3">
+                                <p class="fw-bold">Catatan Identifikasi</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>{!! $tindak_lanjut->catatan_tindak_lanjut !!}</p>
+                            </div>
+                        </div>
                         @endif
-                    </button>
-                </div>
+                        @if ($tindak_lanjut->status_tindak_lanjut !== 'Identifikasi')
+                        <div class="row">
+                            <div class="col-3">
+                                <p class="fw-bold">Informasi Lainnya</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>Didentifikasi oleh {{ $tindak_lanjut->status_tindak_lanjut_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at )->format(' d F Y')}}</p>
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                @endif
             </div>
-            @if ($tindak_lanjut->catatan_tindak_lanjut !== '' && $tindak_lanjut->catatan_tindak_lanjut !== null)
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Catatan Identifikasi</p>
-                </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p>{{ $tindak_lanjut->catatan_tindak_lanjut }}</p>
-                </div>
-            </div>
-            @endif
-            @if ($tindak_lanjut->status_tindak_lanjut !== 'Identifikasi')
-            <div class="row">
-                <div class="col-3">
-                    <p class="fw-bold">Informasi Lainnya</p>
-                </div>
-                <div class="col-auto">:</div>
-                <div class="col">
-                    <p>Didentifikasi oleh {{ $tindak_lanjut->status_tindak_lanjut_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at )->format(' d F Y')}}</p>
-                </div>
-            </div>
-            @endif
+        </div>
     </div>
 </section>
 
-@endsection
 
+@endsection
 
 <!-- modal upload -->
 <div class="modal fade text-left" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
@@ -311,7 +346,7 @@
                 <input type="hidden" name="upload_by" value="{{ $tindak_lanjut->upload_by }}">
                 <input type="hidden" name="upload_at" value="{{ $tindak_lanjut->upload_at }}">
 
-                    <div class="form-group">
+                    <div class="form-group mandatory">
                         <label for="dokumen_tindak_lanjut" class="form-label">Hasil Identifikasi</label>
                         <select class="form-select" name="status_tindak_lanjut" id="status_tindak_lanjut" required>
                             <option value="Identifikasi" {{ $tindak_lanjut->status_tindak_lanjut === 'Identifikasi' ? 'selected' : '' }}>Proses Identifikasi</option>
@@ -321,7 +356,7 @@
                             <option value="Tidak Ditindaklanjuti" {{ $tindak_lanjut->status_tindak_lanjut === 'Tidak Ditindaklanjuti' ? 'selected' : '' }}>Tidak Ditindaklanjuti</option>
                         </select>
                     </div>
-                    <div class="form-group" id="catatan_tindak_lanjut_group" style="display: none;">
+                    <div class="form-group mandatory" id="catatan_tindak_lanjut_group" style="display: none;">
                         <label for="dokumen_tindak_lanjut" class="form-label">Catatan Identifikasi</label>
                         <div class="card-body">
                             <textarea class="form-control" name="catatan_tindak_lanjut" id="catatan_tindak_lanjut" rows="5" required></textarea>

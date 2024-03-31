@@ -62,8 +62,8 @@
                         @foreach ($tindak_lanjut as $tindak_lanjut)
                             <tr class="clickable-row" data-href="/kelola-tindak-lanjut/{{ $tindak_lanjut->id }}">
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $tindak_lanjut->rekomendasi->rekomendasi }}</td>
-                                <td>{{ $tindak_lanjut->tindak_lanjut }}</td>
+                                <td>{!! $tindak_lanjut->rekomendasi->rekomendasi !!}</td>
+                                <td>{!! $tindak_lanjut->tindak_lanjut !!}</td>
                                 {{-- <td>{{ $tindak_lanjut->unit_kerja }}</td>
                                 <td>{{ $tindak_lanjut->tim_pemantauan }}</td> --}}
                                 <td>{{ \Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu )->format(' d F Y')}}</td>

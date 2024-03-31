@@ -122,7 +122,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{{ $rekomendasi->hasil_pemeriksaan }}</p>
+                                <p>{!! $rekomendasi->hasil_pemeriksaan !!}</p>
                             </div>
                         </div>
                     </div>
@@ -147,7 +147,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{{ $rekomendasi->uraian_temuan }}</p>
+                                <p>{!! $rekomendasi->uraian_temuan !!}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -156,7 +156,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{{ $rekomendasi->rekomendasi }}</p>
+                                <p>{!! $rekomendasi->rekomendasi !!}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -165,7 +165,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{{ $rekomendasi->catatan_rekomendasi }}</p>
+                                <p>{!! $rekomendasi->catatan_rekomendasi !!}</p>
                             </div>
                         </div>
                     </div>
@@ -192,7 +192,7 @@
                                     @foreach($rekomendasi->tindakLanjut as $index => $tindakLanjut)
                                         <tr>
                                             <td style="text-align:center;">{{ $loop->iteration }}</td>
-                                            <td >{{ $tindakLanjut->tindak_lanjut }}</td>
+                                            <td >{!! $tindakLanjut->tindak_lanjut !!}</td>
                                             <td >{{ $tindakLanjut->unit_kerja }}</td>
                                             <td>{{ $tindakLanjut->tim_pemantauan }}</td>
                                             <td style="text-align:center;">{{ \Carbon\Carbon::parse($tindakLanjut->tenggat_waktu )->format(' d F Y') }}</td>

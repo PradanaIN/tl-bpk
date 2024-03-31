@@ -70,7 +70,7 @@
         <div class="card-body">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link active" id="pemeriksaan-tab" data-bs-toggle="tab" href="#pemeriksaan" role="tab"
+                    <a class="nav-link" id="pemeriksaan-tab" data-bs-toggle="tab" href="#pemeriksaan" role="tab"
                         aria-controls="pemeriksaan" aria-selected="true"><h6>Pemeriksaan</h6></a>
                 </li>
                 <li class="nav-item" role="presentation">
@@ -78,7 +78,7 @@
                         aria-controls="rekomendasi" aria-selected="false"><h6>Rekomendasi</h6></a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="tindaklanjut-tab" data-bs-toggle="tab" href="#tindaklanjut" role="tab"
+                    <a class="nav-link active" id="tindaklanjut-tab" data-bs-toggle="tab" href="#tindaklanjut" role="tab"
                         aria-controls="tindaklanjut" aria-selected="false"><h6>Tindak Lanjut</h6></a>
                 </li>
                 @if ($tindak_lanjut->status_tindak_lanjut !== 'Proses')
@@ -93,7 +93,7 @@
     <div class="card">
         <div class="card-body">
             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="pemeriksaan" role="tabpanel" aria-labelledby="pemeriksaan-tab">
+                <div class="tab-pane fade" id="pemeriksaan" role="tabpanel" aria-labelledby="pemeriksaan-tab">
                     {{-- <div class="card-header">
                         <h4 class="card-title"><b>Detail Pemeriksaan</b></h4>
                     </div> --}}
@@ -131,7 +131,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{{ $rekomendasi->hasil_pemeriksaan }}</p>
+                                <p>{!! $rekomendasi->hasil_pemeriksaan !!}</p>
                             </div>
                         </div>
                     </div>
@@ -156,7 +156,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{{ $rekomendasi->uraian_temuan }}</p>
+                                <p>{!! $rekomendasi->uraian_temuan !!}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -165,7 +165,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{{ $rekomendasi->rekomendasi }}</p>
+                                <p>{!! $rekomendasi->rekomendasi !!}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -174,12 +174,12 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{{ $rekomendasi->catatan_rekomendasi }}</p>
+                                <p>{!! $rekomendasi->catatan_rekomendasi !!}</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="tindaklanjut" role="tabpanel" aria-labelledby="tindaklanjut-tab">
+                <div class="tab-pane fade show active" id="tindaklanjut" role="tabpanel" aria-labelledby="tindaklanjut-tab">
                     {{-- <div class="card-header">
                         <h4 class="card-title"><b>Tindak Lanjut</b></h4>
                     </div> --}}
@@ -190,7 +190,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{{ $tindak_lanjut->tindak_lanjut }}</p>
+                                <p>{!! $tindak_lanjut->tindak_lanjut !!}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -264,7 +264,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{{ $tindak_lanjut->detail_dokumen_tindak_lanjut }}</p>
+                                <p>{!! $tindak_lanjut->detail_dokumen_tindak_lanjut !!}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -302,7 +302,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{{ $tindak_lanjut->catatan_tindak_lanjut }}</p>
+                                <p>{!! $tindak_lanjut->catatan_tindak_lanjut !!}</p>
                             </div>
                         </div>
                         @endif
@@ -352,14 +352,14 @@
                 <input type="hidden" name="tenggat_waktu" value="{{ $tindak_lanjut->tenggat_waktu }}">
                 <input type="hidden" name="rekomendasi_id" value="{{ $tindak_lanjut->rekomendasi_id }}">
 
-                    <div class="form-group">
+                    <div class="form-group mandatory">
                         <label for="dokumen_tindak_lanjut" class="form-label">Dokumen Tindak Lanjut</label>
-                        <input type="file" class="multiple-files-filepond" multiple name="dokumen_tindak_lanjut">
+                        <input type="file" class="multiple-files-filepond" multiple name="dokumen_tindak_lanjut" required>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mandatory">
                         <label for="dokumen_tindak_lanjut" class="form-label">Detail Dokumen Tindak Lanjut</label>
                         <div class="card-body">
-                            <textarea class="form-control" name="detail_dokumen_tindak_lanjut" id="detail_dokumen_tindak_lanjut" rows="3" required></textarea>
+                            <textarea class="form-control" name="detail_dokumen_tindak_lanjut" id="detail_dokumen_tindak_lanjut" rows="3" required data-parsley-required="true"></textarea>
                         </div>
                     </div>
                 </div>

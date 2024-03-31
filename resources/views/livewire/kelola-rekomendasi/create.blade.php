@@ -163,8 +163,9 @@
                     </div>
                 </form>
             </div>
-            <div class="col-12 d-flex justify-between justify-content-end mt-3 mb-3" id="formActions">
-                <button type="reset" class="btn btn-light-secondary me-3 mb-1" id="btnBatal">Batal</button>
+            <div class="col-12 d-flex justify-between justify-content-end mt-2 mb-5" id="formActions">
+                <button type="button" class="btn btn-secondary me-3 mb-1" id="btnBack"><i class="bi bi-arrow-left"></i>&nbsp;Back</button>
+                <button type="button" class="btn btn-primary me-1 mb-1" id="btnNext">Next&nbsp;<i class="bi bi-arrow-right"></i></button>
                 <button type="submit" class="btn btn-primary me-1 mb-1" id="btnTambah">Tambah</button>
             </div>
         </div>
@@ -183,41 +184,6 @@
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
     }, false);
-</script>
-
-<script>
-    // Sembunyikan tombol-tombol "Batal" dan "Tambah" secara default
-    document.getElementById('btnBatal').style.display = 'none';
-    document.getElementById('btnTambah').style.display = 'none';
-
-    // Fungsi untuk menampilkan tombol-tombol "Batal" dan "Tambah"
-    function showFormActions() {
-        document.getElementById('btnBatal').style.display = 'block';
-        document.getElementById('btnTambah').style.display = 'block';
-    }
-
-    // Fungsi untuk menyembunyikan tombol-tombol "Batal" dan "Tambah"
-    function hideFormActions() {
-        document.getElementById('btnBatal').style.display = 'none';
-        document.getElementById('btnTambah').style.display = 'none';
-    }
-
-    // Event listener untuk saat tab berubah
-    document.querySelectorAll('.nav-link').forEach(tab => {
-        tab.addEventListener('click', function() {
-            if (this.getAttribute('aria-controls') === 'tindaklanjut') {
-                showFormActions(); // Jika tab "Tindak Lanjut" aktif, tampilkan tombol-tombol
-            } else {
-                hideFormActions(); // Jika tab lain aktif, sembunyikan tombol-tombol
-            }
-        });
-    });
-
-    // Fungsi untuk menangani klik tombol Batal
-    document.getElementById('btnBatal').addEventListener('click', function() {
-        // Lakukan reset form
-        document.getElementById('formTambahRekomendasi').reset();
-    });
 
     // Fungsi untuk menangani klik tombol Tambah
     document.getElementById('btnTambah').addEventListener('click', function() {
@@ -226,6 +192,67 @@
     });
 </script>
 
+<script>
+    // Sembunyikan tombol-tombol "Back" dan "Next" secara default
+    document.getElementById('btnBack').style.display = 'none';
+    document.getElementById('btnNext').style.display = 'none';
+    document.getElementById('btnTambah').style.display = 'none';
+
+    // Fungsi untuk menampilkan tombol "Next" pada tab "Pemeriksaan" dan mengatur fungsinya
+    function showPemeriksaanActions() {
+        document.getElementById('btnNext').style.display = 'block';
+        document.getElementById('btnBack').style.display = 'none';
+        document.getElementById('btnTambah').style.display = 'none';
+        document.getElementById('btnNext').addEventListener('click', function() {
+            // Ketika tombol "Next" pada tab "Pemeriksaan" diklik, pindahkan ke tab "Rekomendasi"
+            document.getElementById('rekomendasi-tab').click();
+        });
+    }
+
+    // Fungsi untuk menampilkan tombol "Back" dan "Next" pada tab "Rekomendasi" dan mengatur fungsinya
+    function showRekomendasiActions() {
+        document.getElementById('btnBack').style.display = 'block';
+        document.getElementById('btnNext').style.display = 'block';
+        document.getElementById('btnTambah').style.display = 'none';
+        document.getElementById('btnBack').addEventListener('click', function() {
+            // Ketika tombol "Back" pada tab "Rekomendasi" diklik, pindahkan ke tab "Pemeriksaan"
+            document.getElementById('pemeriksaan-tab').click();
+        });
+        document.getElementById('btnNext').addEventListener('click', function() {
+            // Ketika tombol "Next" pada tab "Rekomendasi" diklik, pindahkan ke tab "Tindak Lanjut"
+            document.getElementById('tindaklanjut-tab').click();
+        });
+    }
+
+    // Fungsi untuk menampilkan tombol "Back" dan "Tambah" pada tab "Tindak Lanjut" dan mengatur fungsinya
+    function showTindakLanjutActions() {
+        document.getElementById('btnBack').style.display = 'block';
+        document.getElementById('btnTambah').style.display = 'block';
+        document.getElementById('btnNext').style.display = 'none';
+        document.getElementById('btnBack').addEventListener('click', function() {
+            // Ketika tombol "Back" pada tab "Tindak Lanjut" diklik, pindahkan ke tab "Rekomendasi"
+            document.getElementById('rekomendasi-tab').click();
+        });
+    }
+
+    // Panggil fungsi showPemeriksaanActions() saat halaman dimuat untuk menampilkan tombol "Next" pada awal reload
+    window.onload = function() {
+        showPemeriksaanActions();
+    }
+
+    // Event listener untuk saat tab berubah
+    document.querySelectorAll('.nav-link').forEach(tab => {
+        tab.addEventListener('click', function() {
+            if (this.getAttribute('aria-controls') === 'pemeriksaan') {
+                showPemeriksaanActions(); // Jika tab "Pemeriksaan" aktif, tampilkan tombol "Next" saja
+            } else if (this.getAttribute('aria-controls') === 'rekomendasi') {
+                showRekomendasiActions(); // Jika tab "Rekomendasi" aktif, tampilkan tombol "Back" dan "Next"
+            } else if (this.getAttribute('aria-controls') === 'tindaklanjut') {
+                showTindakLanjutActions(); // Jika tab "Tindak Lanjut" aktif, tampilkan tombol "Back" dan "Tambah"
+            }
+        });
+    });
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
@@ -338,7 +365,7 @@
     countRepeater();
 </script>
 
-<script>
+{{-- <script>
     // warning batal button
     document.querySelector('.btn-light-secondary').addEventListener('click', function(e) {
         Swal.fire({
@@ -354,6 +381,6 @@
             }
         })
     });
-</script>
+</script> --}}
 
 @endsection
