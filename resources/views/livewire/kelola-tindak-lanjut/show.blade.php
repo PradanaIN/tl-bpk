@@ -53,15 +53,15 @@
             </a>
         </div>
         <div class="col-auto d-flex ms-auto">
-                @if (($tindak_lanjut->dokumen_tindak_lanjut === null || $tindak_lanjut->dokumen_tindak_lanjut === 'Belum Diunggah!'))
+                @if (($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!'))
                 <button class="btn btn-warning" id="btnStatus">
                     <i class="bi bi-exclamation-triangle"></i>
-                    &nbsp;Dokumen Belum Diunggah!
+                    &nbsp;Bukti Belum Diunggah!
                 </button>
                 @else
                 <button class="btn btn-success" id="btnStatus" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->format('H:i, d M Y') }}">
                     <i class="bi bi-check-square"></i>
-                    &nbsp;Dokumen diunggah {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->diffForHumans() }}
+                    &nbsp;Bukti Diunggah {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->diffForHumans() }}
                 </button>
                 @endif
         </div>
@@ -222,33 +222,33 @@
                         </div>
                         <div class="row">
                             <div class="col-2">
-                                <p class="fw-bold">Dokumen Tindak Lanjut</p>
+                                <p class="fw-bold">Bukti Tindak Lanjut</p>
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                @if ($tindak_lanjut->dokumen_tindak_lanjut === null || $tindak_lanjut->dokumen_tindak_lanjut === 'Belum Diunggah!')
-                                    <p><span class="status-badge bg-warning text-black">{{ $tindak_lanjut->dokumen_tindak_lanjut }}</span></p>
+                                @if ($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
+                                    <p><span class="status-badge bg-warning text-black">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span></p>
                                 @else
-                                    <p><span class="status-badge bg-success text-white">{{ $tindak_lanjut->dokumen_tindak_lanjut }}</span></p>
+                                    <p><span class="status-badge bg-success text-white">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span></p>
                                 @endif
                             </div>
                             @canany(['Unit Kerja', 'Super Admin'])
                             <div class="col-auto d-flex ms-auto">
-                                    @if (($tindak_lanjut->dokumen_tindak_lanjut === null || $tindak_lanjut->dokumen_tindak_lanjut === 'Belum Diunggah!'))
+                                    @if (($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!'))
                                     <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unggah Dokumen">
                                         <i class="bi bi-plus"></i>
-                                        &nbsp;Tambah Dokumen
+                                        &nbsp;Tambah Bukti
                                     </button>
                                     @else
                                     <div class="col-auto d-flex ms-auto">
                                         <div class="col-auto">
-                                            <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->dokumen_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Dokumen">
+                                            <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->bukti_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Bukti">
                                                 <i class="bi bi-download"></i>
-                                                &nbsp;Unduh Dokumen
+                                                &nbsp;Unduh Bukti
                                             </a>
-                                            <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Dokumen">
+                                            <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Bukti">
                                                 <i class="bi bi-pencil"></i>
-                                                &nbsp;Ubah Dokumen
+                                                &nbsp;Ubah Bukti
                                             </button>
                                         </div>
                                     </div>
@@ -256,15 +256,15 @@
                             </div>
                             @endcan
                         </div>
-                        @if ($tindak_lanjut->dokumen_tindak_lanjut === null || $tindak_lanjut->dokumen_tindak_lanjut === 'Belum Diunggah!')
+                        @if ($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
                         @else
                         <div class="row">
                             <div class="col-2">
-                                <p class="fw-bold">Detail Dokumen Tindak Lanjut</p>
+                                <p class="fw-bold">Detail Bukti Tindak Lanjut</p>
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $tindak_lanjut->detail_dokumen_tindak_lanjut !!}</p>
+                                <p>{!! $tindak_lanjut->detail_bukti_tindak_lanjut !!}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -330,10 +330,10 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                @if ($tindak_lanjut->dokumen_tindak_lanjut === null || $tindak_lanjut->dokumen_tindak_lanjut === 'Belum Diunggah!')
-                <h4 class="modal-title" id="uploadModalLabel">Tambah Dokumen Tindak Lanjut</h4>
+                @if ($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
+                <h4 class="modal-title" id="uploadModalLabel">Tambah Bukti Tindak Lanjut</h4>
                 @else
-                <h4 class="modal-title" id="uploadModalLabel">Ubah Dokumen Tindak Lanjut</h4>
+                <h4 class="modal-title" id="uploadModalLabel">Ubah Bukti Tindak Lanjut</h4>
                 @endif
                 <button type="button" class="close" data-bs-dismiss="modal"
                     aria-label="Close">
@@ -353,13 +353,13 @@
                 <input type="hidden" name="rekomendasi_id" value="{{ $tindak_lanjut->rekomendasi_id }}">
 
                     <div class="form-group mandatory">
-                        <label for="dokumen_tindak_lanjut" class="form-label">Dokumen Tindak Lanjut</label>
-                        <input type="file" class="multiple-files-filepond" multiple name="dokumen_tindak_lanjut" required>
+                        <label for="bukti_tindak_lanjut" class="form-label">Bukti Tindak Lanjut</label>
+                        <input type="file" class="multiple-files-filepond" multiple name="bukti_tindak_lanjut" required>
                     </div>
                     <div class="form-group mandatory">
-                        <label for="dokumen_tindak_lanjut" class="form-label">Detail Dokumen Tindak Lanjut</label>
+                        <label for="bukti_tindak_lanjut" class="form-label">Detail Bukti Tindak Lanjut</label>
                         <div class="card-body">
-                            <textarea class="form-control" name="detail_dokumen_tindak_lanjut" id="detail_dokumen_tindak_lanjut" rows="3" required data-parsley-required="true"></textarea>
+                            <textarea class="form-control" name="detail_bukti_tindak_lanjut" id="detail_bukti_tindak_lanjut" rows="3" required data-parsley-required="true"></textarea>
                         </div>
                     </div>
                 </div>
@@ -368,7 +368,7 @@
                         <i class="bx bx-x d-block d-sm-none"></i>
                         <span class="d-none d-sm-block">Batal</span>
                     </button>
-                    @if ($tindak_lanjut->dokumen_tindak_lanjut === null || $tindak_lanjut->dokumen_tindak_lanjut === 'Belum Diunggah!')
+                    @if ($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
                     <button type="submit" class="btn btn-primary ms-1" data-bs-dismiss="modal">
                         <i class="bx bx-x d-block d-sm-none"></i>
                         <span class="d-none d-sm-block">Tambah</span>

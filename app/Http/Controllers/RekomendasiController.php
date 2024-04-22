@@ -7,6 +7,7 @@ use App\Models\UnitKerja;
 use App\Models\Rekomendasi;
 use App\Models\TindakLanjut;
 use Illuminate\Http\Request;
+use App\Models\BuktiTindakLanjut;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\DetailRekomendasiExport;
@@ -65,14 +66,15 @@ class RekomendasiController extends Controller
             $rekomendasi = Rekomendasi::create($validatedData);
 
             foreach ($request->tindak_lanjut as $key => $tindak_lanjut) {
+                // Buat entri baru dalam tabel TindakLanjut
                 TindakLanjut::create([
                     'rekomendasi_id' => $rekomendasi->id,
                     'tindak_lanjut' => $tindak_lanjut,
                     'unit_kerja' => $request->unit_kerja[$key],
                     'tim_pemantauan' => $request->tim_pemantauan[$key],
                     'tenggat_waktu' => $request->tenggat_waktu[$key],
-                    'dokumen_tindak_lanjut' => 'Belum Diunggah!',
-                    'status_tindak_lanjut' => 'Proses'
+                    'status_tindak_lanjut' => 'Proses',
+                    'bukti_tindak_lanjut' => 'Belum Diunggah!',
                 ]);
             }
 
@@ -139,29 +141,30 @@ class RekomendasiController extends Controller
         $rekomendasi->update($validatedData);
 
         foreach ($request->tindak_lanjut as $key => $tindak_lanjut) {
-            if ($request->id[$key] == null) {
+            if (isset($request->id[$key]) && $request->id[$key] != null) {
+                TindakLanjut::where('id', $request->id[$key])->update([
+                    'tindak_lanjut' => $tindak_lanjut,
+                    'unit_kerja' => $request->unit_kerja[$key],
+                    'tim_pemantauan' => $request->tim_pemantauan[$key],
+                    'tenggat_waktu' => $request->tenggat_waktu[$key],
+                    'bukti_tindak_lanjut' => $request->bukti_tindak_lanjut[$key],
+                    'status_tindak_lanjut' => $request->status_tindak_lanjut[$key],
+                ]);
+            } else {
                 TindakLanjut::create([
                     'rekomendasi_id' => $rekomendasi->id,
                     'tindak_lanjut' => $tindak_lanjut,
                     'unit_kerja' => $request->unit_kerja[$key],
                     'tim_pemantauan' => $request->tim_pemantauan[$key],
                     'tenggat_waktu' => $request->tenggat_waktu[$key],
-                    'dokumen_tindak_lanjut' => 'Belum Diunggah!',
+                    'bukti_tindak_lanjut' => 'Belum Diunggah!',
                     'status_tindak_lanjut' => 'Proses',
-                ]);
-            } else {
-                TindakLanjut::where('id', $request->id[$key])->update([
-                    'tindak_lanjut' => $tindak_lanjut,
-                    'unit_kerja' => $request->unit_kerja[$key],
-                    'tim_pemantauan' => $request->tim_pemantauan[$key],
-                    'tenggat_waktu' => $request->tenggat_waktu[$key],
-                    'dokumen_tindak_lanjut' => $request->dokumen_tindak_lanjut[$key],
-                    'status_tindak_lanjut' => $request->status_tindak_lanjut[$key],
                 ]);
             }}
 
         return redirect('/kelola-rekomendasi/'.$rekomendasi->id)->with('update', 'Data berhasil diubah!');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -169,6 +172,11 @@ class RekomendasiController extends Controller
     public function destroy(Rekomendasi $rekomendasi)
     {
 
+        BuktiTindakLanjut::where('tindak_lanjut_id', function ($query) use ($rekomendasi) {
+            $query->select('id')
+                ->from('tindak_lanjut')
+                ->where('rekomendasi_id', $rekomendasi->id);
+        })->delete();
         TindakLanjut::where('rekomendasi_id', $rekomendasi->id)->delete();
         Rekomendasi::destroy($rekomendasi->id);
 

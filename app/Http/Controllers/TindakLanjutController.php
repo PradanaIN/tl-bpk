@@ -62,7 +62,7 @@ class TindakLanjutController extends Controller
      */
     public function update(Request $request, TindakLanjut $tindakLanjut)
     {
-        $file = $request->file('dokumen_tindak_lanjut');
+        $file = $request->file('bukti_tindak_lanjut');
         $currentTime = now()->format('dmY');
         $fileName = $currentTime . '_' . $file->getClientOriginalName();
         $file->move(public_path('uploads/tindak_lanjut'), $fileName);
@@ -72,8 +72,8 @@ class TindakLanjutController extends Controller
             'tindak_lanjut' => $tindakLanjut->tindak_lanjut,
             'unit_kerja' => $tindakLanjut->unit_kerja,
             'tim_pemantauan' => $tindakLanjut->tim_pemantauan,
-            'dokumen_tindak_lanjut' => $fileName,
-            'detail_dokumen_tindak_lanjut' => $request->detail_dokumen_tindak_lanjut,
+            'bukti_tindak_lanjut' => $fileName,
+            'detail_bukti_tindak_lanjut' => $request->detail_bukti_tindak_lanjut,
             'upload_by' => auth()->user()->nama,
             'upload_at' => now(),
             'status_tindak_lanjut' => 'Identifikasi',

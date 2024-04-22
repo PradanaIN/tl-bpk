@@ -139,6 +139,11 @@
                                                 <a class="nav-link" id="navbar-link" href="/identifikasi"><h6>Identifikasi</h6></a>
                                             </li>
                                             @endcan
+                                            @canany(['Super Admin', 'Tim Koordinator'])
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="navbar-link" href="/pemutakhiran-status"><h6>Pemutakhiran</h6></a>
+                                            </li>
+                                            @endcan
                                         </ul>
                                     </div>
                                 </div>

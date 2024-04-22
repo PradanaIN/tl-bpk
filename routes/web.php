@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RekomendasiController;
 use App\Http\Controllers\TindakLanjutController;
 use App\Http\Controllers\IdentifikasiDokumenController;
+use App\Http\Controllers\PemutakhiranController;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,6 +82,14 @@ Route::middleware(['auth', 'prevent-back-button'])->group(function () {
         Route::get('/identifikasi/{tindak_lanjut:id}', [IdentifikasiDokumenController::class, 'show'])->middleware('permission:view identifikasi');
         Route::get('/identifikasi/{tindak_lanjut:id}/edit', [IdentifikasiDokumenController::class, 'edit'])->middleware('permission:edit identifikasi');
         Route::put('/identifikasi/{tindak_lanjut:id}', [IdentifikasiDokumenController::class, 'update'])->middleware('permission:edit identifikasi');
+    });
+
+    Route::middleware(['role:Pimpinan|Tim Koordinator|Super Admin'])->group(function () {
+        // Pemutakhiran Status
+        Route::get('pemutakhiran-status', [PemutakhiranController::class, 'index']);
+        Route::get('pemutakhiran-status/{tindak_lanjut:id}', [PemutakhiranController::class, 'show']);
+        Route::get('pemutakhiran-status/{tindak_lanjut:id}/edit', [PemutakhiranController::class, 'edit']);
+        Route::put('pemutakhiran-status/{tindak_lanjut:id}', [PemutakhiranController::class, 'update']);
     });
 
     // Error 404

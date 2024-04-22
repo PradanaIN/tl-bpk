@@ -197,10 +197,10 @@
                                             <td>{{ $tindakLanjut->tim_pemantauan }}</td>
                                             <td style="text-align:center;">{{ \Carbon\Carbon::parse($tindakLanjut->tenggat_waktu )->format(' d F Y') }}</td>
                                             <td style="text-align:center;">
-                                                @if ($tindakLanjut->dokumen_tindak_lanjut === null || $tindakLanjut->dokumen_tindak_lanjut === 'Belum Diunggah!')
+                                                @if ($tindakLanjut->bukti_tindak_lanjut === null || $tindakLanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
                                                     <span class="badge bg-danger">Belum Diunggah!</span>
                                                 @else
-                                                <a href="{{ asset('uploads/tindak_lanjut/' . $tindakLanjut->dokumen_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Dokumen">
+                                                <a href="{{ asset('uploads/tindak_lanjut/' . $tindakLanjut->bukti_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Bukti">
                                                     <i class="bi bi-download"></i>
                                                 </a>
                                                 @endif

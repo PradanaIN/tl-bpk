@@ -34,4 +34,10 @@ class Rekomendasi extends Model
     {
         return $this->hasMany(TindakLanjut::class);
     }
+
+    // Rekomendasi memiliki satu bukti input SIPTL
+    public function buktiInputSIPTL()
+    {
+        return $this->hasOne(BuktiInputSIPTL::class);
+    }
 }

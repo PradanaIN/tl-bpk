@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('unit_kerja');
             $table->string('tim_pemantauan');
             $table->date('tenggat_waktu');
-            $table->string('dokumen_tindak_lanjut')->nullable();
-            $table->string('detail_dokumen_tindak_lanjut')->nullable();
+            $table->string('bukti_tindak_lanjut')->nullable();
+            $table->text('detail_bukti_tindak_lanjut')->nullable();
             $table->string('upload_by')->nullable();
             $table->dateTime('upload_at')->nullable();
             $table->string('status_tindak_lanjut')->default('Proses');

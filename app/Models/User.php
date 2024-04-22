@@ -21,6 +21,7 @@ class User extends Authenticatable
     protected $fillable = [
         'nama',
         'unit_kerja',
+        'unit_kerja_id',
         'role',
         'email',
         'password',
@@ -50,7 +51,5 @@ class User extends Authenticatable
     {
         return $this->belongsTo(UnitKerja::class);
     }
-
-
 
 }

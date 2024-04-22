@@ -127,7 +127,7 @@
                         <li class="sidebar-item">
                             <a href="/identifikasi" class='sidebar-link'>
                                 <i class="bi bi-search-heart"></i>
-                                <span>Identifikasi Dokumen Tindak Lanjut</span>
+                                <span>Identifikasi Bukti Tindak Lanjut</span>
                             </a>
                         </li>
                         <li class="sidebar-item">

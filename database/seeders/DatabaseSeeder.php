@@ -109,6 +109,7 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password'),
             'unit_kerja' => 'Inspektorat Utama',
             'role' => 'Super Admin',
+            'unit_kerja_id' => '546'
         ]);
 
         // Assign Role to User

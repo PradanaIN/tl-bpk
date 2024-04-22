@@ -221,30 +221,30 @@
                         </div>
                         <div class="row">
                             <div class="col-3">
-                                <p class="fw-bold">Dokumen Tindak Lanjut</p>
+                                <p class="fw-bold">Bukti Tindak Lanjut</p>
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                @if ($tindak_lanjut->dokumen_tindak_lanjut === null || $tindak_lanjut->dokumen_tindak_lanjut === 'Belum Diunggah!')
-                                    <p><span class="status-badge bg-warning text-black">{{ $tindak_lanjut->dokumen_tindak_lanjut }}</span></p>
+                                @if ($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
+                                    <p><span class="status-badge bg-warning text-black">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span></p>
                                 @else
-                                    <p><span class="status-badge bg-success text-white">{{ $tindak_lanjut->dokumen_tindak_lanjut }}</span></p>
+                                    <p><span class="status-badge bg-success text-white">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span></p>
                                 @endif
                             </div>
                             <div class="col-auto">
-                                <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->dokumen_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Dokumen">
+                                <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->bukti_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Bukti">
                                     <i class="bi bi-download"></i>
-                                    &nbsp;Unduh Dokumen
+                                    &nbsp;Unduh Bukti
                                 </a>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-3">
-                                <p class="fw-bold">Detail Dokumen Tindak Lanjut</p>
+                                <p class="fw-bold">Detail Bukti Tindak Lanjut</p>
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $tindak_lanjut->detail_dokumen_tindak_lanjut !!}</p>
+                                <p>{!! $tindak_lanjut->detail_bukti_tindak_lanjut !!}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -341,13 +341,13 @@
                 <input type="hidden" name="tim_pemantauan" value="{{ $tindak_lanjut->tim_pemantauan }}">
                 <input type="hidden" name="tenggat_waktu" value="{{ $tindak_lanjut->tenggat_waktu }}">
                 <input type="hidden" name="rekomendasi_id" value="{{ $tindak_lanjut->rekomendasi_id }}">
-                <input type="hidden" name="dokumen_tindak_lanjut" value="{{ $tindak_lanjut->dokumen_tindak_lanjut }}">
-                <input type="hidden" name="detail_dokumen_tindak_lanjut" value="{{ $tindak_lanjut->detail_dokumen_tindak_lanjut }}">
+                <input type="hidden" name="bukti_tindak_lanjut" value="{{ $tindak_lanjut->bukti_tindak_lanjut }}">
+                <input type="hidden" name="detail_bukti_tindak_lanjut" value="{{ $tindak_lanjut->detail_bukti_tindak_lanjut }}">
                 <input type="hidden" name="upload_by" value="{{ $tindak_lanjut->upload_by }}">
                 <input type="hidden" name="upload_at" value="{{ $tindak_lanjut->upload_at }}">
 
                     <div class="form-group mandatory">
-                        <label for="dokumen_tindak_lanjut" class="form-label">Hasil Identifikasi</label>
+                        <label for="bukti_tindak_lanjut" class="form-label">Hasil Identifikasi</label>
                         <select class="form-select" name="status_tindak_lanjut" id="status_tindak_lanjut" required>
                             <option value="Identifikasi" {{ $tindak_lanjut->status_tindak_lanjut === 'Identifikasi' ? 'selected' : '' }}>Proses Identifikasi</option>
                             <option value="Sesuai" {{ $tindak_lanjut->status_tindak_lanjut === 'Sesuai' ? 'selected' : '' }}>Sesuai</option>
@@ -357,7 +357,7 @@
                         </select>
                     </div>
                     <div class="form-group mandatory" id="catatan_tindak_lanjut_group" style="display: none;">
-                        <label for="dokumen_tindak_lanjut" class="form-label">Catatan Identifikasi</label>
+                        <label for="bukti_tindak_lanjut" class="form-label">Catatan Identifikasi</label>
                         <div class="card-body">
                             <textarea class="form-control" name="catatan_tindak_lanjut" id="catatan_tindak_lanjut" rows="5" required></textarea>
                         </div>

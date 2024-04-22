@@ -13,8 +13,8 @@ class IdentifikasiDokumenController extends Controller
      */
     public function index()
     {
-        $tindak_lanjut = TindakLanjut::whereNotNull('dokumen_tindak_lanjut')
-            ->where('dokumen_tindak_lanjut', '!=', 'Belum Diunggah!')
+        $tindak_lanjut = TindakLanjut::whereNotNull('bukti_tindak_lanjut')
+            ->where('bukti_tindak_lanjut', '!=', 'Belum Diunggah!')
             ->where('status_tindak_lanjut', '!=', 'Proses')
             ->get();
 
@@ -74,8 +74,8 @@ class IdentifikasiDokumenController extends Controller
             'unit_kerja' => $tindakLanjut->unit_kerja,
             'tim_pemantauan' => $tindakLanjut->tim_pemantauan,
             'tenggat_waktu' => $tindakLanjut->tenggat_waktu,
-            'dokumen_tindak_lanjut' => $tindakLanjut->dokumen_tindak_lanjut,
-            'detail_dokumen_tindak_lanjut' => $tindakLanjut->detail_dokumen_tindak_lanjut,
+            'bukti_tindak_lanjut' => $tindakLanjut->bukti_tindak_lanjut,
+            'detail_bukti_tindak_lanjut' => $tindakLanjut->detail_bukti_tindak_lanjut,
             // 'upload_by' => auth()->user()->name,
             'upload_by' => $tindakLanjut->upload_by,
             'upload_at' => $tindakLanjut->upload_at,

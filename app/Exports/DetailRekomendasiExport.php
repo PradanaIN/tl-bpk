@@ -49,7 +49,7 @@ class DetailRekomendasiExport implements FromCollection, WithHeadings
                 'Unit Kerja' => $tindak->unit_kerja,
                 'Tim Pemantauan' => $tindak->tim_pemantauan,
                 'Tenggat Waktu' => $tindak->tenggat_waktu,
-                'Dokumen Tindak Lanjut' => $tindak->dokumen_tindak_lanjut,
+                'Bukti Tindak Lanjut' => $tindak->bukti_tindak_lanjut,
                 'Status Tindak Lanjut' => $tindak->status_tindak_lanjut,
             ]);
         }
@@ -74,7 +74,7 @@ class DetailRekomendasiExport implements FromCollection, WithHeadings
             'Unit Kerja',
             'Tim Pemantauan',
             'Tenggat Waktu',
-            'Dokumen Tindak Lanjut',
+            'Bukti Tindak Lanjut',
             'Status Tindak Lanjut',
         ];
     }

@@ -127,7 +127,7 @@
                                     @foreach($rekomendasi->tindakLanjut as $index => $tindakLanjut)
                                     <input type="hidden" name="id[]" value="{{ $tindakLanjut->id }}">
                                     <input type="hidden" name="status_tindak_lanjut[]" value="{{ $tindakLanjut->status_tindak_lanjut }}">
-                                    <input type="hidden" name="dokumen_tindak_lanjut[]" value="{{ $tindakLanjut->dokumen_tindak_lanjut }}">
+                                    <input type="hidden" name="bukti_tindak_lanjut[]" value="{{ $tindakLanjut->bukti_tindak_lanjut }}">
                                     <div class="form-repeater mb-3">
                                         <div class="form-row mb-3">
                                             <div class="col-12 form-group mandatory">
