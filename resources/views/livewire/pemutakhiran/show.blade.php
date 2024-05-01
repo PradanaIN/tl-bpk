@@ -47,15 +47,26 @@
             </a>
         </div>
         <div class="col-auto d-flex ms-auto">
-            @if (($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!'))
-            <button class="btn btn-warning" id="btnStatus">
+            @if (($rekomendasi->bukti_input_siptl === null || $rekomendasi->bukti_input_siptl === 'Belum Diunggah!'))
+            <button class="btn btn-warning" id="btnStatusBuktiInput">
                 <i class="bi bi-exclamation-triangle"></i>
                 &nbsp;Bukti Belum Diunggah!
             </button>
             @else
-            <button class="btn btn-success" id="btnStatus" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->format('H:i, d M Y') }}">
+            <button class="btn btn-success" id="btnStatusBuktiInput" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($rekomendasi->upload_at)->format('H:i, d M Y') }}">
                 <i class="bi bi-check-square"></i>
-                &nbsp;Bukti Diunggah {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->diffForHumans() }}
+                &nbsp;Bukti Diunggah {{ \Carbon\Carbon::parse($rekomendasi->upload_at)->diffForHumans() }}
+            </button>
+            @endif
+            @if (($rekomendasi->status_rekomendasi === 'Proses' ))
+            <button class="btn btn-warning" id="btnStatusPemutakhiran">
+                <i class="bi bi-exclamation-triangle"></i>
+                &nbsp;Rekomendasi Belum Dimutakhirkan!
+            </button>
+            @else
+            <button class="btn btn-success" id="btnStatusPemutakhiran" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($rekomendasi->upload_at)->format('H:i, d M Y') }}">
+                <i class="bi bi-check-square"></i>
+                &nbsp;Dimutakhirkan {{ \Carbon\Carbon::parse($rekomendasi->update_at)->diffForHumans() }}
             </button>
             @endif
         </div>
@@ -64,7 +75,7 @@
         <div class="card-body">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link active" id="pemeriksaan-tab" data-bs-toggle="tab" href="#pemeriksaan" role="tab"
+                    <a class="nav-link" id="pemeriksaan-tab" data-bs-toggle="tab" href="#pemeriksaan" role="tab"
                         aria-controls="pemeriksaan" aria-selected="true"><h6>Pemeriksaan</h6></a>
                 </li>
                 <li class="nav-item" role="presentation">
@@ -75,13 +86,21 @@
                     <a class="nav-link" id="tindaklanjut-tab" data-bs-toggle="tab" href="#tindaklanjut" role="tab"
                         aria-controls="tindaklanjut" aria-selected="false"><h6>Tindak Lanjut</h6></a>
                 </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="bukti_input_siptl-tab" data-bs-toggle="tab" href="#bukti_input_siptl" role="tab"
+                        aria-controls="bukti_input_siptl" aria-selected="false"><h6>Bukti Input SIPTL</h6></a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="pemutakhiran_status-tab" data-bs-toggle="tab" href="#pemutakhiran_status" role="tab"
+                        aria-controls="pemutakhiran_status" aria-selected="false"><h6>Pemutakhiran Status</h6></a>
+                </li>
             </ul>
         </div>
     </div>
     <div class="card">
         <div class="card-body">
             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="pemeriksaan" role="tabpanel" aria-labelledby="pemeriksaan-tab">
+                <div class="tab-pane fade" id="pemeriksaan" role="tabpanel" aria-labelledby="pemeriksaan-tab">
                     {{-- <div class="card-header">
                         <h4 class="card-title"><b>Detail Pemeriksaan</b></h4>
                     </div> --}}
@@ -212,6 +231,104 @@
                         </div>
                     </div>
                 </div>
+                <div class="tab-pane fade" id="bukti_input_siptl" role="tabpanel" aria-labelledby="bukti_input_siptl-tab">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-2">
+                                <p class="fw-bold">Bukti Input SIPTL</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                @if ($rekomendasi->bukti_input_siptl === null || $rekomendasi->bukti_input_siptl === 'Belum Diunggah!')
+                                    <span class="badge bg-danger">Belum Diunggah!</span>
+                                @else
+                                    <a href="{{ asset('uploads/bukti_input_siptl/' . $rekomendasi->bukti_input_siptl) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Bukti">
+                                        <i class="bi bi-download"></i>
+                                    </a>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-2">
+                                <p class="fw-bold">Tanggal Input SIPTL</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>{{ \Carbon\Carbon::parse($rekomendasi->tanggal_input_siptl)->format('d F Y') }}</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-2">
+                                <p class="fw-bold">Catatan Input SIPTL</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>{!! $rekomendasi->catatan_bukti_input_siptl !!}</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-2">
+                                <p class="fw-bold">Informasi Lainnya</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>{!! $rekomendasi->upload_by !!}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade show active" id="pemutakhiran_status" role="tabpanel" aria-labelledby="pemutakhiran_status-tab">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-3">
+                                <p class="fw-bold">Status Rekomendasi</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p><span class="status-badge {{ getStatusClass($rekomendasi->status_rekomendasi) }}">{{ $rekomendasi->status_rekomendasi }}</span></p>
+                            </div>
+                            <div class="col-auto d-flex ms-auto">
+                                    @if (($rekomendasi->status_rekomendasi === null || $rekomendasi->status_rekomendasi === 'Proses'))
+                                    <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tambah Status Pemutakhiran">
+                                        <i class="bi bi-plus"></i>
+                                        &nbsp;Tambah Pemutakhiran
+                                    </button>
+                                    @else
+                                    <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Status Pemutakhiran">
+                                        <i class="bi bi-pencil"></i>
+                                        &nbsp;Ubah Pemutakhiran
+                                    </button>
+                                    @endif
+                                </button>
+                            </div>
+                        </div>
+                        @if ($rekomendasi->catatan_pemutakhiran !== '' && $rekomendasi->catatan_pemutakhiran !== null)
+                        <div class="row">
+                            <div class="col-3">
+                                <p class="fw-bold">Catatan Pemutakhiran</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>{!! $rekomendasi->catatan_pemutakhiran !!}</p>
+                            </div>
+                        </div>
+                        @endif
+                        @if ($rekomendasi->status_rekomendasi !== 'Proses')
+                        <div class="row">
+                            <div class="col-3">
+                                <p class="fw-bold">Informasi Lainnya</p>
+                            </div>
+                            <div class="col-auto">:</div>
+                            <div class="col">
+                                <p>Dimutakhirkan oleh {{ $rekomendasi->pemutakhiran_by }} pada {{ \Carbon\Carbon::parse($rekomendasi->pemutakhiran_at )->format(' d F Y')}}</p>
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -219,8 +336,125 @@
 
 @endsection
 
+<!-- modal upload -->
+<div class="modal fade text-left" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadModalLabel">Pemutakhiran Status Rekomendasi</h5>
+                <button type="button" class="close" data-bs-dismiss="modal"
+                    aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <form action="/pemutakhiran-status/{{ $rekomendasi->id }}" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    @csrf
+                    @method('put')
+                    <div class="form-group mandatory">
+                        <label for="status_rekomendasi" class="form-label">Status Rekomendasi</label>
+                        <select class="form-select" name="status_rekomendasi" id="status_rekomendasi" required>
+                            <option value="Proses" {{ $rekomendasi->status_rekomendasi === 'Proses' ? 'selected' : '' }}>Proses</option>
+                            <option value="Sesuai" {{ $rekomendasi->status_rekomendasi === 'Sesuai' ? 'selected' : '' }}>Sesuai</option>
+                            <option value="Belum Sesuai" {{ $rekomendasi->status_rekomendasi === 'Belum Sesuai' ? 'selected' : '' }}>Belum Sesuai</option>
+                            <option value="Belum Ditindaklanjuti" {{ $rekomendasi->status_rekomendasi === 'Belum Ditindaklanjuti' ? 'selected' : '' }}>Belum Ditindaklanjuti</option>
+                            <option value="Tidak Ditindaklanjuti" {{ $rekomendasi->status_rekomendasi === 'Tidak Ditindaklanjuti' ? 'selected' : '' }}>Tidak Ditindaklanjuti</option>
+                        </select>
+                    </div>
+                    <div class="form-group mandatory" id="catatan_pemutakhiran_group" style="display: none;">
+                        <label for="catatan_pemutakhiran" class="form-label">Catatan Pemutakhiran</label>
+                        <div class="card-body">
+                            <textarea class="form-control" name="catatan_pemutakhiran" id="catatan_pemutakhiran" rows="5" required></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light ms-1" data-bs-dismiss="modal">
+                        <i class="bx bx-x d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Batal</span>
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bx bx-check d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Simpan</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
 
 @section('script')
+
+<script>
+    $(document).ready(function () {
+        $('#status_rekomendasi').change(function () {
+            if ($(this).val() === 'Sesuai' || $(this).val() === 'Proses') {
+                $('#catatan_pemutakhiran_group').hide();
+                $('#catatan_pemutakhiran').prop('required', false); // Catatan tidak wajib diisi
+            } else {
+                $('#catatan_pemutakhiran_group').show();
+                $('#catatan_pemutakhiran').prop('required', true); // Catatan wajib diisi
+            }
+        });
+    });
+</script>
+
+
+<script>
+    // Ambil tombol "Upload Dokumen TL"
+    var uploadBtn = document.getElementById('uploadBtn');
+
+    // Tambahkan event listener untuk menampilkan modal saat tombol diklik
+    uploadBtn.addEventListener('click', function() {
+        var uploadModal = new bootstrap.Modal(document.getElementById('uploadModal'));
+        uploadModal.show();
+    });
+
+</script>
+
+<script>
+    $(document).ready(function() {
+        // Fungsi untuk menyembunyikan semua tombol status
+        function hideAllButtons() {
+            $('#btnStatusBuktiInput').hide();
+        }
+
+        // Pemanggilan fungsi hideAllButtons() saat halaman dimuat
+        hideAllButtons();
+
+        // Fungsi untuk menampilkan tombol status bukti input SIPTL
+        function showBuktiInputButton() {
+            $('#btnStatusBuktiInput').show();
+            $('#btnStatusPemutakhiran').hide();
+        }
+
+        // Fungsi untuk menampilkan tombol status pemutakhiran
+        function showPemutakhiranButton() {
+            $('#btnStatusPemutakhiran').show();
+        }
+
+        // Memanggil fungsi yang sesuai berdasarkan tab yang aktif
+        $('.nav-link').on('shown.bs.tab', function (e) {
+            var activeTabId = $(e.target).attr('aria-controls');
+
+            if (activeTabId === 'bukti_input_siptl') {
+                hideAllButtons();
+                $('#btnStatusPemutakhiran').hide();
+                showBuktiInputButton();
+            } else if (activeTabId === 'pemutakhiran_status') {
+                hideAllButtons();
+                showPemutakhiranButton();
+            } else {
+                hideAllButtons();
+                $('#btnStatusPemutakhiran').hide();
+            }
+        });
+    });
+</script>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -231,8 +465,20 @@
     }, false);
 </script>
 
-<script>
 
+<script>
+    @if (session()->has('update'))
+        Swal.fire({
+            title: 'Success',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 1500,
+            text: '{{ session('update') }}'
+    });
+    @endif
+</script>
+
+<script>
 document.getElementById('deleteButton').addEventListener('click', function() {
             Swal.fire({
                 title: 'Apakah Anda yakin?',
@@ -246,6 +492,11 @@ document.getElementById('deleteButton').addEventListener('click', function() {
             }).then((result) => {
                 if (result.isConfirmed) {
                     document.getElementById('deleteForm').submit();
+                    Swal.fire(
+                        'Berhasil!',
+                        'Data telah berhasil dihapus.',
+                        'success'
+                    );
                 }
             });
         });

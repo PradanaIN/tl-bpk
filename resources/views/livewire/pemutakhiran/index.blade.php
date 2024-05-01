@@ -92,7 +92,7 @@
                     </thead>
                     <tbody>
                         @foreach ($rekomendasi as $rekomendasi)
-                        <tr class='clickable-row' data-href="/kelola-rekomendasi/{{ $rekomendasi->id }}}}">
+                        <tr class='clickable-row' data-href="/pemutakhiran-status/{{ $rekomendasi->id }}}}">
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $rekomendasi->jenis_temuan }}</td>
                             <td>{{ implode(' ', array_slice(str_word_count(strip_tags($rekomendasi->uraian_temuan), 1), 0, 15)) }}{{ str_word_count(strip_tags($rekomendasi->uraian_temuan)) > 15 ? '...' : '' }}</td>
@@ -103,7 +103,7 @@
                             </td>
                             <td>
                                 <div class="d-flex justify-content-around align-items-center">
-                                    <a href="/kelola-rekomendasi/{{ $rekomendasi->id }}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Rekomendasi">
+                                    <a href="/pemutakhiran-status/{{ $rekomendasi->id }}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Rekomendasi">
                                         <i class="bi bi-eye"></i>
                                     </a>
                                 </div>

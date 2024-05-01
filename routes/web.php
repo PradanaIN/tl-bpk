@@ -87,9 +87,9 @@ Route::middleware(['auth', 'prevent-back-button'])->group(function () {
     Route::middleware(['role:Pimpinan|Tim Koordinator|Super Admin'])->group(function () {
         // Pemutakhiran Status
         Route::get('pemutakhiran-status', [PemutakhiranController::class, 'index']);
-        Route::get('pemutakhiran-status/{tindak_lanjut:id}', [PemutakhiranController::class, 'show']);
-        Route::get('pemutakhiran-status/{tindak_lanjut:id}/edit', [PemutakhiranController::class, 'edit']);
-        Route::put('pemutakhiran-status/{tindak_lanjut:id}', [PemutakhiranController::class, 'update']);
+        Route::get('pemutakhiran-status/{rekomendasi:id}', [PemutakhiranController::class, 'show']);
+        Route::get('pemutakhiran-status/{rekomendasi:id}/edit', [PemutakhiranController::class, 'edit']);
+        Route::put('pemutakhiran-status/{rekomendasi:id}', [PemutakhiranController::class, 'update']);
     });
 
     // Error 404

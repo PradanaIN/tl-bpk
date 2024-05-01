@@ -26,6 +26,9 @@ class Rekomendasi extends Model
         'rekomendasi',
         'catatan_rekomendasi',
         'status_rekomendasi',
+        'catatan_pemutakhiran',
+        'pemutakhiran_by',
+        'pemutakhiran_at',
     ];
 
 

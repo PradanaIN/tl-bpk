@@ -53,17 +53,28 @@
             </a>
         </div>
         <div class="col-auto d-flex ms-auto">
-                @if (($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!'))
-                <button class="btn btn-warning" id="btnStatus">
-                    <i class="bi bi-exclamation-triangle"></i>
-                    &nbsp;Bukti Belum Diunggah!
-                </button>
-                @else
-                <button class="btn btn-success" id="btnStatus" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->format('H:i, d M Y') }}">
-                    <i class="bi bi-check-square"></i>
-                    &nbsp;Bukti Diunggah {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->diffForHumans() }}
-                </button>
-                @endif
+            @if (($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!'))
+            <button class="btn btn-warning" id="btnStatusBukti">
+                <i class="bi bi-exclamation-triangle"></i>
+                &nbsp;Bukti Belum Diunggah!
+            </button>
+            @else
+            <button class="btn btn-success" id="btnStatusBukti" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->format('H:i, d M Y') }}">
+                <i class="bi bi-check-square"></i>
+                &nbsp;Bukti Diunggah {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->diffForHumans() }}
+            </button>
+            @endif
+            @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi'))
+            <button class="btn btn-warning" id="btnStatusIdentifikasi">
+                <i class="bi bi-exclamation-triangle"></i>
+                &nbsp;Tindak Lanjut Belum Diidentifikasi!
+            </button>
+            @else
+            <button class="btn btn-success" id="btnStatusIdentifikasi" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->format('H:i, d M Y') }}">
+                <i class="bi bi-check-square"></i>
+                &nbsp;Diidentifikasi {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->diffForHumans() }}
+            </button>
+            @endif
         </div>
     </div>
     <div class="card">
@@ -388,6 +399,46 @@
 
 
 @section('script')
+
+<script>
+    $(document).ready(function() {
+        // Fungsi untuk menyembunyikan semua tombol status
+        function hideAllButtons() {
+            $('#btnStatusIdentifikasi').hide();
+        }
+
+        // Pemanggilan fungsi hideAllButtons() saat halaman dimuat
+        hideAllButtons();
+
+        // Fungsi untuk menampilkan tombol status identifikasi
+        function showIdentifikasi() {
+            $('#btnStatusIdentifikasi').show();
+            $('#btnStatusBukti').hide();
+        }
+
+        // Fungsi untuk menampilkan tombol status bukti tindak lanjut
+        function showBukti() {
+            $('#btnStatusBukti').show();
+        }
+
+        // Memanggil fungsi yang sesuai berdasarkan tab yang aktif
+        $('.nav-link').on('shown.bs.tab', function (e) {
+            var activeTabId = $(e.target).attr('aria-controls');
+
+            if (activeTabId === 'identifikasi') {
+                hideAllButtons();
+                $('#btnStatusBukti').hide();
+                showIdentifikasi();
+            } else if (activeTabId === 'tindaklanjut') {
+                hideAllButtons();
+                showBukti();
+            } else {
+                hideAllButtons();
+                $('#btnStatusBukti').hide();
+            }
+        });
+    });
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {

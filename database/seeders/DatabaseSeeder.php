@@ -27,10 +27,11 @@ class DatabaseSeeder extends Seeder
             'Pimpinan',
             'Operator',
             'Tim Koordinator',
-            'Ketua Tim Pemanantauan',
+            'Tim Pemanantauan Wilayah I',
+            'Tim Pemanantauan Wilayah II',
+            'Tim Pemanantauan Wilayah III',
             // 'Ketua Tim Pemanantauan II',
             // 'Ketua Tim Pemanantauan III',
-            'Anggota Tim Pemanantauan',
             // 'Anggota Tim Pemanantauan II',
             // 'Anggota Tim Pemanantauan III',
             'Pengendali Teknis',
@@ -90,8 +91,9 @@ class DatabaseSeeder extends Seeder
             'Pimpinan' => ['view dashboard', 'view rekomendasi', 'view tindak lanjut', 'show rekomendasi', 'show tindak lanjut'],
             'Operator' => ['view dashboard', 'view rekomendasi', 'view tindak lanjut', 'show rekomendasi', 'show tindak lanjut', 'edit tindak lanjut'],
             'Tim Koordinator' => ['view dashboard', 'view rekomendasi', 'create rekomendasi', 'edit rekomendasi', 'delete rekomendasi', 'show rekomendasi', 'view tindak lanjut', 'create tindak lanjut', 'edit tindak lanjut', 'delete tindak lanjut', 'show tindak lanjut'],
-            'Ketua Tim Pemanantauan' => ['view dashboard', 'view rekomendasi', 'show rekomendasi', 'view tindak lanjut', 'show tindak lanjut', 'edit tindak lanjut', 'view identifikasi', 'create identifikasi', 'edit identifikasi'],
-            'Anggota Tim Pemanantauan' => ['view dashboard', 'view rekomendasi', 'show rekomendasi', 'view tindak lanjut', 'show tindak lanjut', 'edit tindak lanjut', 'view identifikasi', 'create identifikasi', 'edit identifikasi'],
+            'Tim Pemanantauan Wilayah I' => ['view dashboard', 'view rekomendasi', 'show rekomendasi', 'view tindak lanjut', 'show tindak lanjut', 'edit tindak lanjut', 'view identifikasi', 'create identifikasi', 'edit identifikasi'],
+            'Tim Pemanantauan Wilayah II' => ['view dashboard', 'view rekomendasi', 'show rekomendasi', 'view tindak lanjut', 'show tindak lanjut', 'edit tindak lanjut', 'view identifikasi', 'create identifikasi', 'edit identifikasi'],
+            'Tim Pemanantauan Wilayah III' => ['view dashboard', 'view rekomendasi', 'show rekomendasi', 'view tindak lanjut', 'show tindak lanjut', 'edit tindak lanjut', 'view identifikasi', 'create identifikasi', 'edit identifikasi'],
             'Pengendali Teknis' => ['view dashboard', 'view rekomendasi', 'show rekomendasi', 'view tindak lanjut', 'show tindak lanjut', 'edit tindak lanjut', 'view identifikasi', 'create identifikasi', 'edit identifikasi'],
             'Badan Pemeriksa Keuangan' => ['view rekomendasi', 'show rekomendasi'],
             'Super Admin' => ['view dashboard', 'view kamus', 'create kamus', 'edit kamus', 'delete kamus', 'view user', 'create user', 'edit user', 'delete user', 'view rekomendasi', 'create rekomendasi', 'edit rekomendasi', 'delete rekomendasi', 'show rekomendasi', 'view tindak lanjut', 'create tindak lanjut', 'edit tindak lanjut', 'delete tindak lanjut', 'show tindak lanjut', 'view identifikasi', 'create identifikasi', 'edit identifikasi'],
@@ -124,10 +126,12 @@ class DatabaseSeeder extends Seeder
                 $user->assignRole('Operator');
             } if ($user->role === 'Tim Koordinator') {
                 $user->assignRole('Tim Koordinator');
-            } if ($user->role === 'Ketua Tim Pemanantauan') {
-                $user->assignRole('Ketua Tim Pemanantauan');
-            } if ($user->role === 'Anggota Tim Pemanantauan') {
-                $user->assignRole('Anggota Tim Pemanantauan');
+            } if ($user->role === 'Tim Pemanantauan Wilayah I') {
+                $user->assignRole('Tim Pemanantauan Wilayah I');
+            } if ($user->role === 'Tim Pemanantauan Wilayah II') {
+                $user->assignRole('Tim Pemanantauan Wilayah II');
+            } if ($user->role === 'Tim Pemanantauan Wilayah III') {
+                $user->assignRole('Tim Pemanantauan Wilayah III');
             } if ($user->role === 'Pengendali Teknis') {
                 $user->assignRole('Pengendali Teknis');
             } if ($user->role === 'Badan Pemeriksa Keuangan') {

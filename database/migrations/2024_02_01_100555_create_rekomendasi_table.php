@@ -22,6 +22,9 @@ return new class extends Migration
             $table->text('rekomendasi');
             $table->text('catatan_rekomendasi');
             $table->string('status_rekomendasi')->default('Proses');
+            $table->string('catatan_pemutakhiran')->nullable();
+            $table->string('pemutakhiran_by')->nullable();
+            $table->dateTime('pemutakhiran_at')->nullable();
             $table->timestamps();
         });
     }

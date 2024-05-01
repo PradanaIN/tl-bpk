@@ -69,16 +69,6 @@ class IdentifikasiDokumenController extends Controller
     {
 
         $tindakLanjut->update([
-            'rekomendasi_id' => $tindakLanjut->rekomendasi_id,
-            'tindak_lanjut' => $tindakLanjut->tindak_lanjut,
-            'unit_kerja' => $tindakLanjut->unit_kerja,
-            'tim_pemantauan' => $tindakLanjut->tim_pemantauan,
-            'tenggat_waktu' => $tindakLanjut->tenggat_waktu,
-            'bukti_tindak_lanjut' => $tindakLanjut->bukti_tindak_lanjut,
-            'detail_bukti_tindak_lanjut' => $tindakLanjut->detail_bukti_tindak_lanjut,
-            // 'upload_by' => auth()->user()->name,
-            'upload_by' => $tindakLanjut->upload_by,
-            'upload_at' => $tindakLanjut->upload_at,
             'status_tindak_lanjut' => $request->status_tindak_lanjut,
             'status_tindak_lanjut_at' => now(),
             'status_tindak_lanjut_by' => auth()->user()->nama,

@@ -52,13 +52,24 @@
             </a>
         </div>
         <div class="col-auto d-flex ms-auto">
+            @if (($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!'))
+            <button class="btn btn-warning" id="btnStatusBukti">
+                <i class="bi bi-exclamation-triangle"></i>
+                &nbsp;Bukti Belum Diunggah!
+            </button>
+            @else
+            <button class="btn btn-success" id="btnStatusBukti" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->format('H:i, d M Y') }}">
+                <i class="bi bi-check-square"></i>
+                &nbsp;Bukti Diunggah {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->diffForHumans() }}
+            </button>
+            @endif
             @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi'))
-            <button class="btn btn-warning" id="btnStatus">
+            <button class="btn btn-warning" id="btnStatusIdentifikasi">
                 <i class="bi bi-exclamation-triangle"></i>
                 &nbsp;Tindak Lanjut Belum Diidentifikasi!
             </button>
             @else
-            <button class="btn btn-success" id="btnStatus" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->format('H:i, d M Y') }}">
+            <button class="btn btn-success" id="btnStatusIdentifikasi" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->format('H:i, d M Y') }}">
                 <i class="bi bi-check-square"></i>
                 &nbsp;Diidentifikasi {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->diffForHumans() }}
             </button>
@@ -69,21 +80,17 @@
         <div class="card-body">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="pemeriksaan-tab" data-bs-toggle="tab" href="#pemeriksaan" role="tab"
-                        aria-controls="pemeriksaan" aria-selected="true"><h6>Pemeriksaan</h6></a>
+                    <a class="nav-link" id="pemeriksaan-tab" data-bs-toggle="tab" href="#pemeriksaan" role="tab" aria-controls="pemeriksaan" aria-selected="true"><h6>Pemeriksaan</h6></a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="rekomendasi-tab" data-bs-toggle="tab" href="#rekomendasi" role="tab"
-                        aria-controls="rekomendasi" aria-selected="false"><h6>Rekomendasi</h6></a>
+                    <a class="nav-link" id="rekomendasi-tab" data-bs-toggle="tab" href="#rekomendasi" role="tab" aria-controls="rekomendasi" aria-selected="false"><h6>Rekomendasi</h6></a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link active" id="tindaklanjut-tab" data-bs-toggle="tab" href="#tindaklanjut" role="tab"
-                        aria-controls="tindaklanjut" aria-selected="false"><h6>Tindak Lanjut</h6></a>
+                    <a class="nav-link {{ ($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi') ? 'active' : '' }}" id="tindaklanjut-tab" data-bs-toggle="tab" href="#tindaklanjut" role="tab" aria-controls="tindaklanjut" aria-selected="false"><h6>Tindak Lanjut</h6></a>
                 </li>
                 @if ($tindak_lanjut->status_tindak_lanjut !== 'Proses')
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="identifikasi-tab" data-bs-toggle="tab" href="#identifikasi" role="tab"
-                        aria-controls="identifikasi" aria-selected="false"><h6>Hasil Identifikasi</h6></a>
+                    <a class="nav-link {{ ($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi') ? '' : 'active' }}" id="identifikasi-tab" data-bs-toggle="tab" href="#identifikasi" role="tab" aria-controls="identifikasi" aria-selected="{{ ($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi') ? 'true' : 'false' }}"><h6>Hasil Identifikasi</h6></a>
                 </li>
                 @endif
             </ul>
@@ -178,7 +185,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade show active" id="tindaklanjut" role="tabpanel" aria-labelledby="tindaklanjut-tab">
+                <div class="tab-pane fade {{ ($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi') ? 'show active' : '' }}" id="tindaklanjut" role="tabpanel" aria-labelledby="tindaklanjut-tab">
                     {{-- <div class="card-header">
                         <h4 class="card-title"><b>Tindak Lanjut</b></h4>
                     </div> --}}
@@ -258,7 +265,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="identifikasi" role="tabpanel" aria-labelledby="identifikasi-tab">
+                <div class="tab-pane fade {{ ($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi') ? '' : 'show active' }}" id="identifikasi" role="tabpanel" aria-labelledby="identifikasi-tab">
                 @if ($tindak_lanjut->status_tindak_lanjut !== 'Proses')
                     {{-- <div class="card-header">
                         <h4 class="card-title"><b>Hasil Identifikasi</b></h4>
@@ -334,18 +341,6 @@
                 <div class="modal-body">
                     @csrf
                     @method('put')
-
-                <!-- input dengan tipe hidden untuk data yang sbeelumnya -->
-                <input type="hidden" name="tindak_lanjut" value="{{ $tindak_lanjut->tindak_lanjut }}">
-                <input type="hidden" name="unit_kerja" value="{{ $tindak_lanjut->unit_kerja }}">
-                <input type="hidden" name="tim_pemantauan" value="{{ $tindak_lanjut->tim_pemantauan }}">
-                <input type="hidden" name="tenggat_waktu" value="{{ $tindak_lanjut->tenggat_waktu }}">
-                <input type="hidden" name="rekomendasi_id" value="{{ $tindak_lanjut->rekomendasi_id }}">
-                <input type="hidden" name="bukti_tindak_lanjut" value="{{ $tindak_lanjut->bukti_tindak_lanjut }}">
-                <input type="hidden" name="detail_bukti_tindak_lanjut" value="{{ $tindak_lanjut->detail_bukti_tindak_lanjut }}">
-                <input type="hidden" name="upload_by" value="{{ $tindak_lanjut->upload_by }}">
-                <input type="hidden" name="upload_at" value="{{ $tindak_lanjut->upload_at }}">
-
                     <div class="form-group mandatory">
                         <label for="bukti_tindak_lanjut" class="form-label">Hasil Identifikasi</label>
                         <select class="form-select" name="status_tindak_lanjut" id="status_tindak_lanjut" required>
@@ -380,6 +375,46 @@
 
 
 @section('script')
+
+<script>
+    $(document).ready(function() {
+        // Fungsi untuk menyembunyikan semua tombol status
+        function hideAllButtons() {
+            $('#btnStatusIdentifikasi').hide();
+        }
+
+        // Pemanggilan fungsi hideAllButtons() saat halaman dimuat
+        hideAllButtons();
+
+        // Fungsi untuk menampilkan tombol status identifikasi
+        function showIdentifikasi() {
+            $('#btnStatusIdentifikasi').show();
+            $('#btnStatusBukti').hide();
+        }
+
+        // Fungsi untuk menampilkan tombol status bukti tindak lanjut
+        function showBukti() {
+            $('#btnStatusBukti').show();
+        }
+
+        // Memanggil fungsi yang sesuai berdasarkan tab yang aktif
+        $('.nav-link').on('shown.bs.tab', function (e) {
+            var activeTabId = $(e.target).attr('aria-controls');
+
+            if (activeTabId === 'identifikasi') {
+                hideAllButtons();
+                $('#btnStatusBukti').hide();
+                showIdentifikasi();
+            } else if (activeTabId === 'tindaklanjut') {
+                hideAllButtons();
+                showBukti();
+            } else {
+                hideAllButtons();
+                $('#btnStatusBukti').hide();
+            }
+        });
+    });
+</script>
 
 <script>
     $(document).ready(function () {

@@ -171,12 +171,6 @@ class RekomendasiController extends Controller
      */
     public function destroy(Rekomendasi $rekomendasi)
     {
-
-        BuktiTindakLanjut::where('tindak_lanjut_id', function ($query) use ($rekomendasi) {
-            $query->select('id')
-                ->from('tindak_lanjut')
-                ->where('rekomendasi_id', $rekomendasi->id);
-        })->delete();
         TindakLanjut::where('rekomendasi_id', $rekomendasi->id)->delete();
         Rekomendasi::destroy($rekomendasi->id);
 
