@@ -15,8 +15,8 @@ class PemutakhiranController extends Controller
      */
     public function index()
     {
-        return view('livewire.pemutakhiran.index', [
-            'title' => 'Pemutakhiran Status',
+        return view('pemutakhiran.index', [
+            'title' => 'Pemutakhiran Status Rekomendasi',
             // hanya menmpilkan rekomendasi yang semua tindak lanjutnya memiliki status_tindak_lanjut = sesuai
             'rekomendasi' => Rekomendasi::whereHas('tindakLanjut', function ($query) {
                 $query->where('status_tindak_lanjut', 'Sesuai');})->get(),
@@ -33,7 +33,7 @@ class PemutakhiranController extends Controller
 
         $rekomendasi = Rekomendasi::with('tindakLanjut')->find($rekomendasi->id);
 
-        return view('livewire.pemutakhiran.show', [
+        return view('pemutakhiran.show', [
             'title' => 'Detail Rekomendasi',
             'rekomendasi' => $rekomendasi,
         ]);

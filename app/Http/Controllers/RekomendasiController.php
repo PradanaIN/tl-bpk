@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kamus;
 use App\Models\UnitKerja;
 use App\Models\Rekomendasi;
+use Illuminate\Support\Str;
 use App\Models\TindakLanjut;
 use Illuminate\Http\Request;
 use App\Models\BuktiTindakLanjut;
@@ -19,8 +20,8 @@ class RekomendasiController extends Controller
      */
     public function index()
     {
-        return view('livewire.kelola-rekomendasi.index', [
-            'title' => 'Rekomendasi',
+        return view('rekomendasi.index', [
+            'title' => 'Daftar Rekomendasi',
             'rekomendasi' => Rekomendasi::all(),
             'kamus_pemeriksaan' => Kamus::where('jenis', 'Pemeriksaan')->get(),
         ]);
@@ -35,7 +36,7 @@ class RekomendasiController extends Controller
         $kamus_pemeriksaan = Kamus::where('jenis', 'Pemeriksaan')->get();
         $unit_kerja = UnitKerja::all();
 
-        return view('livewire.kelola-rekomendasi.create', [
+        return view('rekomendasi.create', [
             'title' => 'Tambah Rekomendasi',
             'unit_kerja' => $unit_kerja,
             'kamus_temuan' => $kamus_temuan,
@@ -60,6 +61,8 @@ class RekomendasiController extends Controller
             'status_rekomendasi' => 'Proses'
         ]);
 
+        $validatedData['id'] = Str::uuid()->toString();
+
         DB::beginTransaction();
 
         try {
@@ -68,6 +71,7 @@ class RekomendasiController extends Controller
             foreach ($request->tindak_lanjut as $key => $tindak_lanjut) {
                 // Buat entri baru dalam tabel TindakLanjut
                 TindakLanjut::create([
+                    'id' => Str::uuid()->toString(),
                     'rekomendasi_id' => $rekomendasi->id,
                     'tindak_lanjut' => $tindak_lanjut,
                     'unit_kerja' => $request->unit_kerja[$key],
@@ -80,10 +84,14 @@ class RekomendasiController extends Controller
 
             DB::commit();
 
-            return redirect('/kelola-rekomendasi')->with('create', 'Data berhasil ditambahkan!');
+            return redirect('/rekomendasi')->with('create', 'Data berhasil ditambahkan!');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Terjadi kesalahan. Data gagal disimpan.');
+
+            // Tangani error
+            $errorMessage = $e->getMessage(); // Dapatkan pesan error
+
+            return redirect()->back()->withInput()->with('error', $errorMessage);
         }
     }
 
@@ -95,7 +103,7 @@ class RekomendasiController extends Controller
 
         $rekomendasi = Rekomendasi::with('tindakLanjut')->find($rekomendasi->id);
 
-        return view('livewire.kelola-rekomendasi.show', [
+        return view('rekomendasi.show', [
             'title' => 'Detail Rekomendasi',
             'rekomendasi' => $rekomendasi,
         ]);
@@ -112,7 +120,7 @@ class RekomendasiController extends Controller
         $rekomendasi = Rekomendasi::with('tindakLanjut')->find($rekomendasi->id);
         $unit_kerja = UnitKerja::all();
 
-        return view('livewire.kelola-rekomendasi.edit', [
+        return view('rekomendasi.edit', [
             'title' => 'Edit Rekomendasi',
             'kamus_temuan' => $kamus_temuan,
             'kamus_pemeriksaan' => $kamus_pemeriksaan,
@@ -126,44 +134,54 @@ class RekomendasiController extends Controller
      */
     public function update(Request $request, Rekomendasi $rekomendasi)
     {
-        $validatedData = $request->validate([
-            'pemeriksaan' => 'required',
-            'jenis_pemeriksaan' => 'required',
-            'tahun_pemeriksaan' => 'required',
-            'hasil_pemeriksaan' => 'required',
-            'jenis_temuan' => 'required',
-            'uraian_temuan' => 'required',
-            'rekomendasi' => 'required',
-            'catatan_rekomendasi' => 'required',
-            'status_rekomendasi' => 'required'
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'pemeriksaan' => 'required',
+                'jenis_pemeriksaan' => 'required',
+                'tahun_pemeriksaan' => 'required',
+                'hasil_pemeriksaan' => 'required',
+                'jenis_temuan' => 'required',
+                'uraian_temuan' => 'required',
+                'rekomendasi' => 'required',
+                'catatan_rekomendasi' => 'required',
+                'status_rekomendasi' => 'required'
+            ]);
 
-        $rekomendasi->update($validatedData);
+            $rekomendasi->update($validatedData);
 
-        foreach ($request->tindak_lanjut as $key => $tindak_lanjut) {
-            if (isset($request->id[$key]) && $request->id[$key] != null) {
-                TindakLanjut::where('id', $request->id[$key])->update([
-                    'tindak_lanjut' => $tindak_lanjut,
-                    'unit_kerja' => $request->unit_kerja[$key],
-                    'tim_pemantauan' => $request->tim_pemantauan[$key],
-                    'tenggat_waktu' => $request->tenggat_waktu[$key],
-                    'bukti_tindak_lanjut' => $request->bukti_tindak_lanjut[$key],
-                    'status_tindak_lanjut' => $request->status_tindak_lanjut[$key],
-                ]);
-            } else {
-                TindakLanjut::create([
-                    'rekomendasi_id' => $rekomendasi->id,
-                    'tindak_lanjut' => $tindak_lanjut,
-                    'unit_kerja' => $request->unit_kerja[$key],
-                    'tim_pemantauan' => $request->tim_pemantauan[$key],
-                    'tenggat_waktu' => $request->tenggat_waktu[$key],
-                    'bukti_tindak_lanjut' => 'Belum Diunggah!',
-                    'status_tindak_lanjut' => 'Proses',
-                ]);
-            }}
+            foreach ($request->tindak_lanjut as $key => $tindak_lanjut) {
+                if (isset($request->id[$key]) && $request->id[$key] != null) {
+                    TindakLanjut::where('id', $request->id[$key])->update([
+                        'tindak_lanjut' => $tindak_lanjut,
+                        'unit_kerja' => $request->unit_kerja[$key],
+                        'tim_pemantauan' => $request->tim_pemantauan[$key],
+                        'tenggat_waktu' => $request->tenggat_waktu[$key],
+                        'bukti_tindak_lanjut' => $request->bukti_tindak_lanjut[$key],
+                        'status_tindak_lanjut' => $request->status_tindak_lanjut[$key],
+                    ]);
+                } else {
+                    TindakLanjut::create([
+                        'rekomendasi_id' => $rekomendasi->id,
+                        'tindak_lanjut' => $tindak_lanjut,
+                        'unit_kerja' => $request->unit_kerja[$key],
+                        'tim_pemantauan' => $request->tim_pemantauan[$key],
+                        'tenggat_waktu' => $request->tenggat_waktu[$key],
+                        'bukti_tindak_lanjut' => 'Belum Diunggah!',
+                        'status_tindak_lanjut' => 'Proses',
+                    ]);
+                }
+            }
 
-        return redirect('/kelola-rekomendasi/'.$rekomendasi->id)->with('update', 'Data berhasil diubah!');
+            return redirect('/rekomendasi/'.$rekomendasi->id)->with('update', 'Data berhasil diubah!');
+        } catch (\Exception $e) {
+            // Tangani error
+            $errorMessage = $e->getMessage(); // Dapatkan pesan error
+
+            // Tampilkan SweetAlert dengan pesan error
+            return redirect()->back()->withInput()->with('error', $errorMessage);
+        }
     }
+
 
 
     /**
@@ -174,7 +192,7 @@ class RekomendasiController extends Controller
         TindakLanjut::where('rekomendasi_id', $rekomendasi->id)->delete();
         Rekomendasi::destroy($rekomendasi->id);
 
-        return redirect('/kelola-rekomendasi')->with('delete', 'Data berhasil dihapus!');
+        return redirect('/rekomendasi')->with('delete', 'Data berhasil dihapus!');
     }
 
     public function export(Rekomendasi $rekomendasi)

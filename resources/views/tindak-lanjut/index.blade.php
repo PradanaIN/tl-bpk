@@ -63,7 +63,7 @@
                     <tbody>
                         @foreach ($tindak_lanjut as $tindak_lanjut)
                             @if ($loggedInUserRole == 'Super Admin' || $loggedInUserRole == 'Tim Koordinator' || $tindak_lanjut->unit_kerja == $loggedInUserUnitKerja)
-                                <tr class="clickable-row" data-href="/kelola-tindak-lanjut/{{ $tindak_lanjut->id }}">
+                                <tr class="clickable-row" data-href="/tindak-lanjut/{{ $tindak_lanjut->id }}">
                                     <td>{{ $no++ }}</td>
                                     <td>{!! $tindak_lanjut->rekomendasi->rekomendasi !!}</td>
                                     <td>{!! $tindak_lanjut->tindak_lanjut !!}</td>
@@ -78,7 +78,7 @@
                                     </td>
                                     <td>
                                         <div class="d-flex justify-content-around align-items-center">
-                                            <a href="/kelola-tindak-lanjut/{{ $tindak_lanjut->id }}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Tindak Lanjut">
+                                            <a href="/tindak-lanjut/{{ $tindak_lanjut->id }}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Tindak Lanjut">
                                                 <i class="bi bi-eye"></i>
                                             </a>
                                         </div>
@@ -151,7 +151,7 @@
             //         text: '<i class="bi bi-plus"></i> Tambah Rekomendasi',
             //         className: 'btn btn-primary',
             //         action: function ( e, dt, node, config ) {
-            //             window.location.href = '/kelola-rekomendasi/create';
+            //             window.location.href = '/rekomendasi/create';
             //         }
             //     }
             // ]

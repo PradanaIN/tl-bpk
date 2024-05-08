@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tindak_lanjut', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->timestamps();
             $table->string('tindak_lanjut');
             $table->string('unit_kerja');
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->dateTime('status_tindak_lanjut_at')->nullable();
             $table->string('status_tindak_lanjut_by')->nullable();
             $table->string('catatan_tindak_lanjut')->nullable();
-            $table->foreignId('rekomendasi_id')->constrained('rekomendasi')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignUuid('rekomendasi_id')->constrained('rekomendasi')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

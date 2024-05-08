@@ -37,22 +37,22 @@
 <section class="row">
     <div class="row mb-3 flex-wrap">
         <div class="col-auto d-flex me-auto">
-            <a href="/kelola-rekomendasi" class="btn btn-primary">
+            <a href="/rekomendasi" class="btn btn-primary">
                 <i class="bi bi-arrow-left"></i>
                 Kembali
             </a>
-            <a href="/kelola-rekomendasi/{{ $rekomendasi->id }}/export" class="btn btn-success ms-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Export Rekomendasi">
+            <a href="/rekomendasi/{{ $rekomendasi->id }}/export" class="btn btn-success ms-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Export Rekomendasi">
                 <i class="bi bi-file-earmark-excel"></i>
                 Export Rekomendasi
             </a>
         </div>
         <div class="col-auto d-flex ms-auto">
             <div class="col-auto">
-                <a href="/kelola-rekomendasi/{{ $rekomendasi->id }}/edit" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Rekomendasi">
+                <a href="/rekomendasi/{{ $rekomendasi->id }}/edit" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Rekomendasi">
                     <i class="bi bi-pencil"></i>
                     &nbsp;Ubah
                 </a>
-                <form action="/kelola-rekomendasi/{{ $rekomendasi->id }}" method="post" class="d-inline" id="deleteForm">
+                <form action="/rekomendasi/{{ $rekomendasi->id }}" method="post" class="d-inline" id="deleteForm">
                     @method('delete')
                     @csrf
                     <button class="btn btn-danger" type="button" id="deleteButton" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Rekomendasi">

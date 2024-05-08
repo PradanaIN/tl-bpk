@@ -43,11 +43,11 @@
 <section class="row">
     <div class="row mb-3 flex-wrap">
         <div class="col-auto d-flex me-auto">
-            <a href="/kelola-tindak-lanjut" class="btn btn-primary">
+            <a href="/tindak-lanjut" class="btn btn-primary">
                 <i class="bi bi-arrow-left"></i>
                 &nbsp;Kembali
             </a>
-            <a href="/kelola-tindak-lanjut/{{ $tindak_lanjut->id }}/generate" class="btn btn-primary ms-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Generate Berita Acara">
+            <a href="/tindak-lanjut/{{ $tindak_lanjut->id }}/generate" class="btn btn-primary ms-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Generate Berita Acara">
                 <i class="bi bi-file-earmark-word"></i>
                 &nbsp;Generate Berita Acara
             </a>
@@ -351,7 +351,7 @@
                     <i data-feather="x"></i>
                 </button>
             </div>
-            <form action="/kelola-tindak-lanjut/{{ $tindak_lanjut->id }}" method="post" enctype="multipart/form-data">
+            <form action="/tindak-lanjut/{{ $tindak_lanjut->id }}" method="post" enctype="multipart/form-data">
                 <div class="modal-body">
                     @csrf
                     @method('put')

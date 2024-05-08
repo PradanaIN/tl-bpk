@@ -24,7 +24,7 @@ class DashboardController extends Controller
             ->get();
 
 
-        return view('livewire.dashboard.index', [
+        return view('dashboard.index', [
             'title' => 'Dashboard',
             'rekomendasi' => $rekomendasi,
             'rekomendasi_sesuai' => $rekomendasi_sesuai,

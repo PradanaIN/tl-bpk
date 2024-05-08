@@ -22,18 +22,24 @@
                                             <div class="form-group">
                                                 <label for="nama">Nama Kamus</label>
                                                 <input type="text" id="nama" class="form-control"
-                                                    name="nama" placeholder="Nama" required>
+                                                    name="nama" placeholder="Nama" required value="{{ old('nama') }}">
                                             </div>
+                                            @error('nama')
+                                                <div class="alert alert-danger mt-1">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="jenis">Jenis Kamus</label>
                                                 <select class="form-select" id="jenis" name="jenis" required>
                                                     <option value="">Pilih Jenis Kamus</option>
-                                                    <option value="Pemeriksaan">Pemeriksaan</option>
-                                                    <option value="Temuan">Temuan</option>
+                                                    <option value="Pemeriksaan" {{ old('jenis') == 'Pemeriksaan' ? 'selected' : '' }}>Pemeriksaan</option>
+                                                    <option value="Temuan" {{ old('jenis') == 'Temuan' ? 'selected' : '' }}>Temuan</option>
                                                 </select>
                                             </div>
+                                            `@error('jenis')
+                                                <div class="alert alert-danger mt-1">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     <div class="col-12 d-flex justify-between justify-content-end mt-5">
                                         <button type="reset" class="btn btn-light-secondary me-3 mb-1">

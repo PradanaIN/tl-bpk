@@ -16,7 +16,6 @@
     <script src="{{ asset('mazer/assets/static/js/initTheme.js') }}"></script>
     <div id="error">
 
-
 <div class="error-page container">
     <div class="col-md-8 col-12 offset-md-2">
         <div class="text-center">

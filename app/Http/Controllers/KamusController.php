@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kamus;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class KamusController extends Controller
@@ -12,7 +13,7 @@ class KamusController extends Controller
      */
     public function index()
     {
-        return view('livewire.kamus.index', [
+        return view('kamus.index', [
             'title' => 'Kelola Kamus',
             'kamus' => Kamus::all(),
         ]);
@@ -23,7 +24,7 @@ class KamusController extends Controller
      */
     public function create()
     {
-        return view('livewire.kamus.create', [
+        return view('kamus.create', [
             'title' => 'Tambah Kamus',
         ]);
     }
@@ -33,23 +34,19 @@ class KamusController extends Controller
      */
     public function store(Request $request)
     {
+        try {
+            $validatedData = $request->validate([
+                'id' => Str::uuid()->toString(),
+                'nama' => 'required',
+                'jenis' => 'required',
+            ]);
 
-        $validatedData = $request->validate([
-            'nama' => 'required',
-            'jenis' => 'required',
-        ]);
+            Kamus::create($validatedData);
 
-        Kamus::create($validatedData);
-
-        return redirect('/kelola-kamus')->with('create', 'Data berhasil ditambahkan!');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Kamus $kamus)
-    {
-        //
+            return redirect('/kelola-kamus')->with('create', 'Data berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -57,7 +54,7 @@ class KamusController extends Controller
      */
     public function edit(Kamus $kamus)
     {
-        return view('livewire.kamus.edit', [
+        return view('kamus.edit', [
             'title' => 'Edit Kamus',
             'kamus' => $kamus,
         ]);
@@ -68,14 +65,18 @@ class KamusController extends Controller
      */
     public function update(Request $request, Kamus $kamus)
     {
-        $validatedData = $request->validate([
-            'nama' => 'required',
-            'jenis' => 'required',
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'nama' => 'required',
+                'jenis' => 'required',
+            ]);
 
-        $kamus->update($validatedData);
+            $kamus->update($validatedData);
 
-        return redirect('/kelola-kamus')->with('update', 'Data berhasil diubah!');
+            return redirect('/kelola-kamus')->with('update', 'Data berhasil diubah!');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -83,8 +84,12 @@ class KamusController extends Controller
      */
     public function destroy(Kamus $kamus)
     {
-        Kamus::destroy($kamus->id);
+        try {
+            Kamus::destroy($kamus->id);
 
-        return redirect('/kelola-kamus')->with('delete', 'Data berhasil dihapus!');
+            return redirect('/kelola-kamus')->with('delete', 'Data berhasil dihapus!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 }

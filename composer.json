@@ -10,15 +10,14 @@
     "require": {
         "php": "^8.1",
         "guzzlehttp/guzzle": "^7.2",
-        "itsgoingd/clockwork": "*",
         "laravel-lang/locales": "^2.7",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.4",
-        "livewire/livewire": "^3.3",
         "maatwebsite/excel": "^3.1",
         "novay/laravel-word-template": "^1.1",
+        "ramsey/uuid": "^4.7",
         "snapappointments/bootstrap-select": "^1.13",
         "spatie/laravel-permission": "^6.3"
     },

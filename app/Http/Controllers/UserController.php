@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Exception;
 use App\Models\User;
 use App\Models\UnitKerja;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
 use Illuminate\Validation\ValidationException;
 
@@ -18,7 +20,7 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        return view('livewire.kelola-pengguna.index', [
+        return view('kelola-pengguna.index', [
             'title' => 'Kelola Pengguna',
             'users' => $users,
         ]);
@@ -32,7 +34,7 @@ class UserController extends Controller
         $unit_kerja = UnitKerja::all();
         $role = Role::all();
 
-        return view('livewire.kelola-pengguna.create', [
+        return view('kelola-pengguna.create', [
             'title' => 'Tambah Pengguna',
             'unit_kerja' => $unit_kerja,
             'role' => $role,
@@ -47,13 +49,14 @@ class UserController extends Controller
         try {
             $validatedData = $request->validate([
                 'nama' => 'required',
-                'email' => 'required',
+                'email' => ['required', 'email', Rule::unique('users')],
                 'unit_kerja' => 'required',
                 'unit_kerja_id' => 'required',
                 'role' => 'required',
                 'password' => 'required',
             ]);
 
+            $validatedData['id'] = Str::uuid()->toString();
             $validatedData['password'] = bcrypt($validatedData['password']);
 
             User::create($validatedData);
@@ -73,14 +76,6 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(User $user)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(User $user)
@@ -88,7 +83,7 @@ class UserController extends Controller
         $unit_kerja = UnitKerja::all();
         $role = Role::all();
 
-        return view('livewire.kelola-pengguna.edit', [
+        return view('kelola-pengguna.edit', [
             'title' => 'Edit Pengguna',
             'user' => $user,
             'unit_kerja' => $unit_kerja,
@@ -103,6 +98,7 @@ class UserController extends Controller
     {
         try {
             $validatedData = $request->validate([
+                'id'=> Str::uuid()->toString(),
                 'nama' => 'required',
                 'email' => 'required',
                 'unit_kerja' => 'required',

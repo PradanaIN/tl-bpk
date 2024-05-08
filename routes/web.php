@@ -52,26 +52,26 @@ Route::middleware(['auth', 'prevent-back-button'])->group(function () {
 
     Route::middleware(['role:Pimpinan|Tim Koordinator|Super Admin'])->group(function () {
         // Kelola Rekomendasi
-        Route::get('/kelola-rekomendasi', [RekomendasiController::class, 'index'])->middleware('permission:view rekomendasi');
-        Route::get('/kelola-rekomendasi/create', [RekomendasiController::class, 'create'])->middleware('permission:create rekomendasi');
-        Route::post('/kelola-rekomendasi', [RekomendasiController::class, 'store'])->middleware('permission:create rekomendasi');
-        Route::get('/kelola-rekomendasi/{rekomendasi:id}', [RekomendasiController::class, 'show'])->middleware('permission:view rekomendasi');
-        Route::get('/kelola-rekomendasi/{rekomendasi:id}/edit', [RekomendasiController::class, 'edit'])->middleware('permission:edit rekomendasi');
-        Route::put('/kelola-rekomendasi/{rekomendasi:id}', [RekomendasiController::class, 'update']);
-        Route::delete('/kelola-rekomendasi/{rekomendasi:id}', [RekomendasiController::class, 'destroy'])->middleware('permission:delete rekomendasi');
-        Route::get('/kelola-rekomendasi/{rekomendasi:id}/export', [RekomendasiController::class, 'export']);
+        Route::get('/rekomendasi', [RekomendasiController::class, 'index'])->middleware('permission:view rekomendasi');
+        Route::get('/rekomendasi/create', [RekomendasiController::class, 'create'])->middleware('permission:create rekomendasi');
+        Route::post('/rekomendasi', [RekomendasiController::class, 'store'])->middleware('permission:create rekomendasi');
+        Route::get('/rekomendasi/{rekomendasi:id}', [RekomendasiController::class, 'show'])->middleware('permission:view rekomendasi');
+        Route::get('/rekomendasi/{rekomendasi:id}/edit', [RekomendasiController::class, 'edit'])->middleware('permission:edit rekomendasi');
+        Route::put('/rekomendasi/{rekomendasi:id}', [RekomendasiController::class, 'update']);
+        Route::delete('/rekomendasi/{rekomendasi:id}', [RekomendasiController::class, 'destroy'])->middleware('permission:delete rekomendasi');
+        Route::get('/rekomendasi/{rekomendasi:id}/export', [RekomendasiController::class, 'export']);
     });
 
     Route::middleware(['role:Pimpinan|Tim Koordinator|Operator Unit Kerja|Super Admin'])->group(function () {
         // Kelola Tindak Lanjut
-        Route::get('/kelola-tindak-lanjut', [TindakLanjutController::class, 'index'])->middleware('permission:view tindak lanjut');
-        Route::get('/kelola-tindak-lanjut/create', [TindakLanjutController::class, 'create'])->middleware('permission:create tindak lanjut');
-        Route::post('/kelola-tindak-lanjut', [TindakLanjutController::class, 'store'])->middleware('permission:create tindak lanjut');
-        Route::get('/kelola-tindak-lanjut/{tindak_lanjut:id}', [TindakLanjutController::class, 'show'])->middleware('permission:view tindak lanjut');
-        Route::get('/kelola-tindak-lanjut/{tindak_lanjut:id}/edit', [TindakLanjutController::class, 'edit'])->middleware('permission:edit tindak lanjut');
-        Route::put('/kelola-tindak-lanjut/{tindak_lanjut:id}', [TindakLanjutController::class, 'update'])->middleware('permission:edit tindak lanjut');
-        Route::delete('/kelola-tindak-lanjut/{tindak_lanjut:id}', [TindakLanjutController::class, 'destroy'])->middleware('permission:delete tindak lanjut');
-        Route::get('/kelola-tindak-lanjut/{tindak_lanjut:id}/generate', [TindakLanjutController::class, 'word']);
+        Route::get('/tindak-lanjut', [TindakLanjutController::class, 'index'])->middleware('permission:view tindak lanjut');
+        Route::get('/tindak-lanjut/create', [TindakLanjutController::class, 'create'])->middleware('permission:create tindak lanjut');
+        Route::post('/tindak-lanjut', [TindakLanjutController::class, 'store'])->middleware('permission:create tindak lanjut');
+        Route::get('/tindak-lanjut/{tindak_lanjut:id}', [TindakLanjutController::class, 'show'])->middleware('permission:view tindak lanjut');
+        Route::get('/tindak-lanjut/{tindak_lanjut:id}/edit', [TindakLanjutController::class, 'edit'])->middleware('permission:edit tindak lanjut');
+        Route::put('/tindak-lanjut/{tindak_lanjut:id}', [TindakLanjutController::class, 'update'])->middleware('permission:edit tindak lanjut');
+        Route::delete('/tindak-lanjut/{tindak_lanjut:id}', [TindakLanjutController::class, 'destroy'])->middleware('permission:delete tindak lanjut');
+        Route::get('/tindak-lanjut/{tindak_lanjut:id}/generate', [TindakLanjutController::class, 'word']);
     });
 
     Route::middleware(['role:Tim Pemantauan Wilayah I|Tim Pemantauan Wilayah II|Tim Pemantauan Wilayah III|Pengendali Teknis|Super Admin'])->group(function () {

@@ -68,22 +68,22 @@
             }
         }
 
-    .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(255, 255, 255, 0.5); /* Warna latar belakang semi-transparan */
-        z-index: 9999; /* Pastikan spinner berada di atas konten lain */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.5); /* Warna latar belakang semi-transparan */
+            z-index: 9999; /* Pastikan spinner berada di atas konten lain */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-    .form-label {
-    font-weight: bold;
-    }
+        .form-label {
+            font-weight: bold;
+        }
 
     </style>
 
@@ -128,12 +128,12 @@
                                             @endcan
                                             @canany(['Tim Koordinator', 'Super Admin'])
                                             <li class="nav-item">
-                                                <a class="nav-link" id="navbar-link" href="/kelola-rekomendasi"><h6>Rekomendasi</h6></a>
+                                                <a class="nav-link" id="navbar-link" href="/rekomendasi"><h6>Rekomendasi</h6></a>
                                             </li>
                                             @endcan
                                             @canany(['Super Admin', 'Tim Koordinator', 'Unit Kerja', 'Operator Unit Kerja'])
                                             <li class="nav-item">
-                                                <a class="nav-link" id="navbar-link" href="/kelola-tindak-lanjut"><h6>Tindak Lanjut</h6></a>
+                                                <a class="nav-link" id="navbar-link" href="/tindak-lanjut"><h6>Tindak Lanjut</h6></a>
                                             </li>
                                             @endcan
                                             @canany(['Tim Pemantauan Wilayah I', 'Tim Pemantauan Wilayah II', 'Tim Pemantauan Wilayah III', 'Super Admin'])
@@ -236,13 +236,24 @@
 <script src="{{ asset('mazer/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
 <script src="{{ asset('mazer/assets/compiled/js/app.js') }}"></script>
 
-{{-- <!-- chartjs -->
-<script src="{{ asset('mazer/assets/extensions/chart.js/chart.umd.js') }}"></script>
-<script src="{{ asset('mazer/assets/static/js/pages/ui-chartjs.js') }}"></script> --}}
-
 <!-- tinymce -->
 <script src="{{ asset('mazer/assets/extensions/tinymce/tinymce.min.js') }}"></script>
 <script src="{{ asset('mazer/assets/static/js/pages/tinymce.js') }}"></script>
+
+<script>
+    tinymce.init({
+        selector: "textarea",
+        promotion: false,
+        height: 185,
+        plugins: "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+        toolbar: 'undo redo | formatselect | ' +
+            'bold italic backcolor | alignleft aligncenter ' +
+            'alignright alignjustify | bullist numlist outdent indent | ' +
+            'removeformat | help',
+        menubar: "table tools",
+    });
+</script>
+
 
 <!-- flatpickr -->
 <script src="{{ asset('mazer/assets/extensions/flatpickr/flatpickr.min.js') }}"></script>
@@ -268,20 +279,6 @@
                 ],
             },
         },
-    });
-</script>
-
-<script>
-    tinymce.init({
-        selector: "textarea",
-        promotion: false,
-        height: 185,
-        plugins: "advlist autolink lists link image charmap print preview hr anchor pagebreak",
-        toolbar: 'undo redo | formatselect | ' +
-            'bold italic backcolor | alignleft aligncenter ' +
-            'alignright alignjustify | bullist numlist outdent indent | ' +
-            'removeformat | help',
-        menubar: "table tools",
     });
 </script>
 
@@ -377,32 +374,32 @@
 </script>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const navLinks = document.querySelectorAll('#navbar-link');
+    document.addEventListener("DOMContentLoaded", function() {
+        const navLinks = document.querySelectorAll('#navbar-link');
 
-    // Fungsi untuk menambahkan kelas 'active' ke tautan yang diklik
-    function setActiveLink(link) {
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-        });
-        link.classList.add('active');
-    }
-
-    // Tambahkan event listener untuk setiap tautan
-    navLinks.forEach(link => {
-        link.addEventListener('click', function(event) {
-            setActiveLink(this);
-            // Simpan status menu yang aktif di localStorage
-            localStorage.setItem('activeMenu', this.getAttribute('href'));
-        });
-
-        // Periksa apakah ada menu yang aktif disimpan di localStorage
-        const activeMenu = localStorage.getItem('activeMenu');
-        if (activeMenu && link.getAttribute('href') === activeMenu) {
-            setActiveLink(link);
+        // Fungsi untuk menambahkan kelas 'active' ke tautan yang diklik
+        function setActiveLink(link) {
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            link.classList.add('active');
         }
+
+        // Tambahkan event listener untuk setiap tautan
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+                setActiveLink(this);
+                // Simpan status menu yang aktif di localStorage
+                localStorage.setItem('activeMenu', this.getAttribute('href'));
+            });
+
+            // Periksa apakah ada menu yang aktif disimpan di localStorage
+            const activeMenu = localStorage.getItem('activeMenu');
+            if (activeMenu && link.getAttribute('href') === activeMenu) {
+                setActiveLink(link);
+            }
+        });
     });
-});
 
 </script>
 

@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('bukti_input_siptl', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('bukti_input_siptl')->nullable();
             $table->text('detail_bukti_input_siptl')->nullable();
             $table->string('upload_by')->nullable();
             $table->dateTime('upload_at')->nullable();
-            $table->foreignId('rekomendasi_id')->constrained('rekomendasi')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignUuid('rekomendasi_id')->constrained('rekomendasi')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

@@ -3,8 +3,15 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use RolesSeeder;
+use App\Models\User;
+use App\Models\Kamus;
+use App\Models\Rekomendasi;
+use Illuminate\Support\Str;
+use App\Models\TindakLanjut;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 
 class DatabaseSeeder extends Seeder
@@ -17,23 +24,20 @@ class DatabaseSeeder extends Seeder
 
         // \App\Models\User::factory(1)->create();
         // \App\Models\Kamus::factory(15)->create();
-        \App\Models\Rekomendasi::factory(50)->create();
+        // \App\Models\Rekomendasi::factory(50)->create();
         // \App\Models\TindakLanjut::factory(1)->create();
+        $this->call(KamusSeeder::class);
 
 
         // // Roles
         // $roles = [
         //     'Admin',
         //     'Pimpinan',
-        //     'Operator',
+        //     'Operator Unit Kerja',
         //     'Tim Koordinator',
         //     'Tim Pemantauan Wilayah I',
         //     'Tim Pemantauan Wilayah II',
         //     'Tim Pemantauan Wilayah III',
-        //     // 'Ketua Tim Pemantauan II',
-        //     // 'Ketua Tim Pemantauan III',
-        //     // 'Anggota Tim Pemantauan II',
-        //     // 'Anggota Tim Pemantauan III',
         //     'Pengendali Teknis',
         //     'Badan Pemeriksa Keuangan',
         //     'Super Admin'
@@ -105,39 +109,47 @@ class DatabaseSeeder extends Seeder
         // }
 
         // // create super admin
-        // \App\Models\User::create([
+        // User::create([
+        //     'id' => Str::uuid()->toString(),
         //     'nama' => 'Super Admin',
         //     'email' => 'superadmin@example.com',
-        //     'password' => bcrypt('password'),
+        //     'password' => Hash::make('password'),
         //     'unit_kerja' => 'Inspektorat Utama',
         //     'role' => 'Super Admin',
         //     'unit_kerja_id' => '546'
         // ]);
 
         // // Assign Role to User
-        // $users = \App\Models\User::all();
-        // // apabila user memiliki role Admin maka assign admin
+        // $users = User::all();
         // foreach ($users as $user) {
-        //     if ($user->role === 'Admin') {
-        //         $user->assignRole('Admin');
-        //     } if ($user->role === 'Pimpinan') {
-        //         $user->assignRole('Pimpinan');
-        //     } if ($user->role === 'Operator Unit Kerja') {
-        //         $user->assignRole('Operator Unit Kerja');
-        //     } if ($user->role === 'Tim Koordinator') {
-        //         $user->assignRole('Tim Koordinator');
-        //     } if ($user->role === 'Tim Pemantauan Wilayah I') {
-        //         $user->assignRole('Tim Pemantauan Wilayah I');
-        //     } if ($user->role === 'Tim Pemantauan Wilayah II') {
-        //         $user->assignRole('Tim Pemantauan Wilayah II');
-        //     } if ($user->role === 'Tim Pemantauan Wilayah III') {
-        //         $user->assignRole('Tim Pemantauan Wilayah III');
-        //     } if ($user->role === 'Pengendali Teknis') {
-        //         $user->assignRole('Pengendali Teknis');
-        //     } if ($user->role === 'Badan Pemeriksa Keuangan') {
-        //         $user->assignRole('Badan Pemeriksa Keuangan');
-        //     } if ($user->role === 'Super Admin') {
-        //         $user->assignRole('Super Admin');
+        //     switch ($user->role) {
+        //         case 'Admin':
+        //             $user->assignRole('Admin');
+        //             break;
+        //         case 'Pimpinan':
+        //             $user->assignRole('Pimpinan');
+        //             break;
+        //         case 'Operator Unit Kerja':
+        //             $user->assignRole('Operator Unit Kerja');
+        //             break;
+        //         case 'Tim Koordinator':
+        //             $user->assignRole('Tim Koordinator');
+        //             break;
+        //         case 'Tim Pemantauan Wilayah I':
+        //         case 'Tim Pemantauan Wilayah II':
+        //         case 'Tim Pemantauan Wilayah III':
+        //         case 'Pengendali Teknis':
+        //             $role = Role::where('name', $user->role)->first(); // Dapatkan objek peran berdasarkan nama peran
+        //             if ($role) {
+        //                 $user->assignRole($role); // Gunakan objek peran untuk menetapkan peran ke pengguna
+        //             }
+        //             break;
+        //         case 'Badan Pemeriksa Keuangan':
+        //             $user->assignRole('Badan Pemeriksa Keuangan');
+        //             break;
+        //         case 'Super Admin':
+        //             $user->assignRole('Super Admin');
+        //             break;
         //     }
         // }
     }

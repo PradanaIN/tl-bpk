@@ -18,26 +18,10 @@ class IdentifikasiController extends Controller
             ->where('status_tindak_lanjut', '!=', 'Proses')
             ->get();
 
-        return view('livewire.identifikasi.index', [
+        return view('identifikasi.index', [
             'title' => 'Identifikasi Tindak Lanjut',
             'tindak_lanjut' => $tindak_lanjut,
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
@@ -47,19 +31,11 @@ class IdentifikasiController extends Controller
     {
         $rekomendasi = Rekomendasi::find($tindakLanjut->rekomendasi_id);
 
-        return view('livewire.identifikasi.show', [
+        return view('identifikasi.show', [
             'title' => 'Detail Tindak Lanjut',
             'tindak_lanjut' => $tindakLanjut,
             'rekomendasi' => $rekomendasi,
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TindakLanjut $tindakLanjut)
-    {
-        //
     }
 
     /**
@@ -78,11 +54,4 @@ class IdentifikasiController extends Controller
         return redirect('/identifikasi/' . $tindakLanjut->id)->with('update', 'Update Status Berhasil!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(TindakLanjut $tindakLanjut)
-    {
-        //
-    }
 }

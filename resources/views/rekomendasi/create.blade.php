@@ -29,10 +29,8 @@
                 </div>
             </div>
             <div class="card">
-                <form class="form form-vertical" action="/kelola-rekomendasi/{{ $rekomendasi->id }}" method="post" data-parsley-validate id="formTambahRekomendasi">
-                    @method('put')
+                <form class="form form-vertical" action="/rekomendasi" method="post" data-parsley-validate id="formTambahRekomendasi">
                     @csrf
-                    <input type="hidden" name="status_rekomendasi" value="{{ $rekomendasi->status_rekomendasi }}">
                     <div class="card-body">
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="pemeriksaan" role="tabpanel" aria-labelledby="pemeriksaan-tab">
@@ -40,15 +38,21 @@
                                     <div class="form-group mandatory">
                                         <label class="form-label" for="pemeriksaan">Pemeriksaan</label>
                                         <input type="text" id="pemeriksaan" class="form-control"
-                                            name="pemeriksaan" placeholder="Nama Pemeriksaan" data-parsley-required="true" required value="{{ old('pemeriksaan', $rekomendasi->pemeriksaan) }}">
+                                            name="pemeriksaan" placeholder="Nama Pemeriksaan" data-parsley-required="true" required value="{{ old('pemeriksaan') }}">
                                     </div>
+                                    @error('pemeriksaan')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group mandatory">
                                         <label class="form-label" for="tahun_pemeriksaan">Tahun Pemeriksaan</label>
                                         <input type="number" id="tahun_pemeriksaan" class="form-control"
-                                            name="tahun_pemeriksaan" placeholder="Tahun Pemeriksaan" data-parsley-required="true" required value="{{ old('tahun_pemeriksaan', $rekomendasi->tahun_pemeriksaan) }}">
+                                            name="tahun_pemeriksaan" placeholder="Tahun Pemeriksaan" data-parsley-required="true" required value="{{ old('tahun_pemeriksaan') }}">
                                     </div>
+                                    @error('tahun_pemeriksaan')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group mandatory">
@@ -56,19 +60,23 @@
                                         <select class="form-select" id="jenis_pemeriksaan" name="jenis_pemeriksaan" data-parsley-required="true" required>
                                             <option value="">Pilih Jenis Pemeriksaan</option>
                                             @foreach ($kamus_pemeriksaan as $kamus)
-                                                <option value="{{ $kamus->nama }}" {{ $kamus->nama == $rekomendasi->jenis_pemeriksaan ? 'selected' : '' }}>
-                                                    {{ $kamus->nama }}
-                                                </option>
+                                                <option value="{{ $kamus->nama }}" {{ old('jenis_pemeriksaan') == $kamus->nama ? 'selected' : '' }}>{{ $kamus->nama }}</option>
                                             @endforeach
                                         </select>
                                     </div>
+                                    @error('jenis_pemeriksaan')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group mandatory">
                                         <label class="form-label" for="hasil_pemeriksaan">Hasil Pemeriksaan</label>
                                         <textarea class="form-control" id="hasil_pemeriksaan" rows="3"
-                                        name="hasil_pemeriksaan" placeholder="Hasil Pemeriksaan" data-parsley-required="true" required>{{ old('hasil_pemeriksaan', $rekomendasi->hasil_pemeriksaan) }}</textarea>
+                                        name="hasil_pemeriksaan" placeholder="Hasil Pemeriksaan" data-parsley-required="true" required>{{ old('hasil_pemeriksaan') }}</textarea>
                                     </div>
+                                    @error('hasil_pemeriksaan')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="rekomendasi" role="tabpanel" aria-labelledby="rekomendasi-tab">
@@ -78,33 +86,43 @@
                                         <select class="form-select" id="jenis_temuan" name="jenis_temuan" data-parsley-required="true" required>
                                             <option value="">Pilih Jenis Temuan</option>
                                             @foreach ($kamus_temuan as $kamus)
-                                                <option value="{{ $kamus->nama }}" {{ $kamus->nama == $rekomendasi->jenis_temuan ? 'selected' : '' }}>
-                                                    {{ $kamus->nama }}
-                                                </option>
+                                                <option value="{{ $kamus->nama }}" {{ old('jenis_temuan') == $kamus->nama ? 'selected' : '' }}>{{ $kamus->nama }}</option>
                                             @endforeach
                                         </select>
                                     </div>
+                                    @error('jenis_temuan')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group mandatory">
                                         <label class="form-label" for="uraian_temuan">Uraian Temuan</label>
                                         <textarea class="form-control" id="uraian_temuan" rows="3"
-                                            name="uraian_temuan" placeholder="Uraian Temuan" data-parsley-required="true" required>{{ old('uraian_temuan', $rekomendasi->uraian_temuan) }}</textarea>
+                                        name="uraian_temuan" placeholder="Uraian Temuan" data-parsley-required="true" required>{{ old('uraian_temuan') }}</textarea>
                                     </div>
+                                    @error('uraian_temuan')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group mandatory">
                                         <label class="form-label" for="rekomendasi">Rekomendasi</label>
                                         <textarea class="form-control" id="rekomendasi" class="form-control"
-                                        name="rekomendasi" placeholder="Rekomendasi" data-parsley-required="true" required rows="3">{{ old('rekomendasi', $rekomendasi->rekomendasi) }}</textarea>
+                                        name="rekomendasi" placeholder="Rekomendasi" data-parsley-required="true" required rows="3">{{ old('rekomendasi') }}</textarea>
                                     </div>
+                                    @error('rekomendasi')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group mandatory">
                                         <label class="form-label" for="catatan_rekomendasi">Catatan Rekomendasi</label>
                                         <textarea class="form-control" id="catatan_rekomendasi" rows="3"
-                                            name="catatan_rekomendasi" placeholder="Catatan Rekomendasi" data-parsley-required="true" required>{{ old('catatan_rekomendasi', $rekomendasi->catatan_rekomendasi) }}</textarea>
+                                            name="catatan_rekomendasi" placeholder="Catatan Rekomendasi" data-parsley-required="true" required>{{ old('catatan_rekomendasi') }}</textarea>
                                     </div>
+                                    @error('catatan_rekomendasi')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="tindaklanjut" role="tabpanel" aria-labelledby="tindaklanjut-tab">
@@ -124,39 +142,35 @@
                                     </div>
                                 </div>
                                 <div id="formContainer">
-                                    @foreach($rekomendasi->tindakLanjut as $index => $tindakLanjut)
-                                    <input type="hidden" name="id[]" value="{{ $tindakLanjut->id }}">
-                                    <input type="hidden" name="status_tindak_lanjut[]" value="{{ $tindakLanjut->status_tindak_lanjut }}">
-                                    <input type="hidden" name="bukti_tindak_lanjut[]" value="{{ $tindakLanjut->bukti_tindak_lanjut }}">
                                     <div class="form-repeater mb-3">
                                         <div class="form-row mb-3">
                                             <div class="col-12 form-group mandatory">
-                                                <label class="form-label" for="tindak_lanjut{{$index}}">Tindak Lanjut</label>
-                                                <textarea class="form-control" rows="3" name="tindak_lanjut[]" id="tindak_lanjut{{$index}}"placeholder="Tindak lanjut" data-parsley-required="true" required>{{ $tindakLanjut->tindak_lanjut }}</textarea>
+                                                <label class="form-label" for="tindak_lanjut">Tindak Lanjut</label>
+                                                <textarea class="form-control" rows="3" name="tindak_lanjut[]" placeholder="Tindak lanjut" data-parsley-required="true" required></textarea>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-md-4 mb-3 form-group mandatory">
-                                                <label class="form-label" for="unit_kerja{{$index}}">PIC Unit Kerja</label>
-                                                <select class="form-select select-unit-kerja" name="unit_kerja[]"id="unit_kerja{{$index}}">
-                                                    <option value="{{ $tindakLanjut->unit_kerja }}">{{ $tindakLanjut->unit_kerja }}</option>
+                                                <label class="form-label" for="unit_kerja">PIC Unit Kerja</label>
+                                                <select class="form-select select-unit-kerja" name="unit_kerja[]">
+                                                    <option value="">Pilih PIC Unit Kerja</option>
                                                     @foreach ($unit_kerja as $unit)
-                                                        <option value="{{ $unit->nama }}">{{ $unit->nama }}</option>
+                                                    <option value="{{ $unit->nama }}">{{ $unit->nama }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                             <div class="col-md-4 mb-3 form-group mandatory">
-                                                <label class="form-label" for="tim_pemantauan{{$index}}">PIC Tim Pemantauan</label>
+                                                <label class="form-label" for="tim_pemantauan">PIC Tim Pemantauan</label>
                                                 <select class="form-select select-tim-pemantauan" name="tim_pemantauan[]">
-                                                    <option value="{{ $tindakLanjut->tim_pemantauan }}">{{ $tindakLanjut->tim_pemantauan }}</option>
+                                                    <option value="">Pilih PIC Tim Pemantauan</option>
                                                     <option value="Tim Pemantauan Wilayah I">Tim Pemantauan Wilayah I</option>
                                                     <option value="Tim Pemantauan Wilayah II">Tim Pemantauan Wilayah II</option>
                                                     <option value="Tim Pemantauan Wilayah III">Tim Pemantauan Wilayah III</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-4 mb-3 form-group mandatory">
-                                                <label class="form-label" for="tenggat_waktu{{$index}}">Tenggat Waktu</label>
-                                                <input type="date" class="form-control flatpickr-no-config" name="tenggat_waktu[]" placeholder="Tenggat Waktu"  value="{{ $tindakLanjut->tenggat_waktu }}">
+                                                <label class="form-label" for="tenggat_waktu">Tenggat Waktu</label>
+                                                <input type="date" class="form-control flatpickr-no-config" name="tenggat_waktu[]" placeholder="Tenggat Waktu">
                                             </div>
                                         </div>
                                         <div class="form-row mb-3">
@@ -167,7 +181,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -177,7 +190,7 @@
             <div class="col-12 d-flex justify-between justify-content-end mt-2 mb-5" id="formActions">
                 <button type="button" class="btn btn-secondary me-3 mb-1" id="btnBack"><i class="bi bi-arrow-left"></i>&nbsp;Back</button>
                 <button type="button" class="btn btn-primary me-1 mb-1" id="btnNext">Next&nbsp;<i class="bi bi-arrow-right"></i></button>
-                <button type="submit" class="btn btn-primary me-1 mb-1" id="btnTambah">Simpan</button>
+                <button type="submit" class="btn btn-primary me-1 mb-1" id="btnTambah">Tambah</button>
             </div>
         </div>
     </div>
@@ -186,8 +199,21 @@
 @endsection
 
 
-
 @section('script')
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+    // Inisialisasi Select2 di select yang ada
+    $('.select-unit-kerja').select2({
+        theme: 'bootstrap-5',
+        placeholder: 'Pilih PIC Unit Kerja',
+    });
+
+    $('.select-tim-pemantauan').select2({
+        theme: 'bootstrap-5',
+        placeholder: 'Pilih PIC Tim Pemantauan'
+    });
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -263,41 +289,6 @@
                 showTindakLanjutActions(); // Jika tab "Tindak Lanjut" aktif, tampilkan tombol "Back" dan "Tambah"
             }
         });
-    });
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-<script>
-    // Inisialisasi Select2 pada elemen dengan class "select-unit-kerja"
-    $('.select-unit-kerja').select2({
-        theme: 'bootstrap-5',
-        placeholder: 'Pilih PIC Unit Kerja',
-    });
-
-    // Inisialisasi Select2 pada elemen dengan class "select-tim-pemantauan"
-    $('.select-tim-pemantauan').select2({
-        theme: 'bootstrap-5',
-        placeholder: 'Pilih PIC Tim Pemantauan'
-    });
-
-    // Inisialisasi flatpickr pada elemen dengan class "flatpickr-no-config"
-    flatpickr('.flatpickr-no-config', {
-        altInput: true,
-        altFormat: "j F Y",
-        dateFormat: "Y-m-d",
-        minDate: "today",
-        locale: {
-            firstDayOfWeek: 1,
-            weekdays: {
-                shorthand: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
-                longhand: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
-            },
-            months: {
-                shorthand: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
-                longhand: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
-            },
-        },
     });
 </script>
 
@@ -441,7 +432,7 @@
             cancelButtonText: 'Tidak, tetap disini'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location = '/kelola-rekomendasi';
+                window.location = '/rekomendasi';
             }
         })
     });

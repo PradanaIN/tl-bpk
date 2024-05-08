@@ -24,6 +24,9 @@
                                                     <input type="text" id="first-name-vertical" class="form-control"
                                                         name="nama" placeholder="Nama" value="{{ old('nama', $kamus->nama) }} " required>
                                                 </div>
+                                                @error('nama')
+                                                    <div class="alert alert-danger mt-1">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                             <div class="col-12">
                                                 <div class="form-group">

@@ -15,8 +15,8 @@ class TindakLanjutController extends Controller
      */
     public function index()
     {
-        return view('livewire.kelola-tindak-lanjut.index', [
-            'title' => 'Tindak Lanjut',
+        return view('tindak-lanjut.index', [
+            'title' => 'Daftar Tindak Lanjut',
             'tindak_lanjut' => TindakLanjut::all(),
         ]);
     }
@@ -27,7 +27,7 @@ class TindakLanjutController extends Controller
     public function show(TindakLanjut $tindakLanjut)
     {
         $rekomendasi = Rekomendasi::find($tindakLanjut->rekomendasi_id);
-        return view('livewire.kelola-tindak-lanjut.show', [
+        return view('tindak-lanjut.show', [
             'title' => 'Detail Tindak Lanjut',
             'tindak_lanjut' => $tindakLanjut,
             'rekomendasi' => $rekomendasi,
@@ -62,7 +62,7 @@ class TindakLanjutController extends Controller
                 ]);
 
                 // Redirect dengan pesan sukses
-                return redirect('/kelola-tindak-lanjut/' . $tindakLanjut->id)->with('update', 'Upload Berhasil!');
+                return redirect('/tindak-lanjut/' . $tindakLanjut->id)->with('update', 'Upload Berhasil!');
             } else {
                 // Jika tidak ada file yang diunggah, kembalikan pesan error
                 throw new \Exception('Tidak ada file yang diunggah.');

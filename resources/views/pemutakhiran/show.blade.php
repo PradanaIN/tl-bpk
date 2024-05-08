@@ -41,7 +41,7 @@
                 <i class="bi bi-arrow-left"></i>
                 Kembali
             </a>
-            <a href="/kelola-rekomendasi/{{ $rekomendasi->id }}/export" class="btn btn-success ms-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Export Rekomendasi">
+            <a href="/rekomendasi/{{ $rekomendasi->id }}/export" class="btn btn-success ms-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Export Rekomendasi">
                 <i class="bi bi-file-earmark-excel"></i>
                 Export Rekomendasi
             </a>

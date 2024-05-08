@@ -11,6 +11,27 @@ class Kamus extends Model
 
     protected $table = 'kamus';
 
+        /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
+     * The "type" of the primary key ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
+
+    /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -27,6 +48,7 @@ class Kamus extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'id',
         'nama',
         'jenis',
     ];

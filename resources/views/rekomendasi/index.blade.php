@@ -40,46 +40,6 @@
 @section('section')
 
 <section class="row">
-    {{-- <div class="card">
-        <div class="card-body">
-            <form id="filterForm">
-                <div class="row">
-                    <div class="col-md-3 mb-3">
-                        <label for="tahun">Tahun Pemeriksaan</label>
-                        <input type="text" class="form-control" id="tahun" placeholder="Masukkan Tahun">
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label for="jenisPemeriksaan">Jenis Pemeriksaan</label>
-                        <select class="form-select" id="jenisPemeriksaan">
-                            <option value="">Semua</option>
-                            @foreach ($kamus_pemeriksaan as $kamus)
-                            <option value="{{ $kamus->nama }}">{{ $kamus->nama }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label for="unitKerja">Unit Kerja</label>
-                        <input type="text" class="form-control" id="unitKerja" placeholder="Masukkan Unit Kerja">
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label for="statusRekomendasi">Status Rekomendasi</label>
-                        <select class="form-select" id="statusRekomendasi">
-                            <option value="">Semua</option>
-                            <option value="Proses">Proses</option>
-                            <option value="Sesuai">Sesuai</option>
-                            <option value="Belum Sesuai">Belum Sesuai</option>
-                            <option value="Tidak Ditindaklanjuti">Tidak Ditindaklanjuti</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="text-end">
-                    <button type="button" class="btn btn-primary" id="applyFilter">Terapkan Filter</button>
-                    <button type="button" class="btn btn-secondary" id="resetFilter">Reset</button>
-                </div>
-            </form>
-        </div>
-    </div> --}}
-
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
@@ -96,7 +56,7 @@
                     </thead>
                     <tbody>
                         @foreach ($rekomendasi as $rekomendasi)
-                        <tr class='clickable-row' data-href="/kelola-rekomendasi/{{ $rekomendasi->id }}}}">
+                        <tr class='clickable-row' data-href="/rekomendasi/{{ $rekomendasi->id }}}}">
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $rekomendasi->tahun_pemeriksaan }}</td>
                             <td>{{ $rekomendasi->pemeriksaan }}</td>
@@ -106,7 +66,7 @@
                             </td>
                             <td>
                                 <div class="d-flex justify-content-around align-items-center">
-                                    <a href="/kelola-rekomendasi/{{ $rekomendasi->id }}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Rekomendasi">
+                                    <a href="/rekomendasi/{{ $rekomendasi->id }}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Rekomendasi">
                                         <i class="bi bi-eye"></i>
                                     </a>
                                 </div>
@@ -218,7 +178,7 @@
                     text: '<i class="bi bi-plus"></i> Tambah Rekomendasi',
                     className: 'btn btn-primary',
                     action: function ( e, dt, node, config ) {
-                        window.location.href = '/kelola-rekomendasi/create';
+                        window.location.href = '/rekomendasi/create';
                     }
                 }
             ]
