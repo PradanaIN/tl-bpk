@@ -27,7 +27,7 @@ class UserFactory extends Factory
     {
 
         $unit_kerja = UnitKerja::all()->pluck('nama')->toArray();
-        $role = ["Admin", "Pimpinan", "Operator", "Tim Koordinator", "Ketua Tim Pemanantauan", "Anggota Tim Pemanantauan", "Pengendali Teknis", "Badan Pemeriksa Keuangan"];
+        $role = ["Admin", "Pimpinan", "Operator", "Tim Koordinator", "Tim Pemantauan", "Pengendali Teknis", "Badan Pemeriksa Keuangan"];
 
         return [
             'nama' => fake()->name(),

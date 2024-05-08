@@ -25,7 +25,7 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $kamus->nama }}</td>
                             <td>{{ $kamus->jenis }}</td>
-                            <td>{{ \Carbon\Carbon::parse($kamus->created_at )->format(' d F Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($kamus->created_at )->translatedFormat(' d M Y')  }}</td>
                             <td>
                                 <div class="d-flex justify-content-around align-items-center">
                                     <a href="/kelola-kamus/{{ $kamus->id }}/edit" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Kamus">

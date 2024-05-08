@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\User;
 use App\Models\UnitKerja;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -42,24 +44,32 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        try {
+            $validatedData = $request->validate([
+                'nama' => 'required',
+                'email' => 'required',
+                'unit_kerja' => 'required',
+                'unit_kerja_id' => 'required',
+                'role' => 'required',
+                'password' => 'required',
+            ]);
 
-        $validatedData = $request->validate([
-            'nama' => 'required',
-            'email' => 'required',
-            'unit_kerja' => 'required',
-            'role' => 'required',
-            'password' => 'required',
-        ]);
+            $validatedData['password'] = bcrypt($validatedData['password']);
 
-        $validatedData['password'] = bcrypt($validatedData['password']);
+            User::create($validatedData);
 
-        User::create($validatedData);
+            // assign role
+            $user = User::where('email', $validatedData['email'])->first();
+            $user->assignRole($validatedData['role']);
 
-        // assign role
-        $user = User::where('email', $validatedData['email'])->first();
-        $user->assignRole($validatedData['role']);
-
-        return redirect('/kelola-pengguna')->with('create', 'Data berhasil ditambahkan!');
+            return redirect('/kelola-pengguna')->with('create', 'Data berhasil ditambahkan!');
+        } catch (ValidationException $e) {
+            // Tangkap pengecualian validasi dan teruskan pesan kesalahan ke view
+            return redirect()->back()->withInput()->withErrors($e->errors());
+        } catch (Exception $e) {
+            // Tangkap pengecualian umum dan teruskan pesan kesalahan ke view
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -91,26 +101,32 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $validatedData = $request->validate([
-            'nama' => 'required',
-            'email' => 'required',
-            'unit_kerja' => 'required',
-            'role' => 'required',
-            'password' => 'required',
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'nama' => 'required',
+                'email' => 'required',
+                'unit_kerja' => 'required',
+                'unit_kerja_id' => 'required',
+                'role' => 'required',
+                'password' => 'required',
+            ]);
 
-        if (substr($validatedData['password'], 0, 4) != '$2y$') {
-            $validatedData['password'] = bcrypt($validatedData['password']);
+            if (substr($validatedData['password'], 0, 4) != '$2y$') {
+                $validatedData['password'] = bcrypt($validatedData['password']);
+            }
+
+            User::where('id', $user->id)->update($validatedData);
+
+            // update assign role
+            $user = User::where('id', $user->id)->first();
+            $user->syncRoles($validatedData['role']);
+
+            return redirect('/kelola-pengguna')->with('update', 'Data berhasil diubah!');
+        } catch (ValidationException $e) {
+            return back()->withErrors($e->errors())->withInput();
+        } catch (\Exception $e) {
+            return back()->withError('Gagal mengubah data pengguna.')->withInput();
         }
-
-        User::where('id', $user->id)
-            ->update($validatedData);
-
-        // update assign role
-        $user = User::where('id', $user->id)->first();
-        $user->syncRoles($validatedData['role']);
-
-        return redirect('/kelola-pengguna')->with('update', 'Data berhasil diubah!');
     }
 
     /**

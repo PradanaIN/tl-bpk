@@ -17,15 +17,16 @@ class RekomendasiFactory extends Factory
     public function definition(): array
     {
         return [
-            'pemeriksaan' => $this->faker->sentence(),
-            'jenis_pemeriksaan' => $this->faker->randomElement(['Laporan Keuangan', 'Kinerja']),
-            'tahun_pemeriksaan' => $this->faker->numberBetween(2000, date('Y')), // Tahun acak antara 2000 dan tahun saat ini
-            'hasil_pemeriksaan' => $this->faker->paragraph(),
-            'jenis_temuan' => $this->faker->randomElement(['Belanja', 'SPI']),
-            'uraian_temuan' => $this->faker->paragraph(),
-            'rekomendasi' => $this->faker->paragraph(),
-            'catatan_rekomendasi' => $this->faker->paragraph(),
-            'status_rekomendasi' => $this->faker->randomElement(['Belum Sesuai', 'Sudah Sesuai', 'Proses', 'Tidak Ditindaklanjuti']),
+            'pemeriksaan' => $this->faker->word,
+            'jenis_pemeriksaan' => $this->faker->word,
+            // year from 2010 to 2024
+            'tahun_pemeriksaan' => $this->faker->numberBetween(2010, 2024),
+            'hasil_pemeriksaan' => $this->faker->sentence,
+            'jenis_temuan' => $this->faker->word,
+            'uraian_temuan' => $this->faker->sentence,
+            'rekomendasi' => $this->faker->sentence,
+            'catatan_rekomendasi' => $this->faker->sentence,
+            'status_rekomendasi' => $this->faker->randomElement(['Sesuai', 'Belum Sesuai', 'Proses', 'Belum Ditindaklanjuti', 'Tidak Dapat Ditindaklanjuti']),
         ];
     }
 }

@@ -6,6 +6,7 @@ use App\Models\Rekomendasi;
 use App\Models\TindakLanjut;
 use Illuminate\Http\Request;
 use Novay\WordTemplate\WordTemplate;
+use Exception;
 
 class TindakLanjutController extends Controller
 {
@@ -15,25 +16,9 @@ class TindakLanjutController extends Controller
     public function index()
     {
         return view('livewire.kelola-tindak-lanjut.index', [
-            'title' => 'Kelola Tindak Lanjut',
+            'title' => 'Tindak Lanjut',
             'tindak_lanjut' => TindakLanjut::all(),
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
@@ -50,45 +35,47 @@ class TindakLanjutController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TindakLanjut $tindakLanjut)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, TindakLanjut $tindakLanjut)
     {
-        $file = $request->file('bukti_tindak_lanjut');
-        $currentTime = now()->format('dmY');
-        $fileName = $currentTime . '_' . $file->getClientOriginalName();
-        $file->move(public_path('uploads/tindak_lanjut'), $fileName);
+        try {
+            // Validasi jenis file
+            $request->validate([
+                'bukti_tindak_lanjut' => 'required|file|mimes:zip,rar,tar',
+            ]);
 
-        $tindakLanjut->update([
-            'rekomendasi_id' => $tindakLanjut->rekomendasi_id,
-            'tindak_lanjut' => $tindakLanjut->tindak_lanjut,
-            'unit_kerja' => $tindakLanjut->unit_kerja,
-            'tim_pemantauan' => $tindakLanjut->tim_pemantauan,
-            'bukti_tindak_lanjut' => $fileName,
-            'detail_bukti_tindak_lanjut' => $request->detail_bukti_tindak_lanjut,
-            'upload_by' => auth()->user()->nama,
-            'upload_at' => now(),
-            'status_tindak_lanjut' => 'Identifikasi',
-        ]);
+            // Memeriksa apakah file telah diunggah
+            if ($request->hasFile('bukti_tindak_lanjut')) {
+                $file = $request->file('bukti_tindak_lanjut');
+                $currentTime = now()->format('dmY');
+                $fileName = $currentTime . '_' . $file->getClientOriginalName();
+                $file->move(public_path('uploads/tindak_lanjut'), $fileName);
 
-        return redirect('/kelola-tindak-lanjut/' . $tindakLanjut->id)->with('update', 'Upload Berhasil!');
+                // Update informasi tindak lanjut
+                $tindakLanjut->update([
+                    'bukti_tindak_lanjut' => $fileName,
+                    'detail_bukti_tindak_lanjut' => $request->detail_bukti_tindak_lanjut,
+                    'upload_by' => auth()->user()->nama,
+                    'upload_at' => now(),
+                    'status_tindak_lanjut' => 'Identifikasi',
+                ]);
+
+                // Redirect dengan pesan sukses
+                return redirect('/kelola-tindak-lanjut/' . $tindakLanjut->id)->with('update', 'Upload Berhasil!');
+            } else {
+                // Jika tidak ada file yang diunggah, kembalikan pesan error
+                throw new \Exception('Tidak ada file yang diunggah.');
+            }
+        } catch (\Exception $e) {
+            // Tangani error
+            $errorMessage = $e->getMessage(); // Dapatkan pesan error
+
+            // Tampilkan SweetAlert dengan pesan error
+            return redirect()->back()->withInput()->with('error', $errorMessage);
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(TindakLanjut $tindakLanjut)
-    {
-        //
-    }
 
     public static function word(TindakLanjut $tindakLanjut)
     {

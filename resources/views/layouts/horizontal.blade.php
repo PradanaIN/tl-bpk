@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="{{ asset('mazer/assets/compiled/css/app-dark.css') }}">
     <link rel="stylesheet" href="{{ asset('mazer/assets/compiled/css/iconly.css') }}">
     <link rel="stylesheet" href="{{ asset('mazer/assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('mazer/assets/extensions/perfect-scrollbar/perfect-scrollbar.css') }}">
+    <link rel="stylesheet" href="{{ asset('mazer/assets/extensions/flatpickr/flatpickr.min.css') }}">
 
     <style>
         .clickable-row:hover {
@@ -129,12 +131,12 @@
                                                 <a class="nav-link" id="navbar-link" href="/kelola-rekomendasi"><h6>Rekomendasi</h6></a>
                                             </li>
                                             @endcan
-                                            @canany(['Super Admin', 'Tim Koordinator', 'Unit Kerja'])
+                                            @canany(['Super Admin', 'Tim Koordinator', 'Unit Kerja', 'Operator Unit Kerja'])
                                             <li class="nav-item">
                                                 <a class="nav-link" id="navbar-link" href="/kelola-tindak-lanjut"><h6>Tindak Lanjut</h6></a>
                                             </li>
                                             @endcan
-                                            @canany(['Tim Pemanantauan', 'Super Admin'])
+                                            @canany(['Tim Pemantauan Wilayah I', 'Tim Pemantauan Wilayah II', 'Tim Pemantauan Wilayah III', 'Super Admin'])
                                             <li class="nav-item">
                                                 <a class="nav-link" id="navbar-link" href="/identifikasi"><h6>Identifikasi</h6></a>
                                             </li>
@@ -228,7 +230,7 @@
     </div>
 
 
-
+<!-- javascript -->
 <script src="{{ asset('mazer/assets/static/js/pages/horizontal-layout.js') }}"></script>
 <script src="{{ asset('mazer/assets/static/js/components/dark.js') }}"></script>
 <script src="{{ asset('mazer/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
@@ -241,6 +243,33 @@
 <!-- tinymce -->
 <script src="{{ asset('mazer/assets/extensions/tinymce/tinymce.min.js') }}"></script>
 <script src="{{ asset('mazer/assets/static/js/pages/tinymce.js') }}"></script>
+
+<!-- flatpickr -->
+<script src="{{ asset('mazer/assets/extensions/flatpickr/flatpickr.min.js') }}"></script>
+<script src="{{ asset('mazer/assets/static/js/pages/date-picker.js') }}"></script>
+
+<!-- custom flatpickr -->
+<script>
+    flatpickr('.flatpickr-no-config', {
+        altInput: true,
+        altFormat: "j F Y",
+        dateFormat: "Y-m-d",
+        minDate: "today",
+        locale: {
+            firstDayOfWeek: 1,
+            weekdays: {
+                shorthand: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+                longhand: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
+            },
+            months: {
+                shorthand: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+                longhand: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September',
+                    'Oktober', 'November', 'Desember'
+                ],
+            },
+        },
+    });
+</script>
 
 <script>
     tinymce.init({
@@ -269,18 +298,24 @@
 
 <!-- sweetalert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-@if (session('error'))
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            showConfirmButton: false,
-            timer: 1500,
-            text: '{{ session('error') }}',
-        })
-    </script>
-@else
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: '{{ session('error') }}',
+            })
+        </script>
+    @endif
+    @if ($errors->any())
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: '{{ $errors->first() }}',
+            })
+        </script>
+    @endif
     @if (session('success'))
         <script>
             Swal.fire({
@@ -292,7 +327,6 @@
             })
         </script>
     @endif
-@endif
 
 <script>
     // warning delete

@@ -7,7 +7,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RekomendasiController;
 use App\Http\Controllers\TindakLanjutController;
-use App\Http\Controllers\IdentifikasiDokumenController;
+use App\Http\Controllers\IdentifikasiController;
 use App\Http\Controllers\PemutakhiranController;
 
 /*
@@ -62,7 +62,7 @@ Route::middleware(['auth', 'prevent-back-button'])->group(function () {
         Route::get('/kelola-rekomendasi/{rekomendasi:id}/export', [RekomendasiController::class, 'export']);
     });
 
-    Route::middleware(['role:Pimpinan|Tim Koordinator|Unit Kerja|Super Admin'])->group(function () {
+    Route::middleware(['role:Pimpinan|Tim Koordinator|Operator Unit Kerja|Super Admin'])->group(function () {
         // Kelola Tindak Lanjut
         Route::get('/kelola-tindak-lanjut', [TindakLanjutController::class, 'index'])->middleware('permission:view tindak lanjut');
         Route::get('/kelola-tindak-lanjut/create', [TindakLanjutController::class, 'create'])->middleware('permission:create tindak lanjut');
@@ -74,14 +74,14 @@ Route::middleware(['auth', 'prevent-back-button'])->group(function () {
         Route::get('/kelola-tindak-lanjut/{tindak_lanjut:id}/generate', [TindakLanjutController::class, 'word']);
     });
 
-    Route::middleware(['role:Tim Pemanantauan|Pengendali Teknis|Super Admin'])->group(function () {
+    Route::middleware(['role:Tim Pemantauan Wilayah I|Tim Pemantauan Wilayah II|Tim Pemantauan Wilayah III|Pengendali Teknis|Super Admin'])->group(function () {
         // Kelola Identifikasi Dokumen
-        Route::get('/identifikasi', [IdentifikasiDokumenController::class, 'index'])->middleware('permission:view identifikasi');
-        Route::get('/identifikasi/create', [IdentifikasiDokumenController::class, 'create'])->middleware('permission:create identifikasi');
-        Route::post('/identifikasi', [IdentifikasiDokumenController::class, 'store'])->middleware('permission:create identifikasi');
-        Route::get('/identifikasi/{tindak_lanjut:id}', [IdentifikasiDokumenController::class, 'show'])->middleware('permission:view identifikasi');
-        Route::get('/identifikasi/{tindak_lanjut:id}/edit', [IdentifikasiDokumenController::class, 'edit'])->middleware('permission:edit identifikasi');
-        Route::put('/identifikasi/{tindak_lanjut:id}', [IdentifikasiDokumenController::class, 'update'])->middleware('permission:edit identifikasi');
+        Route::get('/identifikasi', [IdentifikasiController::class, 'index'])->middleware('permission:view identifikasi');
+        Route::get('/identifikasi/create', [IdentifikasiController::class, 'create'])->middleware('permission:create identifikasi');
+        Route::post('/identifikasi', [IdentifikasiController::class, 'store'])->middleware('permission:create identifikasi');
+        Route::get('/identifikasi/{tindak_lanjut:id}', [IdentifikasiController::class, 'show'])->middleware('permission:view identifikasi');
+        Route::get('/identifikasi/{tindak_lanjut:id}/edit', [IdentifikasiController::class, 'edit'])->middleware('permission:edit identifikasi');
+        Route::put('/identifikasi/{tindak_lanjut:id}', [IdentifikasiController::class, 'update'])->middleware('permission:edit identifikasi');
     });
 
     Route::middleware(['role:Pimpinan|Tim Koordinator|Super Admin'])->group(function () {

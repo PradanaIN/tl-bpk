@@ -17,7 +17,9 @@ class PemutakhiranController extends Controller
     {
         return view('livewire.pemutakhiran.index', [
             'title' => 'Pemutakhiran Status',
-            'rekomendasi' => Rekomendasi::all(),
+            // hanya menmpilkan rekomendasi yang semua tindak lanjutnya memiliki status_tindak_lanjut = sesuai
+            'rekomendasi' => Rekomendasi::whereHas('tindakLanjut', function ($query) {
+                $query->where('status_tindak_lanjut', 'Sesuai');})->get(),
             'kamus_pemeriksaan' => Kamus::where('jenis', 'Pemeriksaan')->get(),
             'TindakLanjut' => TindakLanjut::all(),
         ]);

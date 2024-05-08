@@ -25,6 +25,11 @@
         color: #FFFFFF;
     }
 
+    .status-belum-ditindaklanjuti {
+        background-color: #0000FF;
+        color: #FFFFFF;
+    }
+
     .status-tidak-ditindaklanjuti {
         background-color: #000000;
         color: #FFFFFF;
@@ -268,14 +273,14 @@ function getStatusClass($status) {
         case 'Proses':
             return 'status-proses';
             break;
-        // case 'Identifikasi':
-        //     return 'status-identifikasi';
-        //     break;
         case 'Belum Sesuai':
             return 'status-belum-sesuai';
             break;
         case 'Sesuai':
             return 'status-sesuai';
+            break;
+        case 'Belum Ditindaklanjuti':
+            return 'status-belum-ditindaklanjuti';
             break;
         case 'Tidak Ditindaklanjuti':
             return 'status-tidak-ditindaklanjuti';

@@ -156,7 +156,7 @@
                                             </div>
                                             <div class="col-md-4 mb-3 form-group mandatory">
                                                 <label class="form-label" for="tenggat_waktu{{$index}}">Tenggat Waktu</label>
-                                                <input type="date" class="form-control" name="tenggat_waktu[]" placeholder="Tenggat Waktu"  value="{{ $tindakLanjut->tenggat_waktu }}">
+                                                <input type="date" class="form-control flatpickr-no-config" name="tenggat_waktu[]" placeholder="Tenggat Waktu"  value="{{ $tindakLanjut->tenggat_waktu }}">
                                             </div>
                                         </div>
                                         <div class="form-row mb-3">
@@ -269,6 +269,39 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
+    // Inisialisasi Select2 pada elemen dengan class "select-unit-kerja"
+    $('.select-unit-kerja').select2({
+        theme: 'bootstrap-5',
+        placeholder: 'Pilih PIC Unit Kerja',
+    });
+
+    // Inisialisasi Select2 pada elemen dengan class "select-tim-pemantauan"
+    $('.select-tim-pemantauan').select2({
+        theme: 'bootstrap-5',
+        placeholder: 'Pilih PIC Tim Pemantauan'
+    });
+
+    // Inisialisasi flatpickr pada elemen dengan class "flatpickr-no-config"
+    flatpickr('.flatpickr-no-config', {
+        altInput: true,
+        altFormat: "j F Y",
+        dateFormat: "Y-m-d",
+        minDate: "today",
+        locale: {
+            firstDayOfWeek: 1,
+            weekdays: {
+                shorthand: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+                longhand: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
+            },
+            months: {
+                shorthand: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+                longhand: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
+            },
+        },
+    });
+</script>
+
+<script>
     // Fungsi untuk menghitung jumlah form repeater yang tersedia
     function countRepeater() {
         var repeaterCount = document.querySelectorAll('.form-repeater').length;
@@ -307,7 +340,7 @@
                     </div>
                     <div class="col-md-4 mb-3 form-group mandatory">
                         <label class="form-label" for="tenggat_waktu">Tenggat Waktu</label>
-                        <input type="date" class="form-control" name="tenggat_waktu[]" placeholder="Tenggat Waktu">
+                        <input type="date" class="form-control flatpickr-no-config" name="tenggat_waktu[]" placeholder="Tenggat Waktu">
                     </div>
                 </div>
                 <div class="form-row mb-3">
@@ -343,6 +376,25 @@
         $('.select-tim-pemantauan').select2({
             theme: 'bootstrap-5',
             placeholder: 'Pilih PIC Tim Pemantauan'
+        });
+
+        // initialize flatpickr after adding the new repeater item
+        flatpickr('.flatpickr-no-config', {
+            altInput: true,
+            altFormat: "j F Y",
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            locale: {
+                firstDayOfWeek: 1,
+                weekdays: {
+                    shorthand: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+                    longhand: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
+                },
+                months: {
+                    shorthand: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+                    longhand: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
+                },
+            },
         });
 
         // Mengupdate counter setelah menambahkan repeater baru

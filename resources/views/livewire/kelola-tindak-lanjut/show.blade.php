@@ -59,7 +59,7 @@
                 &nbsp;Bukti Belum Diunggah!
             </button>
             @else
-            <button class="btn btn-success" id="btnStatusBukti" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->format('H:i, d M Y') }}">
+            <button class="btn btn-success" id="btnStatusBukti" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->translatedFormat('H:i, d M Y') }}">
                 <i class="bi bi-check-square"></i>
                 &nbsp;Bukti Diunggah {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->diffForHumans() }}
             </button>
@@ -70,7 +70,7 @@
                 &nbsp;Tindak Lanjut Belum Diidentifikasi!
             </button>
             @else
-            <button class="btn btn-success" id="btnStatusIdentifikasi" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->format('H:i, d M Y') }}">
+            <button class="btn btn-success" id="btnStatusIdentifikasi" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->translatedFormat('H:i, d M Y') }}">
                 <i class="bi bi-check-square"></i>
                 &nbsp;Diidentifikasi {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->diffForHumans() }}
             </button>
@@ -228,7 +228,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{{ \Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu )->format(' d F Y') }}</p>
+                                <p>{{ \Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu )->translatedFormat('d M Y') }}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -243,21 +243,21 @@
                                     <p><span class="status-badge bg-success text-white">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span></p>
                                 @endif
                             </div>
-                            @canany(['Unit Kerja', 'Super Admin'])
+                            @canany(['Operator Unit Kerja', 'Super Admin'])
                             <div class="col-auto d-flex ms-auto">
                                     @if (($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!'))
-                                    <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unggah Dokumen">
+                                    <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unggah Bukti TL">
                                         <i class="bi bi-plus"></i>
                                         &nbsp;Tambah Bukti
                                     </button>
                                     @else
                                     <div class="col-auto d-flex ms-auto">
                                         <div class="col-auto">
-                                            <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->bukti_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Bukti">
+                                            <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->bukti_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Bukti TL">
                                                 <i class="bi bi-download"></i>
                                                 &nbsp;Unduh Bukti
                                             </a>
-                                            <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Bukti">
+                                            <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Bukti TL">
                                                 <i class="bi bi-pencil"></i>
                                                 &nbsp;Ubah Bukti
                                             </button>
@@ -284,7 +284,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>Diunggah oleh {{ $tindak_lanjut->upload_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at )->format(' d F Y')}}</p>
+                                <p>Diunggah oleh {{ $tindak_lanjut->upload_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at )->translatedFormat('d M Y')}}</p>
                             </div>
                         </div>
                         @endif
@@ -324,7 +324,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>Diidentifikasi oleh {{ $tindak_lanjut->status_tindak_lanjut_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at )->format(' d F Y')}}</p>
+                                <p>Diidentifikasi oleh {{ $tindak_lanjut->status_tindak_lanjut_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at )->translatedFormat('d M Y')}}</p>
                             </div>
                         </div>
                         @endif
@@ -355,17 +355,12 @@
                 <div class="modal-body">
                     @csrf
                     @method('put')
-
-                <!-- input dengan tipe hidden untuk data yang sbeelumnya -->
-                <input type="hidden" name="tindak_lanjut" value="{{ $tindak_lanjut->tindak_lanjut }}">
-                <input type="hidden" name="unit_kerja" value="{{ $tindak_lanjut->unit_kerja }}">
-                <input type="hidden" name="tim_pemantauan" value="{{ $tindak_lanjut->tim_pemantauan }}">
-                <input type="hidden" name="tenggat_waktu" value="{{ $tindak_lanjut->tenggat_waktu }}">
-                <input type="hidden" name="rekomendasi_id" value="{{ $tindak_lanjut->rekomendasi_id }}">
-
                     <div class="form-group mandatory">
-                        <label for="bukti_tindak_lanjut" class="form-label">Bukti Tindak Lanjut</label>
+                        <label for="bukti_tindak_lanjut" class="form-label">Bukti Tindak Lanjut (.zip/.rar/.tar)</label>
                         <input type="file" class="multiple-files-filepond" multiple name="bukti_tindak_lanjut" required>
+                        @error('bukti_tindak_lanjut')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="form-group mandatory">
                         <label for="bukti_tindak_lanjut" class="form-label">Detail Bukti Tindak Lanjut</label>

@@ -184,8 +184,8 @@
                                         <th>Unit Kerja</th>
                                         <th>Tim Pemantauan</th>
                                         <th>Tenggat Waktu</th>
-                                        <th>Dokumen</th>
-                                        <th>Status</th>
+                                        <th>Bukti Tindak Lanjut</th>
+                                        <th>Status Tindak Lanjut</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -195,7 +195,7 @@
                                             <td >{!! $tindakLanjut->tindak_lanjut !!}</td>
                                             <td >{{ $tindakLanjut->unit_kerja }}</td>
                                             <td>{{ $tindakLanjut->tim_pemantauan }}</td>
-                                            <td style="text-align:center;">{{ \Carbon\Carbon::parse($tindakLanjut->tenggat_waktu )->format(' d F Y') }}</td>
+                                            <td style="text-align:center;">{{ \Carbon\Carbon::parse($tindakLanjut->tenggat_waktu )->translatedFormat('d M Y') }}</td>
                                             <td style="text-align:center;">
                                                 @if ($tindakLanjut->bukti_tindak_lanjut === null || $tindakLanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
                                                     <span class="badge bg-danger">Belum Diunggah!</span>

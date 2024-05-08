@@ -37,7 +37,7 @@
 <section class="row">
     <div class="row mb-3 flex-wrap">
         <div class="col-auto d-flex me-auto">
-            <a href="/kelola-rekomendasi" class="btn btn-primary">
+            <a href="/pemutakhiran-status" class="btn btn-primary">
                 <i class="bi bi-arrow-left"></i>
                 Kembali
             </a>
@@ -53,7 +53,7 @@
                 &nbsp;Bukti Belum Diunggah!
             </button>
             @else
-            <button class="btn btn-success" id="btnStatusBuktiInput" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($rekomendasi->upload_at)->format('H:i, d M Y') }}">
+            <button class="btn btn-success" id="btnStatusBuktiInput" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($rekomendasi->upload_at)->translatedFormat('H:i, d M Y') }}">
                 <i class="bi bi-check-square"></i>
                 &nbsp;Bukti Diunggah {{ \Carbon\Carbon::parse($rekomendasi->upload_at)->diffForHumans() }}
             </button>
@@ -64,9 +64,9 @@
                 &nbsp;Rekomendasi Belum Dimutakhirkan!
             </button>
             @else
-            <button class="btn btn-success" id="btnStatusPemutakhiran" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($rekomendasi->upload_at)->format('H:i, d M Y') }}">
+            <button class="btn btn-success" id="btnStatusPemutakhiran" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($rekomendasi->pemutakhiran_at)->translatedFormat('H:i, d M Y') }}">
                 <i class="bi bi-check-square"></i>
-                &nbsp;Dimutakhirkan {{ \Carbon\Carbon::parse($rekomendasi->update_at)->diffForHumans() }}
+                &nbsp;Dimutakhirkan {{ \Carbon\Carbon::parse($rekomendasi->pemutakhiran_at)->diffForHumans() }}
             </button>
             @endif
         </div>
@@ -200,7 +200,7 @@
                                         <th>Unit Kerja</th>
                                         <th>Tim Pemantauan</th>
                                         <th>Tenggat Waktu</th>
-                                        <th>Dokumen</th>
+                                        <th>Bukti Tindak Lanjut</th>
                                         <th>Status</th>
                                     </tr>
                                 </thead>
@@ -211,7 +211,7 @@
                                             <td >{!! $tindakLanjut->tindak_lanjut !!}</td>
                                             <td >{{ $tindakLanjut->unit_kerja }}</td>
                                             <td>{{ $tindakLanjut->tim_pemantauan }}</td>
-                                            <td style="text-align:center;">{{ \Carbon\Carbon::parse($tindakLanjut->tenggat_waktu )->format(' d F Y') }}</td>
+                                            <td style="text-align:center;">{{ \Carbon\Carbon::parse($tindakLanjut->tenggat_waktu )->translatedFormat('d M Y') }}</td>
                                             <td style="text-align:center;">
                                                 @if ($tindakLanjut->bukti_tindak_lanjut === null || $tindakLanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
                                                     <span class="badge bg-danger">Belum Diunggah!</span>
@@ -255,7 +255,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{{ \Carbon\Carbon::parse($rekomendasi->tanggal_input_siptl)->format('d F Y') }}</p>
+                                <p>{{ \Carbon\Carbon::parse($rekomendasi->tanggal_input_siptl)->translatedFormat('d M Y') }}</p>
                             </div>
                         </div>
 
@@ -323,7 +323,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>Dimutakhirkan oleh {{ $rekomendasi->pemutakhiran_by }} pada {{ \Carbon\Carbon::parse($rekomendasi->pemutakhiran_at )->format(' d F Y')}}</p>
+                                <p>Dimutakhirkan oleh {{ $rekomendasi->pemutakhiran_by }} pada {{ \Carbon\Carbon::parse($rekomendasi->pemutakhiran_at )->translatedFormat('d M Y')}}</p>
                             </div>
                         </div>
                         @endif

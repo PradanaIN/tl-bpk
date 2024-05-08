@@ -20,46 +20,61 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="nama">Nama</label>
-                                                <input type="text" id="nama" class="form-control"
+                                                <input type="text" id="nama" class="form-control" value="{{ old('nama') }}"
                                                     name="nama" placeholder="Nama" required>
+                                                @error('nama')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="email">Email</label>
-                                                <input type="email" id="email" class="form-control"
-                                                    name="email" placeholder="Email" required>
+                                                <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
+                                                @error('email')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="unit_kerja">Unit Kerja</label>
-                                                <select class="form-select"  id="unit_kerja" name="unit_kerja" required>
+                                                <select class="form-select" id="unit_kerja_id" name="unit_kerja_id" required>
                                                     <option value="">Pilih Unit Kerja</option>
                                                     @foreach($unit_kerja as $unit)
-                                                        <option value="{{ $unit->nama }}">{{ $unit->nama }}</option>
+                                                        <option value="{{ $unit->id }}" @if(old('unit_kerja_id') == $unit->id) selected @endif>{{ $unit->nama }}</option>
                                                     @endforeach
                                                 </select>
+                                                @error('unit_kerja_id')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         </div>
+                                        <input type="hidden" id="unit_kerja" name="unit_kerja" value="">
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="role">Role</label>
                                                 <select class="form-select" id="role" name="role" required>
                                                     <option value="">Pilih Role</option>
-                                                    @foreach ($role as $role)
-                                                        <option value="{{ $role->name }}">{{ $role->name }}</option>
+                                                    @foreach ($role as $roleItem)
+                                                        <option value="{{ $roleItem->name }}" @if(old('role') == $roleItem->name) selected @endif>{{ $roleItem->name }}</option>
                                                     @endforeach
                                                 </select>
+                                                @error('role')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="password">Password</label>
                                                 <div class="input-group">
-                                                    <input type="password" id="password" class="form-control" name="password" placeholder="Password" required>
+                                                    <input type="password" id="password" class="form-control" name="password" placeholder="Password" required value="{{ old('password') }}">
                                                     <button class="btn btn-secondary" type="button" id="togglePassword">
                                                         <i class="bi bi-eye"></i>
                                                     </button>
+                                                    @error('password')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                             </div>
                                         </div>
@@ -83,6 +98,18 @@
 
 
 @section('script')
+
+<!-- mengambil value nama unit kerja dari select unit_kerja_id dan memasukannya ke dalam value unit_kerja-->
+<script>
+    $(document).ready(function() {
+        $('#unit_kerja_id').change(function() {
+            var selectedUnit = $(this).children("option:selected").text();
+            $('#unit_kerja').val(selectedUnit);
+        });
+    });
+</script>
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const togglePassword = document.querySelector('#togglePassword');

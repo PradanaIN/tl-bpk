@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,6 +21,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Set timezone
+        date_default_timezone_set('Asia/Jakarta');
+
+        // Set default locale
+        Carbon::setLocale('id_ID');
+
         $permissions = [
             // Dashboard
             'view dashboard',
@@ -62,16 +69,17 @@ class AppServiceProvider extends ServiceProvider
             'Admin',
             'Pimpinan',
             'Unit Kerja',
+            'Operator Unit Kerja',
             'Tim Koordinator',
-            // 'Ketua Tim Pemanantauan',
-            // 'Ketua Tim Pemanantauan II',
-            // 'Ketua Tim Pemanantauan III',
-            'Anggota Tim Pemanantauan',
-            'Tim Pemanantauan Wilayah I',
-            'Tim Pemanantauan Wilayah II',
-            'Tim Pemanantauan Wilayah III',
-            // 'Anggota Tim Pemanantauan II',
-            // 'Anggota Tim Pemanantauan III',
+            // 'Ketua Tim Pemantauan',
+            // 'Ketua Tim Pemantauan II',
+            // 'Ketua Tim Pemantauan III',
+            // 'Anggota Tim Pemantauan',
+            'Tim Pemantauan Wilayah I',
+            'Tim Pemantauan Wilayah II',
+            'Tim Pemantauan Wilayah III',
+            // 'Anggota Tim Pemantauan II',
+            // 'Anggota Tim Pemantauan III',
             'Pengendali Teknis',
             'Badan Pemeriksa Keuangan',
             'Super Admin'

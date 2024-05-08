@@ -37,8 +37,13 @@
 </style>
 @endsection
 
-@section('section')
+@php
+    $loggedInUserRole = auth()->user()->role; // Dapatkan peran pengguna yang sedang login
+    $loggedInUserUnitKerja = auth()->user()->unit_kerja; // Dapatkan unit kerja pengguna yang sedang login
+    $no = 1;
+@endphp
 
+@section('section')
 
 <section class="row">
     <div class="card">
@@ -50,40 +55,36 @@
                             <th>No</th>
                             <th>Rekomendasi</th>
                             <th>Tindak Lanjut</th>
-                            {{-- <th>Unit Kerja</th>
-                            <th>Tim Pemantauan</th> --}}
                             <th>Tenggat Waktu</th>
-                            <th>Bukti Tindak Lanjut</th>
                             <th>Status Tindak Lanjut</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($tindak_lanjut as $tindak_lanjut)
-                            <tr class="clickable-row" data-href="/kelola-tindak-lanjut/{{ $tindak_lanjut->id }}">
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{!! $tindak_lanjut->rekomendasi->rekomendasi !!}</td>
-                                <td>{!! $tindak_lanjut->tindak_lanjut !!}</td>
-                                {{-- <td>{{ $tindak_lanjut->unit_kerja }}</td>
-                                <td>{{ $tindak_lanjut->tim_pemantauan }}</td> --}}
-                                <td>{{ \Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu )->format(' d F Y')}}</td>
-                                @if ($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
-                                    <td style="text-align:center;"><span class="status-badge bg-warning text-black">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span></td>
-                                @else
-                                    <td style="text-align:center;"><span class="status-badge bg-success text-white">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span></td>
-                                @endif
-                                <td style="text-align:center;">
-                                    <span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }}">{{ $tindak_lanjut->status_tindak_lanjut }}</span>
-                                </td>
-                                <td>
-                                    <div class="d-flex justify-content-around align-items-center">
-                                        <a href="/kelola-tindak-lanjut/{{ $tindak_lanjut->id }}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Tindak Lanjut">
-                                            <i class="bi bi-eye"></i>
-                                        </a>
-                                    </div>
-                                </td>
-
-                            </tr>
+                            @if ($loggedInUserRole == 'Super Admin' || $loggedInUserRole == 'Tim Koordinator' || $tindak_lanjut->unit_kerja == $loggedInUserUnitKerja)
+                                <tr class="clickable-row" data-href="/kelola-tindak-lanjut/{{ $tindak_lanjut->id }}">
+                                    <td>{{ $no++ }}</td>
+                                    <td>{!! $tindak_lanjut->rekomendasi->rekomendasi !!}</td>
+                                    <td>{!! $tindak_lanjut->tindak_lanjut !!}</td>
+                                    <td>{{ \Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu )->translatedFormat('d M Y')}}</td>
+                                    {{-- @if ($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
+                                        <td style="text-align:center;"><span class="status-badge bg-warning text-black">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span></td>
+                                    @else
+                                        <td style="text-align:center;"><span class="status-badge bg-success text-white">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span></td>
+                                    @endif --}}
+                                    <td style="text-align:center;">
+                                        <span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }}">{{ $tindak_lanjut->status_tindak_lanjut }}</span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex justify-content-around align-items-center">
+                                            <a href="/kelola-tindak-lanjut/{{ $tindak_lanjut->id }}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Tindak Lanjut">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endif
                         @endforeach
                     </tbody>
                 </table>

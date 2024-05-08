@@ -4,33 +4,34 @@ namespace App\Http\Controllers;
 
 use App\Models\Rekomendasi;
 use App\Models\TindakLanjut;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
     public function index()
     {
         $rekomendasi = Rekomendasi::all();
-        $tindak_lanjut = TindakLanjut::all();
 
-        $rekomendasi_selesai = Rekomendasi::where('status_rekomendasi', 'Selesai')->get();
-        $rekomendasi_belum_selesai = Rekomendasi::where('status_rekomendasi', 'Belum Selesai')->get();
+        $rekomendasi_sesuai = Rekomendasi::where('status_rekomendasi', 'Sesuai')->get();
+        $rekomendasi_belum_sesuai = Rekomendasi::whereIn('status_rekomendasi', ['Belum Sesuai', 'Proses'])->get();
+        $rekomendasi_belum_ditindaklanjuti = Rekomendasi::where('status_rekomendasi', 'Belum Ditindaklanjuti')->get();
         $rekomendasi_tidak_dapat_ditindaklanjuti = Rekomendasi::where('status_rekomendasi', 'Tidak Dapat Ditindaklanjuti')->get();
-        $rekomendasi_belum_selesai_pertahun_pemeriksaan = Rekomendasi::whereIn('status_rekomendasi', ['Belum Sesuai', 'Proses'])->groupBy('tahun_pemeriksaan')->get();
 
-       $tindak_lanjut_belum_selesai = TindakLanjut::where('status_tindak_lanjut', 'Belum Selesai')->get();
-       $tindak_lanjut_belum_selesai_unit_kerja = TindakLanjut::where('status_tindak_lanjut', 'Belum Selesai')->groupBy('unit_kerja')->get();
+        // Agregasi data jumlah rekomendasi per tahun pemeriksaan
+        $jumlah_rekomendasi_per_tahun = Rekomendasi::select(DB::raw('tahun_pemeriksaan as tahun'), DB::raw('COUNT(*) as jumlah_rekomendasi'))
+            ->groupBy('tahun_pemeriksaan')
+            ->orderBy('tahun_pemeriksaan', 'asc') // Urutkan tahun dari terkecil ke terbesar
+            ->get();
 
 
         return view('livewire.dashboard.index', [
             'title' => 'Dashboard',
             'rekomendasi' => $rekomendasi,
-            'rekomendasi_selesai' => $rekomendasi_selesai,
-            'rekomendasi_belum_selesai' => $rekomendasi_belum_selesai,
+            'rekomendasi_sesuai' => $rekomendasi_sesuai,
+            'rekomendasi_belum_sesuai' => $rekomendasi_belum_sesuai,
+            'rekomendasi_belum_ditindaklanjuti' => $rekomendasi_belum_ditindaklanjuti,
             'rekomendasi_tidak_dapat_ditindaklanjuti' => $rekomendasi_tidak_dapat_ditindaklanjuti,
-            'rekomendasi_belum_selesai_pertahun_pemeriksaan' => $rekomendasi_belum_selesai_pertahun_pemeriksaan,
-            'tindak_lanjut' => $tindak_lanjut,
-            'tindak_lanjut_belum_selesai' => $tindak_lanjut_belum_selesai,
-            'tindak_lanjut_belum_selesai_unit_kerja' => $tindak_lanjut_belum_selesai_unit_kerja,
+            'jumlah_rekomendasi_per_tahun' => $jumlah_rekomendasi_per_tahun,
         ]);
     }
 }

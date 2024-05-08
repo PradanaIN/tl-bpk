@@ -58,7 +58,7 @@
                 &nbsp;Bukti Belum Diunggah!
             </button>
             @else
-            <button class="btn btn-success" id="btnStatusBukti" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->format('H:i, d M Y') }}">
+            <button class="btn btn-success" id="btnStatusBukti" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->translatedFormat('H:i, d M Y') }}">
                 <i class="bi bi-check-square"></i>
                 &nbsp;Bukti Diunggah {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->diffForHumans() }}
             </button>
@@ -69,7 +69,7 @@
                 &nbsp;Tindak Lanjut Belum Diidentifikasi!
             </button>
             @else
-            <button class="btn btn-success" id="btnStatusIdentifikasi" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->format('H:i, d M Y') }}">
+            <button class="btn btn-success" id="btnStatusIdentifikasi" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->translatedFormat('H:i, d M Y')  }}">
                 <i class="bi bi-check-square"></i>
                 &nbsp;Diidentifikasi {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->diffForHumans() }}
             </button>
@@ -223,7 +223,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{{ $tindak_lanjut->tenggat_waktu }}</p>
+                                <p>{{ \Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu )->translatedFormat('d M Y') }}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -260,7 +260,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>Diunggah oleh {{ $tindak_lanjut->upload_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at )->format(' d F Y')}}</p>
+                                <p>Diunggah oleh {{ $tindak_lanjut->upload_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at )->translatedFormat('d M Y') }}</p>
                             </div>
                         </div>
                     </div>
@@ -312,7 +312,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>Didentifikasi oleh {{ $tindak_lanjut->status_tindak_lanjut_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at )->format(' d F Y')}}</p>
+                                <p>Didentifikasi oleh {{ $tindak_lanjut->status_tindak_lanjut_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at )->translatedFormat('d M Y') }}</p>
                             </div>
                         </div>
                         @endif

@@ -32,6 +32,11 @@
 </style>
 @endsection
 
+@php
+    $loggedInUserRole = auth()->user()->role; // Dapatkan peran pengguna yang sedang login
+    $no = 1;
+@endphp
+
 @section('section')
 
 
@@ -54,11 +59,12 @@
                     </thead>
                     <tbody>
                         @foreach ($tindak_lanjut as $tindak_lanjut)
+                        @if ($loggedInUserRole == 'Super Admin' || $loggedInUserRole == 'Tim Pemantauan Wilayah I' && $tindak_lanjut->tim_pemantauan == 'Tim Pemantauan Wilayah I' || $loggedInUserRole == 'Tim Pemantauan Wilayah II' && $tindak_lanjut->tim_pemantauan == 'Tim Pemantauan Wilayah II' || $loggedInUserRole == 'Tim Pemantauan Wilayah III' && $tindak_lanjut->tim_pemantauan == 'Tim Pemantauan Wilayah III')
                             <tr class="clickable-row" data-href="/identifikasi/{{ $tindak_lanjut->id }}">
-                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $no++ }}</td>
                                 <td>{!! $tindak_lanjut->tindak_lanjut !!}</td>
                                 <td>{{ $tindak_lanjut->unit_kerja }}</td>
-                                <td style="text-align: center;">{{ \Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu )->format(' d F Y') }}</td>
+                                <td style="text-align: center;">{{ \Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu )->translatedFormat('d M Y') }}</td>
                                 <td style="text-align: center;">
                                     <span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }}">{{ $tindak_lanjut->status_tindak_lanjut }}</span>
                                 </td>
@@ -69,9 +75,9 @@
                                         </a>
                                     </div>
                                 </td>
-
                             </tr>
-                        @endforeach
+                        @endif
+                    @endforeach
                     </tbody>
                 </table>
             </div>

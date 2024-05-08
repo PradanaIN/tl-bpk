@@ -24,6 +24,9 @@
                                                 <label for="nama">Nama</label>
                                                 <input type="text" id="nama" class="form-control"
                                                     name="nama" placeholder="Nama" value="{{ old('nama', $user->nama) }}" required>
+                                                @error('nama')
+                                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         </div>
                                         <div class="col-12">
@@ -31,19 +34,23 @@
                                                 <label for="email">Email</label>
                                                 <input type="email" id="email" class="form-control"
                                                     name="email" placeholder="Email" value="{{ old('email', $user->email) }}" required>
+                                                @error('email')
+                                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="unit_kerja">Unit Kerja</label>
-                                                <select class="form-select"  id="unit_kerja" name="unit_kerja" required>
-                                                    <option value="{{ old('unit_kerja', $user->unit_kerja) }}">{{ $user->unit_kerja }}</option>
+                                                <select class="form-select"  id="unit_kerja_id" name="unit_kerja_id" required>
+                                                    <option value="{{ old('unit_kerja_id', $user->unit_kerja_id) }}">{{ $user->unit_kerja }}</option>
                                                     @foreach($unit_kerja as $unit)
-                                                        <option value="{{ $unit->nama }}">{{ $unit->nama }}</option>
+                                                        <option value="{{ $unit->id }}">{{ $unit->nama }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                         </div>
+                                        <input type="hidden" id="unit_kerja" name="unit_kerja" value="{{ $user->unit_kerja }}">
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="role">Role</label>
@@ -85,6 +92,16 @@
 
 
 @section('script')
+
+<script>
+    $(document).ready(function() {
+        $('#unit_kerja_id').change(function() {
+            var selectedUnit = $(this).children("option:selected").text();
+            $('#unit_kerja').val(selectedUnit);
+        });
+    });
+</script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const togglePassword = document.querySelector('#togglePassword');
