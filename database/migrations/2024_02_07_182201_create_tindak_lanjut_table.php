@@ -22,7 +22,7 @@ return new class extends Migration
             $table->text('detail_bukti_tindak_lanjut')->nullable();
             $table->string('upload_by')->nullable();
             $table->dateTime('upload_at')->nullable();
-            $table->string('status_tindak_lanjut')->default('Proses');
+            $table->string('status_tindak_lanjut')->default('');
             $table->dateTime('status_tindak_lanjut_at')->nullable();
             $table->string('status_tindak_lanjut_by')->nullable();
             $table->string('catatan_tindak_lanjut')->nullable();

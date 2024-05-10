@@ -1,6 +1,9 @@
 @extends('layouts.horizontal')
 
 @section('style')
+
+<link rel="stylesheet" href="{{ asset('mazer/assets/extensions/filepond/filepond.css')}}" />
+<link rel="stylesheet" href="{{ asset('mazer/assets/extensions/toastify-js/src/toastify.css') }}"/>
 <style>
     .status-badge {
         padding: 5px 10px;
@@ -10,12 +13,12 @@
         text-align: center;
     }
 
-    .status-proses {
+    .status-belum-sesuai {
         background-color: #FFD700;
         color: #000000;
     }
 
-    .status-belum-sesuai {
+    .status-belum-ditindaklanjuti {
         background-color: #FF0000;
         color: #FFFFFF;
     }
@@ -37,36 +40,36 @@
 <section class="row">
     <div class="row mb-3 flex-wrap">
         <div class="col-auto d-flex me-auto">
-            <a href="/pemutakhiran-status" class="btn btn-primary">
+            <a href="/rekomendasi" class="btn btn-primary">
                 <i class="bi bi-arrow-left"></i>
-                Kembali
+                <span class="d-none d-md-inline">Kembali</span>
             </a>
             <a href="/rekomendasi/{{ $rekomendasi->id }}/export" class="btn btn-success ms-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Export Rekomendasi">
                 <i class="bi bi-file-earmark-excel"></i>
-                Export Rekomendasi
+                <span class="d-none d-md-inline">Export Rekomendasi</span>
             </a>
         </div>
         <div class="col-auto d-flex ms-auto">
-            @if (($rekomendasi->bukti_input_siptl === null || $rekomendasi->bukti_input_siptl === 'Belum Diunggah!'))
+            @if ($rekomendasi->buktiInputSIPTL === null || $rekomendasi->buktiInputSIPTL->bukti_input_siptl === 'Belum Diunggah!')
             <button class="btn btn-warning" id="btnStatusBuktiInput">
                 <i class="bi bi-exclamation-triangle"></i>
-                &nbsp;Bukti Belum Diunggah!
+                <span class="d-none d-md-inline">&nbsp;Bukti Belum Diunggah!</span>
             </button>
             @else
             <button class="btn btn-success" id="btnStatusBuktiInput" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($rekomendasi->upload_at)->translatedFormat('H:i, d M Y') }}">
                 <i class="bi bi-check-square"></i>
-                &nbsp;Bukti Diunggah {{ \Carbon\Carbon::parse($rekomendasi->upload_at)->diffForHumans() }}
+                <span class="d-none d-md-inline">&nbsp;Bukti Diunggah {{ \Carbon\Carbon::parse($rekomendasi->buktiInputSIPTL->upload_at)->diffForHumans() }}</span>
             </button>
             @endif
-            @if (($rekomendasi->status_rekomendasi === 'Proses' ))
+            @if (($rekomendasi->status_rekomendasi === 'Belum Sesuai' ))
             <button class="btn btn-warning" id="btnStatusPemutakhiran">
                 <i class="bi bi-exclamation-triangle"></i>
-                &nbsp;Rekomendasi Belum Dimutakhirkan!
+                <span class="d-none d-md-inline">&nbsp;Rekomendasi Belum Dimutakhirkan!</span>
             </button>
             @else
             <button class="btn btn-success" id="btnStatusPemutakhiran" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($rekomendasi->pemutakhiran_at)->translatedFormat('H:i, d M Y') }}">
                 <i class="bi bi-check-square"></i>
-                &nbsp;Dimutakhirkan {{ \Carbon\Carbon::parse($rekomendasi->pemutakhiran_at)->diffForHumans() }}
+                <span class="d-none d-md-inline">&nbsp;Dimutakhirkan {{ \Carbon\Carbon::parse($rekomendasi->pemutakhiran_at)->diffForHumans() }}</span>
             </button>
             @endif
         </div>
@@ -101,9 +104,6 @@
         <div class="card-body">
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade" id="pemeriksaan" role="tabpanel" aria-labelledby="pemeriksaan-tab">
-                    {{-- <div class="card-header">
-                        <h4 class="card-title"><b>Detail Pemeriksaan</b></h4>
-                    </div> --}}
                     <div class="card-body">
                         <div class="row">
                             <div class="col-2">
@@ -144,9 +144,6 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="rekomendasi" role="tabpanel" aria-labelledby="rekomendasi-tab">
-                    {{-- <div class="card-header">
-                        <h4 class="card-title"><b>Detail Rekomendasi</b></h4>
-                    </div> --}}
                     <div class="card-body">
                         <div class="row">
                             <div class="col-2">
@@ -187,9 +184,6 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="tindaklanjut" role="tabpanel" aria-labelledby="tindaklanjut-tab">
-                    {{-- <div class="card-header">
-                        <h4 class="card-title"><b>Detail Tindak Lanjut</b></h4>
-                    </div> --}}
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table" id="table1">
@@ -239,48 +233,59 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                @if ($rekomendasi->bukti_input_siptl === null || $rekomendasi->bukti_input_siptl === 'Belum Diunggah!')
-                                    <span class="badge bg-danger">Belum Diunggah!</span>
+                                @if ($rekomendasi->buktiInputSIPTL === null || $rekomendasi->buktiInputSIPTL->bukti_input_siptl === 'Belum Diunggah!')
+                                    <p><span class="status-badge bg-warning text-black">{{ $rekomendasi->buktiInputSIPTL->bukti_input_siptl }}</span></p>
                                 @else
-                                    <a href="{{ asset('uploads/bukti_input_siptl/' . $rekomendasi->bukti_input_siptl) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Bukti">
-                                        <i class="bi bi-download"></i>
-                                    </a>
+                                    <p><span class="status-badge bg-success text-white">{{ $rekomendasi->buktiInputSIPTL->bukti_input_siptl }}</span></p>
                                 @endif
                             </div>
-                        </div>
 
+                            @canany(['Tim Koordinator', 'Super Admin'])
+                            <div class="col-auto d-flex ms-auto">
+                                @if ($rekomendasi->buktiInputSIPTL === null || $rekomendasi->buktiInputSIPTL->bukti_input_siptl === 'Belum Diunggah!')
+                                    <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Upload Bukti Input SIPTL">
+                                        <i class="bi bi-upload"></i>
+                                        <span class="d-none d-md-inline">&nbsp;Upload Bukti</span>
+                                    </button>
+                                @else
+                                    <div class="col-auto">
+                                        <a href="{{ asset('uploads/bukti_input_siptl/' . $rekomendasi->buktiInputSIPTL->bukti_input_siptl) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Bukti Input SIPTL">
+                                            <i class="bi bi-download"></i>
+                                            <span class="d-none d-md-inline">&nbsp;Unduh Bukti</span>
+                                        </a>
+                                        <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Bukti Input SIPTL">
+                                            <i class="bi bi-pencil"></i>
+                                            <span class="d-none d-md-inline">&nbsp;Ubah Bukti</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                            @endcanany
+                        </div>
+                        @if($rekomendasi->buktiInputSIPTL !== null && $rekomendasi->buktiInputSIPTL->bukti_input_siptl !== 'Belum Diunggah!')
                         <div class="row">
                             <div class="col-2">
-                                <p class="fw-bold">Tanggal Input SIPTL</p>
+                                <p class="fw-bold">Detail Input SIPTL</p>
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{{ \Carbon\Carbon::parse($rekomendasi->tanggal_input_siptl)->translatedFormat('d M Y') }}</p>
+                                <p>{!! $rekomendasi->buktiInputSIPTL->detail_bukti_input_siptl !!}</p>
                             </div>
                         </div>
-
-                        <div class="row">
-                            <div class="col-2">
-                                <p class="fw-bold">Catatan Input SIPTL</p>
-                            </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
-                                <p>{!! $rekomendasi->catatan_bukti_input_siptl !!}</p>
-                            </div>
-                        </div>
-
                         <div class="row">
                             <div class="col-2">
                                 <p class="fw-bold">Informasi Lainnya</p>
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $rekomendasi->upload_by !!}</p>
+                                <p>Diunggah oleh {{ $rekomendasi->buktiInputSIPTL->upload_by }} pada {{ \Carbon\Carbon::parse($rekomendasi->buktiInputSIPTL->upload_at)->translatedFormat('d M Y')}}</p>
                             </div>
                         </div>
+                        @endif
                     </div>
                 </div>
                 <div class="tab-pane fade show active" id="pemutakhiran_status" role="tabpanel" aria-labelledby="pemutakhiran_status-tab">
+                @if ($rekomendasi->buktiInputSIPTL->bukti_input_siptl !== 'Belum Diunggah!')
                     <div class="card-body">
                         <div class="row">
                             <div class="col-3">
@@ -290,20 +295,22 @@
                             <div class="col">
                                 <p><span class="status-badge {{ getStatusClass($rekomendasi->status_rekomendasi) }}">{{ $rekomendasi->status_rekomendasi }}</span></p>
                             </div>
+                            @canany(['Tim Koordinator', 'Super Admin'])
                             <div class="col-auto d-flex ms-auto">
-                                    @if (($rekomendasi->status_rekomendasi === null || $rekomendasi->status_rekomendasi === 'Proses'))
-                                    <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tambah Status Pemutakhiran">
+                                    @if (($rekomendasi->status_rekomendasi === null || $rekomendasi->status_rekomendasi === 'Belum Sesuai'))
+                                    <button class="btn btn-primary" id="pemutakhiranBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tambah Status Pemutakhiran">
                                         <i class="bi bi-plus"></i>
-                                        &nbsp;Tambah Pemutakhiran
+                                        <span class="d-none d-md-inline">&nbsp;Tambah Pemutakhiran</span>
                                     </button>
                                     @else
-                                    <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Status Pemutakhiran">
+                                    <button class="btn btn-primary" id="pemutakhiranBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Status Pemutakhiran">
                                         <i class="bi bi-pencil"></i>
-                                        &nbsp;Ubah Pemutakhiran
+                                        <span class="d-none d-md-inline">&nbsp;Ubah Pemutakhiran</span>
                                     </button>
                                     @endif
                                 </button>
                             </div>
+                            @endcanany
                         </div>
                         @if ($rekomendasi->catatan_pemutakhiran !== '' && $rekomendasi->catatan_pemutakhiran !== null)
                         <div class="row">
@@ -316,7 +323,7 @@
                             </div>
                         </div>
                         @endif
-                        @if ($rekomendasi->status_rekomendasi !== 'Proses')
+                        @if ($rekomendasi->status_rekomendasi !== 'Belum Sesuai')
                         <div class="row">
                             <div class="col-3">
                                 <p class="fw-bold">Informasi Lainnya</p>
@@ -328,7 +335,15 @@
                         </div>
                         @endif
                     </div>
+                @else
+                <!-- akan muncul peringatan untuk mengunggah bukti input SIPTL terlebih dahulu -->
+                <div class="alert alert-warning" role="alert">
+                    <h4 class="alert-heading">Peringatan!</h4>
+                    <p>Anda harus mengunggah bukti input SIPTL BPK terlebih dahulu sebelum melakukan pemutakhiran status rekomendasi.</p>
+                    <hr>
+                    <p class="mb-0">Silakan unggah bukti input SIPTL BPK terlebih dahulu.</p>
                 </div>
+                @endif
             </div>
         </div>
     </div>
@@ -336,8 +351,67 @@
 
 @endsection
 
-<!-- modal upload -->
-<div class="modal fade text-left" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+<!-- modal upload bukti input SIPTL -->
+<div class="modal fade text-left" id="siptlModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadModalLabel">Upload Bukti Input SIPTL</h5>
+                <button type="button" class="close" data-bs-dismiss="modal"
+                    aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <form action="/pemutakhiran-status/{{ $rekomendasi->id }}/siptl" method="post" enctype="multipart/form-data">
+                @csrf
+                @method('put')
+                <div class="modal-body">
+                    <div class="form-group mandatory">
+                        <label for="bukti_input_siptl" class="form-label">Bukti Input SIPTL</label>
+                        <input type="file" class="multiple-files-filepond" multiple name="bukti_input_siptl" required>
+                        @error('bukti_input_siptl')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                    <div class="form-group mandatory">
+                        <label for="detail_bukti_input_siptl" class="form-label">Detail Bukti Input SIPTL</label>
+                        <div class="card-body">
+                            <textarea class="form-control" name="detail_bukti_input_siptl" id="detail_bukti_input_siptl" rows="5" required></textarea>
+                            @error('detail_bukti_input_siptl')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light ms-1" data-bs-dismiss="modal">
+                        <i class="bx bx-x d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Batal</span>
+                    </button>
+                    @if ($rekomendasi->buktiInputSIPTL->bukti_input_siptl === 'Belum Diunggah!')
+                    <button type="submit" class="btn btn-primary ms-1" data-bs-dismiss="modal">
+                        <i class="bx bx-x d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Tambah</span>
+                    </button>
+                    @else
+                    <button type="submit" class="btn btn-primary ms-1" data-bs-dismiss="modal">
+                        <i class="bx bx-x d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Ubah</span>
+                    </button>
+                    @endif
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- modal pemutakhiran status -->
+<div class="modal fade text-left" id="pemutakhiranModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -354,7 +428,6 @@
                     <div class="form-group mandatory">
                         <label for="status_rekomendasi" class="form-label">Status Rekomendasi</label>
                         <select class="form-select" name="status_rekomendasi" id="status_rekomendasi" required>
-                            <option value="Proses" {{ $rekomendasi->status_rekomendasi === 'Proses' ? 'selected' : '' }}>Proses</option>
                             <option value="Sesuai" {{ $rekomendasi->status_rekomendasi === 'Sesuai' ? 'selected' : '' }}>Sesuai</option>
                             <option value="Belum Sesuai" {{ $rekomendasi->status_rekomendasi === 'Belum Sesuai' ? 'selected' : '' }}>Belum Sesuai</option>
                             <option value="Belum Ditindaklanjuti" {{ $rekomendasi->status_rekomendasi === 'Belum Ditindaklanjuti' ? 'selected' : '' }}>Belum Ditindaklanjuti</option>
@@ -388,10 +461,21 @@
 
 @section('script')
 
+<script src="{{ asset('mazer/assets/extensions/filepond-plugin-file-validate-size/filepond-plugin-file-validate-size.min.js') }}"></script>
+<script src="{{ asset('mazer/assets/extensions/filepond-plugin-file-validate-type/filepond-plugin-file-validate-type.min.js') }}"></script>
+<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-crop/filepond-plugin-image-crop.min.js') }}"></script>
+<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-exif-orientation/filepond-plugin-image-exif-orientation.min.js') }}"></script>
+<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-filter/filepond-plugin-image-filter.min.js') }}"></script>
+<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-preview/filepond-plugin-image-preview.min.js') }}"></script>
+<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-resize/filepond-plugin-image-resize.min.js') }}"></script>
+<script src="{{ asset('mazer/assets/extensions/filepond/filepond.js') }}"></script>
+<script src="{{ asset('mazer/assets/extensions/toastify-js/src/toastify.js') }}"></script>
+<script src="{{ asset('mazer/assets/static/js/pages/filepond.js') }}"></script>
+
 <script>
     $(document).ready(function () {
         $('#status_rekomendasi').change(function () {
-            if ($(this).val() === 'Sesuai' || $(this).val() === 'Proses') {
+            if ($(this).val() === 'Sesuai') {
                 $('#catatan_pemutakhiran_group').hide();
                 $('#catatan_pemutakhiran').prop('required', false); // Catatan tidak wajib diisi
             } else {
@@ -404,13 +488,22 @@
 
 
 <script>
-    // Ambil tombol "Upload Dokumen TL"
+    // Ambil tombol "Upload Bukti Input SIPTL"
     var uploadBtn = document.getElementById('uploadBtn');
 
     // Tambahkan event listener untuk menampilkan modal saat tombol diklik
     uploadBtn.addEventListener('click', function() {
-        var uploadModal = new bootstrap.Modal(document.getElementById('uploadModal'));
+        var uploadModal = new bootstrap.Modal(document.getElementById('siptlModal'));
         uploadModal.show();
+    });
+
+    // Ambil tombol "Pemutakhiran Status"
+    var pemutakhiranBtn = document.getElementById('pemutakhiranBtn');
+
+    // Tambahkan event listener untuk menampilkan modal saat tombol diklik
+    pemutakhiranBtn.addEventListener('click', function() {
+        var pemutakhiranModal = new bootstrap.Modal(document.getElementById('pemutakhiranModal'));
+        pemutakhiranModal.show();
     });
 
 </script>
@@ -533,8 +626,8 @@ document.getElementById('deleteButton').addEventListener('click', function() {
 @php
 function getStatusClass($status) {
     switch ($status) {
-        case 'Proses':
-            return 'status-proses';
+        case 'Belum Ditindaklanjuti':
+            return 'status-belum-ditindaklanjuti';
             break;
         case 'Belum Sesuai':
             return 'status-belum-sesuai';

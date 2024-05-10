@@ -48,30 +48,30 @@
         <div class="col-auto d-flex me-auto">
             <a href="/identifikasi" class="btn btn-primary">
                 <i class="bi bi-arrow-left"></i>
-                &nbsp;Kembali
+                <span class="d-none d-md-inline">&nbsp;Kembali</span>
             </a>
         </div>
         <div class="col-auto d-flex ms-auto">
             @if (($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!'))
             <button class="btn btn-warning" id="btnStatusBukti">
                 <i class="bi bi-exclamation-triangle"></i>
-                &nbsp;Bukti Belum Diunggah!
+                <span class="d-none d-md-inline">&nbsp;Bukti Belum Diunggah!</span>
             </button>
             @else
             <button class="btn btn-success" id="btnStatusBukti" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->translatedFormat('H:i, d M Y') }}">
                 <i class="bi bi-check-square"></i>
-                &nbsp;Bukti Diunggah {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->diffForHumans() }}
+                <span class="d-none d-md-inline">&nbsp;Bukti Diunggah {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->diffForHumans() }}</span>
             </button>
             @endif
             @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi'))
             <button class="btn btn-warning" id="btnStatusIdentifikasi">
                 <i class="bi bi-exclamation-triangle"></i>
-                &nbsp;Tindak Lanjut Belum Diidentifikasi!
+                <span class="d-none d-md-inline">&nbsp;Tindak Lanjut Belum Diidentifikasi!</span>
             </button>
             @else
             <button class="btn btn-success" id="btnStatusIdentifikasi" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->translatedFormat('H:i, d M Y')  }}">
                 <i class="bi bi-check-square"></i>
-                &nbsp;Diidentifikasi {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->diffForHumans() }}
+                <span class="d-none d-md-inline">&nbsp;Diidentifikasi {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->diffForHumans() }}</span>
             </button>
             @endif
         </div>
@@ -88,11 +88,9 @@
                 <li class="nav-item" role="presentation">
                     <a class="nav-link {{ ($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi') ? 'active' : '' }}" id="tindaklanjut-tab" data-bs-toggle="tab" href="#tindaklanjut" role="tab" aria-controls="tindaklanjut" aria-selected="false"><h6>Tindak Lanjut</h6></a>
                 </li>
-                @if ($tindak_lanjut->status_tindak_lanjut !== 'Proses')
                 <li class="nav-item" role="presentation">
                     <a class="nav-link {{ ($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi') ? '' : 'active' }}" id="identifikasi-tab" data-bs-toggle="tab" href="#identifikasi" role="tab" aria-controls="identifikasi" aria-selected="{{ ($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi') ? 'true' : 'false' }}"><h6>Hasil Identifikasi</h6></a>
                 </li>
-                @endif
             </ul>
         </div>
     </div>
@@ -100,9 +98,6 @@
         <div class="card-body">
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade" id="pemeriksaan" role="tabpanel" aria-labelledby="pemeriksaan-tab">
-                    {{-- <div class="card-header">
-                        <h4 class="card-title"><b>Detail Pemeriksaan</b></h4>
-                    </div> --}}
                     <div class="card-body">
                         <div class="row">
                             <div class="col-2">
@@ -143,9 +138,6 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="rekomendasi" role="tabpanel" aria-labelledby="rekomendasi-tab">
-                    {{-- <div class="card-header">
-                        <h4 class="card-title"><b>Detail Rekomendasi</b></h4>
-                    </div> --}}
                     <div class="card-body">
                         <div class="row">
                             <div class="col-2">
@@ -241,7 +233,7 @@
                             <div class="col-auto">
                                 <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->bukti_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Bukti">
                                     <i class="bi bi-download"></i>
-                                    &nbsp;Unduh Bukti
+                                    <span class="d-none d-md-inline">&nbsp;Unduh Bukti</span>
                                 </a>
                             </div>
                         </div>
@@ -266,10 +258,6 @@
                     </div>
                 </div>
                 <div class="tab-pane fade {{ ($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi') ? '' : 'show active' }}" id="identifikasi" role="tabpanel" aria-labelledby="identifikasi-tab">
-                @if ($tindak_lanjut->status_tindak_lanjut !== 'Proses')
-                    {{-- <div class="card-header">
-                        <h4 class="card-title"><b>Hasil Identifikasi</b></h4>
-                    </div> --}}
                     <div class="card-body">
                         <div class="row">
                             <div class="col-3">
@@ -283,12 +271,12 @@
                                     @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi'))
                                     <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tambah Hasil Identifikasi">
                                         <i class="bi bi-plus"></i>
-                                        &nbsp;Tambah Identifikasi
+                                        <span class="d-none d-md-inline">&nbsp;Tambah Identifikasi</span>
                                     </button>
                                     @else
                                     <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Hasil Identifikasi">
                                         <i class="bi bi-pencil"></i>
-                                        &nbsp;Ubah Identifikasi
+                                        <span class="d-none d-md-inline">&nbsp;Ubah Identifikasi</span>
                                     </button>
                                     @endif
                                 </button>
@@ -317,7 +305,7 @@
                         </div>
                         @endif
                     </div>
-                @endif
+                </div>
             </div>
         </div>
     </div>

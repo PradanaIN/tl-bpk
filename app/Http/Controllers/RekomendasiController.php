@@ -12,6 +12,7 @@ use App\Models\BuktiTindakLanjut;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\DetailRekomendasiExport;
+use App\Models\BuktiInputSIPTL;
 
 class RekomendasiController extends Controller
 {
@@ -49,23 +50,37 @@ class RekomendasiController extends Controller
      */
     public function store(Request $request)
     {
+        // Aturan validasi untuk entri Rekomendasi
         $validatedData = $request->validate([
             'pemeriksaan' => 'required',
             'jenis_pemeriksaan' => 'required',
-            'tahun_pemeriksaan' => 'required',
+            'tahun_pemeriksaan' => 'required|integer|min:1900|max:2099',
             'hasil_pemeriksaan' => 'required',
             'jenis_temuan' => 'required',
             'uraian_temuan' => 'required',
             'rekomendasi' => 'required',
             'catatan_rekomendasi' => 'required',
-            'status_rekomendasi' => 'Proses'
+            'status_rekomendasi' => 'required',
         ]);
 
+        // memberikan id pada rekomendasi berupa uuid
         $validatedData['id'] = Str::uuid()->toString();
+
+        // Aturan validasi untuk entri TindakLanjut
+        $tindakLanjutValidationRules = [
+            'tindak_lanjut.*' => 'required',
+            'unit_kerja.*' => 'required',
+            'tim_pemantauan.*' => 'required',
+            'tenggat_waktu.*' => 'required',
+        ];
+
+        // Validasi data untuk entri TindakLanjut
+        $validatedTindakLanjutData = $request->validate($tindakLanjutValidationRules);
 
         DB::beginTransaction();
 
         try {
+            // Buat entri Rekomendasi berdasarkan data yang divalidasi
             $rekomendasi = Rekomendasi::create($validatedData);
 
             foreach ($request->tindak_lanjut as $key => $tindak_lanjut) {
@@ -77,10 +92,17 @@ class RekomendasiController extends Controller
                     'unit_kerja' => $request->unit_kerja[$key],
                     'tim_pemantauan' => $request->tim_pemantauan[$key],
                     'tenggat_waktu' => $request->tenggat_waktu[$key],
-                    'status_tindak_lanjut' => 'Proses',
+                    'status_tindak_lanjut' => 'Belum Sesuai',
                     'bukti_tindak_lanjut' => 'Belum Diunggah!',
                 ]);
             }
+
+            // masukkan value id rekomendasi ke dalam tabel bukti_input_siptl
+            BuktiInputSIPTL::create([
+                'id' => Str::uuid()->toString(),
+                'bukti_input_siptl' => 'Belum Diunggah!',
+                'rekomendasi_id' => $rekomendasi->id,
+            ]);
 
             DB::commit();
 
@@ -138,7 +160,7 @@ class RekomendasiController extends Controller
             $validatedData = $request->validate([
                 'pemeriksaan' => 'required',
                 'jenis_pemeriksaan' => 'required',
-                'tahun_pemeriksaan' => 'required',
+                'tahun_pemeriksaan' => 'required|integer|min:1900|max:2099',
                 'hasil_pemeriksaan' => 'required',
                 'jenis_temuan' => 'required',
                 'uraian_temuan' => 'required',
@@ -150,6 +172,13 @@ class RekomendasiController extends Controller
             $rekomendasi->update($validatedData);
 
             foreach ($request->tindak_lanjut as $key => $tindak_lanjut) {
+                $validatedData = $request->validate([
+                    'tindak_lanjut.' . $key => 'required',
+                    'unit_kerja.' . $key => 'required',
+                    'tim_pemantauan.' . $key => 'required',
+                    'tenggat_waktu.' . $key => 'required',
+                ]);
+
                 if (isset($request->id[$key]) && $request->id[$key] != null) {
                     TindakLanjut::where('id', $request->id[$key])->update([
                         'tindak_lanjut' => $tindak_lanjut,
@@ -167,7 +196,7 @@ class RekomendasiController extends Controller
                         'tim_pemantauan' => $request->tim_pemantauan[$key],
                         'tenggat_waktu' => $request->tenggat_waktu[$key],
                         'bukti_tindak_lanjut' => 'Belum Diunggah!',
-                        'status_tindak_lanjut' => 'Proses',
+                        'status_tindak_lanjut' => 'Belum Sesuai',
                     ]);
                 }
             }
@@ -182,8 +211,6 @@ class RekomendasiController extends Controller
         }
     }
 
-
-
     /**
      * Remove the specified resource from storage.
      */
@@ -195,8 +222,13 @@ class RekomendasiController extends Controller
         return redirect('/rekomendasi')->with('delete', 'Data berhasil dihapus!');
     }
 
+    /**
+     * Export the specified resource to Excel.
+     */
+
     public function export(Rekomendasi $rekomendasi)
     {
         return Excel::download(new DetailRekomendasiExport($rekomendasi->id), 'rekomendasi.xlsx');
     }
+
 }

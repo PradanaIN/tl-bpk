@@ -13,7 +13,7 @@ class DashboardController extends Controller
         $rekomendasi = Rekomendasi::all();
 
         $rekomendasi_sesuai = Rekomendasi::where('status_rekomendasi', 'Sesuai')->get();
-        $rekomendasi_belum_sesuai = Rekomendasi::whereIn('status_rekomendasi', ['Belum Sesuai', 'Proses'])->get();
+        $rekomendasi_belum_sesuai = Rekomendasi::whereIn('status_rekomendasi', ['Belum Sesuai'])->get();
         $rekomendasi_belum_ditindaklanjuti = Rekomendasi::where('status_rekomendasi', 'Belum Ditindaklanjuti')->get();
         $rekomendasi_tidak_dapat_ditindaklanjuti = Rekomendasi::where('status_rekomendasi', 'Tidak Dapat Ditindaklanjuti')->get();
 

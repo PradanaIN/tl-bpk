@@ -34,25 +34,26 @@
                     <div class="card-body">
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="pemeriksaan" role="tabpanel" aria-labelledby="pemeriksaan-tab">
+                                <input type="hidden" name="status_rekomendasi" value="Belum Sesuai">
                                 <div class="col-12">
                                     <div class="form-group mandatory">
                                         <label class="form-label" for="pemeriksaan">Pemeriksaan</label>
                                         <input type="text" id="pemeriksaan" class="form-control"
                                             name="pemeriksaan" placeholder="Nama Pemeriksaan" data-parsley-required="true" required value="{{ old('pemeriksaan') }}">
+                                        @error('pemeriksaan')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
-                                    @error('pemeriksaan')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group mandatory">
                                         <label class="form-label" for="tahun_pemeriksaan">Tahun Pemeriksaan</label>
                                         <input type="number" id="tahun_pemeriksaan" class="form-control"
-                                            name="tahun_pemeriksaan" placeholder="Tahun Pemeriksaan" data-parsley-required="true" required value="{{ old('tahun_pemeriksaan') }}">
+                                            name="tahun_pemeriksaan" placeholder="Tahun Pemeriksaan" data-parsley-required="true" required value="{{ old('tahun_pemeriksaan') }}" min="1900" max="2099" pattern="\d{4}">
+                                        @error('tahun_pemeriksaan')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
-                                    @error('tahun_pemeriksaan')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group mandatory">
@@ -63,20 +64,20 @@
                                                 <option value="{{ $kamus->nama }}" {{ old('jenis_pemeriksaan') == $kamus->nama ? 'selected' : '' }}>{{ $kamus->nama }}</option>
                                             @endforeach
                                         </select>
-                                    </div>
                                     @error('jenis_pemeriksaan')
-                                        <div class="alert alert-danger">{{ $message }}</div>
+                                        <div class="text-danger">{{ $message }}</div>
                                     @enderror
+                                    </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group mandatory">
                                         <label class="form-label" for="hasil_pemeriksaan">Hasil Pemeriksaan</label>
                                         <textarea class="form-control" id="hasil_pemeriksaan" rows="3"
                                         name="hasil_pemeriksaan" placeholder="Hasil Pemeriksaan" data-parsley-required="true" required>{{ old('hasil_pemeriksaan') }}</textarea>
-                                    </div>
                                     @error('hasil_pemeriksaan')
-                                        <div class="alert alert-danger">{{ $message }}</div>
+                                        <div class="text-danger">{{ $message }}</div>
                                     @enderror
+                                    </div>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="rekomendasi" role="tabpanel" aria-labelledby="rekomendasi-tab">
@@ -89,40 +90,40 @@
                                                 <option value="{{ $kamus->nama }}" {{ old('jenis_temuan') == $kamus->nama ? 'selected' : '' }}>{{ $kamus->nama }}</option>
                                             @endforeach
                                         </select>
-                                    </div>
                                     @error('jenis_temuan')
-                                        <div class="alert alert-danger">{{ $message }}</div>
+                                        <div class="text-danger">{{ $message }}</div>
                                     @enderror
+                                    </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group mandatory">
                                         <label class="form-label" for="uraian_temuan">Uraian Temuan</label>
                                         <textarea class="form-control" id="uraian_temuan" rows="3"
                                         name="uraian_temuan" placeholder="Uraian Temuan" data-parsley-required="true" required>{{ old('uraian_temuan') }}</textarea>
-                                    </div>
                                     @error('uraian_temuan')
-                                        <div class="alert alert-danger">{{ $message }}</div>
+                                        <div class="text-danger">{{ $message }}</div>
                                     @enderror
+                                    </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group mandatory">
                                         <label class="form-label" for="rekomendasi">Rekomendasi</label>
                                         <textarea class="form-control" id="rekomendasi" class="form-control"
                                         name="rekomendasi" placeholder="Rekomendasi" data-parsley-required="true" required rows="3">{{ old('rekomendasi') }}</textarea>
-                                    </div>
                                     @error('rekomendasi')
-                                        <div class="alert alert-danger">{{ $message }}</div>
+                                        <div class="text-danger">{{ $message }}</div>
                                     @enderror
+                                    </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group mandatory">
                                         <label class="form-label" for="catatan_rekomendasi">Catatan Rekomendasi</label>
                                         <textarea class="form-control" id="catatan_rekomendasi" rows="3"
                                             name="catatan_rekomendasi" placeholder="Catatan Rekomendasi" data-parsley-required="true" required>{{ old('catatan_rekomendasi') }}</textarea>
-                                    </div>
                                     @error('catatan_rekomendasi')
-                                        <div class="alert alert-danger">{{ $message }}</div>
+                                        <div class="text-danger">{{ $message }}</div>
                                     @enderror
+                                    </div>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="tindaklanjut" role="tabpanel" aria-labelledby="tindaklanjut-tab">
@@ -146,7 +147,10 @@
                                         <div class="form-row mb-3">
                                             <div class="col-12 form-group mandatory">
                                                 <label class="form-label" for="tindak_lanjut">Tindak Lanjut</label>
-                                                <textarea class="form-control" rows="3" name="tindak_lanjut[]" placeholder="Tindak lanjut" data-parsley-required="true" required></textarea>
+                                                <textarea class="form-control" rows="3" name="tindak_lanjut[]" placeholder="Tindak lanjut" data-parsley-required="true" required>{{ old('tindak_lanjut.0') }}</textarea>
+                                                @error('tindak_lanjut.0')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         </div>
                                         <div class="row mb-3">
@@ -155,22 +159,31 @@
                                                 <select class="form-select select-unit-kerja" name="unit_kerja[]">
                                                     <option value="">Pilih PIC Unit Kerja</option>
                                                     @foreach ($unit_kerja as $unit)
-                                                    <option value="{{ $unit->nama }}">{{ $unit->nama }}</option>
+                                                        <option value="{{ $unit->nama }}" {{ old('unit_kerja.0') == $unit->nama ? 'selected' : '' }}>{{ $unit->nama }}</option>
                                                     @endforeach
                                                 </select>
+                                                @error('unit_kerja.0')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                             <div class="col-md-4 mb-3 form-group mandatory">
                                                 <label class="form-label" for="tim_pemantauan">PIC Tim Pemantauan</label>
                                                 <select class="form-select select-tim-pemantauan" name="tim_pemantauan[]">
                                                     <option value="">Pilih PIC Tim Pemantauan</option>
-                                                    <option value="Tim Pemantauan Wilayah I">Tim Pemantauan Wilayah I</option>
-                                                    <option value="Tim Pemantauan Wilayah II">Tim Pemantauan Wilayah II</option>
-                                                    <option value="Tim Pemantauan Wilayah III">Tim Pemantauan Wilayah III</option>
+                                                    <option value="Tim Pemantauan Wilayah I" {{ old('tim_pemantauan.0') == 'Tim Pemantauan Wilayah I' ? 'selected' : '' }}>Tim Pemantauan Wilayah I</option>
+                                                    <option value="Tim Pemantauan Wilayah II" {{ old('tim_pemantauan.0') == 'Tim Pemantauan Wilayah II' ? 'selected' : '' }}>Tim Pemantauan Wilayah II</option>
+                                                    <option value="Tim Pemantauan Wilayah III" {{ old('tim_pemantauan.0') == 'Tim Pemantauan Wilayah III' ? 'selected' : '' }}>Tim Pemantauan Wilayah III</option>
                                                 </select>
+                                                @error('tim_pemantauan.0')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                             <div class="col-md-4 mb-3 form-group mandatory">
                                                 <label class="form-label" for="tenggat_waktu">Tenggat Waktu</label>
-                                                <input type="date" class="form-control flatpickr-no-config" name="tenggat_waktu[]" placeholder="Tenggat Waktu">
+                                                <input type="date" class="form-control flatpickr-no-config" name="tenggat_waktu[]" placeholder="Tenggat Waktu" value="{{ old('tenggat_waktu.0') }}">
+                                                @error('tenggat_waktu.0')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         </div>
                                         <div class="form-row mb-3">

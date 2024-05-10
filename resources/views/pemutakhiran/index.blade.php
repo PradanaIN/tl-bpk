@@ -10,12 +10,12 @@
         text-align: center;
     }
 
-    .status-proses {
+    .status-belum-sesuai {
         background-color: #FFD700;
         color: #000000;
     }
 
-    .status-belum-sesuai {
+    .status-belum-ditindaklanjuti {
         background-color: #FF0000;
         color: #FFFFFF;
     }
@@ -35,46 +35,6 @@
 @section('section')
 
 <section class="row">
-    {{-- <div class="card">
-        <div class="card-body">
-            <form id="filterForm">
-                <div class="row">
-                    <div class="col-md-3 mb-3">
-                        <label for="tahun">Tahun Pemeriksaan</label>
-                        <input type="text" class="form-control" id="tahun" placeholder="Masukkan Tahun">
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label for="jenisPemeriksaan">Jenis Pemeriksaan</label>
-                        <select class="form-select" id="jenisPemeriksaan">
-                            <option value="">Semua</option>
-                            @foreach ($kamus_pemeriksaan as $kamus)
-                            <option value="{{ $kamus->nama }}">{{ $kamus->nama }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label for="unitKerja">Unit Kerja</label>
-                        <input type="text" class="form-control" id="unitKerja" placeholder="Masukkan Unit Kerja">
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label for="statusRekomendasi">Status Rekomendasi</label>
-                        <select class="form-select" id="statusRekomendasi">
-                            <option value="">Semua</option>
-                            <option value="Proses">Proses</option>
-                            <option value="Sesuai">Sesuai</option>
-                            <option value="Belum Sesuai">Belum Sesuai</option>
-                            <option value="Tidak Ditindaklanjuti">Tidak Ditindaklanjuti</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="text-end">
-                    <button type="button" class="btn btn-primary" id="applyFilter">Terapkan Filter</button>
-                    <button type="button" class="btn btn-secondary" id="resetFilter">Reset</button>
-                </div>
-            </form>
-        </div>
-    </div> --}}
-
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
@@ -259,12 +219,9 @@
 @php
 function getStatusClass($status) {
     switch ($status) {
-        case 'Proses':
-            return 'status-proses';
+        case 'Belum Ditindaklanjuti':
+            return 'status-belum-ditindaklanjuti';
             break;
-        // case 'Identifikasi':
-        //     return 'status-identifikasi';
-        //     break;
         case 'Belum Sesuai':
             return 'status-belum-sesuai';
             break;

@@ -10,12 +10,12 @@
         text-align: center;
     }
 
-    .status-proses {
+    .status-belum-sesuai {
         background-color: #FFD700;
         color: #000000;
     }
 
-    .status-belum-sesuai {
+    .status-belum-ditindaklanjuti {
         background-color: #FF0000;
         color: #FFFFFF;
     }
@@ -39,25 +39,25 @@
         <div class="col-auto d-flex me-auto">
             <a href="/rekomendasi" class="btn btn-primary">
                 <i class="bi bi-arrow-left"></i>
-                Kembali
+                <span class="d-none d-md-inline">Kembali</span>
             </a>
             <a href="/rekomendasi/{{ $rekomendasi->id }}/export" class="btn btn-success ms-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Export Rekomendasi">
                 <i class="bi bi-file-earmark-excel"></i>
-                Export Rekomendasi
+                <span class="d-none d-md-inline">Export Rekomendasi</span>
             </a>
         </div>
         <div class="col-auto d-flex ms-auto">
             <div class="col-auto">
                 <a href="/rekomendasi/{{ $rekomendasi->id }}/edit" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Rekomendasi">
                     <i class="bi bi-pencil"></i>
-                    &nbsp;Ubah
+                    <span class="d-none d-md-inline">&nbsp;Ubah</span>
                 </a>
                 <form action="/rekomendasi/{{ $rekomendasi->id }}" method="post" class="d-inline" id="deleteForm">
                     @method('delete')
                     @csrf
                     <button class="btn btn-danger" type="button" id="deleteButton" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Rekomendasi">
                         <i class="bi bi-trash"></i>
-                        &nbsp;Hapus
+                        <span class="d-none d-md-inline">&nbsp;Hapus</span>
                     </button>
                 </form>
             </div>
@@ -128,9 +128,6 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="rekomendasi" role="tabpanel" aria-labelledby="rekomendasi-tab">
-                    {{-- <div class="card-header">
-                        <h4 class="card-title"><b>Detail Rekomendasi</b></h4>
-                    </div> --}}
                     <div class="card-body">
                         <div class="row">
                             <div class="col-2">
@@ -171,9 +168,6 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="tindaklanjut" role="tabpanel" aria-labelledby="tindaklanjut-tab">
-                    {{-- <div class="card-header">
-                        <h4 class="card-title"><b>Detail Tindak Lanjut</b></h4>
-                    </div> --}}
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table" id="table1">
@@ -198,7 +192,7 @@
                                             <td style="text-align:center;">{{ \Carbon\Carbon::parse($tindakLanjut->tenggat_waktu )->translatedFormat('d M Y') }}</td>
                                             <td style="text-align:center;">
                                                 @if ($tindakLanjut->bukti_tindak_lanjut === null || $tindakLanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
-                                                    <span class="badge bg-danger">Belum Diunggah!</span>
+                                                    <span class="badge bg-warning">Belum Diunggah!</span>
                                                 @else
                                                 <a href="{{ asset('uploads/tindak_lanjut/' . $tindakLanjut->bukti_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Bukti">
                                                     <i class="bi bi-download"></i>
@@ -285,8 +279,8 @@ document.getElementById('deleteButton').addEventListener('click', function() {
 @php
 function getStatusClass($status) {
     switch ($status) {
-        case 'Proses':
-            return 'status-proses';
+        case 'Belum Ditindaklanjuti':
+            return 'status-belum-ditindaklanjuti';
             break;
         case 'Belum Sesuai':
             return 'status-belum-sesuai';

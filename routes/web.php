@@ -90,6 +90,7 @@ Route::middleware(['auth', 'prevent-back-button'])->group(function () {
         Route::get('pemutakhiran-status/{rekomendasi:id}', [PemutakhiranController::class, 'show']);
         Route::get('pemutakhiran-status/{rekomendasi:id}/edit', [PemutakhiranController::class, 'edit']);
         Route::put('pemutakhiran-status/{rekomendasi:id}', [PemutakhiranController::class, 'update']);
+        Route::put('pemutakhiran-status/{rekomendasi:id}/siptl', [PemutakhiranController::class, 'uploadBuktiInputSIPTL']);
     });
 
     // Error 404

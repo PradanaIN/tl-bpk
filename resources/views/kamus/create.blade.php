@@ -25,7 +25,7 @@
                                                     name="nama" placeholder="Nama" required value="{{ old('nama') }}">
                                             </div>
                                             @error('nama')
-                                                <div class="alert alert-danger mt-1">{{ $message }}</div>
+                                                <div class="text-danger mt-1">{{ $message }}</div>
                                             @enderror
                                         </div>
                                         <div class="col-12">
@@ -38,7 +38,7 @@
                                                 </select>
                                             </div>
                                             `@error('jenis')
-                                                <div class="alert alert-danger mt-1">{{ $message }}</div>
+                                                <div class="text-danger mt-1">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     <div class="col-12 d-flex justify-between justify-content-end mt-5">

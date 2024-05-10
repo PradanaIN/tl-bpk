@@ -25,7 +25,7 @@ class TindakLanjutFactory extends Factory
             'detail_bukti_tindak_lanjut' =>$this->faker->sentence(),
             'upload_by' => 'Admin',
             'upload_at' => $this->faker->dateTimeBetween('-1 year', 'now')->format('Y-m-d'), // Tanggal upload dalam setahun ke belakang dari sekarang
-            'status_tindak_lanjut' => $this->faker->randomElement(['Belum Sesuai', 'Sesuai', 'Proses', 'Tidak Ditindaklanjuti']),
+            'status_tindak_lanjut' => $this->faker->randomElement(['Belum Sesuai', 'Sesuai', 'Belum Ditindaklanjuti', 'Tidak Ditindaklanjuti']),
             'catatan_tindak_lanjut' => $this->faker->sentence(),
             'rekomendasi_id' => \App\Models\Rekomendasi::factory(),
         ];

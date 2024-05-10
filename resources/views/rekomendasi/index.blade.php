@@ -10,12 +10,12 @@
         text-align: center;
     }
 
-    .status-proses {
+    .status-belum-sesuai {
         background-color: #FFD700;
         color: #000000;
     }
 
-    .status-belum-sesuai {
+    .status-belum-ditindaklanjuti {
         background-color: #FF0000;
         color: #FFFFFF;
     }
@@ -175,7 +175,7 @@
             dom: '<"d-flex justify-content-between mb-4"fB>rt<"d-flex justify-content-between mt-4"<"d-flex justify-content-start"li><"col-md-6"p>>',
             buttons: [
                 {
-                    text: '<i class="bi bi-plus"></i> Tambah Rekomendasi',
+                    text: '<i class="bi bi-plus"></i><span class="d-none d-md-inline"> Tambah Rekomendasi<span>',
                     className: 'btn btn-primary',
                     action: function ( e, dt, node, config ) {
                         window.location.href = '/rekomendasi/create';
@@ -230,8 +230,8 @@
 @php
 function getStatusClass($status) {
     switch ($status) {
-        case 'Proses':
-            return 'status-proses';
+        case 'Belum Ditindaklanjuti':
+            return 'status-ditinjaklanjuti';
             break;
         case 'Belum Sesuai':
             return 'status-belum-sesuai';

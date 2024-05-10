@@ -15,7 +15,6 @@ class IdentifikasiController extends Controller
     {
         $tindak_lanjut = TindakLanjut::whereNotNull('bukti_tindak_lanjut')
             ->where('bukti_tindak_lanjut', '!=', 'Belum Diunggah!')
-            ->where('status_tindak_lanjut', '!=', 'Proses')
             ->get();
 
         return view('identifikasi.index', [

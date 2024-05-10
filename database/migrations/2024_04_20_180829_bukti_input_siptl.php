@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('detail_bukti_input_siptl')->nullable();
             $table->string('upload_by')->nullable();
             $table->dateTime('upload_at')->nullable();
+            $table->timestamps();
             $table->foreignUuid('rekomendasi_id')->constrained('rekomendasi')->onUpdate('cascade')->onDelete('cascade');
         });
     }
