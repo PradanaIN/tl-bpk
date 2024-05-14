@@ -21,7 +21,7 @@ class UserController extends Controller
         $users = User::all();
 
         return view('kelola-pengguna.index', [
-            'title' => 'Kelola Pengguna',
+            'title' => 'Daftar Pengguna',
             'users' => $users,
         ]);
     }

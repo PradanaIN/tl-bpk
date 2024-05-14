@@ -67,12 +67,7 @@
                                     <td>{{ $no++ }}</td>
                                     <td>{!! $tindak_lanjut->rekomendasi->rekomendasi !!}</td>
                                     <td>{!! $tindak_lanjut->tindak_lanjut !!}</td>
-                                    <td>{{ \Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu )->translatedFormat('d M Y')}}</td>
-                                    {{-- @if ($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
-                                        <td style="text-align:center;"><span class="status-badge bg-warning text-black">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span></td>
-                                    @else
-                                        <td style="text-align:center;"><span class="status-badge bg-success text-white">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span></td>
-                                    @endif --}}
+                                    <td style="text-align: center;">{{ \Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu )->translatedFormat('d M Y')}}</td>
                                     <td style="text-align:center;">
                                         <span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }}">{{ $tindak_lanjut->status_tindak_lanjut }}</span>
                                     </td>

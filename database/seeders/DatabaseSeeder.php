@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
         // \App\Models\Kamus::factory(15)->create();
         // \App\Models\Rekomendasi::factory(50)->create();
         // \App\Models\TindakLanjut::factory(1)->create();
-        // $this->call(KamusSeeder::class);
+        $this->call(KamusSeeder::class);
 
 
         // Roles
@@ -108,6 +108,7 @@ class DatabaseSeeder extends Seeder
             $role->givePermissionTo($permissionList);
         }
 
+
         // create super admin
         User::create([
             'id' => Str::uuid()->toString(),
@@ -116,8 +117,58 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
             'unit_kerja' => 'Inspektorat Utama',
             'role' => 'Super Admin',
-            'unit_kerja_id' => '546'
+            'unit_kerja_id' => 546
         ]);
+        User::create([
+            'id' => Str::uuid()->toString(),
+            'nama' => 'BPS Provinsi Jawa Tengah',
+            'email' => 'bpsjateng@example.org',
+            'password' => Hash::make('password'),
+            'unit_kerja' => 'BPS PROVINSI JAWA TENGAH',
+            'role' => 'Operator Unit Kerja',
+            'unit_kerja_id' => 194
+        ]);
+
+        User::create([
+            'id' => Str::uuid()->toString(),
+            'nama' => 'Biro Umum',
+            'email' => 'biroumum@example.org',
+            'password' => Hash::make('password'),
+            'unit_kerja' => 'Biro Umum',
+            'role' => 'Operator Unit Kerja',
+            'unit_kerja_id' => 519
+        ]);
+
+        User::create([
+            'id' => Str::uuid()->toString(),
+            'nama' => 'Tim Koordinator',
+            'email' => 'timkoordinator@example.com',
+            'password' => Hash::make('password'),
+            'unit_kerja' => 'Inspektorat Utama',
+            'role' => 'Tim Koordinator',
+            'unit_kerja_id' => 546
+        ]);
+
+        User::create([
+            'id' => Str::uuid()->toString(),
+            'nama' => 'Tim Pemantauan Wilayah II',
+            'email' => 'timpemantauanwilayahdua@example.org',
+            'password' => Hash::make('password'),
+            'unit_kerja' => 'Inspektorat Wilayah II',
+            'role' => 'Tim Pemantauan Wilayah II',
+            'unit_kerja_id' => 538
+        ]);
+
+        User::create([
+            'id' => Str::uuid()->toString(),
+            'nama' => 'Tim Pemantauan Wilayah I',
+            'email' => 'timpemantauanwilayahsatu@example.org',
+            'password' => Hash::make('password'),
+            'unit_kerja' => 'Inspektorat Wilayah I',
+            'role' => 'Tim Pemantauan Wilayah I',
+            'unit_kerja_id' => 537
+        ]);
+
 
         // Assign Role to User
         $users = User::all();

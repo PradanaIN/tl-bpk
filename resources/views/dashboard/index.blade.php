@@ -42,7 +42,7 @@
                                 </div>
                                 <div class="col-md-8 col-lg-12 col-xl-8 col-xxl-9">
                                     <h6 class="text-muted font-semibold">{{ $data['title'] }}</h6>
-                                    <h6 class="font-extrabold mb-0">{{ $data['count'] }} dari {{ $rekomendasi->count() }} rekomendasi</h6>
+                                    <h6 class="font-extrabold mb-0">{{ $data['count'] }} dari {{ $rekomendasi->count() }} total rekomendasi</h6>
                                 </div>
                             </div>
                         </div>

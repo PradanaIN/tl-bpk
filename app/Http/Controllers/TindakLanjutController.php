@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use App\Models\User;
 use App\Models\Rekomendasi;
 use App\Models\TindakLanjut;
 use Illuminate\Http\Request;
 use Novay\WordTemplate\WordTemplate;
-use Exception;
+use App\Notifications\BuktiTindakLanjutNotification;
+use Illuminate\Support\Facades\Notification;
 
 class TindakLanjutController extends Controller
 {
@@ -26,7 +29,9 @@ class TindakLanjutController extends Controller
      */
     public function show(TindakLanjut $tindakLanjut)
     {
+        auth()->user()->unreadNotifications->where('data.tindak_lanjut_id', $tindakLanjut->id)->markAsRead();
         $rekomendasi = Rekomendasi::find($tindakLanjut->rekomendasi_id);
+
         return view('tindak-lanjut.show', [
             'title' => 'Detail Tindak Lanjut',
             'tindak_lanjut' => $tindakLanjut,
@@ -61,6 +66,14 @@ class TindakLanjutController extends Controller
                     'upload_at' => now(),
                     'status_tindak_lanjut' => 'Identifikasi',
                 ]);
+
+            // Ambil semua user yang memiliki role yang sesuai dengan $tindakLanjut->tim_pemantauan
+            $usersWithRole = User::whereHas('roles', function($query) use ($tindakLanjut) {
+                $query->where('name', $tindakLanjut->tim_pemantauan);
+            })->get();
+
+            // Kirim notifikasi hanya kepada user yang memiliki role yang sesuai
+            Notification::send($usersWithRole, new BuktiTindakLanjutNotification($tindakLanjut));
 
                 // Redirect dengan pesan sukses
                 return redirect('/tindak-lanjut/' . $tindakLanjut->id)->with('update', 'Upload Berhasil!');

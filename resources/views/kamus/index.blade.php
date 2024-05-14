@@ -25,7 +25,7 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $kamus->nama }}</td>
                             <td>{{ $kamus->jenis }}</td>
-                            <td>{{ \Carbon\Carbon::parse($kamus->created_at )->translatedFormat(' d M Y')  }}</td>
+                            <td style="text-align: center;">{{ \Carbon\Carbon::parse($kamus->created_at )->translatedFormat(' d M Y')  }}</td>
                             <td>
                                 <div class="d-flex justify-content-around align-items-center">
                                     <a href="/kelola-kamus/{{ $kamus->id }}/edit" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Kamus">
@@ -91,7 +91,7 @@
             dom: '<"d-flex justify-content-between mb-4"fB>rt<"d-flex justify-content-between mt-4"<"d-flex justify-content-start"li><"col-md-6"p>>',
             buttons: [
                 {
-                    text: '<i class="bi bi-plus"></i> Tambah Kamus',
+                    text: '<i class="bi bi-plus"></i><span class="d-none d-md-inline"> Tambah Kamus</span>',
                     className: 'btn btn-primary',
                     action: function ( e, dt, node, config ) {
                         window.location.href = '/kelola-kamus/create';

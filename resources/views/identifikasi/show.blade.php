@@ -63,16 +63,19 @@
                 <span class="d-none d-md-inline">&nbsp;Bukti Diunggah {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->diffForHumans() }}</span>
             </button>
             @endif
-            @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi'))
-            <button class="btn btn-warning" id="btnStatusIdentifikasi">
-                <i class="bi bi-exclamation-triangle"></i>
-                <span class="d-none d-md-inline">&nbsp;Tindak Lanjut Belum Diidentifikasi!</span>
-            </button>
+            @if ($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
             @else
-            <button class="btn btn-success" id="btnStatusIdentifikasi" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->translatedFormat('H:i, d M Y')  }}">
-                <i class="bi bi-check-square"></i>
-                <span class="d-none d-md-inline">&nbsp;Diidentifikasi {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->diffForHumans() }}</span>
-            </button>
+                @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi'))
+                <button class="btn btn-warning" id="btnStatusIdentifikasi">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <span class="d-none d-md-inline">&nbsp;Tindak Lanjut Belum Diidentifikasi!</span>
+                </button>
+                @else
+                <button class="btn btn-success" id="btnStatusIdentifikasi" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->translatedFormat('H:i, d M Y')  }}">
+                    <i class="bi bi-check-square"></i>
+                    <span class="d-none d-md-inline">&nbsp;Diidentifikasi {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->diffForHumans() }}</span>
+                </button>
+                @endif
             @endif
         </div>
     </div>
@@ -178,9 +181,6 @@
                     </div>
                 </div>
                 <div class="tab-pane fade {{ ($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi') ? 'show active' : '' }}" id="tindaklanjut" role="tabpanel" aria-labelledby="tindaklanjut-tab">
-                    {{-- <div class="card-header">
-                        <h4 class="card-title"><b>Tindak Lanjut</b></h4>
-                    </div> --}}
                     <div class="card-body">
                         <div class="row">
                             <div class="col-3">
@@ -230,13 +230,16 @@
                                     <p><span class="status-badge bg-success text-white">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span></p>
                                 @endif
                             </div>
+                            @if ($tindak_lanjut->bukti_tindak_lanjut !== 'Belum Diunggah!')
                             <div class="col-auto">
                                 <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->bukti_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Bukti">
                                     <i class="bi bi-download"></i>
                                     <span class="d-none d-md-inline">&nbsp;Unduh Bukti</span>
                                 </a>
                             </div>
+                            @endif
                         </div>
+                        @if ($tindak_lanjut->bukti_tindak_lanjut !== 'Belum Diunggah!')
                         <div class="row">
                             <div class="col-3">
                                 <p class="fw-bold">Detail Bukti Tindak Lanjut</p>
@@ -255,9 +258,18 @@
                                 <p>Diunggah oleh {{ $tindak_lanjut->upload_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at )->translatedFormat('d M Y') }}</p>
                             </div>
                         </div>
+                        @endif
                     </div>
                 </div>
                 <div class="tab-pane fade {{ ($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi') ? '' : 'show active' }}" id="identifikasi" role="tabpanel" aria-labelledby="identifikasi-tab">
+                    @if ($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
+                        <div class="alert alert-warning" role="alert">
+                            <h4 class="alert-heading">Peringatan!</h4>
+                            <p class="mb-0">Anda belum dapat melakukan identifikasi tindak lanjut karena bukti tindak lanjut belum diunggah!</p>
+                            <hr>
+                            <p class="mb-0">Identifikasi dapat dilakukan setelah unit kerja mengunggah bukti tindak lanjut.</p>
+                        </div>
+                    @else
                     <div class="card-body">
                         <div class="row">
                             <div class="col-3">
@@ -305,6 +317,7 @@
                         </div>
                         @endif
                     </div>
+                    @endif
                 </div>
             </div>
         </div>

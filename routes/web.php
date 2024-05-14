@@ -9,6 +9,7 @@ use App\Http\Controllers\RekomendasiController;
 use App\Http\Controllers\TindakLanjutController;
 use App\Http\Controllers\IdentifikasiController;
 use App\Http\Controllers\PemutakhiranController;
+use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------

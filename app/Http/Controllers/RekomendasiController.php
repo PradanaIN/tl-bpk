@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Kamus;
 use App\Models\UnitKerja;
 use App\Models\Rekomendasi;
 use Illuminate\Support\Str;
 use App\Models\TindakLanjut;
 use Illuminate\Http\Request;
+use App\Models\BuktiInputSIPTL;
 use App\Models\BuktiTindakLanjut;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\DetailRekomendasiExport;
-use App\Models\BuktiInputSIPTL;
+use App\Notifications\RekomendasiNotification;
 
 class RekomendasiController extends Controller
 {
@@ -85,7 +87,7 @@ class RekomendasiController extends Controller
 
             foreach ($request->tindak_lanjut as $key => $tindak_lanjut) {
                 // Buat entri baru dalam tabel TindakLanjut
-                TindakLanjut::create([
+                $tindakLanjut = TindakLanjut::create([
                     'id' => Str::uuid()->toString(),
                     'rekomendasi_id' => $rekomendasi->id,
                     'tindak_lanjut' => $tindak_lanjut,
@@ -95,6 +97,16 @@ class RekomendasiController extends Controller
                     'status_tindak_lanjut' => 'Belum Sesuai',
                     'bukti_tindak_lanjut' => 'Belum Diunggah!',
                 ]);
+
+                // Kirim notifikasi ke pengguna terkait
+                $usersWithRole = User::where('role', $tindakLanjut->tim_pemantauan)
+                    ->orWhere('unit_kerja', $tindakLanjut->unit_kerja)
+                    ->get();
+
+                foreach ($usersWithRole as $user) {
+                    $user->notify(new RekomendasiNotification($tindakLanjut));
+                }
+
             }
 
             // masukkan value id rekomendasi ke dalam tabel bukti_input_siptl

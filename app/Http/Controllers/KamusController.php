@@ -14,7 +14,7 @@ class KamusController extends Controller
     public function index()
     {
         return view('kamus.index', [
-            'title' => 'Kelola Kamus',
+            'title' => 'Daftar Kamus',
             'kamus' => Kamus::all(),
         ]);
     }

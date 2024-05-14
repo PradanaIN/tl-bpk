@@ -36,6 +36,7 @@ class PemutakhiranController extends Controller
      */
     public function show(Rekomendasi $rekomendasi)
     {
+        auth()->user()->unreadNotifications->where('data.rekomendasi_id', $rekomendasi->id)->markAsRead();
 
         // rekomendasi with tindak lanjut and bukti input SIPTL
         $rekomendasi = Rekomendasi::
