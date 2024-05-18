@@ -200,6 +200,16 @@ class RekomendasiController extends Controller
                         'bukti_tindak_lanjut' => $request->bukti_tindak_lanjut[$key],
                         'status_tindak_lanjut' => $request->status_tindak_lanjut[$key],
                     ]);
+
+                    // Kirim notifikasi ke pengguna terkait
+                    $usersWithRole = User::where('role', $request->tim_pemantauan[$key])
+                        ->orWhere('unit_kerja', $request->unit_kerja[$key])
+                        ->get();
+
+                    foreach ($usersWithRole as $user) {
+                        $user->notify(new RekomendasiNotification(TindakLanjut::find($request->id[$key])));
+                    }
+
                 } else {
                     TindakLanjut::create([
                         'rekomendasi_id' => $rekomendasi->id,
@@ -210,6 +220,15 @@ class RekomendasiController extends Controller
                         'bukti_tindak_lanjut' => 'Belum Diunggah!',
                         'status_tindak_lanjut' => 'Belum Sesuai',
                     ]);
+
+                    // Kirim notifikasi ke pengguna terkait
+                    $usersWithRole = User::where('role', $request->tim_pemantauan[$key])
+                        ->orWhere('unit_kerja', $request->unit_kerja[$key])
+                        ->get();
+
+                    foreach ($usersWithRole as $user) {
+                        $user->notify(new RekomendasiNotification(TindakLanjut::latest()->first()));
+                    }
                 }
             }
 
@@ -228,6 +247,8 @@ class RekomendasiController extends Controller
      */
     public function destroy(Rekomendasi $rekomendasi)
     {
+
+        BuktiInputSIPTL::where('rekomendasi_id', $rekomendasi->id)->delete();
         TindakLanjut::where('rekomendasi_id', $rekomendasi->id)->delete();
         Rekomendasi::destroy($rekomendasi->id);
 

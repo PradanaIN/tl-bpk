@@ -11,31 +11,40 @@
     }
 
     .status-belum-sesuai {
-        background-color: #FFD700;
-        color: #000000;
+        background-color: #FFD700; /* Kuning */
+        color: #000000; /* Hitam */
     }
 
     .status-belum-ditindaklanjuti {
-        background-color: #FF0000;
-        color: #FFFFFF;
+        background-color: #FF6347; /* Merah Terang */
+        color: #FFFFFF; /* Putih */
     }
 
     .status-sesuai {
-        background-color: #008000;
-        color: #FFFFFF;
-    }
-
-    .status-belum-ditindaklanjuti {
-        background-color: #0000FF;
-        color: #FFFFFF;
+        background-color: #008000; /* Hijau */
+        color: #FFFFFF; /* Putih */
     }
 
     .status-tidak-ditindaklanjuti {
-        background-color: #000000;
-        color: #FFFFFF;
+        background-color: #808080; /* Abu-abu */
+        color: #FFFFFF; /* Putih */
     }
 </style>
 @endsection
+
+@php
+    function getStatusClass($status) {
+        $statusClasses = [
+            'Belum Ditindaklanjuti' => 'status-belum-ditindaklanjuti',
+            'Belum Sesuai' => 'status-belum-sesuai',
+            'Sesuai' => 'status-sesuai',
+            'Tidak Ditindaklanjuti' => 'status-tidak-ditindaklanjuti',
+        ];
+
+        return $statusClasses[$status] ?? '';
+    }
+@endphp
+
 
 @section('section')
 
@@ -44,7 +53,7 @@
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table" id="table1">
-                    <thead>
+                    <thead class="thead-light">
                         <tr>
                             <th>No</th>
                             <th>Tahun</th>
@@ -60,7 +69,7 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $rekomendasi->tahun_pemeriksaan }}</td>
                             <td>{{ $rekomendasi->pemeriksaan }}</td>
-                            <td>{!! $rekomendasi->rekomendasi !!}</td>
+                            <td>{{ strip_tags(html_entity_decode($rekomendasi->rekomendasi)) }}</td>
                             <td style="text-align:center;">
                                 <span class="status-badge {{ getStatusClass($rekomendasi->status_rekomendasi) }}">{{ $rekomendasi->status_rekomendasi }}</span>
                             </td>
@@ -226,27 +235,3 @@
 
     </script>
 @endsection
-
-@php
-function getStatusClass($status) {
-    switch ($status) {
-        case 'Belum Ditindaklanjuti':
-            return 'status-ditinjaklanjuti';
-            break;
-        case 'Belum Sesuai':
-            return 'status-belum-sesuai';
-            break;
-        case 'Sesuai':
-            return 'status-sesuai';
-            break;
-        case 'Belum Ditindaklanjuti':
-            return 'status-belum-ditindaklanjuti';
-            break;
-        case 'Tidak Ditindaklanjuti':
-            return 'status-tidak-ditindaklanjuti';
-            break;
-        default:
-            return '';
-    }
-}
-@endphp

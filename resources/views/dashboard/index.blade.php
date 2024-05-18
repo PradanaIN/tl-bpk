@@ -26,23 +26,23 @@
     <div class="col-12">
         <div class="row">
             @foreach ([
-                ['color' => 'green', 'icon' => 'bi bi-bookmark-check-fill', 'title' => 'Rekomendasi Sesuai/Selesai', 'count' => $rekomendasi_sesuai->count()],
-                ['color' => 'red', 'icon' => 'bi bi-stopwatch-fill', 'title' => 'Rekomendasi Belum Sesuai/Selesai', 'count' => $rekomendasi_belum_sesuai->count()],
-                ['color' => 'blue', 'icon' => 'bi bi-clipboard-data-fill', 'title' => 'Rekomendasi Belum Ditindaklanjuti', 'count' => $rekomendasi_belum_ditindaklanjuti->count()],
-                ['color' => 'black', 'icon' => 'bi bi-bookmark-x-fill', 'title' => 'Rekomendasi Tidak Ditindaklanjuti', 'count' => $rekomendasi_tidak_dapat_ditindaklanjuti->count()]
-            ] as $data)
+                ['color' => 'green', 'icon' => 'bi bi-bookmark-check-fill', 'title' => ($role === 'Operator Unit Kerja') ? 'Tindak Lanjut Sesuai/Selesai' : 'Rekomendasi Sesuai/Selesai', 'count' => $data_sesuai->count()],
+                ['color' => 'red', 'icon' => 'bi bi-stopwatch-fill', 'title' => ($role === 'Operator Unit Kerja') ? 'Tindak Lanjut Belum Sesuai/Selesai' : 'Rekomendasi Belum Sesuai/Selesai', 'count' => $data_belum_sesuai->count()],
+                ['color' => 'blue', 'icon' => 'bi bi-clipboard-data-fill', 'title' => ($role === 'Operator Unit Kerja') ? 'Tindak Lanjut Belum Ditindaklanjuti' : 'Rekomendasi Belum Ditindaklanjuti', 'count' => $data_belum_ditindaklanjuti->count()],
+                ['color' => 'black', 'icon' => 'bi bi-bookmark-x-fill', 'title' => ($role === 'Operator Unit Kerja') ? 'Tindak Lanjut Tidak Ditindaklanjuti' : 'Rekomendasi Tidak Ditindaklanjuti', 'count' => $data_tidak_dapat_ditindaklanjuti->count()]
+            ] as $item)
                 <div class="col-6 col-lg-3 col-md-6">
                     <div class="card">
                         <div class="card-body px-4 py-4-5">
                             <div class="row">
                                 <div class="col-md-4 col-lg-12 col-xl-4 col-xxl-3 d-flex justify-content-start align-items-center">
-                                    <div class="stats-icon {{ $data['color'] }} mb-2">
-                                        <i class="{{ $data['icon'] }} mb-2"></i>
+                                    <div class="stats-icon {{ $item['color'] }} mb-2">
+                                        <i class="{{ $item['icon'] }} mb-2"></i>
                                     </div>
                                 </div>
                                 <div class="col-md-8 col-lg-12 col-xl-8 col-xxl-9">
-                                    <h6 class="text-muted font-semibold">{{ $data['title'] }}</h6>
-                                    <h6 class="font-extrabold mb-0">{{ $data['count'] }} dari {{ $rekomendasi->count() }} total rekomendasi</h6>
+                                    <h6 class="text-muted font-semibold">{{ $item['title'] }}</h6>
+                                    <h6 class="font-extrabold mb-0">{{ $item['count'] }} dari {{ $data->count() }} total {{ ($role === 'Operator Unit Kerja') ? 'tindak lanjut' : 'rekomendasi' }}</h6>
                                 </div>
                             </div>
                         </div>
@@ -57,7 +57,7 @@
             <div class="col-12 col-lg-6"> <!-- Kolom untuk pie chart -->
                 <div class="card">
                     <div class="card-header text-center">
-                        <h4>Persentase Tindak Lanjut Rekomendasi BPK</h4>
+                        <h4>Persentase {{ ($role === 'Operator Unit Kerja') ? 'Tindak Lanjut' : 'Rekomendasi' }} BPK</h4>
                     </div>
                     <div class="card-body">
                         <canvas id="pie-chart" width="300" height="300"></canvas>
@@ -67,7 +67,7 @@
             <div class="col-12 col-lg-6"> <!-- Kolom untuk line chart -->
                 <div class="card">
                     <div class="card-header text-center">
-                        <h4>Jumlah Rekomendasi Pertahun</h4>
+                        <h4>Jumlah {{ ($role === 'Operator Unit Kerja') ? 'Tindak Lanjut' : 'Rekomendasi' }} Pertahun</h4>
                     </div>
                     <div class="card-body">
                         <canvas id="line-chart" width="300" height="300"></canvas>
@@ -77,6 +77,7 @@
         </div>
     </div>
 </section>
+
 @endsection
 
 @section('script')
@@ -97,10 +98,10 @@
             ],
             datasets: [{
                 data: [
-                    {{ $rekomendasi_sesuai->count() }},
-                    {{ $rekomendasi_belum_sesuai->count() }},
-                    {{ $rekomendasi_belum_ditindaklanjuti->count() }},
-                    {{ $rekomendasi_tidak_dapat_ditindaklanjuti->count() }}
+                    {{ $data_sesuai->count() }},
+                    {{ $data_belum_sesuai->count() }},
+                    {{ $data_belum_ditindaklanjuti->count() }},
+                    {{ $data_tidak_dapat_ditindaklanjuti->count() }}
                 ],
                 backgroundColor: [
                     'rgba(75, 192, 192, 0.6)',
@@ -162,10 +163,10 @@
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: {!! $jumlah_rekomendasi_per_tahun->pluck('tahun') !!},
+            labels: {!! collect($jumlah_data_per_tahun)->pluck('tahun') !!},
             datasets: [{
                 label: 'Jumlah Rekomendasi per Tahun',
-                data: {!! $jumlah_rekomendasi_per_tahun->pluck('jumlah_rekomendasi') !!},
+                data: {!! collect($jumlah_data_per_tahun)->pluck('jumlah') !!},
                 backgroundColor: 'rgba(54, 162, 235, 0.2)', // Warna area di bawah garis
                 borderColor: 'rgba(54, 162, 235, 1)', // Warna garis
                 borderWidth: 2, // Ketebalan garis

@@ -11,26 +11,40 @@
     }
 
     .status-belum-sesuai {
-        background-color: #FFD700;
-        color: #000000;
+        background-color: #FFD700; /* Kuning */
+        color: #000000; /* Hitam */
     }
 
     .status-belum-ditindaklanjuti {
-        background-color: #FF0000;
-        color: #FFFFFF;
+        background-color: #FF6347; /* Merah Terang */
+        color: #FFFFFF; /* Putih */
     }
 
     .status-sesuai {
-        background-color: #008000;
-        color: #FFFFFF;
+        background-color: #008000; /* Hijau */
+        color: #FFFFFF; /* Putih */
     }
 
     .status-tidak-ditindaklanjuti {
-        background-color: #000000;
-        color: #FFFFFF;
+        background-color: #808080; /* Abu-abu */
+        color: #FFFFFF; /* Putih */
     }
 </style>
 @endsection
+
+@php
+    function getStatusClass($status) {
+        $statusClasses = [
+            'Belum Ditindaklanjuti' => 'status-belum-ditindaklanjuti',
+            'Belum Sesuai' => 'status-belum-sesuai',
+            'Sesuai' => 'status-sesuai',
+            'Tidak Ditindaklanjuti' => 'status-tidak-ditindaklanjuti',
+        ];
+
+        return $statusClasses[$status] ?? '';
+    }
+@endphp
+
 
 @section('section')
 
@@ -85,9 +99,6 @@
         <div class="card-body">
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="pemeriksaan" role="tabpanel" aria-labelledby="pemeriksaan-tab">
-                    {{-- <div class="card-header">
-                        <h4 class="card-title"><b>Detail Pemeriksaan</b></h4>
-                    </div> --}}
                     <div class="card-body">
                         <div class="row">
                             <div class="col-2">
@@ -122,7 +133,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $rekomendasi->hasil_pemeriksaan !!}</p>
+                                <p>{{ strip_tags(html_entity_decode($rekomendasi->hasil_pemeriksaan)) }}</p>
                             </div>
                         </div>
                     </div>
@@ -144,7 +155,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $rekomendasi->uraian_temuan !!}</p>
+                                <p>{{ strip_tags(html_entity_decode($rekomendasi->uraian_temuan)) }}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -153,7 +164,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $rekomendasi->rekomendasi !!}</p>
+                                <p>{{ strip_tags(html_entity_decode($rekomendasi->rekomendasi)) }}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -162,16 +173,16 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $rekomendasi->catatan_rekomendasi !!}</p>
+                                <p>{{ strip_tags(html_entity_decode($rekomendasi->catatan_rekomendasi)) }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="tindaklanjut" role="tabpanel" aria-labelledby="tindaklanjut-tab">
                     <div class="card-body">
-                        <div class="table-responsive">
+                        <div class="table-responsive-md">
                             <table class="table" id="table1">
-                                <thead>
+                                <thead class="thead-light">
                                     <tr>
                                         <th>No</th>
                                         <th>Tindak Lanjut</th>
@@ -186,17 +197,20 @@
                                     @foreach($rekomendasi->tindakLanjut as $index => $tindakLanjut)
                                         <tr>
                                             <td style="text-align:center;">{{ $loop->iteration }}</td>
-                                            <td >{!! $tindakLanjut->tindak_lanjut !!}</td>
-                                            <td >{{ $tindakLanjut->unit_kerja }}</td>
+                                            <td>{{ strip_tags(html_entity_decode($tindakLanjut->tindak_lanjut)) }}</td>
+                                            <td>{{ $tindakLanjut->unit_kerja }}</td>
                                             <td>{{ $tindakLanjut->tim_pemantauan }}</td>
                                             <td style="text-align:center;">{{ \Carbon\Carbon::parse($tindakLanjut->tenggat_waktu )->translatedFormat('d M Y') }}</td>
                                             <td style="text-align:center;">
                                                 @if ($tindakLanjut->bukti_tindak_lanjut === null || $tindakLanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
-                                                    <span class="badge bg-warning">Belum Diunggah!</span>
+                                                    <span class="status-badge status-belum-sesuai">Belum Diunggah!</span>
                                                 @else
-                                                <a href="{{ asset('uploads/tindak_lanjut/' . $tindakLanjut->bukti_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Bukti">
-                                                    <i class="bi bi-download"></i>
-                                                </a>
+                                                    <div class="d-flex flex-column align-items-center">
+                                                        <span class="status-badge status-sesuai mb-1">{{ $tindakLanjut->bukti_tindak_lanjut }}</span>
+                                                        <a href="{{ asset('uploads/tindak_lanjut/' . $tindakLanjut->bukti_tindak_lanjut) }}" class="btn btn-secondary btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Bukti">
+                                                            <i class="bi bi-download"></i>
+                                                        </a>
+                                                    </div>
                                                 @endif
                                             </td>
                                             <td style="text-align:center;">
@@ -275,27 +289,6 @@ document.getElementById('deleteButton').addEventListener('click', function() {
         dom: '<"d-flex justify-content-between mb-4"fB>rt<"d-flex justify-content-between mt-4"<"d-flex justify-content-start"li><"col-md-6"p>>',
     });
 </script>
-
-@php
-function getStatusClass($status) {
-    switch ($status) {
-        case 'Belum Ditindaklanjuti':
-            return 'status-belum-ditindaklanjuti';
-            break;
-        case 'Belum Sesuai':
-            return 'status-belum-sesuai';
-            break;
-        case 'Sesuai':
-            return 'status-sesuai';
-            break;
-        case 'Tidak Ditindaklanjuti':
-            return 'status-tidak-ditindaklanjuti';
-            break;
-        default:
-            return '';
-    }
-}
-@endphp
 
 @endsection
 

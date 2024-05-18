@@ -14,26 +14,39 @@
     }
 
     .status-belum-sesuai {
-        background-color: #FFD700;
-        color: #000000;
+        background-color: #FFD700; /* Kuning */
+        color: #000000; /* Hitam */
     }
 
     .status-belum-ditindaklanjuti {
-        background-color: #FF0000;
-        color: #FFFFFF;
+        background-color: #FF6347; /* Merah Terang */
+        color: #FFFFFF; /* Putih */
     }
 
     .status-sesuai {
-        background-color: #008000;
-        color: #FFFFFF;
+        background-color: #008000; /* Hijau */
+        color: #FFFFFF; /* Putih */
     }
 
     .status-tidak-ditindaklanjuti {
-        background-color: #000000;
-        color: #FFFFFF;
+        background-color: #808080; /* Abu-abu */
+        color: #FFFFFF; /* Putih */
     }
 </style>
 @endsection
+
+@php
+function getStatusClass($status) {
+    $statusClasses = [
+        'Belum Ditindaklanjuti' => 'status-belum-ditindaklanjuti',
+        'Belum Sesuai' => 'status-belum-sesuai',
+        'Sesuai' => 'status-sesuai',
+        'Tidak Ditindaklanjuti' => 'status-tidak-ditindaklanjuti',
+    ];
+
+    return $statusClasses[$status] ?? '';
+}
+@endphp
 
 @section('section')
 
@@ -51,23 +64,23 @@
         </div>
         <div class="col-auto d-flex ms-auto">
             @if ($rekomendasi->buktiInputSIPTL === null || $rekomendasi->buktiInputSIPTL->bukti_input_siptl === 'Belum Diunggah!')
-            <button class="btn btn-warning" id="btnStatusBuktiInput">
-                <i class="bi bi-exclamation-triangle"></i>
-                <span class="d-none d-md-inline">&nbsp;Bukti Belum Diunggah!</span>
+            <button class="btn btn-outline-warning" id="btnStatusBuktiInput">
+                <i class="bi bi-exclamation-triangle text-black"></i>
+                <span class="d-none d-md-inline text-black">&nbsp;Bukti Belum Diunggah!</span>
             </button>
             @else
-            <button class="btn btn-success" id="btnStatusBuktiInput" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($rekomendasi->upload_at)->translatedFormat('H:i, d M Y') }}">
+            <button class="btn btn-outline-success" id="btnStatusBuktiInput" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($rekomendasi->upload_at)->translatedFormat('H:i, d M Y') }}">
                 <i class="bi bi-check-square"></i>
                 <span class="d-none d-md-inline">&nbsp;Bukti Diunggah {{ \Carbon\Carbon::parse($rekomendasi->buktiInputSIPTL->upload_at)->diffForHumans() }}</span>
             </button>
             @endif
             @if (($rekomendasi->status_rekomendasi === 'Belum Sesuai' ))
-            <button class="btn btn-warning" id="btnStatusPemutakhiran">
-                <i class="bi bi-exclamation-triangle"></i>
-                <span class="d-none d-md-inline">&nbsp;Rekomendasi Belum Dimutakhirkan!</span>
+            <button class="btn btn-outline-warning" id="btnStatusPemutakhiran">
+                <i class="bi bi-exclamation-triangle text-black"></i>
+                <span class="d-none d-md-inline text-black">&nbsp;Rekomendasi Belum Dimutakhirkan!</span>
             </button>
             @else
-            <button class="btn btn-success" id="btnStatusPemutakhiran" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($rekomendasi->pemutakhiran_at)->translatedFormat('H:i, d M Y') }}">
+            <button class="btn btn-outline-success" id="btnStatusPemutakhiran" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($rekomendasi->pemutakhiran_at)->translatedFormat('H:i, d M Y') }}">
                 <i class="bi bi-check-square"></i>
                 <span class="d-none d-md-inline">&nbsp;Dimutakhirkan {{ \Carbon\Carbon::parse($rekomendasi->pemutakhiran_at)->diffForHumans() }}</span>
             </button>
@@ -138,7 +151,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $rekomendasi->hasil_pemeriksaan !!}</p>
+                                <p>{{ strip_tags(html_entity_decode($rekomendasi->hasil_pemeriksaan)) }}</p>
                             </div>
                         </div>
                     </div>
@@ -160,7 +173,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $rekomendasi->uraian_temuan !!}</p>
+                                <p>{{ strip_tags(html_entity_decode($rekomendasi->uraian_temuan)) }}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -169,7 +182,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $rekomendasi->rekomendasi !!}</p>
+                                <p>{{ strip_tags(html_entity_decode($rekomendasi->rekomendasi)) }}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -178,7 +191,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $rekomendasi->catatan_rekomendasi !!}</p>
+                                <p>{{ strip_tags(html_entity_decode($rekomendasi->catatan_rekomendasi)) }}</p>
                             </div>
                         </div>
                     </div>
@@ -187,7 +200,7 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table" id="table1">
-                                <thead>
+                                <thead class="thead-light">
                                     <tr>
                                         <th>No</th>
                                         <th>Tindak Lanjut</th>
@@ -202,7 +215,7 @@
                                     @foreach($rekomendasi->tindakLanjut as $index => $tindakLanjut)
                                         <tr>
                                             <td style="text-align:center;">{{ $loop->iteration }}</td>
-                                            <td >{!! $tindakLanjut->tindak_lanjut !!}</td>
+                                            <td >{{ strip_tags(html_entity_decode($tindakLanjut->tindak_lanjut)) }}</td>
                                             <td >{{ $tindakLanjut->unit_kerja }}</td>
                                             <td>{{ $tindakLanjut->tim_pemantauan }}</td>
                                             <td style="text-align:center;">{{ \Carbon\Carbon::parse($tindakLanjut->tenggat_waktu )->translatedFormat('d M Y') }}</td>
@@ -236,10 +249,16 @@
                                 @if ($rekomendasi->buktiInputSIPTL === null || $rekomendasi->buktiInputSIPTL->bukti_input_siptl === 'Belum Diunggah!')
                                     <p><span class="status-badge bg-warning text-black">{{ $rekomendasi->buktiInputSIPTL->bukti_input_siptl }}</span></p>
                                 @else
-                                    <p><span class="status-badge bg-success text-white">{{ $rekomendasi->buktiInputSIPTL->bukti_input_siptl }}</span></p>
+                                    <div class="col-auto d-flex ms-auto">
+                                        <span class="status-badge bg-success text-white me-2">{{ $rekomendasi->buktiInputSIPTL->bukti_input_siptl }}</span>
+                                        @canany(['Tim Koordinator', 'Super Admin'])
+                                        <a href="{{ asset('uploads/bukti_input_siptl/' . $rekomendasi->buktiInputSIPTL->bukti_input_siptl) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Bukti Input SIPTL">
+                                            <i class="bi bi-download"></i>
+                                        </a>
+                                        @endcan
+                                    </div>
                                 @endif
                             </div>
-
                             @canany(['Tim Koordinator', 'Super Admin'])
                             <div class="col-auto d-flex ms-auto">
                                 @if ($rekomendasi->buktiInputSIPTL === null || $rekomendasi->buktiInputSIPTL->bukti_input_siptl === 'Belum Diunggah!')
@@ -248,16 +267,10 @@
                                         <span class="d-none d-md-inline">&nbsp;Upload Bukti</span>
                                     </button>
                                 @else
-                                    <div class="col-auto">
-                                        <a href="{{ asset('uploads/bukti_input_siptl/' . $rekomendasi->buktiInputSIPTL->bukti_input_siptl) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Bukti Input SIPTL">
-                                            <i class="bi bi-download"></i>
-                                            <span class="d-none d-md-inline">&nbsp;Unduh Bukti</span>
-                                        </a>
-                                        <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Bukti Input SIPTL">
-                                            <i class="bi bi-pencil"></i>
-                                            <span class="d-none d-md-inline">&nbsp;Ubah Bukti</span>
-                                        </button>
-                                    </div>
+                                    <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Bukti Input SIPTL">
+                                        <i class="bi bi-pencil"></i>
+                                        <span class="d-none d-md-inline">&nbsp;Ubah Bukti</span>
+                                    </button>
                                 @endif
                             </div>
                             @endcanany
@@ -269,7 +282,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $rekomendasi->buktiInputSIPTL->detail_bukti_input_siptl !!}</p>
+                                <p>{{ strip_tags(html_entity_decode($rekomendasi->buktiInputSIPTL->detail_bukti_input_siptl)) }}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -319,7 +332,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $rekomendasi->catatan_pemutakhiran !!}</p>
+                                <p>{{ strip_tags(html_entity_decode($rekomendasi->catatan_pemutakhiran)) }}</p>
                             </div>
                         </div>
                         @endif
@@ -368,7 +381,7 @@
                 <div class="modal-body">
                     <div class="form-group mandatory">
                         <label for="bukti_input_siptl" class="form-label">Bukti Input SIPTL</label>
-                        <input type="file" class="multiple-files-filepond" multiple name="bukti_input_siptl" required>
+                        <input type="file" class="multiple-files-filepond" multiple name="bukti_input_siptl" accept=".png,.jpg,.pdf,.zip,.rar,.tar" required>
                         @error('bukti_input_siptl')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -622,27 +635,6 @@ document.getElementById('deleteButton').addEventListener('click', function() {
         dom: '<"d-flex justify-content-between mb-4"fB>rt<"d-flex justify-content-between mt-4"<"d-flex justify-content-start"li><"col-md-6"p>>',
     });
 </script>
-
-@php
-function getStatusClass($status) {
-    switch ($status) {
-        case 'Belum Ditindaklanjuti':
-            return 'status-belum-ditindaklanjuti';
-            break;
-        case 'Belum Sesuai':
-            return 'status-belum-sesuai';
-            break;
-        case 'Sesuai':
-            return 'status-sesuai';
-            break;
-        case 'Tidak Ditindaklanjuti':
-            return 'status-tidak-ditindaklanjuti';
-            break;
-        default:
-            return '';
-    }
-}
-@endphp
 
 @endsection
 

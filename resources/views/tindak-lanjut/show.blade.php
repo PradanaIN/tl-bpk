@@ -6,7 +6,6 @@
 <link rel="stylesheet" href="{{ asset('mazer/assets/extensions/toastify-js/src/toastify.css') }}"/>
 
 <style>
-
     .status-badge {
             padding: 5px 10px;
             border-radius: 5px;
@@ -26,22 +25,36 @@
     }
 
     .status-belum-ditindaklanjuti {
-        background-color: #FF0000;
-        color: #FFFFFF;
+        background-color: #FF6347; /* Merah Terang */
+        color: #FFFFFF; /* Putih */
     }
 
     .status-sesuai {
-        background-color: #008000;
-        color: #FFFFFF;
+        background-color: #008000; /* Hijau */
+        color: #FFFFFF; /* Putih */
     }
 
     .status-tidak-ditindaklanjuti {
-        background-color: #000000;
-        color: #FFFFFF;
+        background-color: #808080; /* Abu-abu */
+        color: #FFFFFF; /* Putih */
     }
 
 </style>
 @endsection
+
+@php
+    function getStatusClass($status) {
+        $statusClasses = [
+            'Identifikasi' => 'status-identifikasi',
+            'Belum Ditindaklanjuti' => 'status-belum-ditindaklanjuti',
+            'Belum Sesuai' => 'status-belum-sesuai',
+            'Sesuai' => 'status-sesuai',
+            'Tidak Ditindaklanjuti' => 'status-tidak-ditindaklanjuti',
+        ];
+
+        return $statusClasses[$status] ?? '';
+    }
+@endphp
 
 @section('section')
 
@@ -59,33 +72,26 @@
         </div>
         <div class="col-auto d-flex ms-auto">
             <div class="col-auto">
-                @if (($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!'))
-                    <button class="btn btn-warning" id="btnStatusBukti">
-                        <i class="bi bi-exclamation-triangle"></i>
-                        <span class="d-none d-md-inline">&nbsp;Bukti Belum Diunggah!</span>
+                @if ($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
+                    <button class="btn icon btn-outline-warning" id="btnStatusBukti">
+                        <i class="bi bi-exclamation-triangle text-black"></i>
+                        <span class="d-none d-md-inline text-black">&nbsp;Bukti Belum Diunggah!</span>
                     </button>
                 @else
-                    <button class="btn btn-success" id="btnStatusBukti" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->translatedFormat('H:i, d M Y') }}">
+                    <button class="btn btn-outline-success" id="btnStatusBukti" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->translatedFormat('H:i, d M Y') }}">
                         <i class="bi bi-check-square"></i>
                         <span class="d-none d-md-inline">&nbsp;Bukti Diunggah {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->diffForHumans() }}</span>
                     </button>
                 @endif
-                @if ($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
-                @else
-                    @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi'))
-                        <button class="btn btn-warning ms-2" id="btnStatusIdentifikasi">
-                            <i class="bi bi-exclamation-triangle"></i>
-                            <span class="d-none d-md-inline">&nbsp;Tindak Lanjut Belum Diidentifikasi!</span>
-                        </button>
-                    @else
-                        <button class="btn btn-success ms-2" id="btnStatusIdentifikasi" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->translatedFormat('H:i, d M Y') }}">
-                            <i class="bi bi-check-square"></i>
-                            <span class="d-none d-md-inline">&nbsp;Diidentifikasi {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->diffForHumans() }}</span>
-                        </button>
-                    @endif
+                @if ($tindak_lanjut->bukti_tindak_lanjut !== null && $tindak_lanjut->bukti_tindak_lanjut !== 'Belum Diunggah!' && $tindak_lanjut->status_tindak_lanjut !== null && $tindak_lanjut->status_tindak_lanjut !== 'Identifikasi')
+                    <button class="btn btn-outline-success ms-2" id="btnStatusIdentifikasi" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->translatedFormat('H:i, d M Y') }}">
+                        <i class="bi bi-check-square"></i>
+                        <span class="d-none d-md-inline">&nbsp;Diidentifikasi {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->diffForHumans() }}</span>
+                    </button>
                 @endif
             </div>
         </div>
+
     </div>
     <div class="card">
         <div class="card-body">
@@ -149,7 +155,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $rekomendasi->hasil_pemeriksaan !!}</p>
+                                <p>{{ strip_tags(html_entity_decode($rekomendasi->hasil_pemeriksaan)) }}</p>
                             </div>
                         </div>
                     </div>
@@ -171,7 +177,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $rekomendasi->uraian_temuan !!}</p>
+                                <p>{{ strip_tags(html_entity_decode($rekomendasi->uraian_temuan)) }}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -180,7 +186,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $rekomendasi->rekomendasi !!}</p>
+                                <p>{{ strip_tags(html_entity_decode($rekomendasi->rekomendasi)) }}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -189,7 +195,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $rekomendasi->catatan_rekomendasi !!}</p>
+                                <p>{{ strip_tags(html_entity_decode($rekomendasi->catatan_rekomendasi)) }}</p>
                             </div>
                         </div>
                     </div>
@@ -202,7 +208,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $tindak_lanjut->tindak_lanjut !!}</p>
+                                <p>{{ strip_tags(html_entity_decode($tindak_lanjut->tindak_lanjut)) }}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -241,30 +247,29 @@
                                 @if ($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
                                     <p><span class="status-badge bg-warning text-black">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span></p>
                                 @else
-                                    <p><span class="status-badge bg-success text-white">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span></p>
+                                <div class="col-auto d-flex ms-auto">
+                                    <span class="status-badge bg-success text-white me-2">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span>
+                                    @canany(['Operator Unit Kerja', 'Super Admin'])
+                                    <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->bukti_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Bukti TL">
+                                        <i class="bi bi-download"></i>
+                                    </a>
+                                    @endcan
+                                </div>
                                 @endif
                             </div>
                             @canany(['Operator Unit Kerja', 'Super Admin'])
                             <div class="col-auto d-flex ms-auto">
-                                    @if (($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!'))
-                                    <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unggah Bukti TL">
-                                        <i class="bi bi-plus"></i>
-                                        <span class="d-none d-md-inline">&nbsp;Tambah Bukti</span>
-                                    </button>
-                                    @else
-                                    <div class="col-auto d-flex ms-auto">
-                                        <div class="col-auto">
-                                            <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->bukti_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Bukti TL">
-                                                <i class="bi bi-download"></i>
-                                                <span class="d-none d-md-inline"> &nbsp;Unduh Bukti</span>
-                                            </a>
-                                            <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Bukti TL">
-                                                <i class="bi bi-pencil"></i>
-                                                <span class="d-none d-md-inline">&nbsp;Ubah Bukti</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    @endif
+                                @if (($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!'))
+                                <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unggah Bukti TL">
+                                    <i class="bi bi-plus"></i>
+                                    <span class="d-none d-md-inline">&nbsp;Tambah Bukti</span>
+                                </button>
+                                @else
+                                <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Bukti TL">
+                                    <i class="bi bi-pencil"></i>
+                                    <span class="d-none d-md-inline">&nbsp;Ubah Bukti</span>
+                                </button>
+                                @endif
                             </div>
                             @endcan
                         </div>
@@ -276,7 +281,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $tindak_lanjut->detail_bukti_tindak_lanjut !!}</p>
+                                <p>{{ strip_tags(html_entity_decode($tindak_lanjut->detail_bukti_tindak_lanjut)) }}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -311,7 +316,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $tindak_lanjut->catatan_tindak_lanjut !!}</p>
+                                <p>{{ strip_tags(html_entity_decode($tindak_lanjut->catatan_tindak_lanjut)) }}</p>
                             </div>
                         </div>
                         @endif
@@ -364,7 +369,7 @@
                     @method('put')
                     <div class="form-group mandatory">
                         <label for="bukti_tindak_lanjut" class="form-label">Bukti Tindak Lanjut (.pdf/.zip/.rar/.tar)</label>
-                        <input type="file" class="multiple-files-filepond" multiple name="bukti_tindak_lanjut" required>
+                        <input type="file" class="multiple-files-filepond" multiple name="bukti_tindak_lanjut" accept=".pdf,.zip,.rar,.tar" required>
                         @error('bukti_tindak_lanjut')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -402,8 +407,17 @@
     </div>
 </div>
 
-
 @section('script')
+<script src="{{ asset('mazer/assets/extensions/filepond-plugin-file-validate-size/filepond-plugin-file-validate-size.min.js') }}"></script>
+<script src="{{ asset('mazer/assets/extensions/filepond-plugin-file-validate-type/filepond-plugin-file-validate-type.min.js') }}"></script>
+<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-crop/filepond-plugin-image-crop.min.js') }}"></script>
+<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-exif-orientation/filepond-plugin-image-exif-orientation.min.js') }}"></script>
+<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-filter/filepond-plugin-image-filter.min.js') }}"></script>
+<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-preview/filepond-plugin-image-preview.min.js') }}"></script>
+<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-resize/filepond-plugin-image-resize.min.js') }}"></script>
+<script src="{{ asset('mazer/assets/extensions/filepond/filepond.js') }}"></script>
+<script src="{{ asset('mazer/assets/extensions/toastify-js/src/toastify.js') }}"></script>
+<script src="{{ asset('mazer/assets/static/js/pages/filepond.js') }}"></script>
 
 <script>
     $(document).ready(function() {
@@ -477,17 +491,6 @@
 
 </script>
 
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-file-validate-size/filepond-plugin-file-validate-size.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-file-validate-type/filepond-plugin-file-validate-type.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-crop/filepond-plugin-image-crop.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-exif-orientation/filepond-plugin-image-exif-orientation.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-filter/filepond-plugin-image-filter.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-preview/filepond-plugin-image-preview.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-resize/filepond-plugin-image-resize.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond/filepond.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/toastify-js/src/toastify.js') }}"></script>
-<script src="{{ asset('mazer/assets/static/js/pages/filepond.js') }}"></script>
-
 <script>
     @if (session()->has('update'))
         Swal.fire({
@@ -501,28 +504,3 @@
 </script>
 
 @endsection
-
-
-@php
-function getStatusClass($status) {
-    switch ($status) {
-        case 'Identifikasi':
-            return 'status-identifikasi';
-            break;
-        case 'Belum Sesuai':
-            return 'status-belum-sesuai';
-            break;
-        case 'Belum Sesuai':
-            return 'status-belum-sesuai';
-            break;
-        case 'Sesuai':
-            return 'status-sesuai';
-            break;
-        case 'Tidak Ditindaklanjuti':
-            return 'status-tidak-ditindaklanjuti';
-            break;
-        default:
-            return '';
-    }
-}
-@endphp

@@ -23,6 +23,10 @@
 
         #table1 th {text-align: center;}
 
+        .thead-light {
+        background-color: lightgrey !important;
+    }
+
         .menu a {
             text-decoration: none;
         }
@@ -335,6 +339,7 @@
 
 <script>
     tinymce.init({
+        forced_root_block: false,
         selector: "textarea",
         promotion: false,
         height: 185,
@@ -358,7 +363,7 @@
         altInput: true,
         altFormat: "j F Y",
         dateFormat: "Y-m-d",
-        minDate: "today",
+        // minDate: "today",
         locale: {
             firstDayOfWeek: 1,
             weekdays: {

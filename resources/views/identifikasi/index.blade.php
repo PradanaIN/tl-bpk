@@ -10,24 +10,24 @@
         text-align: center;
     }
 
-    .status-identifikasi {
-        background-color: #FFD700;
-        color: #000000;
+    .status-belum-sesuai {
+        background-color: #FFD700; /* Kuning */
+        color: #000000; /* Hitam */
     }
 
-    .status-belum-sesuai {
-        background-color: #FF0000;
-        color: #FFFFFF;
+    .status-belum-ditindaklanjuti {
+        background-color: #FF6347; /* Merah Terang */
+        color: #FFFFFF; /* Putih */
     }
 
     .status-sesuai {
-        background-color: #008000;
-        color: #FFFFFF;
+        background-color: #008000; /* Hijau */
+        color: #FFFFFF; /* Putih */
     }
 
     .status-tidak-ditindaklanjuti {
-        background-color: #000000;
-        color: #FFFFFF;
+        background-color: #808080; /* Abu-abu */
+        color: #FFFFFF; /* Putih */
     }
 </style>
 @endsection
@@ -35,6 +35,19 @@
 @php
     $loggedInUserRole = auth()->user()->role; // Dapatkan peran pengguna yang sedang login
     $no = 1;
+
+
+    function getStatusClass($status) {
+        $statusClasses = [
+            'Identifikasi' => 'status-identifikasi',
+            'Belum Ditindaklanjuti' => 'status-belum-ditindaklanjuti',
+            'Belum Sesuai' => 'status-belum-sesuai',
+            'Sesuai' => 'status-sesuai',
+            'Tidak Ditindaklanjuti' => 'status-tidak-ditindaklanjuti',
+        ];
+
+        return $statusClasses[$status] ?? '';
+    }
 @endphp
 
 @section('section')
@@ -47,7 +60,7 @@
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table" id="table1">
-                    <thead>
+                    <thead class="thead-light">
                         <tr>
                             <th>No</th>
                             <th>Tindak Lanjut</th>
@@ -62,7 +75,7 @@
                         @if ($loggedInUserRole == 'Super Admin' || $loggedInUserRole == 'Tim Pemantauan Wilayah I' && $tindak_lanjut->tim_pemantauan == 'Tim Pemantauan Wilayah I' || $loggedInUserRole == 'Tim Pemantauan Wilayah II' && $tindak_lanjut->tim_pemantauan == 'Tim Pemantauan Wilayah II' || $loggedInUserRole == 'Tim Pemantauan Wilayah III' && $tindak_lanjut->tim_pemantauan == 'Tim Pemantauan Wilayah III')
                             <tr class="clickable-row" data-href="/identifikasi/{{ $tindak_lanjut->id }}">
                                 <td>{{ $no++ }}</td>
-                                <td>{!! $tindak_lanjut->tindak_lanjut !!}</td>
+                                <td>{{ implode(' ', array_slice(str_word_count(strip_tags($tindak_lanjut->tindak_lanjut), 1), 0, 10)) }}{{ str_word_count(strip_tags($tindak_lanjut->tindak_lanjut)) > 10 ? '...' : '' }}</td>
                                 <td>{{ $tindak_lanjut->unit_kerja }}</td>
                                 <td style="text-align: center;">{{ \Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu )->translatedFormat('d M Y') }}</td>
                                 <td style="text-align: center;">
@@ -140,25 +153,3 @@
         });
     </script>
 @endsection
-
-@php
-function getStatusClass($status) {
-    switch ($status) {
-        case 'Identifikasi':
-            return 'status-identifikasi';
-            break;
-
-        case 'Belum Sesuai':
-            return 'status-belum-sesuai';
-            break;
-        case 'Sesuai':
-            return 'status-sesuai';
-            break;
-        case 'Tidak Ditindaklanjuti':
-            return 'status-tidak-ditindaklanjuti';
-            break;
-        default:
-            return '';
-    }
-}
-@endphp

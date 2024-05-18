@@ -6,40 +6,49 @@
 
 <style>
     .status-badge {
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 14px;
-            font-weight: 500;
-            text-align: center;
-        }
-
-    .status-identifikasi {
-        background-color: #FFD700;
-        color: #000000;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: 500;
+        text-align: center;
     }
 
     .status-belum-sesuai {
-        background-color: #FF0000;
-        color: #FFFFFF;
-    }
-
-    .status-sesuai {
-        background-color: #008000;
-        color: #FFFFFF;
-    }
-
-    .status-tidak-ditindaklanjuti {
-        background-color: #000000;
-        color: #FFFFFF;
+        background-color: #FFD700; /* Kuning */
+        color: #000000; /* Hitam */
     }
 
     .status-belum-ditindaklanjuti {
-        background-color: #FFD700;
-        color: #FFFFFF;
+        background-color: #FF6347; /* Merah Terang */
+        color: #FFFFFF; /* Putih */
     }
 
+    .status-sesuai {
+        background-color: #008000; /* Hijau */
+        color: #FFFFFF; /* Putih */
+    }
+
+    .status-tidak-ditindaklanjuti {
+        background-color: #808080; /* Abu-abu */
+        color: #FFFFFF; /* Putih */
+    }
 </style>
 @endsection
+
+@php
+    function getStatusClass($status) {
+        $statusClasses = [
+            'Identifikasi' => 'status-identifikasi',
+            'Belum Ditindaklanjuti' => 'status-belum-ditindaklanjuti',
+            'Belum Sesuai' => 'status-belum-sesuai',
+            'Sesuai' => 'status-sesuai',
+            'Tidak Ditindaklanjuti' => 'status-tidak-ditindaklanjuti',
+        ];
+
+        return $statusClasses[$status] ?? '';
+    }
+@endphp
+
 
 @section('section')
 
@@ -53,12 +62,12 @@
         </div>
         <div class="col-auto d-flex ms-auto">
             @if (($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!'))
-            <button class="btn btn-warning" id="btnStatusBukti">
-                <i class="bi bi-exclamation-triangle"></i>
-                <span class="d-none d-md-inline">&nbsp;Bukti Belum Diunggah!</span>
+            <button class="btn btn-outline-warning" id="btnStatusBukti">
+                <i class="bi bi-exclamation-triangle text-black"></i>
+                <span class="d-none d-md-inline text-black">&nbsp;Bukti Belum Diunggah!</span>
             </button>
             @else
-            <button class="btn btn-success" id="btnStatusBukti" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->translatedFormat('H:i, d M Y') }}">
+            <button class="btn btn-outline-success" id="btnStatusBukti" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->translatedFormat('H:i, d M Y') }}">
                 <i class="bi bi-check-square"></i>
                 <span class="d-none d-md-inline">&nbsp;Bukti Diunggah {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->diffForHumans() }}</span>
             </button>
@@ -66,12 +75,12 @@
             @if ($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
             @else
                 @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi'))
-                <button class="btn btn-warning" id="btnStatusIdentifikasi">
-                    <i class="bi bi-exclamation-triangle"></i>
-                    <span class="d-none d-md-inline">&nbsp;Tindak Lanjut Belum Diidentifikasi!</span>
+                <button class="btn btn-outline-warning" id="btnStatusIdentifikasi">
+                    <i class="bi bi-exclamation-triangle text-black"></i>
+                    <span class="d-none d-md-inline text-black">&nbsp;Tindak Lanjut Belum Diidentifikasi!</span>
                 </button>
                 @else
-                <button class="btn btn-success" id="btnStatusIdentifikasi" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->translatedFormat('H:i, d M Y')  }}">
+                <button class="btn btn-outline-success" id="btnStatusIdentifikasi" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->translatedFormat('H:i, d M Y')  }}">
                     <i class="bi bi-check-square"></i>
                     <span class="d-none d-md-inline">&nbsp;Diidentifikasi {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->diffForHumans() }}</span>
                 </button>
@@ -135,7 +144,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $rekomendasi->hasil_pemeriksaan !!}</p>
+                                <p>{{ strip_tags(html_entity_decode($rekomendasi->hasil_pemeriksaan)) }}</p>
                             </div>
                         </div>
                     </div>
@@ -157,7 +166,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $rekomendasi->uraian_temuan !!}</p>
+                                <p>{{ strip_tags(html_entity_decode($rekomendasi->uraian_temuan)) }}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -166,7 +175,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $rekomendasi->rekomendasi !!}</p>
+                                <p>{{ strip_tags(html_entity_decode($rekomendasi->rekomendasi)) }}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -175,7 +184,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $rekomendasi->catatan_rekomendasi !!}</p>
+                                <p>{{ strip_tags(html_entity_decode($rekomendasi->catatan_rekomendasi)) }}</p>
                             </div>
                         </div>
                     </div>
@@ -188,7 +197,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $tindak_lanjut->tindak_lanjut !!}</p>
+                                <p>{{ strip_tags(html_entity_decode($tindak_lanjut->tindak_lanjut)) }}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -227,17 +236,22 @@
                                 @if ($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
                                     <p><span class="status-badge bg-warning text-black">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span></p>
                                 @else
-                                    <p><span class="status-badge bg-success text-white">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span></p>
+                                    <div class="col">
+                                        @if ($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
+                                            <p><span class="status-badge bg-warning text-black">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span></p>
+                                        @else
+                                        <div class="col-auto d-flex ms-auto">
+                                            <span class="status-badge bg-success text-white me-2">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span>
+                                            @canany(['Operator Unit Kerja', 'Super Admin'])
+                                            <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->bukti_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Bukti TL">
+                                                <i class="bi bi-download"></i>
+                                            </a>
+                                            @endcan
+                                        </div>
+                                        @endif
+                                    </div>
                                 @endif
                             </div>
-                            @if ($tindak_lanjut->bukti_tindak_lanjut !== 'Belum Diunggah!')
-                            <div class="col-auto">
-                                <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->bukti_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Bukti">
-                                    <i class="bi bi-download"></i>
-                                    <span class="d-none d-md-inline">&nbsp;Unduh Bukti</span>
-                                </a>
-                            </div>
-                            @endif
                         </div>
                         @if ($tindak_lanjut->bukti_tindak_lanjut !== 'Belum Diunggah!')
                         <div class="row">
@@ -246,7 +260,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $tindak_lanjut->detail_bukti_tindak_lanjut !!}</p>
+                                <p>{{ strip_tags(html_entity_decode($tindak_lanjut->detail_bukti_tindak_lanjut)) }}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -301,7 +315,7 @@
                             </div>
                             <div class="col-auto">:</div>
                             <div class="col">
-                                <p>{!! $tindak_lanjut->catatan_tindak_lanjut !!}</p>
+                                <p>{{ strip_tags(html_entity_decode($tindak_lanjut->catatan_tindak_lanjut)) }}</p>
                             </div>
                         </div>
                         @endif
@@ -482,29 +496,3 @@
 </script>
 
 @endsection
-
-
-@php
-function getStatusClass($status) {
-    switch ($status) {
-        case 'Identifikasi':
-            return 'status-identifikasi';
-            break;
-        case 'Belum Sesuai':
-            return 'status-belum-sesuai';
-            break;
-        case 'Sesuai':
-            return 'status-sesuai';
-            break;
-        case 'Belum Ditindaklanjuti':
-            return 'status-belum-ditindaklanjuti';
-            break;
-        case 'Tidak Ditindaklanjuti':
-            return 'status-tidak-dapat-ditindaklanjuti';
-            break;
-        default:
-            return '';
-            break;
-    }
-}
-@endphp
