@@ -221,33 +221,31 @@ function getStatusClass($status) {
                             <div class="col-auto d-none d-md-block" id="limiter">:</div>
                             <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 @if ($rekomendasi->buktiInputSIPTL === null || $rekomendasi->buktiInputSIPTL->bukti_input_siptl === 'Belum Diunggah!')
-                                    <p><span class="status-badge bg-warning text-black">{{ $rekomendasi->buktiInputSIPTL->bukti_input_siptl }}</span></p>
-                                @else
-                                    <div class="col-auto d-flex ms-auto">
-                                        <span class="status-badge bg-success text-white me-2">{{ $rekomendasi->buktiInputSIPTL->bukti_input_siptl }}</span>
-                                        @canany(['Tim Koordinator', 'Super Admin'])
-                                        <a href="{{ asset('uploads/bukti_input_siptl/' . $rekomendasi->buktiInputSIPTL->bukti_input_siptl) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Bukti Input SIPTL">
-                                            <i class="bi bi-download"></i>
-                                        </a>
-                                        @endcan
-                                    </div>
-                                @endif
-                            </div>
-                            @canany(['Tim Koordinator', 'Super Admin'])
-                            <div class="col-auto d-flex ms-auto">
-                                @if ($rekomendasi->buktiInputSIPTL === null || $rekomendasi->buktiInputSIPTL->bukti_input_siptl === 'Belum Diunggah!')
+                                    <span class="status-badge bg-warning text-black me-2">{{ $rekomendasi->buktiInputSIPTL->bukti_input_siptl }}</span>
+                                    @canany(['Tim Koordinator', 'Super Admin'])
                                     <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Upload Bukti Input SIPTL">
                                         <i class="bi bi-upload"></i>
                                         <span class="d-none d-md-inline">&nbsp;Upload Bukti</span>
                                     </button>
+                                    @endcan
                                 @else
-                                    <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Bukti Input SIPTL">
-                                        <i class="bi bi-pencil"></i>
-                                        <span class="d-none d-md-inline">&nbsp;Ubah Bukti</span>
-                                    </button>
+                                    <div class="col-auto d-flex ms-auto">
+                                        <span class="status-badge bg-success text-white me-2">{{ $rekomendasi->buktiInputSIPTL->bukti_input_siptl }}</span>
+                                        @canany(['Tim Koordinator', 'Super Admin'])
+                                        <div class="col-auto d-flex align-content-center">
+                                            <a href="{{ asset('uploads/bukti_input_siptl/' . $rekomendasi->buktiInputSIPTL->bukti_input_siptl) }}" class="btn btn-secondary me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unduh Bukti Input SIPTL">
+                                                <i class="bi bi-download"></i>
+                                                <span class="d-none d-md-inline">&nbsp;Unduh Bukti</span>
+                                            </a>
+                                            <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Bukti Input SIPTL">
+                                                <i class="bi bi-pencil"></i>
+                                                <span class="d-none d-md-inline">&nbsp;Ubah Bukti</span>
+                                            </button>
+                                        </div>
+                                        @endcan
+                                    </div>
                                 @endif
                             </div>
-                            @endcanany
                         </div>
                         @if($rekomendasi->buktiInputSIPTL !== null && $rekomendasi->buktiInputSIPTL->bukti_input_siptl !== 'Belum Diunggah!')
                         <div class="row custom-row">
@@ -280,24 +278,23 @@ function getStatusClass($status) {
                             </div>
                             <div class="col-auto d-none d-md-block" id="limiter">:</div>
                             <div class="col-lg-8 col-md-9 col-sm-12" id="text">
-                                <p><span class="status-badge {{ getStatusClass($rekomendasi->status_rekomendasi) }}">{{ $rekomendasi->status_rekomendasi }}</span></p>
+                                <div class="col-auto d-flex align-items-center">
+                                    <span class="status-badge {{ getStatusClass($rekomendasi->status_rekomendasi) }} me-2">{{ $rekomendasi->status_rekomendasi }}</span>
+                                    @canany(['Tim Koordinator', 'Super Admin'])
+                                        @if ($rekomendasi->pemutakhiran_at === null && $rekomendasi->pemutakhiran_at === '' && $rekomendasi->pemutakhiran_by === '')
+                                        <button class="btn btn-primary" id="pemutakhiranBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tambah Status Pemutakhiran">
+                                            <i class="bi bi-plus"></i>
+                                            <span class="d-none d-md-inline">&nbsp;Tambah Pemutakhiran</span>
+                                        </button>
+                                        @else
+                                        <button class="btn btn-primary" id="pemutakhiranBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Status Pemutakhiran">
+                                            <i class="bi bi-pencil"></i>
+                                            <span class="d-none d-md-inline">&nbsp;Ubah Pemutakhiran</span>
+                                        </button>
+                                        @endif
+                                    @endcanany
+                                </div>
                             </div>
-                            @canany(['Tim Koordinator', 'Super Admin'])
-                            <div class="col-auto d-flex ms-auto">
-                                    @if ($rekomendasi->pemutakhiran_at === null && $rekomendasi->pemutakhiran_at === '' && $rekomendasi->pemutakhiran_by === '')
-                                    <button class="btn btn-primary" id="pemutakhiranBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tambah Status Pemutakhiran">
-                                        <i class="bi bi-plus"></i>
-                                        <span class="d-none d-md-inline">&nbsp;Tambah Pemutakhiran</span>
-                                    </button>
-                                    @else
-                                    <button class="btn btn-primary" id="pemutakhiranBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Status Pemutakhiran">
-                                        <i class="bi bi-pencil"></i>
-                                        <span class="d-none d-md-inline">&nbsp;Ubah Pemutakhiran</span>
-                                    </button>
-                                    @endif
-                                </button>
-                            </div>
-                            @endcanany
                         </div>
                         @if ($rekomendasi->catatan_pemutakhiran !== '' && $rekomendasi->catatan_pemutakhiran !== null)
                         <div class="row custom-row">

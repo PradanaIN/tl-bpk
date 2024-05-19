@@ -245,14 +245,29 @@
                             <div class="col-auto d-none d-md-block" id="limiter">:</div>
                             <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 @if ($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
-                                    <p><span class="status-badge bg-warning text-black">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span></p>
+                                <div class="col-auto d-flex align-items-center">
+                                    <span class="status-badge bg-warning text-black me-2">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span>
+                                    @canany(['Operator Unit Kerja', 'Super Admin'])
+                                    <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unggah Bukti TL">
+                                        <i class="bi bi-plus"></i>
+                                        <span class="d-none d-md-inline">&nbsp;Tambah Bukti</span>
+                                    </button>
+                                    @endcan
+                                </div>
                                 @else
                                     <div class="col-auto d-flex ms-auto">
                                         <span class="status-badge bg-success text-white me-2">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span>
                                         @canany(['Operator Unit Kerja', 'Super Admin'])
-                                            <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->bukti_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Bukti TL">
+                                        <div class="col-auto d-flex align-content-center">
+                                            <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->bukti_tindak_lanjut) }}" class="btn btn-secondary me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unduh Bukti TL">
                                                 <i class="bi bi-download"></i>
+                                                <span class="d-none d-md-inline">&nbsp;Unduh Bukti</span>
                                             </a>
+                                            <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Bukti TL">
+                                                <i class="bi bi-pencil"></i>
+                                                <span class="d-none d-md-inline">&nbsp;Ubah Bukti</span>
+                                            </button>
+                                        </div>
                                         @endcan
                                     </div>
                                 @endif

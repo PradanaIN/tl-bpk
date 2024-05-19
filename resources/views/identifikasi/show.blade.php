@@ -207,9 +207,10 @@
                                 @else
                                     <div class="col-auto d-flex ms-auto">
                                         <span class="status-badge bg-success text-white me-2">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span>
-                                        @canany(['Operator Unit Kerja', 'Super Admin'])
+                                        @canany(['Tim Koordinator Wilayah I', 'Tim Koordinator Wilayah II', 'Tim Koordinator Wilayah III', 'Super Admin'])
                                             <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->bukti_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Bukti TL">
                                                 <i class="bi bi-download"></i>
+                                                <span class="d-none d-md-inline">&nbsp;Unduh Bukti</span>
                                             </a>
                                         @endcan
                                     </div>
@@ -254,9 +255,8 @@
                             </div>
                             <div class="col-auto d-none d-md-block" id="limiter">:</div>
                             <div class="col-lg-8 col-md-9 col-sm-12" id="text">
-                                <p><span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }}">{{ $tindak_lanjut->status_tindak_lanjut }}</span></p>
-                            </div>
-                            <div class="col-auto d-flex ms-auto">
+                                <div class="col-auto d-flex align-items-center">
+                                    <span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }} me-2">{{ $tindak_lanjut->status_tindak_lanjut }}</span>
                                     @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi'))
                                     <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tambah Hasil Identifikasi">
                                         <i class="bi bi-plus"></i>
@@ -268,7 +268,7 @@
                                         <span class="d-none d-md-inline">&nbsp;Ubah Identifikasi</span>
                                     </button>
                                     @endif
-                                </button>
+                                </div>
                             </div>
                         </div>
                         @if ($tindak_lanjut->catatan_tindak_lanjut !== '' && $tindak_lanjut->catatan_tindak_lanjut !== null)
