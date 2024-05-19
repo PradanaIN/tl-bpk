@@ -1,37 +1,5 @@
 @extends('layouts.horizontal')
 
-@section('style')
-<style>
-    .status-badge {
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 14px;
-        font-weight: 500;
-        text-align: center;
-    }
-
-    .status-belum-sesuai {
-        background-color: #FFD700; /* Kuning */
-        color: #000000; /* Hitam */
-    }
-
-    .status-belum-ditindaklanjuti {
-        background-color: #FF6347; /* Merah Terang */
-        color: #FFFFFF; /* Putih */
-    }
-
-    .status-sesuai {
-        background-color: #008000; /* Hijau */
-        color: #FFFFFF; /* Putih */
-    }
-
-    .status-tidak-ditindaklanjuti {
-        background-color: #808080; /* Abu-abu */
-        color: #FFFFFF; /* Putih */
-    }
-</style>
-@endsection
-
 @php
     function getStatusClass($status) {
         $statusClasses = [
@@ -65,7 +33,7 @@
                     </thead>
                     <tbody>
                         @foreach ($rekomendasi as $rekomendasi)
-                        <tr class='clickable-row' data-href="/pemutakhiran-status/{{ $rekomendasi->id }}}}">
+                        <tr class='clickable-row' data-href="/pemutakhiran-status/{{ $rekomendasi->id }}">
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $rekomendasi->jenis_temuan }}</td>
                             <td>{{ implode(' ', array_slice(str_word_count(strip_tags(html_entity_decode($rekomendasi->uraian_temuan)), 1), 0, 10)) }}{{ str_word_count(strip_tags(html_entity_decode($rekomendasi->uraian_temuan))) > 10 ? '...' : '' }}</td>

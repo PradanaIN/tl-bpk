@@ -1,37 +1,5 @@
 @extends('layouts.horizontal')
 
-@section('style')
-<style>
-    .status-badge {
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 14px;
-        font-weight: 500;
-        text-align: center;
-    }
-
-    .status-belum-sesuai {
-        background-color: #FFD700; /* Kuning */
-        color: #000000; /* Hitam */
-    }
-
-    .status-belum-ditindaklanjuti {
-        background-color: #FF6347; /* Merah Terang */
-        color: #FFFFFF; /* Putih */
-    }
-
-    .status-sesuai {
-        background-color: #008000; /* Hijau */
-        color: #FFFFFF; /* Putih */
-    }
-
-    .status-tidak-ditindaklanjuti {
-        background-color: #808080; /* Abu-abu */
-        color: #FFFFFF; /* Putih */
-    }
-</style>
-@endsection
-
 @php
     function getStatusClass($status) {
         $statusClasses = [
@@ -100,39 +68,39 @@
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="pemeriksaan" role="tabpanel" aria-labelledby="pemeriksaan-tab">
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-2">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Pemeriksaan</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ $rekomendasi->pemeriksaan }}</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-2">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Tahun</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ $rekomendasi->tahun_pemeriksaan }}</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-2">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Jenis Pemeriksaan</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ $rekomendasi->jenis_pemeriksaan }}</p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-2">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Hasil Pemeriksaan</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ strip_tags(html_entity_decode($rekomendasi->hasil_pemeriksaan)) }}</p>
                             </div>
                         </div>
@@ -140,39 +108,39 @@
                 </div>
                 <div class="tab-pane fade" id="rekomendasi" role="tabpanel" aria-labelledby="rekomendasi-tab">
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-2">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Jenis Temuan</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ $rekomendasi->jenis_temuan }}</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-2">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Uraian Temuan</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ strip_tags(html_entity_decode($rekomendasi->uraian_temuan)) }}</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-2">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Rekomendasi</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ strip_tags(html_entity_decode($rekomendasi->rekomendasi)) }}</p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-2">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Catatan Rekomendasi</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ strip_tags(html_entity_decode($rekomendasi->catatan_rekomendasi)) }}</p>
                             </div>
                         </div>

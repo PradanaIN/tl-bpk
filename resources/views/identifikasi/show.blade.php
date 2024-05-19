@@ -1,38 +1,7 @@
 @extends('layouts.horizontal')
 
 @section('style')
-
 <link rel="stylesheet" href="{{ asset('mazer/assets/extensions/filepond/filepond.css') }}">
-
-<style>
-    .status-badge {
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 14px;
-        font-weight: 500;
-        text-align: center;
-    }
-
-    .status-belum-sesuai {
-        background-color: #FFD700; /* Kuning */
-        color: #000000; /* Hitam */
-    }
-
-    .status-belum-ditindaklanjuti {
-        background-color: #FF6347; /* Merah Terang */
-        color: #FFFFFF; /* Putih */
-    }
-
-    .status-sesuai {
-        background-color: #008000; /* Hijau */
-        color: #FFFFFF; /* Putih */
-    }
-
-    .status-tidak-ditindaklanjuti {
-        background-color: #808080; /* Abu-abu */
-        color: #FFFFFF; /* Putih */
-    }
-</style>
 @endsection
 
 @php
@@ -111,39 +80,39 @@
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade" id="pemeriksaan" role="tabpanel" aria-labelledby="pemeriksaan-tab">
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-2">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Pemeriksaan</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ $rekomendasi->pemeriksaan }}</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-2">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Tahun</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ $rekomendasi->tahun_pemeriksaan }}</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-2">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Jenis Pemeriksaan</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ $rekomendasi->jenis_pemeriksaan }}</p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-2">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Hasil Pemeriksaan</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ strip_tags(html_entity_decode($rekomendasi->hasil_pemeriksaan)) }}</p>
                             </div>
                         </div>
@@ -151,39 +120,39 @@
                 </div>
                 <div class="tab-pane fade" id="rekomendasi" role="tabpanel" aria-labelledby="rekomendasi-tab">
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-2">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Jenis Temuan</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ $rekomendasi->jenis_temuan }}</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-2">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Uraian Temuan</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ strip_tags(html_entity_decode($rekomendasi->uraian_temuan)) }}</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-2">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Rekomendasi</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ strip_tags(html_entity_decode($rekomendasi->rekomendasi)) }}</p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-2">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Catatan Rekomendasi</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ strip_tags(html_entity_decode($rekomendasi->catatan_rekomendasi)) }}</p>
                             </div>
                         </div>
@@ -191,84 +160,78 @@
                 </div>
                 <div class="tab-pane fade {{ ($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi') ? 'show active' : '' }}" id="tindaklanjut" role="tabpanel" aria-labelledby="tindaklanjut-tab">
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-3">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Tindak Lanjut</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ strip_tags(html_entity_decode($tindak_lanjut->tindak_lanjut)) }}</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-3">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Unit Kerja</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ $tindak_lanjut->unit_kerja }}</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-3">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Tim Pemantauan</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ $tindak_lanjut->tim_pemantauan }}</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-3">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Tenggat Waktu</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ \Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu )->translatedFormat('d M Y') }}</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-3">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Bukti Tindak Lanjut</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 @if ($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
                                     <p><span class="status-badge bg-warning text-black">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span></p>
                                 @else
-                                    <div class="col">
-                                        @if ($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
-                                            <p><span class="status-badge bg-warning text-black">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span></p>
-                                        @else
-                                        <div class="col-auto d-flex ms-auto">
-                                            <span class="status-badge bg-success text-white me-2">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span>
-                                            @canany(['Operator Unit Kerja', 'Super Admin'])
+                                    <div class="col-auto d-flex ms-auto">
+                                        <span class="status-badge bg-success text-white me-2">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span>
+                                        @canany(['Operator Unit Kerja', 'Super Admin'])
                                             <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->bukti_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Bukti TL">
                                                 <i class="bi bi-download"></i>
                                             </a>
-                                            @endcan
-                                        </div>
-                                        @endif
+                                        @endcan
                                     </div>
                                 @endif
                             </div>
                         </div>
                         @if ($tindak_lanjut->bukti_tindak_lanjut !== 'Belum Diunggah!')
-                        <div class="row">
-                            <div class="col-3">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Detail Bukti Tindak Lanjut</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ strip_tags(html_entity_decode($tindak_lanjut->detail_bukti_tindak_lanjut)) }}</p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-3">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Informasi Lainnya</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>Diunggah oleh {{ $tindak_lanjut->upload_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at )->translatedFormat('d M Y') }}</p>
                             </div>
                         </div>
@@ -285,12 +248,12 @@
                         </div>
                     @else
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-3">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Status Identifikasi</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p><span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }}">{{ $tindak_lanjut->status_tindak_lanjut }}</span></p>
                             </div>
                             <div class="col-auto d-flex ms-auto">
@@ -309,24 +272,24 @@
                             </div>
                         </div>
                         @if ($tindak_lanjut->catatan_tindak_lanjut !== '' && $tindak_lanjut->catatan_tindak_lanjut !== null)
-                        <div class="row">
-                            <div class="col-3">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Catatan Identifikasi</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ strip_tags(html_entity_decode($tindak_lanjut->catatan_tindak_lanjut)) }}</p>
                             </div>
                         </div>
                         @endif
                         @if ($tindak_lanjut->status_tindak_lanjut !== 'Identifikasi')
                         <div class="row">
-                            <div class="col-3">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Informasi Lainnya</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
-                                <p>Didentifikasi oleh {{ $tindak_lanjut->status_tindak_lanjut_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at )->translatedFormat('d M Y') }}</p>
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
+                                <p>Diidentifikasi oleh {{ $tindak_lanjut->status_tindak_lanjut_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at )->translatedFormat('d M Y')}}</p>
                             </div>
                         </div>
                         @endif

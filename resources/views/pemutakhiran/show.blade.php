@@ -4,35 +4,6 @@
 
 <link rel="stylesheet" href="{{ asset('mazer/assets/extensions/filepond/filepond.css')}}" />
 <link rel="stylesheet" href="{{ asset('mazer/assets/extensions/toastify-js/src/toastify.css') }}"/>
-<style>
-    .status-badge {
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 14px;
-        font-weight: 500;
-        text-align: center;
-    }
-
-    .status-belum-sesuai {
-        background-color: #FFD700; /* Kuning */
-        color: #000000; /* Hitam */
-    }
-
-    .status-belum-ditindaklanjuti {
-        background-color: #FF6347; /* Merah Terang */
-        color: #FFFFFF; /* Putih */
-    }
-
-    .status-sesuai {
-        background-color: #008000; /* Hijau */
-        color: #FFFFFF; /* Putih */
-    }
-
-    .status-tidak-ditindaklanjuti {
-        background-color: #808080; /* Abu-abu */
-        color: #FFFFFF; /* Putih */
-    }
-</style>
 @endsection
 
 @php
@@ -74,7 +45,7 @@ function getStatusClass($status) {
                 <span class="d-none d-md-inline">&nbsp;Bukti Diunggah {{ \Carbon\Carbon::parse($rekomendasi->buktiInputSIPTL->upload_at)->diffForHumans() }}</span>
             </button>
             @endif
-            @if (($rekomendasi->status_rekomendasi === 'Belum Sesuai' ))
+            @if ($rekomendasi->pemutakhiran_at === null && $rekomendasi->pemutakhiran_at === '' && $rekomendasi->pemutakhiran_by === '')
             <button class="btn btn-outline-warning" id="btnStatusPemutakhiran">
                 <i class="bi bi-exclamation-triangle text-black"></i>
                 <span class="d-none d-md-inline text-black">&nbsp;Rekomendasi Belum Dimutakhirkan!</span>
@@ -118,39 +89,39 @@ function getStatusClass($status) {
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade" id="pemeriksaan" role="tabpanel" aria-labelledby="pemeriksaan-tab">
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-2">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Pemeriksaan</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ $rekomendasi->pemeriksaan }}</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-2">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Tahun</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ $rekomendasi->tahun_pemeriksaan }}</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-2">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Jenis Pemeriksaan</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ $rekomendasi->jenis_pemeriksaan }}</p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-2">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Hasil Pemeriksaan</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ strip_tags(html_entity_decode($rekomendasi->hasil_pemeriksaan)) }}</p>
                             </div>
                         </div>
@@ -158,39 +129,39 @@ function getStatusClass($status) {
                 </div>
                 <div class="tab-pane fade" id="rekomendasi" role="tabpanel" aria-labelledby="rekomendasi-tab">
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-2">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Jenis Temuan</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ $rekomendasi->jenis_temuan }}</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-2">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Uraian Temuan</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ strip_tags(html_entity_decode($rekomendasi->uraian_temuan)) }}</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-2">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Rekomendasi</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ strip_tags(html_entity_decode($rekomendasi->rekomendasi)) }}</p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-2">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Catatan Rekomendasi</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ strip_tags(html_entity_decode($rekomendasi->catatan_rekomendasi)) }}</p>
                             </div>
                         </div>
@@ -221,11 +192,14 @@ function getStatusClass($status) {
                                             <td style="text-align:center;">{{ \Carbon\Carbon::parse($tindakLanjut->tenggat_waktu )->translatedFormat('d M Y') }}</td>
                                             <td style="text-align:center;">
                                                 @if ($tindakLanjut->bukti_tindak_lanjut === null || $tindakLanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
-                                                    <span class="badge bg-danger">Belum Diunggah!</span>
+                                                    <span class="status-badge status-belum-sesuai">Belum Diunggah!</span>
                                                 @else
-                                                <a href="{{ asset('uploads/tindak_lanjut/' . $tindakLanjut->bukti_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Bukti">
-                                                    <i class="bi bi-download"></i>
-                                                </a>
+                                                    <div class="d-flex flex-column align-items-center">
+                                                        <span class="status-badge status-sesuai mb-1">{{ $tindakLanjut->bukti_tindak_lanjut }}</span>
+                                                        <a href="{{ asset('uploads/tindak_lanjut/' . $tindakLanjut->bukti_tindak_lanjut) }}" class="btn btn-secondary btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Bukti">
+                                                            <i class="bi bi-download"></i>
+                                                        </a>
+                                                    </div>
                                                 @endif
                                             </td>
                                             <td style="text-align:center;">
@@ -240,12 +214,12 @@ function getStatusClass($status) {
                 </div>
                 <div class="tab-pane fade" id="bukti_input_siptl" role="tabpanel" aria-labelledby="bukti_input_siptl-tab">
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-2">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Bukti Input SIPTL</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 @if ($rekomendasi->buktiInputSIPTL === null || $rekomendasi->buktiInputSIPTL->bukti_input_siptl === 'Belum Diunggah!')
                                     <p><span class="status-badge bg-warning text-black">{{ $rekomendasi->buktiInputSIPTL->bukti_input_siptl }}</span></p>
                                 @else
@@ -276,21 +250,21 @@ function getStatusClass($status) {
                             @endcanany
                         </div>
                         @if($rekomendasi->buktiInputSIPTL !== null && $rekomendasi->buktiInputSIPTL->bukti_input_siptl !== 'Belum Diunggah!')
-                        <div class="row">
-                            <div class="col-2">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Detail Input SIPTL</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ strip_tags(html_entity_decode($rekomendasi->buktiInputSIPTL->detail_bukti_input_siptl)) }}</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-2">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Informasi Lainnya</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>Diunggah oleh {{ $rekomendasi->buktiInputSIPTL->upload_by }} pada {{ \Carbon\Carbon::parse($rekomendasi->buktiInputSIPTL->upload_at)->translatedFormat('d M Y')}}</p>
                             </div>
                         </div>
@@ -300,17 +274,17 @@ function getStatusClass($status) {
                 <div class="tab-pane fade show active" id="pemutakhiran_status" role="tabpanel" aria-labelledby="pemutakhiran_status-tab">
                 @if ($rekomendasi->buktiInputSIPTL->bukti_input_siptl !== 'Belum Diunggah!')
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-3">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Status Rekomendasi</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p><span class="status-badge {{ getStatusClass($rekomendasi->status_rekomendasi) }}">{{ $rekomendasi->status_rekomendasi }}</span></p>
                             </div>
                             @canany(['Tim Koordinator', 'Super Admin'])
                             <div class="col-auto d-flex ms-auto">
-                                    @if (($rekomendasi->status_rekomendasi === null || $rekomendasi->status_rekomendasi === 'Belum Sesuai'))
+                                    @if ($rekomendasi->pemutakhiran_at === null && $rekomendasi->pemutakhiran_at === '' && $rekomendasi->pemutakhiran_by === '')
                                     <button class="btn btn-primary" id="pemutakhiranBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tambah Status Pemutakhiran">
                                         <i class="bi bi-plus"></i>
                                         <span class="d-none d-md-inline">&nbsp;Tambah Pemutakhiran</span>
@@ -326,23 +300,23 @@ function getStatusClass($status) {
                             @endcanany
                         </div>
                         @if ($rekomendasi->catatan_pemutakhiran !== '' && $rekomendasi->catatan_pemutakhiran !== null)
-                        <div class="row">
-                            <div class="col-3">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Catatan Pemutakhiran</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ strip_tags(html_entity_decode($rekomendasi->catatan_pemutakhiran)) }}</p>
                             </div>
                         </div>
                         @endif
-                        @if ($rekomendasi->status_rekomendasi !== 'Belum Sesuai')
+                        @if ($rekomendasi->pemutakhiran_at !== null && $rekomendasi->pemutakhiran_at !== '' && $rekomendasi->pemutakhiran_by !== '')
                         <div class="row">
-                            <div class="col-3">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Informasi Lainnya</p>
                             </div>
-                            <div class="col-auto">:</div>
-                            <div class="col">
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>Dimutakhirkan oleh {{ $rekomendasi->pemutakhiran_by }} pada {{ \Carbon\Carbon::parse($rekomendasi->pemutakhiran_at )->translatedFormat('d M Y')}}</p>
                             </div>
                         </div>

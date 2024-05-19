@@ -1,37 +1,5 @@
 @extends('layouts.horizontal')
 
-@section('style')
-<style>
-    .status-badge {
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 14px;
-        font-weight: 500;
-        text-align: center;
-    }
-
-    .status-belum-sesuai {
-        background-color: #FFD700; /* Kuning */
-        color: #000000; /* Hitam */
-    }
-
-    .status-belum-ditindaklanjuti {
-        background-color: #FF6347; /* Merah Terang */
-        color: #FFFFFF; /* Putih */
-    }
-
-    .status-sesuai {
-        background-color: #008000; /* Hijau */
-        color: #FFFFFF; /* Putih */
-    }
-
-    .status-tidak-ditindaklanjuti {
-        background-color: #808080; /* Abu-abu */
-        color: #FFFFFF; /* Putih */
-    }
-</style>
-@endsection
-
 @php
     function getStatusClass($status) {
         $statusClasses = [
@@ -44,7 +12,6 @@
         return $statusClasses[$status] ?? '';
     }
 @endphp
-
 
 @section('section')
 
