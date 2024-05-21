@@ -117,7 +117,7 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group mandatory">
-                                        <label class="form-label" for="catatan_rekomendasi">Catatan Rekomendasi</label>
+                                        <label class="form-label" for="catatan_rekomendasi">Catatan Rekomendasi BPK</label>
                                         <textarea class="form-control" id="catatan_rekomendasi" rows="3"
                                             name="catatan_rekomendasi" placeholder="Catatan Rekomendasi" data-parsley-required="true" required>{{ old('catatan_rekomendasi') }}</textarea>
                                     @error('catatan_rekomendasi')

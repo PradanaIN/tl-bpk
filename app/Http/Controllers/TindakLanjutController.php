@@ -64,7 +64,6 @@ class TindakLanjutController extends Controller
                     'detail_bukti_tindak_lanjut' => $request->detail_bukti_tindak_lanjut,
                     'upload_by' => auth()->user()->nama,
                     'upload_at' => now(),
-                    'status_tindak_lanjut' => 'Identifikasi',
                 ]);
 
             // Ambil semua user yang memiliki role yang sesuai dengan $tindakLanjut->tim_pemantauan

@@ -83,7 +83,7 @@
                         <span class="d-none d-md-inline">&nbsp;Bukti Diunggah {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->diffForHumans() }}</span>
                     </button>
                 @endif
-                @if (($tindak_lanjut->status_tindak_lanjut_at === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi'))
+                @if (($tindak_lanjut->status_tindak_lanjut_at === null || $tindak_lanjut->status_tindak_lanjut_at === ''))
                     <button class="btn btn-outline-warning" id="btnStatusIdentifikasi">
                         <i class="bi bi-exclamation-triangle text-black"></i>
                         <span class="d-none d-md-inline text-black">&nbsp;Tindak Lanjut Belum Diidentifikasi!</span>
@@ -305,7 +305,7 @@
                     <div class="card-body">
                         <div class="row custom-row">
                             <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
-                                <p class="fw-bold">Status Identifikasi</p>
+                                <p class="fw-bold">Status Tindak Lanjut</p>
                             </div>
                             <div class="col-auto d-none d-md-block" id="limiter">:</div>
                             <div class="col-lg-8 col-md-9 col-sm-12" id="text">
@@ -314,26 +314,32 @@
                         </div>
                         @if ($tindak_lanjut->catatan_tindak_lanjut === '' || $tindak_lanjut->catatan_tindak_lanjut === null)
                         @else
-                        <div class="row custom-row">
-                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
-                                <p class="fw-bold">Catatan Identifikasi</p>
+                            <div class="row custom-row">
+                                <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
+                                    <p class="fw-bold">Catatan Identifikasi</p>
+                                </div>
+                                <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                                <div class="col-lg-8 col-md-9 col-sm-12" id="text">
+                                    <p>{{ strip_tags(html_entity_decode($tindak_lanjut->catatan_tindak_lanjut)) }}</p>
+                                </div>
                             </div>
-                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
-                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
-                                <p>{{ strip_tags(html_entity_decode($tindak_lanjut->catatan_tindak_lanjut)) }}</p>
-                            </div>
-                        </div>
                         @endif
-                        @if ($tindak_lanjut->status_tindak_lanjut !== 'Identifikasi')
-                        <div class="row">
-                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
-                                <p class="fw-bold">Informasi Lainnya</p>
+                        @if ($tindak_lanjut->status_tindak_lanjut_at !== null)
+                            <div class="row">
+                                <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
+                                    <p class="fw-bold">Informasi Lainnya</p>
+                                </div>
+                                <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                                <div class="col-lg-8 col-md-9 col-sm-12" id="text">
+                                    <p>Diidentifikasi oleh {{ $tindak_lanjut->status_tindak_lanjut_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at )->translatedFormat('d M Y')}}</p>
+                                </div>
                             </div>
-                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
-                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
-                                <p>Diidentifikasi oleh {{ $tindak_lanjut->status_tindak_lanjut_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at )->translatedFormat('d M Y')}}</p>
+                        @else
+                            <div class="alert alert-warning mt-5" role="alert">
+                                <p>Bukti tindak lanjut sedang dalam proses identifikasi oleh {{ $tindak_lanjut->tim_pemantauan }}.</p>
+                                <hr>
+                                <p class="mb-0">Silakan tunggu hasil identifikasi oleh {{ $tindak_lanjut->tim_pemantauan }}.</p>
                             </div>
-                        </div>
                         @endif
                     </div>
                     @else

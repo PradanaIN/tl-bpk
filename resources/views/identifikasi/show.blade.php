@@ -322,7 +322,6 @@
                     <div class="form-group mandatory">
                         <label for="bukti_tindak_lanjut" class="form-label">Hasil Identifikasi</label>
                         <select class="form-select" name="status_tindak_lanjut" id="status_tindak_lanjut" required>
-                            <option value="Identifikasi" {{ $tindak_lanjut->status_tindak_lanjut === 'Identifikasi' ? 'selected' : '' }}>Proses Identifikasi</option>
                             <option value="Sesuai" {{ $tindak_lanjut->status_tindak_lanjut === 'Sesuai' ? 'selected' : '' }}>Sesuai</option>
                             <option value="Belum Sesuai" {{ $tindak_lanjut->status_tindak_lanjut === 'Belum Sesuai' ? 'selected' : '' }}>Belum Sesuai</option>
                             <option value="Belum Ditindaklanjuti" {{ $tindak_lanjut->status_tindak_lanjut === 'Belum Ditindaklanjuti' ? 'selected' : '' }}>Belum Ditindaklanjuti</option>
@@ -397,7 +396,7 @@
 <script>
     $(document).ready(function () {
         $('#status_tindak_lanjut').change(function () {
-            if ($(this).val() === 'Sesuai' || $(this).val() === 'Identifikasi' || $(this).val() === 'Proses Identifikasi') {
+            if ($(this).val() === 'Sesuai') {
                 $('#catatan_tindak_lanjut_group').hide();
                 $('#catatan_tindak_lanjut').prop('required', false); // Catatan tidak wajib diisi
             } else {
