@@ -25,7 +25,7 @@
 
         .thead-light {
         background-color: lightgrey !important;
-    }
+        }
 
         .menu a {
             text-decoration: none;
@@ -70,19 +70,6 @@
                 visibility: visible;
                 width: 100%;
             }
-        }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.5); /* Warna latar belakang semi-transparan */
-            z-index: 9999; /* Pastikan spinner berada di atas konten lain */
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
         .form-label {
@@ -175,11 +162,28 @@
         }
 
         @media (max-width: 768px) {
-        .custom-row {
-            margin-bottom: 20px;
+            .custom-row {
+                margin-bottom: 20px;
+            }
         }
-    }
-</style>
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.5); /* Warna latar belakang semi-transparan */
+            z-index: 9999; /* Pastikan spinner berada di atas konten lain */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spinner-grow {
+            margin-right: 5px;
+            margin-left: 5px;
+        }
 
     </style>
 
@@ -189,7 +193,19 @@
 
 <body>
     <div id="loadingOverlay" class="overlay">
-        <div class="spinner-border text-primary" role="status">
+        <div class="spinner-grow text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow text-primary" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
     </div>
@@ -367,7 +383,6 @@
         </div>
     </div>
 
-
 <!-- javascript -->
 <script src="{{ asset('mazer/assets/static/js/pages/horizontal-layout.js') }}"></script>
 <script src="{{ asset('mazer/assets/static/js/components/dark.js') }}"></script>
@@ -378,6 +393,41 @@
 <script src="{{ asset('mazer/assets/extensions/tinymce/tinymce.min.js') }}"></script>
 <script src="{{ asset('mazer/assets/static/js/pages/tinymce.js') }}"></script>
 
+<!-- custom spinner for loading page -->
+<script>
+    // Sembunyikan spinner saat halaman selesai dimuat
+    window.addEventListener('load', function() {
+        document.getElementById('loadingOverlay').style.display = 'none';
+    });
+
+    // Tampilkan spinner sebagai overlay saat dokumen dimuat dan saat mengirim permintaan HTTP
+    document.addEventListener('click', function(event) {
+        if (event.target.tagName === 'A' || event.target.tagName === 'BUTTON') {
+            document.getElementById('loadingOverlay').classList.add('overlay');
+        }
+    });
+</script>
+
+<script>
+    const form = document.querySelector('form');
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Mencegah pengiriman formulir secara otomatis
+
+        // Tampilkan spinner saat pengiriman data dimulai
+        document.getElementById('loadingOverlay').style.display = 'flex';
+
+        // Kirim formulir secara otomatis
+        form.submit();
+    });
+
+    // Sembunyikan spinner setelah pengiriman data selesai
+    form.addEventListener('load', function() {
+        document.getElementById('loadingOverlay').style.display = 'none';
+    });
+</script>
+
+<!-- custom tinymce -->
 <script>
     tinymce.init({
         forced_root_block: false,
@@ -392,7 +442,6 @@
         menubar: "table tools",
     });
 </script>
-
 
 <!-- flatpickr -->
 <script src="{{ asset('mazer/assets/extensions/flatpickr/flatpickr.min.js') }}"></script>
@@ -541,26 +590,6 @@
     });
 
 </script>
-
-<script>
-    // Tampilkan spinner sebagai overlay saat dokumen dimuat
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('loadingOverlay').classList.add('overlay');
-    });
-
-    setTimeout(function() {
-        var loadingOverlay = document.getElementById('loadingOverlay');
-        loadingOverlay.style.display = 'none';
-    }, 500);
-
-    // Tampilkan spinner sebagai overlay saat mengirim permintaan HTTP
-    document.addEventListener('click', function(event) {
-        if (event.target.tagName === 'A' || event.target.tagName === 'BUTTON') {
-            document.getElementById('loadingOverlay').classList.add('overlay');
-        }
-    });
-</script>
-
 
 @yield('script')
 

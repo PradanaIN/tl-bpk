@@ -132,7 +132,7 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="tindaklanjut" role="tabpanel" aria-labelledby="tindaklanjut-tab">
-                                <div class="row mb-4">
+                                <div class="row mb-5">
                                     <div class="col-md-6">
                                         <button type="button" class="btn btn-warning counter" disabled>
                                             <div class="d-flex align-items-center">
@@ -143,7 +143,7 @@
                                     </div>
                                     <div class="col-md-6 text-end">
                                         <button type="button" class="btn btn-primary btn-tambah-repeater">
-                                            <i class="bi bi-plus"></i>&nbsp;Tambah Tindak Lanjut
+                                            <i class="bi bi-plus"></i>&nbsp;<span class="d-none d-md-inline">&nbsp;Tambah Tindak Lanjut</span>
                                         </button>
                                     </div>
                                 </div>
@@ -152,7 +152,7 @@
                                         <input type="hidden" name="id[]" value="{{ $tindakLanjut->id }}">
                                         <input type="hidden" name="status_tindak_lanjut[]" value="{{ $tindakLanjut->status_tindak_lanjut }}">
                                         <input type="hidden" name="bukti_tindak_lanjut[]" value="{{ $tindakLanjut->bukti_tindak_lanjut }}">
-                                        <div class="form-repeater mb-3">
+                                        <div class="form-repeater mb-4">
                                             <div class="form-row mb-3">
                                                 <div class="col-12 form-group mandatory">
                                                     <label class="form-label" for="tindak_lanjut{{$index}}">Tindak Lanjut</label>
@@ -198,7 +198,7 @@
                                             <div class="form-row mb-3">
                                                 <div class="col-12 text-end">
                                                     <button type="button" class="btn btn-danger btn-delete-repeater" onclick="confirmDelete(event)">
-                                                        <i class="bi bi-trash"></i> Hapus
+                                                        <i class="bi bi-trash"></i><span class="d-none d-md-inline">&nbsp;Hapus</span>
                                                     </button>
                                                 </div>
                                             </div>
@@ -348,7 +348,8 @@
     document.querySelector('.btn-tambah-repeater').addEventListener('click', function() {
         var formContainer = document.getElementById('formContainer');
         var formItem = `
-            <div class="form-repeater mb-3">
+            <hr>
+            <div class="form-repeater mb-4">
                 <div class="form-row mb-3">
                     <div class="col-12 form-group mandatory">
                         <label class="form-label" for="tindak_lanjut">Tindak Lanjut</label>
@@ -382,7 +383,7 @@
                 <div class="form-row mb-3">
                     <div class="col-12 text-end">
                         <button type="button" class="btn btn-danger btn-delete-repeater" onclick="confirmDelete(event)">
-                            <i class="bi bi-trash"></i> Hapus
+                            <i class="bi bi-trash"></i><span class="d-none d-md-inline">&nbsp;Hapus</span>
                         </button>
                     </div>
                 </div>

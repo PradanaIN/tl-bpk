@@ -352,7 +352,7 @@ function getStatusClass($status) {
                 <div class="modal-body">
                     <div class="form-group mandatory">
                         <label for="bukti_input_siptl" class="form-label">Bukti Input SIPTL</label>
-                        <input type="file" class="multiple-files-filepond" multiple name="bukti_input_siptl" accept=".png,.jpg,.pdf,.zip,.rar,.tar" required>
+                        <input type="file" class="basic-filepond" name="bukti_input_siptl" required>
                         @error('bukti_input_siptl')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -421,7 +421,7 @@ function getStatusClass($status) {
                     <div class="form-group mandatory" id="catatan_pemutakhiran_group" style="display: none;">
                         <label for="catatan_pemutakhiran" class="form-label">Catatan Pemutakhiran</label>
                         <div class="card-body">
-                            <textarea class="form-control" name="catatan_pemutakhiran" id="catatan_pemutakhiran" rows="5" required></textarea>
+                            <textarea class="form-control" name="catatan_pemutakhiran" id="catatan_pemutakhiran" rows="5" required>{{ old('catatan_pemutakhiran', $rekomendasi->catatan_pemutakhiran ?? '') }}</textarea>
                         </div>
                     </div>
                 </div>

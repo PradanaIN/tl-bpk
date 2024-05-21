@@ -332,7 +332,7 @@
                     <div class="form-group mandatory" id="catatan_tindak_lanjut_group" style="display: none;">
                         <label for="bukti_tindak_lanjut" class="form-label">Catatan Identifikasi</label>
                         <div class="card-body">
-                            <textarea class="form-control" name="catatan_tindak_lanjut" id="catatan_tindak_lanjut" rows="5" required></textarea>
+                            <textarea class="form-control" name="catatan_tindak_lanjut" id="catatan_tindak_lanjut" rows="5" required>{{ old('catatan_tindak_lanjut', $tindak_lanjut->catatan_tindak_lanjut ?? '') }}</textarea>
                         </div>
                     </div>
                 </div>

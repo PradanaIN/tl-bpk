@@ -53,6 +53,7 @@ class BuktiTindakLanjutNotification extends Notification
             return [
                 'tindak_lanjut_id' => $this->tindakLanjut->id,
                 'title' => 'Bukti Tindak Lanjut',
+                // 'message' => $this->tindakLanjut->upload_by . ' telah mengunggah bukti tindak lanjut ' . strip_tags(html_entity_decode($this->tindakLanjut->tindak_lanjut)) . '.',
                 'message' => $this->tindakLanjut->upload_by . ' telah mengunggah bukti tindak lanjut.',
                 'url' => '/identifikasi/' . $this->tindakLanjut->id,
             ];

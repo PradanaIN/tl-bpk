@@ -83,8 +83,13 @@
                         <span class="d-none d-md-inline">&nbsp;Bukti Diunggah {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->diffForHumans() }}</span>
                     </button>
                 @endif
-                @if ($tindak_lanjut->bukti_tindak_lanjut !== null && $tindak_lanjut->bukti_tindak_lanjut !== 'Belum Diunggah!' && $tindak_lanjut->status_tindak_lanjut !== null && $tindak_lanjut->status_tindak_lanjut !== 'Identifikasi')
-                    <button class="btn btn-outline-success ms-2" id="btnStatusIdentifikasi" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->translatedFormat('H:i, d M Y') }}">
+                @if (($tindak_lanjut->status_tindak_lanjut_at === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi'))
+                    <button class="btn btn-outline-warning" id="btnStatusIdentifikasi">
+                        <i class="bi bi-exclamation-triangle text-black"></i>
+                        <span class="d-none d-md-inline text-black">&nbsp;Tindak Lanjut Belum Diidentifikasi!</span>
+                    </button>
+                @else
+                    <button class="btn btn-outline-success" id="btnStatusIdentifikasi" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->translatedFormat('H:i, d M Y')  }}">
                         <i class="bi bi-check-square"></i>
                         <span class="d-none d-md-inline">&nbsp;Diidentifikasi {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at)->diffForHumans() }}</span>
                     </button>
@@ -368,7 +373,7 @@
                     @method('put')
                     <div class="form-group mandatory">
                         <label for="bukti_tindak_lanjut" class="form-label">Bukti Tindak Lanjut (.pdf/.zip/.rar/.tar)</label>
-                        <input type="file" class="multiple-files-filepond" multiple name="bukti_tindak_lanjut" accept=".pdf,.zip,.rar,.tar" required>
+                        <input type="file" class="basic-filepond" name="bukti_tindak_lanjut" requred>
                         @error('bukti_tindak_lanjut')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -376,7 +381,7 @@
                     <div class="form-group mandatory">
                         <label for="bukti_tindak_lanjut" class="form-label">Detail Bukti Tindak Lanjut</label>
                         <div class="card-body">
-                            <textarea class="form-control" name="detail_bukti_tindak_lanjut" id="detail_bukti_tindak_lanjut" rows="3" required data-parsley-required="true"></textarea>
+                            <textarea class="form-control" name="detail_bukti_tindak_lanjut" id="detail_bukti_tindak_lanjut" rows="3" required data-parsley-required="true">{{ old('detail_bukti_tindak_lanjut', $tindak_lanjut->detail_bukti_tindak_lanjut ?? '') }}</textarea>
                         @error('detail_bukti_tindak_lanjut')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
