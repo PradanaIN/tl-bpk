@@ -22,16 +22,16 @@
                     <tbody>
                         @foreach ($kamus as $kamus)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
+                            <td class="text-center">{{ $loop->iteration }}</td>
                             <td>{{ $kamus->nama }}</td>
                             <td>{{ $kamus->jenis }}</td>
-                            <td style="text-align: center;">{{ \Carbon\Carbon::parse($kamus->created_at )->translatedFormat(' d M Y')  }}</td>
+                            <td class="text-center">{{ \Carbon\Carbon::parse($kamus->created_at )->translatedFormat(' d M Y')  }}</td>
                             <td>
                                 <div class="d-flex justify-content-around align-items-center">
-                                    <a href="/kelola-kamus/{{ $kamus->id }}/edit" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Kamus">
+                                    <a href="/master-kamus/{{ $kamus->id }}/edit" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Kamus">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <form action="/kelola-kamus/{{ $kamus->id }}" method="post" class="d-inline" id="deleteForm">
+                                    <form action="/master-kamus/{{ $kamus->id }}" method="post" class="d-inline" id="deleteForm">
                                         @method('delete')
                                         @csrf
                                         <button class="btn btn-danger" type="button" id="deleteButton" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Kamus">
@@ -94,7 +94,7 @@
                     text: '<i class="bi bi-plus"></i><span class="d-none d-md-inline"> Tambah Kamus</span>',
                     className: 'btn btn-primary',
                     action: function ( e, dt, node, config ) {
-                        window.location.href = '/kelola-kamus/create';
+                        window.location.href = '/master-kamus/create';
                     }
                 }
             ]

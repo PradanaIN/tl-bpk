@@ -39,11 +39,11 @@
                         @foreach ($tindak_lanjut as $tindak_lanjut)
                             @if ($loggedInUserRole == 'Super Admin' || $loggedInUserRole == 'Tim Koordinator' || $tindak_lanjut->unit_kerja == $loggedInUserUnitKerja)
                                 <tr class="clickable-row" data-href="/tindak-lanjut/{{ $tindak_lanjut->id }}">
-                                    <td>{{ $no++ }}</td>
+                                    <td class="text-center">{{ $no++ }}</td>
                                     <td>{{implode(' ', array_slice(str_word_count(strip_tags(html_entity_decode($tindak_lanjut->rekomendasi->rekomendasi)), 1), 0, 10)) }}{{ str_word_count(strip_tags(html_entity_decode($tindak_lanjut->rekomendasi->rekomendasi))) > 10 ? '...' : '' }}</td>
                                     <td>{{implode(' ', array_slice(str_word_count(strip_tags(html_entity_decode($tindak_lanjut->tindak_lanjut)), 1), 0, 10)) }}{{ str_word_count(strip_tags(html_entity_decode($tindak_lanjut->tindak_lanjut))) > 10 ? '...' : '' }}</td>
-                                    <td style="text-align: center;">{{ \Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu )->translatedFormat('d M Y')}}</td>
-                                    <td style="text-align:center;">
+                                    <td class="text-center">{{ \Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu )->translatedFormat('d M Y')}}</td>
+                                    <td class="text-center">
                                         <span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }}">{{ $tindak_lanjut->status_tindak_lanjut }}</span>
                                     </td>
                                     <td>

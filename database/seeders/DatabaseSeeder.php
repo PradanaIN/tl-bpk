@@ -109,7 +109,7 @@ class DatabaseSeeder extends Seeder
         }
 
 
-        // create super admin
+        // create Super Admin
         User::create([
             'id' => Str::uuid()->toString(),
             'nama' => 'Super Admin',

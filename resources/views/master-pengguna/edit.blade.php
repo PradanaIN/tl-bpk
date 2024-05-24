@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 @endsection
 
+
 @section('section')
 
 <section id="basic-vertical-layouts">
@@ -13,76 +14,69 @@
             <div class="card">
                 <div class="card-content">
                     <div class="card-body">
-                        <form class="form form-vertical" action="/kelola-pengguna" method="post">
+                        <form class="form form-vertical" action="/master-pengguna/{{ $user->id }}" method="post">
+                            @method('put')
                             @csrf
                             <div class="form-body">
                                 <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="nama">Nama</label>
-                                                <input type="text" id="nama" class="form-control" value="{{ old('nama') }}"
-                                                    name="nama" placeholder="Nama" required>
+                                                <input type="text" id="nama" class="form-control"
+                                                    name="nama" placeholder="Nama" value="{{ old('nama', $user->nama) }}" required>
                                                 @error('nama')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                    <div class="text-danger mt-1">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="email">Email</label>
-                                                <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{ old('email') }}" required>
+                                                <input type="email" id="email" class="form-control"
+                                                    name="email" placeholder="Email" value="{{ old('email', $user->email) }}" required>
                                                 @error('email')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                    <div class="text-danger mt-1">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="unit_kerja">Unit Kerja</label>
-                                                <select class="form-select" id="unit_kerja_id" name="unit_kerja_id" required>
-                                                    <option value="">Pilih Unit Kerja</option>
+                                                <select class="form-select"  id="unit_kerja_id" name="unit_kerja_id" required>
+                                                    <option value="{{ old('unit_kerja_id', $user->unit_kerja_id) }}">{{ $user->unit_kerja }}</option>
                                                     @foreach($unit_kerja as $unit)
-                                                        <option value="{{ $unit->id }}" @if(old('unit_kerja_id') == $unit->id) selected @endif>{{ $unit->nama }}</option>
+                                                        <option value="{{ $unit->id }}">{{ $unit->nama }}</option>
                                                     @endforeach
                                                 </select>
-                                                @error('unit_kerja_id')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
                                             </div>
                                         </div>
-                                        <input type="hidden" id="unit_kerja" name="unit_kerja" value="">
+                                        <input type="hidden" id="unit_kerja" name="unit_kerja" value="{{ $user->unit_kerja }}">
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="role">Role</label>
                                                 <select class="form-select" id="role" name="role" required>
-                                                    <option value="">Pilih Role</option>
-                                                    @foreach ($role as $roleItem)
-                                                        <option value="{{ $roleItem->name }}" @if(old('role') == $roleItem->name) selected @endif>{{ $roleItem->name }}</option>
+                                                    <option value="{{ old('role', $user->role) }}">{{ $user->role }}</option>
+                                                    @foreach ($role as $role)
+                                                        <option value="{{ $role->name }}">{{ $role->name }}</option>
                                                     @endforeach
                                                 </select>
-                                                @error('role')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
                                             </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label for="password">Password</label>
-                                                <div class="input-group">
-                                                    <input type="password" id="password" class="form-control" name="password" placeholder="Password" required value="{{ old('password') }}">
-                                                    <button class="btn btn-secondary" type="button" id="togglePassword">
-                                                        <i class="bi bi-eye"></i>
-                                                    </button>
-                                                    @error('password')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
-                                                    @enderror
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label for="password">Password</label>
+                                                    <div class="input-group">
+                                                        <input type="password" id="password" class="form-control" name="password" placeholder="Password" value="{{ old('password', $user->password) }}" required>
+                                                        <button class="btn btn-secondary" type="button" id="togglePassword">
+                                                            <i class="bi bi-eye"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
                                     <div class="col-12 d-flex justify-between justify-content-end mt-5">
                                         <button type="reset" class="btn btn-light-secondary me-3 mb-1">
                                             Batal
                                         </button>
-                                        <button type="submit" class="btn btn-primary me-1 mb-1">Tambah</button>
+                                        <button type="submit" class="btn btn-primary me-1 mb-1">Simpan</button>
                                     </div>
                                 </div>
                             </div>
@@ -99,7 +93,6 @@
 
 @section('script')
 
-<!-- mengambil value nama unit kerja dari select unit_kerja_id dan memasukannya ke dalam value unit_kerja-->
 <script>
     $(document).ready(function() {
         $('#unit_kerja_id').change(function() {
@@ -108,7 +101,6 @@
         });
     });
 </script>
-
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -122,6 +114,7 @@
         });
     });
 </script>
+
 
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
@@ -150,7 +143,7 @@ $(document).ready(function() {
             cancelButtonText: 'Tidak'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = "/kelola-pengguna";
+                window.location.href = "/master-pengguna";
             }
         })
     });

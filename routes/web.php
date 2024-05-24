@@ -32,23 +32,23 @@ Route::middleware(['auth', 'prevent-back-button'])->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('permission:view dashboard');
 
-    Route::middleware(['role:Admin||Super Admin'])->group(function () {
-        // Kelola Pengguna
-        Route::get('/kelola-pengguna', [UserController::class, 'index'])->middleware('permission:view user');
-        Route::get('/kelola-pengguna/create', [UserController::class, 'create'])->middleware('permission:create user');
-        Route::post('/kelola-pengguna', [UserController::class, 'store'])->middleware('permission:create user');
-        Route::get('/kelola-pengguna/{user:id}', [UserController::class, 'show'])->middleware('permission:view user');
-        Route::get('/kelola-pengguna/{user:id}/edit', [UserController::class, 'edit'])->middleware('permission:edit user');
-        Route::put('/kelola-pengguna/{user:id}', [UserController::class, 'update'])->middleware('permission:edit user');
-        Route::delete('/kelola-pengguna/{user:id}', [UserController::class, 'destroy'])->middleware('permission:delete user');
-        // Kelola Kamus
-        Route::get('/kelola-kamus', [KamusController::class, 'index'])->middleware('permission:view kamus');
-        Route::get('/kelola-kamus/create', [KamusController::class, 'create'])->middleware('permission:create kamus');
-        Route::post('/kelola-kamus', [KamusController::class, 'store'])->middleware('permission:create kamus');
-        Route::get('/kelola-kamus/{kamus:id}', [KamusController::class, 'show'])->middleware('permission:view kamus');
-        Route::get('/kelola-kamus/{kamus:id}/edit', [KamusController::class, 'edit'])->middleware('permission:edit kamus');
-        Route::put('/kelola-kamus/{kamus:id}', [KamusController::class, 'update'])->middleware('permission:edit kamus');
-        Route::delete('/kelola-kamus/{kamus:id}', [KamusController::class, 'destroy'])->middleware('permission:delete kamus');
+    Route::middleware(['role:Super Admin||Super Admin'])->group(function () {
+        // Master Pengguna
+        Route::get('/master-pengguna', [UserController::class, 'index'])->middleware('permission:view user');
+        Route::get('/master-pengguna/create', [UserController::class, 'create'])->middleware('permission:create user');
+        Route::post('/master-pengguna', [UserController::class, 'store'])->middleware('permission:create user');
+        Route::get('/master-pengguna/{user:id}', [UserController::class, 'show'])->middleware('permission:view user');
+        Route::get('/master-pengguna/{user:id}/edit', [UserController::class, 'edit'])->middleware('permission:edit user');
+        Route::put('/master-pengguna/{user:id}', [UserController::class, 'update'])->middleware('permission:edit user');
+        Route::delete('/master-pengguna/{user:id}', [UserController::class, 'destroy'])->middleware('permission:delete user');
+        // Master Kamus
+        Route::get('/master-kamus', [KamusController::class, 'index'])->middleware('permission:view kamus');
+        Route::get('/master-kamus/create', [KamusController::class, 'create'])->middleware('permission:create kamus');
+        Route::post('/master-kamus', [KamusController::class, 'store'])->middleware('permission:create kamus');
+        Route::get('/master-kamus/{kamus:id}', [KamusController::class, 'show'])->middleware('permission:view kamus');
+        Route::get('/master-kamus/{kamus:id}/edit', [KamusController::class, 'edit'])->middleware('permission:edit kamus');
+        Route::put('/master-kamus/{kamus:id}', [KamusController::class, 'update'])->middleware('permission:edit kamus');
+        Route::delete('/master-kamus/{kamus:id}', [KamusController::class, 'destroy'])->middleware('permission:delete kamus');
     });
 
     Route::middleware(['role:Pimpinan|Tim Koordinator|Super Admin'])->group(function () {

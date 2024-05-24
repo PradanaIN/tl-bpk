@@ -34,12 +34,12 @@
                     <tbody>
                         @foreach ($rekomendasi as $rekomendasi)
                         <tr class='clickable-row' data-href="/pemutakhiran-status/{{ $rekomendasi->id }}">
-                            <td>{{ $loop->iteration }}</td>
+                            <td class="text-center">{{ $loop->iteration }}</td>
                             <td>{{ $rekomendasi->jenis_temuan }}</td>
                             <td>{{ implode(' ', array_slice(str_word_count(strip_tags(html_entity_decode($rekomendasi->uraian_temuan)), 1), 0, 10)) }}{{ str_word_count(strip_tags(html_entity_decode($rekomendasi->uraian_temuan))) > 10 ? '...' : '' }}</td>
                             <td>{{ implode(' ', array_slice(str_word_count(strip_tags(html_entity_decode($rekomendasi->rekomendasi)), 1), 0, 10)) }}{{ str_word_count(strip_tags(html_entity_decode($rekomendasi->rekomendasi))) > 10 ? '...' : '' }}</td>
                             <td>{{ implode(' ', array_slice(str_word_count(strip_tags(html_entity_decode($rekomendasi->catatan_rekomendasi)), 1), 0, 10)) }}{{ str_word_count(strip_tags(html_entity_decode($rekomendasi->catatan_rekomendasi))) > 10 ? '...' : '' }}</td>
-                            <td style="text-align:center;">
+                            <td class="text-center">
                                 <span class="status-badge {{ getStatusClass($rekomendasi->status_rekomendasi) }}">{{ $rekomendasi->status_rekomendasi }}</span>
                             </td>
                             <td>

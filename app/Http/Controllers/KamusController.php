@@ -13,7 +13,7 @@ class KamusController extends Controller
      */
     public function index()
     {
-        return view('kamus.index', [
+        return view('master-kamus.index', [
             'title' => 'Daftar Kamus',
             'kamus' => Kamus::all(),
         ]);
@@ -24,7 +24,7 @@ class KamusController extends Controller
      */
     public function create()
     {
-        return view('kamus.create', [
+        return view('master-kamus.create', [
             'title' => 'Tambah Kamus',
         ]);
     }
@@ -43,7 +43,7 @@ class KamusController extends Controller
 
             Kamus::create($validatedData);
 
-            return redirect('/kelola-kamus')->with('create', 'Data berhasil ditambahkan!');
+            return redirect('/master-kamus')->with('create', 'Data berhasil ditambahkan!');
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('error', $e->getMessage());
         }
@@ -54,7 +54,7 @@ class KamusController extends Controller
      */
     public function edit(Kamus $kamus)
     {
-        return view('kamus.edit', [
+        return view('master-kamus.edit', [
             'title' => 'Edit Kamus',
             'kamus' => $kamus,
         ]);
@@ -73,7 +73,7 @@ class KamusController extends Controller
 
             $kamus->update($validatedData);
 
-            return redirect('/kelola-kamus')->with('update', 'Data berhasil diubah!');
+            return redirect('/master-kamus')->with('update', 'Data berhasil diubah!');
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('error', $e->getMessage());
         }
@@ -87,7 +87,7 @@ class KamusController extends Controller
         try {
             Kamus::destroy($kamus->id);
 
-            return redirect('/kelola-kamus')->with('delete', 'Data berhasil dihapus!');
+            return redirect('/master-kamus')->with('delete', 'Data berhasil dihapus!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }

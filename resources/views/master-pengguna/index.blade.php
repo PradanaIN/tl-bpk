@@ -22,17 +22,17 @@
                     <tbody>
                         @foreach ($users as $user)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
+                            <td class="text-center">{{ $loop->iteration }}</td>
                             <td>{{ $user->nama }}</td>
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->unit_kerja }}</td>
                             <td>{{ $user->role }}</td>
                             <td>
                                 <div class="d-flex justify-content-around align-items-center">
-                                    <a href="/kelola-pengguna/{{ $user->id }}/edit" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Pengguna">
+                                    <a href="/master-pengguna/{{ $user->id }}/edit" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Pengguna">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <form action="/kelola-pengguna/{{ $user->id }}" method="post" class="d-inline" id="deleteForm">
+                                    <form action="/master-pengguna/{{ $user->id }}" method="post" class="d-inline" id="deleteForm">
                                         @method('delete')
                                         @csrf
                                         <button class="btn btn-danger" type="button" id="deleteButton" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Pengguna">
@@ -94,7 +94,7 @@
                     text: '<i class="bi bi-plus"></i><span class="d-none d-md-inline"> Tambah Pengguna</span>',
                     className: 'btn btn-primary',
                     action: function ( e, dt, node, config ) {
-                        window.location.href = '/kelola-pengguna/create';
+                        window.location.href = '/master-pengguna/create';
                     }
                 }
             ]

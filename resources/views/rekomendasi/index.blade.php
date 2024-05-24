@@ -33,11 +33,11 @@
                     <tbody>
                         @foreach ($rekomendasi as $rekomendasi)
                         <tr class='clickable-row' data-href="/rekomendasi/{{ $rekomendasi->id }}}}">
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $rekomendasi->tahun_pemeriksaan }}</td>
+                            <td class="text-center">{{ $loop->iteration }}</td>
+                            <td class="text-center">{{ $rekomendasi->tahun_pemeriksaan }}</td>
                             <td>{{ $rekomendasi->pemeriksaan }}</td>
                             <td>{{ strip_tags(html_entity_decode($rekomendasi->rekomendasi)) }}</td>
-                            <td style="text-align:center;">
+                            <td class="text-center">
                                 <span class="status-badge {{ getStatusClass($rekomendasi->status_rekomendasi) }}">{{ $rekomendasi->status_rekomendasi }}</span>
                             </td>
                             <td>

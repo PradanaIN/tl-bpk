@@ -23,7 +23,7 @@ class TindakLanjutFactory extends Factory
             'tenggat_waktu' => $this->faker->dateTimeBetween('now', '+1 year')->format('Y-m-d'), // Tenggat waktu dalam setahun ke depan dari sekarang
             'bukti_tindak_lanjut' => $this->faker->randomElement(['Dokumen 1', 'Belum Diunggah!']),
             'detail_bukti_tindak_lanjut' =>$this->faker->sentence(),
-            'upload_by' => 'Admin',
+            'upload_by' => 'Super Admin',
             'upload_at' => $this->faker->dateTimeBetween('-1 year', 'now')->format('Y-m-d'), // Tanggal upload dalam setahun ke belakang dari sekarang
             'status_tindak_lanjut' => $this->faker->randomElement(['Belum Sesuai', 'Sesuai', 'Belum Ditindaklanjuti', 'Tidak Ditindaklanjuti']),
             'catatan_tindak_lanjut' => $this->faker->sentence(),

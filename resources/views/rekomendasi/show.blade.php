@@ -164,12 +164,12 @@
                                 <tbody>
                                     @foreach($rekomendasi->tindakLanjut as $index => $tindakLanjut)
                                         <tr>
-                                            <td style="text-align:center;">{{ $loop->iteration }}</td>
+                                            <td class="text-center">{{ $loop->iteration }}</td>
                                             <td>{{ strip_tags(html_entity_decode($tindakLanjut->tindak_lanjut)) }}</td>
                                             <td>{{ $tindakLanjut->unit_kerja }}</td>
                                             <td>{{ $tindakLanjut->tim_pemantauan }}</td>
-                                            <td style="text-align:center;">{{ \Carbon\Carbon::parse($tindakLanjut->tenggat_waktu )->translatedFormat('d M Y') }}</td>
-                                            <td style="text-align:center;">
+                                            <td class="text-center">{{ \Carbon\Carbon::parse($tindakLanjut->tenggat_waktu )->translatedFormat('d M Y') }}</td>
+                                            <td class="text-center">
                                                 @if ($tindakLanjut->bukti_tindak_lanjut === null || $tindakLanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
                                                     <span class="status-badge status-belum-sesuai">Belum Diunggah!</span>
                                                 @else

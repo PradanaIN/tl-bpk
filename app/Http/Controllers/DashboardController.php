@@ -24,6 +24,76 @@ class DashboardController extends Controller
             ->groupBy('tahun_pemeriksaan')
             ->orderBy('tahun_pemeriksaan', 'asc')
             ->get();
+
+            $tindakLanjutList = TindakLanjut::all();
+
+            // Inisialisasi objek $unitKerjaList
+            $unitKerjaList = [];
+
+            // Kelompokkan data tindak lanjut berdasarkan unit kerja
+            $groupedTindakLanjut = $tindakLanjutList->groupBy('unit_kerja');
+
+            // Loop untuk setiap kelompok unit kerja
+            foreach ($groupedTindakLanjut as $unitKerja => $tindakLanjut) {
+                // Hitung jumlah rekomendasi untuk unit kerja ini
+                $jumlahRekomendasi = 0;
+
+                // Hitung jumlah tindak lanjut untuk unit kerja ini berdasarkan status
+                $jumlahSesuai = 0;
+                $jumlahBelumSesuai = 0;
+                $jumlahBelumDitindaklanjuti = 0;
+                $jumlahTidakDitindaklanjuti = 0;
+
+                // Loop untuk setiap tindak lanjut
+                foreach ($tindakLanjut as $tindak) {
+                    // Hitung jumlah rekomendasi unik untuk tindak lanjut ini
+                    $jumlahRekomendasi += $data->where('id', $tindak->rekomendasi_id)->count();
+
+                    // Hitung jumlah tindak lanjut berdasarkan status
+                    if ($tindak->status_tindak_lanjut == 'Sesuai') {
+                        $jumlahSesuai++;
+                    } elseif ($tindak->status_tindak_lanjut == 'Belum Sesuai') {
+                        $jumlahBelumSesuai++;
+                    } elseif ($tindak->status_tindak_lanjut == 'Belum Ditindaklanjuti') {
+                        $jumlahBelumDitindaklanjuti++;
+                    } elseif ($tindak->status_tindak_lanjut == 'Tidak Dapat Ditindaklanjuti') {
+                        $jumlahTidakDitindaklanjuti++;
+                    }
+                }
+
+                // Hitung persentase penyelesaian
+                $totalTindakLanjut = $jumlahSesuai + $jumlahBelumSesuai + $jumlahBelumDitindaklanjuti + $jumlahTidakDitindaklanjuti;
+                $persentasePenyelesaian = ($jumlahSesuai / $totalTindakLanjut) * 100;
+
+                // Hitung jumlah yang sudah upload
+                $sudahUpload = $tindakLanjut->whereNotNull('upload_at')->count();
+
+                // Simpan data ke dalam objek $unitKerjaList
+                $unitKerjaList[] = [
+                    'unit_kerja' => $unitKerja,
+                    'jumlah_rekomendasi' => $jumlahRekomendasi,
+                    'jumlah_sesuai' => $jumlahSesuai,
+                    'jumlah_belum_sesuai' => $jumlahBelumSesuai,
+                    'jumlah_belum_ditindaklanjuti' => $jumlahBelumDitindaklanjuti,
+                    'jumlah_tidak_ditindaklanjuti' => $jumlahTidakDitindaklanjuti,
+                    'persentase_penyelesaian' => $persentasePenyelesaian,
+                    'sudah_upload' => $sudahUpload,
+                ];
+            }
+
+
+            return view('dashboard.index', [
+                'title' => 'Dashboard',
+                'role' => $role,
+                'data' => $data,
+                'data_sesuai' => $data_sesuai,
+                'data_belum_sesuai' => $data_belum_sesuai,
+                'data_belum_ditindaklanjuti' => $data_belum_ditindaklanjuti,
+                'data_tidak_dapat_ditindaklanjuti' => $data_tidak_dapat_ditindaklanjuti,
+                'jumlah_data_per_tahun' => $jumlah_data_per_tahun,
+                'unitKerjaList' => $unitKerjaList,
+            ]);
+
         } else if ($role === 'Operator Unit Kerja') { // data tindak lanjut berdasarkan unit kerja
             $unit_kerja = Auth::user()->unit_kerja;
 
@@ -39,6 +109,18 @@ class DashboardController extends Controller
                 ->groupBy('rekomendasi.tahun_pemeriksaan')
                 ->orderBy('rekomendasi.tahun_pemeriksaan', 'asc')
                 ->get();
+
+            return view('dashboard.index', [
+                'title' => 'Dashboard',
+                'role' => $role,
+                'data' => $data,
+                'data_sesuai' => $data_sesuai,
+                'data_belum_sesuai' => $data_belum_sesuai,
+                'data_belum_ditindaklanjuti' => $data_belum_ditindaklanjuti,
+                'data_tidak_dapat_ditindaklanjuti' => $data_tidak_dapat_ditindaklanjuti,
+                'jumlah_data_per_tahun' => $jumlah_data_per_tahun,
+            ]);
+
         } else if (in_array($role, ['Tim Pemantauan Wilayah I', 'Tim Pemantauan Wilayah II', 'Tim Pemantauan Wilayah III'])) { // data tindak lanjut berdasarkan tim pemantauan
             $tim_pemantauan = Auth::user()->role;
 
@@ -77,18 +159,18 @@ class DashboardController extends Controller
             $data_belum_ditindaklanjuti = collect(); // atau null
             $data_tidak_dapat_ditindaklanjuti = collect(); // atau null
             $jumlah_data_per_tahun = collect(); // atau null
-        }
 
-        return view('dashboard.index', [
-            'title' => 'Dashboard',
-            'role' => $role,
-            'data' => $data,
-            'data_sesuai' => $data_sesuai,
-            'data_belum_sesuai' => $data_belum_sesuai,
-            'data_belum_ditindaklanjuti' => $data_belum_ditindaklanjuti,
-            'data_tidak_dapat_ditindaklanjuti' => $data_tidak_dapat_ditindaklanjuti,
-            'jumlah_data_per_tahun' => $jumlah_data_per_tahun,
-        ]);
+            return view('dashboard.index', [
+                'title' => 'Dashboard',
+                'role' => $role,
+                'data' => $data,
+                'data_sesuai' => $data_sesuai,
+                'data_belum_sesuai' => $data_belum_sesuai,
+                'data_belum_ditindaklanjuti' => $data_belum_ditindaklanjuti,
+                'data_tidak_dapat_ditindaklanjuti' => $data_tidak_dapat_ditindaklanjuti,
+                'jumlah_data_per_tahun' => $jumlah_data_per_tahun,
+            ]);
+        }
     }
 
 }

@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 @endsection
 
+
 @section('section')
 
 <section id="basic-vertical-layouts">
@@ -13,36 +14,38 @@
             <div class="card">
                 <div class="card-content">
                     <div class="card-body">
-                        <form class="form form-vertical" action="/kelola-kamus/{{ $kamus->id }}" method="post">
-                            @method('put')
+                        <form class="form form-vertical" action="/master-kamus" method="post">
                             @csrf
                             <div class="form-body">
                                 <div class="row">
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    <label for="first-name-vertical">Nama</label>
-                                                    <input type="text" id="first-name-vertical" class="form-control"
-                                                        name="nama" placeholder="Nama" value="{{ old('nama', $kamus->nama) }} " required>
-                                                </div>
-                                                @error('nama')
-                                                    <div class="text-danger mt-1">{{ $message }}</div>
-                                                @enderror
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label for="nama">Nama Kamus</label>
+                                                <input type="text" id="nama" class="form-control"
+                                                    name="nama" placeholder="Nama" required value="{{ old('nama') }}">
                                             </div>
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    <label for="contact-info-vertical">Jenis Kamus</label>
-                                                    <select class="form-select" id="basicSelect" name="jenis" required>
-                                                        <option value="{{ old('jenis', $kamus->jenis) }}">{{ $kamus->jenis }}</option>
-                                                        <option value="Pemeriksaan">Pemeriksaan</option>
-                                                        <option value="Temuan">Temuan</option>
-                                                    </select>
-                                                </div>
+                                            @error('nama')
+                                                <div class="text-danger mt-1">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label for="jenis">Jenis Kamus</label>
+                                                <select class="form-select" id="jenis" name="jenis" required>
+                                                    <option value="">Pilih Jenis Kamus</option>
+                                                    <option value="Pemeriksaan" {{ old('jenis') == 'Pemeriksaan' ? 'selected' : '' }}>Pemeriksaan</option>
+                                                    <option value="Temuan" {{ old('jenis') == 'Temuan' ? 'selected' : '' }}>Temuan</option>
+                                                </select>
                                             </div>
+                                            `@error('jenis')
+                                                <div class="text-danger mt-1">{{ $message }}</div>
+                                            @enderror
+                                        </div>
                                     <div class="col-12 d-flex justify-between justify-content-end mt-5">
                                         <button type="reset" class="btn btn-light-secondary me-3 mb-1">
                                             Batal
                                         </button>
-                                        <button type="submit" class="btn btn-primary me-1 mb-1">Simpan</button>
+                                        <button type="submit" class="btn btn-primary me-1 mb-1">Tambah</button>
                                     </div>
                                 </div>
                             </div>
@@ -70,7 +73,6 @@ $(document).ready(function() {
 });
 </script>
 
-
 <script>
     // warning batal button
     document.querySelector('.btn-light-secondary').addEventListener('click', function(e) {
@@ -86,7 +88,7 @@ $(document).ready(function() {
             cancelButtonText: 'Tidak'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = "/kelola-kamus";
+                window.location.href = "/master-kamus";
             }
         })
     });

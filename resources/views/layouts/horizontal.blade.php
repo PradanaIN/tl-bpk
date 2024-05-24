@@ -23,8 +23,35 @@
 
         #table1 th {text-align: center;}
 
-        .thead-light {
-        background-color: lightgrey !important;
+        /* Style untuk table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Style untuk header dan footer tabel */
+        .table-header,
+        .table-footer {
+            font-weight: bold;
+        }
+
+        /* Style untuk baris ganjil */
+        tr:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+
+        /* Style untuk baris total */
+        .table-footer td {
+            background-color: #e9e9e9;
         }
 
         .menu a {
@@ -133,8 +160,11 @@
             font-size: 14px;
             font-weight: 500;
             text-align: center;
+            max-width: auto; /* Sesuaikan dengan lebar yang diinginkan */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
-
 
         .status-identifikasi {
             background-color: #FFD700; /* Kuning */
@@ -253,12 +283,12 @@
                                             @can('Super Admin')
                                             <li class="nav-item dropdown">
                                                 <a class="nav-link dropdown-toggle bold-blue-text" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    Admin
+                                                    Master Data
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-end dropright" aria-labelledby="navbarDropdown">
-                                                    <a class="dropdown-item text-center" href="/kelola-kamus"><h6>Kelola Kamus</h6></a>
+                                                    <a class="dropdown-item text-center" href="/master-kamus"><h6>Master Kamus</h6></a>
                                                     <div class="dropdown-divider"></div>
-                                                    <a class="dropdown-item text-center" href="/kelola-pengguna"><h6>Kelola Pengguna</h6></a>
+                                                    <a class="dropdown-item text-center" href="/master-pengguna"><h6>Master Pengguna</h6></a>
                                                 </div>
                                             </li>
                                             @endcan
