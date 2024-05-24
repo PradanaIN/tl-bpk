@@ -1,7 +1,6 @@
 @extends('layouts.horizontal')
 
 @section('style')
-
 <link rel="stylesheet" href="{{ asset('mazer/assets/extensions/filepond/filepond.css')}}" />
 <link rel="stylesheet" href="{{ asset('mazer/assets/extensions/toastify-js/src/toastify.css') }}"/>
 
@@ -379,7 +378,7 @@
                     @method('put')
                     <div class="form-group mandatory">
                         <label for="bukti_tindak_lanjut" class="form-label">Bukti Tindak Lanjut (.pdf/.zip/.rar/.tar)</label>
-                        <input type="file" class="basic-filepond" name="bukti_tindak_lanjut" requred>
+                        <input type="file" class="basic-filepond" name="bukti_tindak_lanjut" required>
                         @error('bukti_tindak_lanjut')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -428,6 +427,67 @@
 <script src="{{ asset('mazer/assets/extensions/filepond/filepond.js') }}"></script>
 <script src="{{ asset('mazer/assets/extensions/toastify-js/src/toastify.js') }}"></script>
 <script src="{{ asset('mazer/assets/static/js/pages/filepond.js') }}"></script>
+
+<!-- filepond -->
+<script>
+    FilePond.registerPlugin(
+        FilePondPluginFileValidateSize,
+        FilePondPluginFileValidateType,
+        FilePondPluginImagePreview,
+        FilePondPluginImageResize,
+        FilePondPluginImageExifOrientation,
+        FilePondPluginImageCrop,
+        FilePondPluginImageFilter
+    );
+
+    FilePond.setOptions({
+        credits: false,
+        allowMultiple: false,
+        maxFiles: 1,
+        allowFileTypeValidation: true,
+        acceptedFileTypes: [
+            'application/pdf',
+            'application/zip',
+            'application/x-rar-compressed',
+            'application/x-tar',
+            'application/x-7z-compressed',
+            'application/x-zip',
+            'application/x-zip-compressed',
+        ],
+        fileValidateTypeLabelExpectedTypes: 'Hanya menerima file PDF, ZIP, RAR, dan TAR',
+        fileValidateTypeLabelExpectedTypesMap: {
+            'application/pdf': '.pdf',
+            'application/zip': '.zip',
+            'application/x-rar-compressed': '.rar',
+            'application/x-tar': '.tar',
+            'application/x-7z-compressed': '.7z',
+            'application/x-zip': '.zip',
+            'application/x-zip-compressed': '.zip',
+        },
+        allowFileSizeValidation: true,
+        maxFileSize: '100MB',
+        labelIdle: 'Seret & Letakkan file atau <span class="filepond--label-action"> Telusuri </span>',
+        labelFileProcessing: 'Sedang memproses',
+        labelFileProcessingComplete: 'Proses selesai',
+        labelTapToCancel: 'tap untuk membatalkan',
+        labelTapToRetry: 'tap untuk mencoba lagi',
+        labelTapToUndo: 'tap untuk membatalkan',
+        labelButtonRemoveItem: 'Hapus',
+        labelButtonAbortItemLoad: 'Batal',
+        labelButtonRetryItemLoad: 'Coba lagi',
+        labelButtonAbortItemProcessing: 'Batal',
+        labelButtonUndoItemProcessing: 'Kembali',
+        labelButtonRetryItemProcessing: 'Coba lagi',
+        labelButtonProcessItem: 'Unggah',
+        labelMaxFileSizeExceeded: 'Ukuran file terlalu besar',
+        labelMaxFileSize: 'Ukuran file maksimum adalah {filesize}',
+        labelMaxTotalFileSizeExceeded: 'Ukuran total file terlalu besar',
+        labelMaxTotalFileSize: 'Ukuran total file maksimum adalah {filesize}',
+        fileValidateTypeLabelExpectedTypes: 'Hanya menerima file PDF, ZIP, RAR, dan TAR',
+    });
+
+    FilePond.parse(document.body);
+</script>
 
 <script>
     $(document).ready(function() {

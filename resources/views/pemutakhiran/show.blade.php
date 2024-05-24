@@ -24,7 +24,7 @@ function getStatusClass($status) {
 <section class="row">
     <div class="row mb-3 flex-wrap">
         <div class="col-auto d-flex me-auto">
-            <a href="/rekomendasi" class="btn btn-primary">
+            <a href="/pemutakhiran-status" class="btn btn-primary">
                 <i class="bi bi-arrow-left"></i>
                 <span class="d-none d-md-inline">Kembali</span>
             </a>
@@ -455,6 +455,42 @@ function getStatusClass($status) {
 <script src="{{ asset('mazer/assets/extensions/filepond/filepond.js') }}"></script>
 <script src="{{ asset('mazer/assets/extensions/toastify-js/src/toastify.js') }}"></script>
 <script src="{{ asset('mazer/assets/static/js/pages/filepond.js') }}"></script>
+
+<!-- filepond validation -->
+<script>
+    FilePond.registerPlugin(
+        FilePondPluginFileValidateSize,
+        FilePondPluginFileValidateType,
+        FilePondPluginImageCrop,
+        FilePondPluginImageExifOrientation,
+        FilePondPluginImageFilter,
+        FilePondPluginImagePreview,
+        FilePondPluginImageResize
+    );
+
+    FilePond.setOptions({
+        allowMultiple: false,
+        allowRevert: false,
+        acceptedFileTypes: ['image/*', 'application/pdf'],
+        maxFileSize: '10MB',
+        imageResizeTargetWidth: 100,
+        imageResizeTargetHeight: 100,
+        imageResizeMode: 'contain',
+        imagePreviewHeight: 100,
+        imagePreviewWidth: 100,
+        instantUpload: true,
+        labelIdle: 'Seret & Letakkan file atau <span class="filepond--label-action"> Telusuri </span>',
+        labelMaxFileSize: 'Ukuran file maksimum adalah {filesize}',
+        labelMaxFileSizeError: 'Ukuran file terlalu besar',
+        labelFileValidateTypeLabelExpectedTypes: 'Hanya menerima {allButLastType} atau {lastType}',
+        labelFileValidateTypeLabelExpectedTypesMap: {
+            'image/*': 'Gambar',
+            'application/pdf': 'PDF'
+        },
+    });
+
+    FilePond.parse(document.body);
+</script>
 
 <script>
     $(document).ready(function () {

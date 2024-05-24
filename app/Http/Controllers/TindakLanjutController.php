@@ -47,7 +47,7 @@ class TindakLanjutController extends Controller
         try {
             // Validasi jenis file
             $request->validate([
-                'bukti_tindak_lanjut' => 'required|file|mimes:pdf,zip,rar,tar',
+                'bukti_tindak_lanjut' => 'required|file|mimes:pdf,zip,rar,tar|max:100000',
                 'detail_bukti_tindak_lanjut' => 'required',
             ]);
 
