@@ -248,15 +248,17 @@
                             </div>
                             <div class="col-auto d-none d-md-block" id="limiter">:</div>
                             <div class="col-lg-8 col-md-9 col-sm-12" id="text">
-                                @if ($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
+                                @if ($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!' || $tindak_lanjut->bukti_tindak_lanjut === '')
                                 <div class="col-auto d-flex align-items-center">
                                     <span class="status-badge bg-warning text-black me-2">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span>
-                                    @canany(['Operator Unit Kerja', 'Super Admin'])
-                                    <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unggah Bukti TL">
-                                        <i class="bi bi-plus"></i>
-                                        <span class="d-none d-md-inline">&nbsp;Tambah Bukti</span>
-                                    </button>
-                                    @endcan
+                                @canany(['Operator Unit Kerja', 'Super Admin'])
+                                    @if (\Carbon\Carbon::now()->lt(\Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu)))
+                                        <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unggah Bukti TL">
+                                            <i class="bi bi-plus"></i>
+                                            <span class="d-none d-md-inline">&nbsp;Tambah Bukti</span>
+                                        </button>
+                                    @endif
+                                @endcan
                                 </div>
                                 @else
                                     <div class="col-auto d-flex ms-auto">
@@ -267,17 +269,30 @@
                                                 <i class="bi bi-download"></i>
                                                 <span class="d-none d-md-inline">&nbsp;Unduh Bukti</span>
                                             </a>
+                                            @if (\Carbon\Carbon::now()->lt(\Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu)))
                                             <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Bukti TL">
                                                 <i class="bi bi-pencil"></i>
                                                 <span class="d-none d-md-inline">&nbsp;Ubah Bukti</span>
                                             </button>
+                                            @endif
                                         </div>
                                         @endcan
                                     </div>
                                 @endif
                             </div>
                         </div>
-                        @if ($tindak_lanjut->bukti_tindak_lanjut !== null && $tindak_lanjut->bukti_tindak_lanjut !== 'Belum Diunggah!')
+                        @if ((\Carbon\Carbon::now()->gt(\Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu))) && ($tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!'))
+                            @php
+                                $waktuUpload = \Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu)->addDays(1)->translatedFormat('l, d M Y');
+                            @endphp
+                            <div class="alert alert-warning mt-3" role="alert">
+                                <h4 class="alert-heading">Peringatan!</h4>
+                                <p>Anda telah melewati batas waktu untuk mengunggah bukti tindak lanjut.</p>
+                                <p>&nbsp;Waktu terakhir untuk mengunggah adalah: <strong>{{ $waktuUpload }}.</strong></p>
+                                <hr>
+                                <p class="mb-0"><strong>Silakan hubungi Inspektorat Utama untuk mendapatkan informasi lebih lanjut.</strong></p>
+                            </div>
+                        @elseif ($tindak_lanjut->bukti_tindak_lanjut !== null && $tindak_lanjut->bukti_tindak_lanjut !== 'Belum Diunggah!' && $tindak_lanjut->bukti_tindak_lanjut !== '')
                             <div class="row custom-row">
                                 <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                     <p class="fw-bold">Detail Bukti Tindak Lanjut</p>
@@ -287,20 +302,34 @@
                                     <p>{{ strip_tags(html_entity_decode($tindak_lanjut->detail_bukti_tindak_lanjut)) }}</p>
                                 </div>
                             </div>
-                        <div class="row">
-                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
-                                <p class="fw-bold">Informasi Lainnya</p>
+                            <div class="row">
+                                <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
+                                    <p class="fw-bold">Informasi Lainnya</p>
+                                </div>
+                                <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                                <div class="col-lg-8 col-md-9 col-sm-12" id="text">
+                                    <p>Diunggah oleh {{ $tindak_lanjut->upload_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at )->translatedFormat('d M Y')}}</p>
+                                </div>
                             </div>
-                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
-                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
-                                <p>Diunggah oleh {{ $tindak_lanjut->upload_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at )->translatedFormat('d M Y')}}</p>
-                            </div>
-                        </div>
+                            @if (\Carbon\Carbon::now()->gt(\Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu)))
+                                <div class="alert alert-warning mt-3" role="alert">
+                                    <p>Tidak dapat melakukan pengubahan karena telah melewati batas waktu untuk mengunggah bukti tindak lanjut.</p>
+                                    <hr>
+                                    <p class="mb-0"><strong>Silakan hubungi Inspektorat Utama untuk mendapatkan informasi lebih lanjut.</strong></p>
+                                </div>
+                            @endif
                         @endif
                     </div>
                 </div>
                 <div class="tab-pane fade" id="identifikasi" role="tabpanel" aria-labelledby="identifikasi-tab">
-                    @if ($tindak_lanjut->bukti_tindak_lanjut !== 'Belum Diunggah!')
+                @if ((\Carbon\Carbon::now()->lt(\Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu))) && ($tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!'))
+                    <div class="alert alert-warning" role="alert">
+                        <h4 class="alert-heading">Peringatan!</h4>
+                        <p>Anda belum dapat melihat hasil identifikasi karena bukti tindak lanjut belum diunggah.</p>
+                        <hr>
+                        <p class="mb-0">Silakan unggah bukti tindak lanjut terlebih dahulu.</p>
+                    </div>
+                @elseif ((\Carbon\Carbon::now()->gt(\Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu))) && ($tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!'))
                     <div class="card-body">
                         <div class="row custom-row">
                             <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
@@ -311,8 +340,7 @@
                                 <p><span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }}">{{ $tindak_lanjut->status_tindak_lanjut }}</span></p>
                             </div>
                         </div>
-                        @if ($tindak_lanjut->catatan_tindak_lanjut === '' || $tindak_lanjut->catatan_tindak_lanjut === null)
-                        @else
+                        @if ($tindak_lanjut->catatan_tindak_lanjut !== '' && $tindak_lanjut->catatan_tindak_lanjut !== null)
                             <div class="row custom-row">
                                 <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                     <p class="fw-bold">Catatan Identifikasi</p>
@@ -334,22 +362,54 @@
                                 </div>
                             </div>
                         @else
-                            <div class="alert alert-warning mt-5" role="alert">
+                            <div class="alert alert-warning mt-3" role="alert">
+                                <p>Tindak lanjut telah melewati batas waktu dan sedang dalam proses identifikasi oleh {{ $tindak_lanjut->tim_pemantauan }}.</p>
+                                <hr>
+                                <p class="mb-0">Silakan tunggu hasil identifikasi oleh {{ $tindak_lanjut->tim_pemantauan }}.</p>
+                            </div>
+                        @endif
+                    </div>
+                @else
+                    <div class="card-body">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
+                                <p class="fw-bold">Status Tindak Lanjut</p>
+                            </div>
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
+                                <p><span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }}">{{ $tindak_lanjut->status_tindak_lanjut }}</span></p>
+                            </div>
+                        </div>
+                        @if ($tindak_lanjut->catatan_tindak_lanjut !== '' && $tindak_lanjut->catatan_tindak_lanjut !== null)
+                            <div class="row custom-row">
+                                <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
+                                    <p class="fw-bold">Catatan Identifikasi</p>
+                                </div>
+                                <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                                <div class="col-lg-8 col-md-9 col-sm-12" id="text">
+                                    <p>{{ strip_tags(html_entity_decode($tindak_lanjut->catatan_tindak_lanjut)) }}</p>
+                                </div>
+                            </div>
+                        @endif
+                        @if ($tindak_lanjut->status_tindak_lanjut_at !== null)
+                            <div class="row">
+                                <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
+                                    <p class="fw-bold">Informasi Lainnya</p>
+                                </div>
+                                <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                                <div class="col-lg-8 col-md-9 col-sm-12" id="text">
+                                    <p>Diidentifikasi oleh {{ $tindak_lanjut->status_tindak_lanjut_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at )->translatedFormat('d M Y')}}</p>
+                                </div>
+                            </div>
+                        @else
+                            <div class="alert alert-warning mt-3" role="alert">
                                 <p>Bukti tindak lanjut sedang dalam proses identifikasi oleh {{ $tindak_lanjut->tim_pemantauan }}.</p>
                                 <hr>
                                 <p class="mb-0">Silakan tunggu hasil identifikasi oleh {{ $tindak_lanjut->tim_pemantauan }}.</p>
                             </div>
                         @endif
                     </div>
-                    @else
-                    <!-- akan muncul peringatan untuk mengunggah bukti tindak lanjut terlebih dahulu -->
-                    <div class="alert alert-warning" role="alert">
-                        <h4 class="alert-heading">Peringatan!</h4>
-                        <p>Anda belum dapat melihat hasil identifikasi karena bukti tindak lanjut belum diunggah.</p>
-                        <hr>
-                        <p class="mb-0">Silakan unggah bukti tindak lanjut terlebih dahulu.</p>
-                    </div>
-                    @endif
+                @endif
                 </div>
             </div>
         </div>

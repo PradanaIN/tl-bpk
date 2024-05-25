@@ -322,7 +322,7 @@
         altInput: true,
         altFormat: "j F Y",
         dateFormat: "Y-m-d",
-        minDate: "today",
+        // minDate: "today",
         locale: {
             firstDayOfWeek: 1,
             weekdays: {
@@ -420,7 +420,7 @@
             altInput: true,
             altFormat: "j F Y",
             dateFormat: "Y-m-d",
-            minDate: "today",
+            // minDate: "today",
             locale: {
                 firstDayOfWeek: 1,
                 weekdays: {

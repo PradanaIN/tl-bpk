@@ -237,63 +237,118 @@
                             </div>
                         </div>
                         @endif
+                        @if (($tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!') && (\Carbon\Carbon::now()->gt(\Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu))))
+                        <div class="alert alert-warning mt-3" role="alert">
+                            <h4 class="alert-heading">Info!</h4>
+                            <p class="mb-0">Bukti tindak lanjut belum diunggah oleh Unit Kerja dan sudah melewati tenggat waktu!.</p>
+                            <hr>
+                            <p class="mb-0">Idnetifikasi bisa dilakukan dengan memberikan status <strong>Belum Ditindaklanjuti</strong>.</p>
+                        </div>
+                        @endif
                     </div>
                 </div>
                 <div class="tab-pane fade {{ ($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi') ? '' : 'show active' }}" id="identifikasi" role="tabpanel" aria-labelledby="identifikasi-tab">
-                    @if ($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
+                    @if (($tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!') && (\Carbon\Carbon::now()->lt(\Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu))))
                         <div class="alert alert-warning" role="alert">
                             <h4 class="alert-heading">Peringatan!</h4>
                             <p class="mb-0">Anda belum dapat melakukan identifikasi tindak lanjut karena bukti tindak lanjut belum diunggah!</p>
                             <hr>
                             <p class="mb-0">Identifikasi dapat dilakukan setelah unit kerja mengunggah bukti tindak lanjut.</p>
                         </div>
-                    @else
-                    <div class="card-body">
-                        <div class="row custom-row">
-                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
-                                <p class="fw-bold">Status Identifikasi</p>
-                            </div>
-                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
-                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
-                                <div class="col-auto d-flex align-items-center">
-                                    <span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }} me-2">{{ $tindak_lanjut->status_tindak_lanjut }}</span>
-                                    @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi'))
-                                    <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tambah Hasil Identifikasi">
-                                        <i class="bi bi-plus"></i>
-                                        <span class="d-none d-md-inline">&nbsp;Tambah Identifikasi</span>
-                                    </button>
-                                    @else
-                                    <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Hasil Identifikasi">
-                                        <i class="bi bi-pencil"></i>
-                                        <span class="d-none d-md-inline">&nbsp;Ubah Identifikasi</span>
-                                    </button>
-                                    @endif
+                    @elseif (($tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!') && (\Carbon\Carbon::now()->gt(\Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu))))
+                        <div class="card-body">
+                            <div class="row custom-row">
+                                <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
+                                    <p class="fw-bold">Status Identifikasi</p>
+                                </div>
+                                <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                                <div class="col-lg-8 col-md-9 col-sm-12" id="text">
+                                    <div class="col-auto d-flex align-items-center">
+                                        <span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }} me-2">{{ $tindak_lanjut->status_tindak_lanjut }}</span>
+                                        @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi'))
+                                        <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tambah Hasil Identifikasi">
+                                            <i class="bi bi-plus"></i>
+                                            <span class="d-none d-md-inline">&nbsp;Tambah Identifikasi</span>
+                                        </button>
+                                        @else
+                                        <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Hasil Identifikasi">
+                                            <i class="bi bi-pencil"></i>
+                                            <span class="d-none d-md-inline">&nbsp;Ubah Identifikasi</span>
+                                        </button>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
+                            @if ($tindak_lanjut->catatan_tindak_lanjut !== '' && $tindak_lanjut->catatan_tindak_lanjut !== null)
+                            <div class="row custom-row">
+                                <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
+                                    <p class="fw-bold">Catatan Identifikasi</p>
+                                </div>
+                                <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                                <div class="col-lg-8 col-md-9 col-sm-12" id="text">
+                                    <p>{{ strip_tags(html_entity_decode($tindak_lanjut->catatan_tindak_lanjut)) }}</p>
+                                </div>
+                            </div>
+                            @endif
+                            @if ($tindak_lanjut->status_tindak_lanjut !== 'Identifikasi')
+                            <div class="row">
+                                <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
+                                    <p class="fw-bold">Informasi Lainnya</p>
+                                </div>
+                                <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                                <div class="col-lg-8 col-md-9 col-sm-12" id="text">
+                                    <p>Diidentifikasi oleh {{ $tindak_lanjut->status_tindak_lanjut_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at )->translatedFormat('d M Y')}}</p>
+                                </div>
+                            </div>
+                            @endif
                         </div>
-                        @if ($tindak_lanjut->catatan_tindak_lanjut !== '' && $tindak_lanjut->catatan_tindak_lanjut !== null)
-                        <div class="row custom-row">
-                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
-                                <p class="fw-bold">Catatan Identifikasi</p>
+                    @else
+                        <div class="card-body">
+                            <div class="row custom-row">
+                                <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
+                                    <p class="fw-bold">Status Identifikasi</p>
+                                </div>
+                                <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                                <div class="col-lg-8 col-md-9 col-sm-12" id="text">
+                                    <div class="col-auto d-flex align-items-center">
+                                        <span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }} me-2">{{ $tindak_lanjut->status_tindak_lanjut }}</span>
+                                        @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi'))
+                                        <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tambah Hasil Identifikasi">
+                                            <i class="bi bi-plus"></i>
+                                            <span class="d-none d-md-inline">&nbsp;Tambah Identifikasi</span>
+                                        </button>
+                                        @else
+                                        <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Hasil Identifikasi">
+                                            <i class="bi bi-pencil"></i>
+                                            <span class="d-none d-md-inline">&nbsp;Ubah Identifikasi</span>
+                                        </button>
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
-                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
-                                <p>{{ strip_tags(html_entity_decode($tindak_lanjut->catatan_tindak_lanjut)) }}</p>
+                            @if ($tindak_lanjut->catatan_tindak_lanjut !== '' && $tindak_lanjut->catatan_tindak_lanjut !== null)
+                            <div class="row custom-row">
+                                <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
+                                    <p class="fw-bold">Catatan Identifikasi</p>
+                                </div>
+                                <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                                <div class="col-lg-8 col-md-9 col-sm-12" id="text">
+                                    <p>{{ strip_tags(html_entity_decode($tindak_lanjut->catatan_tindak_lanjut)) }}</p>
+                                </div>
                             </div>
+                            @endif
+                            @if ($tindak_lanjut->status_tindak_lanjut !== 'Identifikasi')
+                            <div class="row">
+                                <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
+                                    <p class="fw-bold">Informasi Lainnya</p>
+                                </div>
+                                <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                                <div class="col-lg-8 col-md-9 col-sm-12" id="text">
+                                    <p>Diidentifikasi oleh {{ $tindak_lanjut->status_tindak_lanjut_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at )->translatedFormat('d M Y')}}</p>
+                                </div>
+                            </div>
+                            @endif
                         </div>
-                        @endif
-                        @if ($tindak_lanjut->status_tindak_lanjut !== 'Identifikasi')
-                        <div class="row">
-                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
-                                <p class="fw-bold">Informasi Lainnya</p>
-                            </div>
-                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
-                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
-                                <p>Diidentifikasi oleh {{ $tindak_lanjut->status_tindak_lanjut_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->status_tindak_lanjut_at )->translatedFormat('d M Y')}}</p>
-                            </div>
-                        </div>
-                        @endif
-                    </div>
                     @endif
                 </div>
             </div>
@@ -319,16 +374,25 @@
                 <div class="modal-body">
                     @csrf
                     @method('put')
-                    <div class="form-group mandatory">
-                        <label for="bukti_tindak_lanjut" class="form-label">Hasil Identifikasi</label>
-                        <select class="form-select" name="status_tindak_lanjut" id="status_tindak_lanjut" required>
-                            <option value="Sesuai" {{ $tindak_lanjut->status_tindak_lanjut === 'Sesuai' ? 'selected' : '' }}>Sesuai</option>
-                            <option value="Belum Sesuai" {{ $tindak_lanjut->status_tindak_lanjut === 'Belum Sesuai' ? 'selected' : '' }}>Belum Sesuai</option>
-                            <option value="Belum Ditindaklanjuti" {{ $tindak_lanjut->status_tindak_lanjut === 'Belum Ditindaklanjuti' ? 'selected' : '' }}>Belum Ditindaklanjuti</option>
-                            <option value="Tidak Ditindaklanjuti" {{ $tindak_lanjut->status_tindak_lanjut === 'Tidak Ditindaklanjuti' ? 'selected' : '' }}>Tidak Ditindaklanjuti</option>
-                        </select>
-                    </div>
-                    <div class="form-group mandatory" id="catatan_tindak_lanjut_group" style="display: none;">
+                    @if(($tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!') && (\Carbon\Carbon::now()->gt(\Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu))))
+                        <div class="form-group mandatory">
+                            <label for="bukti_tindak_lanjut" class="form-label">Hasil Identifikasi</label>
+                            <select class="form-select" name="status_tindak_lanjut" id="status_tindak_lanjut" required>
+                                <option value="Belum Ditindaklanjuti" {{ $tindak_lanjut->status_tindak_lanjut === 'Belum Ditindaklanjuti' ? 'selected' : '' }}>Belum Ditindaklanjuti</option>
+                            </select>
+                        </div>
+                    @else
+                        <div class="form-group mandatory">
+                            <label for="bukti_tindak_lanjut" class="form-label">Hasil Identifikasi</label>
+                            <select class="form-select" name="status_tindak_lanjut" id="status_tindak_lanjut" required>
+                                <option value="Sesuai" {{ $tindak_lanjut->status_tindak_lanjut === 'Sesuai' ? 'selected' : '' }}>Sesuai</option>
+                                <option value="Belum Sesuai" {{ $tindak_lanjut->status_tindak_lanjut === 'Belum Sesuai' ? 'selected' : '' }}>Belum Sesuai</option>
+                                <option value="Belum Ditindaklanjuti" {{ $tindak_lanjut->status_tindak_lanjut === 'Belum Ditindaklanjuti' ? 'selected' : '' }}>Belum Ditindaklanjuti</option>
+                                <option value="Tidak Ditindaklanjuti" {{ $tindak_lanjut->status_tindak_lanjut === 'Tidak Ditindaklanjuti' ? 'selected' : '' }}>Tidak Ditindaklanjuti</option>
+                            </select>
+                        </div>
+                    @endif
+                    <div class="form-group mandatory" id="catatan_tindak_lanjut_group">
                         <label for="bukti_tindak_lanjut" class="form-label">Catatan Identifikasi</label>
                         <div class="card-body">
                             <textarea class="form-control" name="catatan_tindak_lanjut" id="catatan_tindak_lanjut" rows="5" required>{{ old('catatan_tindak_lanjut', $tindak_lanjut->catatan_tindak_lanjut ?? '') }}</textarea>
@@ -352,6 +416,29 @@
 
 
 @section('script')
+
+<script>
+$(document).ready(function () {
+    function toggleCatatanTindakLanjut() {
+        if ($('#status_tindak_lanjut').val() === 'Sesuai') {
+            $('#catatan_tindak_lanjut_group').hide();
+            $('#catatan_tindak_lanjut').prop('required', false).val('');
+        } else {
+            $('#catatan_tindak_lanjut_group').show();
+            $('#catatan_tindak_lanjut').prop('required', true);
+        }
+    }
+
+    // Panggil fungsi toggleCatatanTindakLanjut saat dokumen sudah siap
+    toggleCatatanTindakLanjut();
+
+    // Panggil fungsi toggleCatatanTindakLanjut saat nilai status_tindak_lanjut berubah
+    $('#status_tindak_lanjut').change(function () {
+        toggleCatatanTindakLanjut();
+    });
+});
+
+</script>
 
 <script>
     $(document).ready(function() {
@@ -392,21 +479,6 @@
         });
     });
 </script>
-
-<script>
-    $(document).ready(function () {
-        $('#status_tindak_lanjut').change(function () {
-            if ($(this).val() === 'Sesuai') {
-                $('#catatan_tindak_lanjut_group').hide();
-                $('#catatan_tindak_lanjut').prop('required', false); // Catatan tidak wajib diisi
-            } else {
-                $('#catatan_tindak_lanjut_group').show();
-                $('#catatan_tindak_lanjut').prop('required', true); // Catatan wajib diisi
-            }
-        });
-    });
-</script>
-
 
 <script>
     // Ambil tombol "Upload Dokumen TL"
