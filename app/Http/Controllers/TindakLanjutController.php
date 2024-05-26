@@ -9,6 +9,7 @@ use App\Models\TindakLanjut;
 use Illuminate\Http\Request;
 use Novay\WordTemplate\WordTemplate;
 use App\Notifications\BuktiTindakLanjutNotification;
+use App\Notifications\DeadlineTindakLanjutNotification;
 use Illuminate\Support\Facades\Notification;
 
 class TindakLanjutController extends Controller
@@ -64,6 +65,10 @@ class TindakLanjutController extends Controller
                     'detail_bukti_tindak_lanjut' => $request->detail_bukti_tindak_lanjut,
                     'upload_by' => auth()->user()->nama,
                     'upload_at' => now(),
+                    'status_tindak_lanjut' => 'Belum Sesuai',
+                    'status_tindak_lanjut_at' => null,
+                    'status_tindak_lanjut_by' => null,
+                    'catatan_tindak_lanjut' => null
                 ]);
 
             // Ambil semua user yang memiliki role yang sesuai dengan $tindakLanjut->tim_pemantauan
@@ -89,6 +94,31 @@ class TindakLanjutController extends Controller
         }
     }
 
+    // fungsi mirip dnegan update namun hanya mengupdate tenggat waktu
+    public function updateDeadline(Request $request, TindakLanjut $tindakLanjut)
+    {
+        try {
+            $request->validate([
+                'tenggat_waktu' => 'required|date',
+            ]);
+
+            $tindakLanjut->update([
+                'tenggat_waktu' => $request->tenggat_waktu,
+            ]);
+
+            // kirim notifikasi ke user yang memiliki role yang sesuai dengan $tindakLanjut->unit_kerja bahwa tenggat waktu telah diubah
+            $usersWithRole = User::where('unit_kerja', $request->unit_kerja)
+            ->get();
+
+            Notification::send($usersWithRole, new DeadlineTindakLanjutNotification($tindakLanjut));
+
+            return redirect('/tindak-lanjut/' . $tindakLanjut->id)->with('update', 'Tenggat Waktu Berhasil Diubah!');
+        } catch (\Exception $e) {
+            $errorMessage = $e->getMessage();
+
+            return redirect()->back()->withInput()->with('error', $errorMessage);
+        }
+    }
 
     public static function word(TindakLanjut $tindakLanjut)
     {

@@ -212,6 +212,7 @@ class RekomendasiController extends Controller
 
                 } else {
                     TindakLanjut::create([
+                        'id' => Str::uuid()->toString(),
                         'rekomendasi_id' => $rekomendasi->id,
                         'tindak_lanjut' => $tindak_lanjut,
                         'unit_kerja' => $request->unit_kerja[$key],

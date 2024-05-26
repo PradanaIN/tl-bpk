@@ -73,6 +73,7 @@ Route::middleware(['auth', 'prevent-back-button'])->group(function () {
         Route::put('/tindak-lanjut/{tindak_lanjut:id}', [TindakLanjutController::class, 'update'])->middleware('permission:edit tindak lanjut');
         Route::delete('/tindak-lanjut/{tindak_lanjut:id}', [TindakLanjutController::class, 'destroy'])->middleware('permission:delete tindak lanjut');
         Route::get('/tindak-lanjut/{tindak_lanjut:id}/generate', [TindakLanjutController::class, 'word']);
+        Route::put('/tindak-lanjut/{tindak_lanjut:id}/updateDeadline', [TindakLanjutController::class, 'updateDeadline']);
     });
 
     Route::middleware(['role:Tim Pemantauan Wilayah I|Tim Pemantauan Wilayah II|Tim Pemantauan Wilayah III|Pengendali Teknis|Super Admin'])->group(function () {

@@ -41,9 +41,9 @@
                 <span class="d-none d-md-inline">&nbsp;Bukti Diunggah {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at)->diffForHumans() }}</span>
             </button>
             @endif
-            @if ($tindak_lanjut->bukti_tindak_lanjut === null || $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
+            @if ($tindak_lanjut->status_tindak_lanjut_at === null && $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
             @else
-                @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi'))
+                @if ($tindak_lanjut->status_tindak_lanjut_at === null)
                 <button class="btn btn-outline-warning" id="btnStatusIdentifikasi">
                     <i class="bi bi-exclamation-triangle text-black"></i>
                     <span class="d-none d-md-inline text-black">&nbsp;Tindak Lanjut Belum Diidentifikasi!</span>
@@ -67,10 +67,10 @@
                     <a class="nav-link" id="rekomendasi-tab" data-bs-toggle="tab" href="#rekomendasi" role="tab" aria-controls="rekomendasi" aria-selected="false"><h6>Rekomendasi</h6></a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link {{ ($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi') ? 'active' : '' }}" id="tindaklanjut-tab" data-bs-toggle="tab" href="#tindaklanjut" role="tab" aria-controls="tindaklanjut" aria-selected="false"><h6>Tindak Lanjut</h6></a>
+                    <a class="nav-link {{ ($tindak_lanjut->status_tindak_lanjut_at === null) ? 'active' : '' }}" id="tindaklanjut-tab" data-bs-toggle="tab" href="#tindaklanjut" role="tab" aria-controls="tindaklanjut" aria-selected="false"><h6>Tindak Lanjut</h6></a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link {{ ($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi') ? '' : 'active' }}" id="identifikasi-tab" data-bs-toggle="tab" href="#identifikasi" role="tab" aria-controls="identifikasi" aria-selected="{{ ($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi') ? 'true' : 'false' }}"><h6>Hasil Identifikasi</h6></a>
+                    <a class="nav-link {{ ($tindak_lanjut->status_tindak_lanjut_at === null) ? '' : 'active' }}" id="identifikasi-tab" data-bs-toggle="tab" href="#identifikasi" role="tab" aria-controls="identifikasi" aria-selected="{{ ($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi') ? 'true' : 'false' }}"><h6>Hasil Identifikasi</h6></a>
                 </li>
             </ul>
         </div>
@@ -158,7 +158,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade {{ ($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi') ? 'show active' : '' }}" id="tindaklanjut" role="tabpanel" aria-labelledby="tindaklanjut-tab">
+                <div class="tab-pane fade {{ ($tindak_lanjut->status_tindak_lanjut_at === null) ? 'show active' : '' }}" id="tindaklanjut" role="tabpanel" aria-labelledby="tindaklanjut-tab">
                     <div class="card-body">
                         <div class="row custom-row">
                             <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
@@ -247,7 +247,7 @@
                         @endif
                     </div>
                 </div>
-                <div class="tab-pane fade {{ ($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi') ? '' : 'show active' }}" id="identifikasi" role="tabpanel" aria-labelledby="identifikasi-tab">
+                <div class="tab-pane fade {{ ($tindak_lanjut->status_tindak_lanjut_at === null) ? '' : 'show active' }}" id="identifikasi" role="tabpanel" aria-labelledby="identifikasi-tab">
                     @if (($tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!') && (\Carbon\Carbon::now()->lt(\Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu))))
                         <div class="alert alert-warning" role="alert">
                             <h4 class="alert-heading">Peringatan!</h4>
@@ -279,7 +279,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @if ($tindak_lanjut->catatan_tindak_lanjut !== '' && $tindak_lanjut->catatan_tindak_lanjut !== null)
+                            @if ($tindak_lanjut->catatan_tindak_lanjut !== null)
                             <div class="row custom-row">
                                 <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                     <p class="fw-bold">Catatan Identifikasi</p>
@@ -290,7 +290,7 @@
                                 </div>
                             </div>
                             @endif
-                            @if ($tindak_lanjut->status_tindak_lanjut !== 'Identifikasi')
+                            @if ($tindak_lanjut->status_tindak_lanjut_at !== null)
                             <div class="row">
                                 <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                     <p class="fw-bold">Informasi Lainnya</p>
@@ -312,7 +312,7 @@
                                 <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                     <div class="col-auto d-flex align-items-center">
                                         <span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }} me-2">{{ $tindak_lanjut->status_tindak_lanjut }}</span>
-                                        @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi'))
+                                        @if (($tindak_lanjut->status_tindak_lanjut_at === null && $tindak_lanjut->status_tindak_lanjut_by === null))
                                         <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tambah Hasil Identifikasi">
                                             <i class="bi bi-plus"></i>
                                             <span class="d-none d-md-inline">&nbsp;Tambah Identifikasi</span>
@@ -326,7 +326,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @if ($tindak_lanjut->catatan_tindak_lanjut !== '' && $tindak_lanjut->catatan_tindak_lanjut !== null)
+                            @if ($tindak_lanjut->catatan_tindak_lanjut !== null)
                             <div class="row custom-row">
                                 <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                     <p class="fw-bold">Catatan Identifikasi</p>
@@ -337,7 +337,7 @@
                                 </div>
                             </div>
                             @endif
-                            @if ($tindak_lanjut->status_tindak_lanjut !== 'Identifikasi')
+                            @if ($tindak_lanjut->status_tindak_lanjut_at !== null)
                             <div class="row">
                                 <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                     <p class="fw-bold">Informasi Lainnya</p>
@@ -413,7 +413,6 @@
         </div>
     </div>
 </div>
-
 
 @section('script')
 
