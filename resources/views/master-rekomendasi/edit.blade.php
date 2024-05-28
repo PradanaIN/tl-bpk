@@ -29,11 +29,21 @@
                             <a class="nav-link" id="tindaklanjut-tab" data-bs-toggle="tab" href="#tindaklanjut" role="tab"
                                 aria-controls="tindaklanjut" aria-selected="false"><h6>Tindak Lanjut</h6></a>
                         </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="bukti_input_siptl-tab" data-bs-toggle="tab" href="#bukti_input_siptl" role="tab"
+                                aria-controls="bukti_input_siptl" aria-selected="false"><h6>Bukti Input SIPTL</h6>
+                            </a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="pemutakhiran_status-tab" data-bs-toggle="tab" href="#pemutakhiran_status" role="tab"
+                                aria-controls="pemutakhiran_status" aria-selected="false"><h6>Pemutakhiran Status</h6>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
             <div class="card">
-                <form class="form form-vertical" action="/rekomendasi/{{ $rekomendasi->id }}" method="post" data-parsley-validate id="formTambahRekomendasi" enctype="multipart/form-data">
+                <form class="form form-vertical" action="/master-rekomendasi/{{ $rekomendasi->id }}" method="post" data-parsley-validate id="formTambahRekomendasi" enctype="multipart/form-data">
                     @method('put')
                     @csrf
                     <input type="hidden" name="status_rekomendasi" value="{{ $rekomendasi->status_rekomendasi }}">
@@ -134,6 +144,15 @@
                                         @enderror
                                     </div>
                                 </div>
+                                <div class="col-12">
+                                    <div class="form-group mandatory">
+                                        <label class="form-label" for="semester_rekomendasi">Semester Rekomendasi</label>
+                                        <input type="date" class="form-control flatpickr-no-config" name="semester_rekomendasi" placeholder="Semester Rekomendasi" value="{{ old('semester_rekomendasi', $rekomendasi->semester_rekomendasi) }}">
+                                        @error('semester_rekomendasi')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="lhp" role="tabpanel" aria-labelledby="lhp-tab">
                                 <div class="alert alert-warning" role="alert">
@@ -170,8 +189,6 @@
                                 <div id="formContainer">
                                     @foreach($rekomendasi->tindakLanjut as $index => $tindakLanjut)
                                         <input type="hidden" name="id[]" value="{{ $tindakLanjut->id }}">
-                                        <input type="hidden" name="status_tindak_lanjut[]" value="{{ $tindakLanjut->status_tindak_lanjut }}">
-                                        <input type="hidden" name="bukti_tindak_lanjut[]" value="{{ $tindakLanjut->bukti_tindak_lanjut }}">
                                         <div class="form-repeater mb-4">
                                             <div class="form-row mb-3">
                                                 <div class="col-12 form-group mandatory">
@@ -215,6 +232,43 @@
                                                     @enderror
                                                 </div>
                                             </div>
+                                            <div class="row mb-3">
+                                                <input type="hidden" name="bukti_tindak_lanjut[]" value="{{ $tindakLanjut->bukti_tindak_lanjut }}">
+                                                <div class="col-md-6 mb-3 form-group mandatory">
+                                                    <label class="form-label" for="bukti_tindak_lanjut{{$index}}">Bukti Tindak Lanjut</label>
+                                                    <input type="file" class="form-control" name="bukti_tindak_lanjut[]" id="bukti_tindak_lanjut{{$index}}" accept=".pdf">
+                                                    @error('bukti_tindak_lanjut.' . $index)
+                                                        <div class="text-danger">{{ $message }}</div>
+                                                    @enderror
+                                                    @if (!$tindakLanjut->wasRecentlyCreated)
+                                                        <div class="text-muted mt-2">Riwayat file terakhir: <a href="{{ asset($tindakLanjut->bukti_tindak_lanjut) }}" target="_blank">{{ $tindakLanjut->bukti_tindak_lanjut }}</a></div>
+                                                    @endif
+
+                                                <div class="text-muted mt-2">* Jika tidak mengubah file, tidak perlu mengunggah kembali.</div>
+                                                </div>
+                                                <div class="col-md-6 mb-3 form-group mandatory">
+                                                    <label class="form-label" for="status_tindak_lanjut{{$index}}">Status Tindak Lanjut</label>
+                                                    <select class="form-select" name="status_tindak_lanjut[]">
+                                                        <option value="">Pilih Status Tindak Lanjut</option>
+                                                        <option value="Sesuai" {{ old('status_tindak_lanjut.' . $index, $tindakLanjut->status_tindak_lanjut) == 'Sesuai' ? 'selected' : '' }}>Sesuai</option>
+                                                        <option value="Belum Sesuai" {{ old('status_tindak_lanjut.' . $index, $tindakLanjut->status_tindak_lanjut) == 'Belum Sesuai' ? 'selected' : '' }}>Belum Sesuai</option>
+                                                        <option value="Belum Ditindaklanjuti" {{ old('status_tindak_lanjut.' . $index, $tindakLanjut->status_tindak_lanjut) == 'Belum Ditindaklanjuti' ? 'selected' : '' }}>Belum Ditindaklanjuti</option>
+                                                        <option value="Tidak Dapat Ditindaklanjuti" {{ old('status_tindak_lanjut.' . $index, $tindakLanjut->status_tindak_lanjut) == 'Tidak Dapat Ditindaklanjuti' ? 'selected' : '' }}>Tidak Dapat Ditindaklanjuti</option>
+                                                    </select>
+                                                    @error('status_tindak_lanjut.' . $index)
+                                                        <div class="text-danger">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-12 form-group mandatory">
+                                                    <label class="form-label" for="detail_bukti_tindak_lanjut{{$index}}">Detail Bukti Tindak Lanjut</label>
+                                                    <textarea class="form-control" rows="3" name="detail_bukti_tindak_lanjut[]" id="detail_bukti_tindak_lanjut{{$index}}" placeholder="Detail Bukti Tindak Lanjut">{{ old('detail_bukti_tindak_lanjut.' . $index, $tindakLanjut->detail_bukti_tindak_lanjut) }}</textarea>
+                                                    @error('detail_bukti_tindak_lanjut.' . $index)
+                                                        <div class="text-danger">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
                                             <div class="form-row mb-3">
                                                 <div class="col-12 text-end">
                                                     <button type="button" class="btn btn-danger btn-delete-repeater" onclick="confirmDelete(event)">
@@ -224,6 +278,49 @@
                                             </div>
                                         </div>
                                     @endforeach
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="bukti_input_siptl" role="tabpanel" aria-labelledby="bukti_input_siptl-tab">
+                                <div class="alert alert-warning" role="alert">
+                                    <h4 class="alert-heading">Info!</h4>
+                                    <p>Jika dokumen Bukti Input SIPTL tidak mengalami perubahan, tidak perlu mengunggah ulang.</p>
+                                    <hr>
+                                    <p class="mb-0">Dokumen Bukti Input SIPTL yang terakhir diunggah: <strong>{{  $rekomendasi->buktiInputSIPTL->bukti_input_siptl }}</strong></p>
+                                </div>
+                                <input type="hidden" name="bukti_input_siptl" value="{{  $rekomendasi->buktiInputSIPTL->bukti_input_siptl }}">
+                                <div class="form-group mandatory">
+                                    <label for="bukti_input_siptl" class="form-label">Bukti Input SIPTL</label>
+                                    <input type="file" class="form-control" name="bukti_input_siptl" id="bukti_input_siptl_input" required accept=".pdf, .png., .jpg">
+                                    @error('bukti_input_siptl')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                                <div class="form-group mandatory">
+                                    <label for="detail_bukti_input_siptl" class="form-label">Detail Bukti Input SIPTL</label>
+                                    <textarea class="form-control"  rows="3"
+                                    name="detail_bukti_input_siptl" id="detail_bukti_input_siptl" placeholder="Detail Bukti Input SIPTL" data-parsley-required="true" required>{{ old('detail_bukti_input_siptl',  $rekomendasi->buktiInputSIPTL->detail_bukti_input_siptl) }}</textarea>
+                                    @error('detail_bukti_input_siptl')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="pemutakhiran_status" role="tabpanel" aria-labelledby="pemutakhiran_status-tab">
+                                <div class="form-group mandatory">
+                                    <label for="status_rekomendasi" class="form-label">Status Rekomendasi</label>
+                                    <select class="form-select" name="status_rekomendasi" id="status_rekomendasi" required>
+                                        <option value="Sesuai" {{ $rekomendasi->status_rekomendasi === 'Sesuai' ? 'selected' : '' }}>Sesuai</option>
+                                        <option value="Belum Sesuai" {{ $rekomendasi->status_rekomendasi === 'Belum Sesuai' ? 'selected' : '' }}>Belum Sesuai</option>
+                                        <option value="Belum Ditindaklanjuti" {{ $rekomendasi->status_rekomendasi === 'Belum Ditindaklanjuti' ? 'selected' : '' }}>Belum Ditindaklanjuti</option>
+                                        <option value="Tidak Ditindaklanjuti" {{ $rekomendasi->status_rekomendasi === 'Tidak Ditindaklanjuti' ? 'selected' : '' }}>Tidak Ditindaklanjuti</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mandatory" id="catatan_pemutakhiran_group" style="display: none;">
+                                    <label for="catatan_pemutakhiran" class="form-label">Catatan Pemutakhiran</label>
+                                    <textarea class="form-control" name="catatan_pemutakhiran" id="catatan_pemutakhiran" rows="5" required>{{ old('catatan_pemutakhiran', $rekomendasi->catatan_pemutakhiran ?? '') }}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -307,6 +404,20 @@
         document.getElementById('formTambahRekomendasi').submit();
     });
 </script>
+<!-- script untuk menampilkan catatan pemutakhiran saat status rekomendasi tidak sesuai -->
+<script>
+    $(document).ready(function () {
+        $('#status_rekomendasi').change(function () {
+            if ($(this).val() === 'Sesuai') {
+                $('#catatan_pemutakhiran_group').hide();
+                $('#catatan_pemutakhiran').prop('required', false); // Catatan tidak wajib diisi
+            } else {
+                $('#catatan_pemutakhiran_group').show();
+                $('#catatan_pemutakhiran').prop('required', true); // Catatan wajib diisi
+            }
+        });
+    });
+</script>
 <!-- button actions js -->
 <script>
     // Sembunyikan tombol-tombol "Back" dan "Next" secara default
@@ -325,7 +436,6 @@
         });
     }
 
-    // Fungsi untuk menampilkan tombol "Back" dan "Next" pada tab "Rekomendasi" dan mengatur fungsinya
     function showRekomendasiActions() {
         document.getElementById('btnBack').style.display = 'block';
         document.getElementById('btnNext').style.display = 'block';
@@ -354,14 +464,41 @@
         });
     }
 
-    // Fungsi untuk menampilkan tombol "Back" dan "Tambah" pada tab "Tindak Lanjut" dan mengatur fungsinya
     function showTindakLanjutActions() {
         document.getElementById('btnBack').style.display = 'block';
-        document.getElementById('btnTambah').style.display = 'block';
-        document.getElementById('btnNext').style.display = 'none';
+        document.getElementById('btnNext').style.display = 'block';
+        document.getElementById('btnTambah').style.display = 'none';
         document.getElementById('btnBack').addEventListener('click', function() {
             // Ketika tombol "Back" pada tab "Tindak Lanjut" diklik, pindahkan ke tab "LHP"
             document.getElementById('lhp-tab').click();
+        });
+        document.getElementById('btnNext').addEventListener('click', function() {
+            // Ketika tombol "Next" pada tab "Tindak Lanjut" diklik, pindahkan ke tab "Bukti Input SIPTL"
+            document.getElementById('bukti_input_siptl-tab').click();
+        });
+    }
+
+    function showBuktiInputSIPTLActions() {
+        document.getElementById('btnBack').style.display = 'block';
+        document.getElementById('btnNext').style.display = 'block';
+        document.getElementById('btnTambah').style.display = 'none';
+        document.getElementById('btnBack').addEventListener('click', function() {
+            // Ketika tombol "Back" pada tab "Bukti Input SIPTL" diklik, pindahkan ke tab "Tindak Lanjut"
+            document.getElementById('tindaklanjut-tab').click();
+        });
+        document.getElementById('btnNext').addEventListener('click', function() {
+            // Ketika tombol "Next" pada tab "Bukti Input SIPTL" diklik, pindahkan ke tab "Pemutakhiran Status"
+            document.getElementById('pemutakhiran_status-tab').click();
+        });
+    }
+
+    function showPemutakhiranStatusActions() {
+        document.getElementById('btnBack').style.display = 'block';
+        document.getElementById('btnNext').style.display = 'none';
+        document.getElementById('btnTambah').style.display = 'block';
+        document.getElementById('btnBack').addEventListener('click', function() {
+            // Ketika tombol "Back" pada tab "Pemutakhiran Status" diklik, pindahkan ke tab "Bukti Input SIPTL"
+            document.getElementById('bukti_input_siptl-tab').click();
         });
     }
 
@@ -380,7 +517,11 @@
             } else if (this.getAttribute('aria-controls') === 'lhp') {
                 showLHPActions(); // Jika tab "LHP" aktif, tampilkan tombol "Back" dan "Next"
             } else if (this.getAttribute('aria-controls') === 'tindaklanjut') {
-                showTindakLanjutActions(); // Jika tab "Tindak Lanjut" aktif, tampilkan tombol "Back" dan "Tambah"
+                showTindakLanjutActions(); // Jika tab "Tindak Lanjut" aktif, tampilkan tombol "Back" dan "Next"
+            } else if (this.getAttribute('aria-controls') === 'bukti_input_siptl') {
+                showBuktiInputSIPTLActions(); // Jika tab "Bukti Input SIPTL" aktif, tampilkan tombol "Back" dan "Next"
+            } else if (this.getAttribute('aria-controls') === 'pemutakhiran_status') {
+                showPemutakhiranStatusActions(); // Jika tab "Pemutakhiran Status" aktif, tampilkan tombol "Back" saja
             }
         });
     });
@@ -461,6 +602,37 @@
                     <div class="col-md-4 mb-3 form-group mandatory">
                         <label class="form-label" for="tenggat_waktu">Tenggat Waktu</label>
                         <input type="date" class="form-control flatpickr-no-config" name="tenggat_waktu[]" placeholder="Tenggat Waktu">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6 mb-3 form-group mandatory">
+                        <label class="form-label" for="bukti_tindak_lanjut">Bukti Tindak Lanjut</label>
+                        <input type="file" class="form-control" name="bukti_tindak_lanjut[]" required accept=".pdf">
+                        @error('bukti_tindak_lanjut.0')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-6 mb-3 form-group mandatory">
+                        <label class="form-label" for="status_tindak_lanjut">Status Tindak Lanjut</label>
+                        <select class="form-select" name="status_tindak_lanjut[]">
+                            <option value="">Pilih Status Tindak Lanjut</option>
+                            <option value="Sesuai" {{ old('status_tindak_lanjut.0') == 'Sesuai' ? 'selected' : '' }}>Sesuai</option>
+                            <option value="Belum Sesuai" {{ old('status_tindak_lanjut.0') == 'Belum Sesuai' ? 'selected' : '' }}>Belum Sesuai</option>
+                            <option value="Belum Ditindaklanjuti" {{ old('status_tindak_lanjut.0') == 'Belum Ditindaklanjuti' ? 'selected' : '' }}>Belum Ditindaklanjuti</option>
+                            <option value="Tidak Dapat Ditindaklanjuti" {{ old('status_tindak_lanjut.0') == 'Tidak Dapat Ditindaklanjuti' ? 'selected' : '' }}>Tidak Dapat Ditindaklanjuti</option>
+                        </select>
+                        @error('status_tindak_lanjut.0')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-12 form-group mandatory">
+                        <label class="form-label" for="detail_bukti_tindak_lanjut">Detail Bukti Tindak Lanjut</label>
+                        <textarea class="form-control" rows="3" name="detail_bukti_tindak_lanjut[]" placeholder="Detail Bukti Tindak Lanjut">{{ old('detail_bukti_tindak_lanjut.0') }}</textarea>
+                        @error('detail_bukti_tindak_lanjut.0')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
                 <div class="form-row mb-3">

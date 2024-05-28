@@ -39,7 +39,7 @@ function getStatusClass($status) {
                 <span class="d-none d-md-inline">&nbsp;Bukti Diunggah {{ \Carbon\Carbon::parse($rekomendasi->buktiInputSIPTL->upload_at)->diffForHumans() }}</span>
             </button>
             @endif
-            @if ($rekomendasi->pemutakhiran_at === null && $rekomendasi->pemutakhiran_at === '' && $rekomendasi->pemutakhiran_by === '')
+            @if ($rekomendasi->pemutakhiran_at === null)
             <button class="btn btn-outline-warning" id="btnStatusPemutakhiran">
                 <i class="bi bi-exclamation-triangle text-black"></i>
                 <span class="d-none d-md-inline text-black">&nbsp;Rekomendasi Belum Dimutakhirkan!</span>
@@ -198,7 +198,7 @@ function getStatusClass($status) {
                                         <th>Tim Pemantauan</th>
                                         <th>Tenggat Waktu</th>
                                         <th>Bukti Tindak Lanjut</th>
-                                        <th>Status</th>
+                                        <th>Status Tindak Lanjut</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -327,6 +327,15 @@ function getStatusClass($status) {
                         </div>
                         @endif
                         @if ($rekomendasi->pemutakhiran_at !== null && $rekomendasi->pemutakhiran_at !== '' && $rekomendasi->pemutakhiran_by !== '')
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
+                                <p class="fw-bold">Semester Pemutakhiran</p>
+                            </div>
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
+                                <p>{{ $rekomendasi->semester_pemutakhiran }}</p>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                 <p class="fw-bold">Informasi Lainnya</p>
@@ -338,6 +347,13 @@ function getStatusClass($status) {
                         </div>
                         @endif
                     </div>
+                    @if ($rekomendasi->pemutakhiran_at !== null && $rekomendasi->status_rekomendasi === 'Belum Sesuai')
+                    <div class="alert alert-warning" role="alert">
+                        <h4 class="alert-heading">Info!</h4>
+                        <p>Rekomendasi yang <strong>Belum Sesuai</strong> akan dilanjutkan di semester berikutnya.</p>
+                        <hr>
+                        <p class="mb-0">Silakan input kembali <strong>Tindak Lanjut</strong> untuk semester berikutnya.</p>
+                    @endif
                 @else
                 <!-- akan muncul peringatan untuk mengunggah bukti input SIPTL terlebih dahulu -->
                 <div class="alert alert-warning" role="alert">
@@ -498,7 +514,7 @@ function getStatusClass($status) {
 
     FilePond.parse(document.body);
 </script>
-
+<!-- script untuk menampilkan catatan pemutakhiran saat status rekomendasi tidak sesuai -->
 <script>
     $(document).ready(function () {
         $('#status_rekomendasi').change(function () {
@@ -512,8 +528,7 @@ function getStatusClass($status) {
         });
     });
 </script>
-
-
+<!-- script untuk menampilkan modal saat tombol di klik -->
 <script>
     // Ambil tombol "Upload Bukti Input SIPTL"
     var uploadBtn = document.getElementById('uploadBtn');
@@ -534,7 +549,7 @@ function getStatusClass($status) {
     });
 
 </script>
-
+<!-- script untuk menampilkan tombol sesuai dengan tab yang aktif -->
 <script>
     $(document).ready(function() {
         // Fungsi untuk menyembunyikan semua tombol status
@@ -574,8 +589,7 @@ function getStatusClass($status) {
         });
     });
 </script>
-
-
+<!-- script untuk menampilkan tooltip -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -584,8 +598,7 @@ function getStatusClass($status) {
         })
     }, false);
 </script>
-
-
+<!-- script untuk menampilkan alert -->
 <script>
     @if (session()->has('update'))
         Swal.fire({
@@ -597,31 +610,31 @@ function getStatusClass($status) {
     });
     @endif
 </script>
-
+<!-- script untuk menampilkan alert -->
 <script>
-document.getElementById('deleteButton').addEventListener('click', function() {
-            Swal.fire({
-                title: 'Apakah Anda yakin?',
-                text: "Data yang dihapus tidak dapat dikembalikan!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, hapus!',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('deleteForm').submit();
-                    Swal.fire(
-                        'Berhasil!',
-                        'Data telah berhasil dihapus.',
-                        'success'
-                    );
-                }
+    document.getElementById('deleteButton').addEventListener('click', function() {
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Data yang dihapus tidak dapat dikembalikan!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('deleteForm').submit();
+                        Swal.fire(
+                            'Berhasil!',
+                            'Data telah berhasil dihapus.',
+                            'success'
+                        );
+                    }
+                });
             });
-        });
 </script>
-
+<!-- script untuk datatables -->
 <script>
     new DataTable('#table1', {
         info: true,

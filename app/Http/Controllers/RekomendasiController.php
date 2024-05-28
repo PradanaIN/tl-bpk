@@ -161,7 +161,6 @@ class RekomendasiController extends Controller
         }
     }
 
-
     /**
      * Display the specified resource.
      */
@@ -181,7 +180,6 @@ class RekomendasiController extends Controller
      */
     public function edit(Rekomendasi $rekomendasi)
     {
-
         $kamus_temuan = Kamus::where('jenis', 'Temuan')->get();
         $kamus_pemeriksaan = Kamus::where('jenis', 'Pemeriksaan')->get();
         $rekomendasi = Rekomendasi::with('tindakLanjut')->find($rekomendasi->id);
@@ -202,17 +200,6 @@ class RekomendasiController extends Controller
     public function update(Request $request, Rekomendasi $rekomendasi)
     {
         try {
-            // Validasi file LHP
-            if ($request->hasFile('lhp')) {
-                $request->validate([
-                    'lhp' => 'required|mimes:pdf|max:100000',
-                ]);
-                $lhp = $request->file('lhp');
-                $lhpFileName = $lhp->getClientOriginalName();
-                $lhp->storeAs('public/uploads/lhp', $lhpFileName);
-                $validatedData['lhp'] = $lhpFileName;
-            }
-
             // Validasi data rekomendasi
             $validatedData = $request->validate([
                 'pemeriksaan' => 'required',
@@ -225,6 +212,19 @@ class RekomendasiController extends Controller
                 'catatan_rekomendasi' => 'required',
                 'status_rekomendasi' => 'required'
             ]);
+
+            // Validasi file LHP
+            if ($request->hasFile('lhp')) {
+                $request->validate([
+                    'lhp' => 'required|mimes:pdf|max:100000',
+                ]);
+                $lhp = $request->file('lhp');
+                $lhpFileName = $lhp->getClientOriginalName();
+                $lhp->storeAs('public/uploads/lhp', $lhpFileName);
+                $validatedData['lhp'] = $lhpFileName;
+            } else {
+                $validatedData['lhp'] = $request->lhp_lama;
+            }
 
             // Update data rekomendasi
             $rekomendasi->update($validatedData);
@@ -286,6 +286,133 @@ class RekomendasiController extends Controller
             $errorMessage = $e->getMessage(); // Dapatkan pesan error
 
             // Tampilkan SweetAlert dengan pesan error
+            return redirect()->back()->withInput()->with('error', $errorMessage);
+        }
+    }
+
+    // edit rekomendasi untuk semester berikutnya
+    public function nextSemester(Rekomendasi $rekomendasi)
+    {
+        $kamus_temuan = Kamus::where('jenis', 'Temuan')->get();
+        $kamus_pemeriksaan = Kamus::where('jenis', 'Pemeriksaan')->get();
+        $rekomendasi = Rekomendasi::with('tindakLanjut')->find($rekomendasi->id);
+        $unit_kerja = UnitKerja::all();
+
+        return view('rekomendasi.nextSemester', [
+            'title' => 'Rekomendasi Semester Berikutnya',
+            'kamus_temuan' => $kamus_temuan,
+            'kamus_pemeriksaan' => $kamus_pemeriksaan,
+            'rekomendasi' => $rekomendasi,
+            'unit_kerja' => $unit_kerja,
+        ]);
+    }
+    // create rekomendasi untuk semester berikutnya
+    public function createNextSemester(Request $request)
+    {
+        // Aturan validasi untuk entri Rekomendasi
+        $validatedData = $request->validate([
+            'pemeriksaan' => 'required',
+            'jenis_pemeriksaan' => 'required',
+            'tahun_pemeriksaan' => 'required|integer|min:1900|max:2099',
+            'hasil_pemeriksaan' => 'required',
+            'jenis_temuan' => 'required',
+            'uraian_temuan' => 'required',
+            'rekomendasi' => 'required',
+            'catatan_rekomendasi' => 'required',
+            'status_rekomendasi' => 'required',
+        ]);
+
+        // Validasi file LHP
+        if ($request->hasFile('lhp')) {
+            $lhp = $request->file('lhp');
+            // Gunakan nama yang sesuai
+            $lhpFileName = $lhp->getClientOriginalName();
+            $lhp->storeAs('public/uploads/lhp', $lhpFileName);
+            // Simpan nama file LHP ke dalam array $validatedData
+            $validatedData['lhp'] = $lhpFileName;
+        } else {
+            $validatedData['lhp'] = $request->lhp_lama;
+        }
+
+        // memberikan id pada rekomendasi berupa uuid
+        $validatedData['id'] = Str::uuid()->toString();
+
+        // Menentukan semester rekomendasi
+        $tahun = date('Y');
+        $bulan = date('n');
+        // Tentukan semester berdasarkan bulan
+        $semester = $bulan <= 6 ? 'Semester 1' : 'Semester 2';
+        // Gabungkan semester dengan tahun
+        $semester_tahun = $semester . ' ' . $tahun;
+        // Assign ke validatedData
+        $validatedData['semester_rekomendasi'] = $semester_tahun;
+
+        // Aturan validasi untuk entri TindakLanjut
+        $tindakLanjutValidationRules = [
+            'tindak_lanjut.*' => 'required',
+            'unit_kerja.*' => 'required',
+            'tim_pemantauan.*' => 'required',
+            'tenggat_waktu.*' => 'required',
+        ];
+
+        // Validasi data untuk entri TindakLanjut
+        $validatedTindakLanjutData = $request->validate($tindakLanjutValidationRules);
+
+        DB::beginTransaction();
+
+        try {
+            // Buat entri Rekomendasi berdasarkan data yang divalidasi
+            $rekomendasi = Rekomendasi::create($validatedData);
+
+            foreach ($request->tindak_lanjut as $key => $tindak_lanjut) {
+                // Mendapatkan nilai tenggat waktu dari input pengguna
+                $tenggat_waktu = $request->tenggat_waktu[$key];
+
+                // Hitung semester tindak lanjut berdasarkan tenggat waktu
+                $bulan = date('n', strtotime($tenggat_waktu));
+                $tahun = date('Y', strtotime($tenggat_waktu));
+                $semester = $bulan <= 6 ? 'Semester 1' : 'Semester 2';
+                $semester_tindak_lanjut = $semester . ' ' . $tahun;
+
+                // Simpan data tindak lanjut beserta semester tindak lanjut ke dalam database
+                TindakLanjut::create([
+                    'id' => Str::uuid()->toString(),
+                    'rekomendasi_id' => $rekomendasi->id,
+                    'tindak_lanjut' => $tindak_lanjut,
+                    'unit_kerja' => $request->unit_kerja[$key],
+                    'tim_pemantauan' => $request->tim_pemantauan[$key],
+                    'tenggat_waktu' => $tenggat_waktu,
+                    'semester_tindak_lanjut' => $semester_tindak_lanjut,
+                    'status_tindak_lanjut' => 'Belum Sesuai',
+                    'bukti_tindak_lanjut' => 'Belum Diunggah!',
+                ]);
+
+                // Kirim notifikasi ke pengguna terkait
+                $usersWithRole = User::where('role', $request->tim_pemantauan[$key])
+                    ->orWhere('unit_kerja', $request->unit_kerja[$key])
+                    ->get();
+
+                foreach ($usersWithRole as $user) {
+                    $user->notify(new RekomendasiNotification(TindakLanjut::latest()->first()));
+                }
+            }
+
+            // masukkan value id rekomendasi ke dalam tabel bukti_input_siptl
+            BuktiInputSIPTL::create([
+                'id' => Str::uuid()->toString(),
+                'bukti_input_siptl' => 'Belum Diunggah!',
+                'rekomendasi_id' => $rekomendasi->id,
+            ]);
+
+            DB::commit();
+
+            return redirect('/rekomendasi')->with('create', 'Data berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            // Tangani error
+            $errorMessage = $e->getMessage(); // Dapatkan pesan error
+
             return redirect()->back()->withInput()->with('error', $errorMessage);
         }
     }

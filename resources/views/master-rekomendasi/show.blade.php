@@ -19,24 +19,22 @@
 <section class="row">
     <div class="row mb-3 flex-wrap">
         <div class="col-auto d-flex me-auto">
-            <a href="/rekomendasi" class="btn btn-primary">
+            <a href="/master-rekomendasi" class="btn btn-primary">
                 <i class="bi bi-arrow-left"></i>
                 <span class="d-none d-md-inline">Kembali</span>
             </a>
-            <a href="/rekomendasi/{{ $rekomendasi->id }}/export" class="btn btn-success ms-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Export Rekomendasi">
+            <a href="/master-rekomendasi/{{ $rekomendasi->id }}/export" class="btn btn-success ms-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Export Rekomendasi">
                 <i class="bi bi-file-earmark-excel"></i>
                 <span class="d-none d-md-inline">Export Rekomendasi</span>
             </a>
         </div>
         <div class="col-auto d-flex ms-auto">
             <div class="col-auto">
-                @if ($rekomendasi->pemutakhiran_at === null && $rekomendasi->pemutakhiran_by === null)
-                <a href="/rekomendasi/{{ $rekomendasi->id }}/edit" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Rekomendasi">
+                <a href="/master-rekomendasi/{{ $rekomendasi->id }}/edit" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Rekomendasi">
                     <i class="bi bi-pencil"></i>
                     <span class="d-none d-md-inline">&nbsp;Ubah</span>
                 </a>
-                @endif
-                <form action="/rekomendasi/{{ $rekomendasi->id }}" method="post" class="d-inline" id="deleteForm">
+                <form action="/master-rekomendasi/{{ $rekomendasi->id }}" method="post" class="d-inline" id="deleteForm">
                     @method('delete')
                     @csrf
                     <button class="btn btn-danger" type="button" id="deleteButton" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Rekomendasi">
@@ -51,7 +49,7 @@
         <div class="card-body">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link {{ ($rekomendasi->pemutakhiran_at !== null && $rekomendasi->pemutakhiran_by !== null) ? '' : 'active' }}" id="pemeriksaan-tab" data-bs-toggle="tab" href="#pemeriksaan" role="tab"
+                    <a class="nav-link active" id="pemeriksaan-tab" data-bs-toggle="tab" href="#pemeriksaan" role="tab"
                         aria-controls="pemeriksaan" aria-selected="true"><h6>Pemeriksaan</h6></a>
                 </li>
                 <li class="nav-item" role="presentation">
@@ -66,23 +64,21 @@
                     <a class="nav-link" id="tindaklanjut-tab" data-bs-toggle="tab" href="#tindaklanjut" role="tab"
                         aria-controls="tindaklanjut" aria-selected="false"><h6>Tindak Lanjut</h6></a>
                 </li>
-                @if ($rekomendasi->pemutakhiran_at !== null && $rekomendasi->pemutakhiran_by !== null)
                 <li class="nav-item" role="presentation">
                     <a class="nav-link" id="bukti_input_siptl-tab" data-bs-toggle="tab" href="#bukti_input_siptl" role="tab"
                         aria-controls="bukti_input_siptl" aria-selected="false"><h6>Bukti Input SIPTL</h6></a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link {{ ($rekomendasi->pemutakhiran_at !== null && $rekomendasi->pemutakhiran_by !== null) ? 'active' : '' }}" id="pemutakhiran_status-tab" data-bs-toggle="tab" href="#pemutakhiran_status" role="tab"
+                    <a class="nav-link" id="pemutakhiran_status-tab" data-bs-toggle="tab" href="#pemutakhiran_status" role="tab"
                         aria-controls="pemutakhiran_status" aria-selected="false"><h6>Pemutakhiran Status</h6></a>
                 </li>
-                @endif
             </ul>
         </div>
     </div>
     <div class="card">
         <div class="card-body">
             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade {{ ($rekomendasi->pemutakhiran_at !== null && $rekomendasi->pemutakhiran_by !== null) ? '' : 'show active' }}" id="pemeriksaan" role="tabpanel" aria-labelledby="pemeriksaan-tab">
+                <div class="tab-pane fade show active" id="pemeriksaan" role="tabpanel" aria-labelledby="pemeriksaan-tab">
                     <div class="card-body">
                         <div class="row custom-row">
                             <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
@@ -228,7 +224,6 @@
                         </div>
                     </div>
                 </div>
-                @if ($rekomendasi->pemutakhiran_at !== null && $rekomendasi->pemutakhiran_by !== null)
                 <div class="tab-pane fade" id="bukti_input_siptl" role="tabpanel" aria-labelledby="bukti_input_siptl-tab">
                     <div class="card-body">
                         <div class="row custom-row">
@@ -270,7 +265,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade {{ ($rekomendasi->pemutakhiran_at !== null && $rekomendasi->pemutakhiran_by !== null) ? 'show active' : '' }}" id="pemutakhiran_status" role="tabpanel" aria-labelledby="pemutakhiran_status-tab">
+                <div class="tab-pane fade" id="pemutakhiran_status" role="tabpanel" aria-labelledby="pemutakhiran_status-tab">
                     <div class="card-body">
                         <div class="row custom-row">
                             <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
@@ -313,20 +308,7 @@
                             </div>
                         </div>
                     </div>
-                    @if ($rekomendasi->pemutakhiran_at !== null && $rekomendasi->status_rekomendasi === 'Belum Sesuai')
-                    <div class="alert alert-warning" role="alert">
-                        <h4 class="alert-heading">Info!</h4>
-                        <p>Rekomendasi yang <strong>Belum Sesuai</strong> akan dilanjutkan di semester berikutnya.</p>
-                        <hr>
-                        <p class="mb-2">Silakan input kembali <strong>Tindak Lanjut</strong> untuk semester berikutnya.</p>
-                        <a href="/rekomendasi/{{ $rekomendasi->id }}/nextSemester" class="btn btn-primary mt-2">
-                            <i class="bi bi-plus"></i>
-                            &nbsp;Input Tindak Lanjut
-                        </a>
-                    </div>
-                    @endif
                 </div>
-                @endif
             </div>
         </div>
     </div>

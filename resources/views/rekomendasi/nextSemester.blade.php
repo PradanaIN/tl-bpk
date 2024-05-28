@@ -34,7 +34,6 @@
             </div>
             <div class="card">
                 <form class="form form-vertical" action="/rekomendasi/{{ $rekomendasi->id }}" method="post" data-parsley-validate id="formTambahRekomendasi" enctype="multipart/form-data">
-                    @method('put')
                     @csrf
                     <input type="hidden" name="status_rekomendasi" value="{{ $rekomendasi->status_rekomendasi }}">
                     <div class="card-body">
@@ -163,67 +162,62 @@
                                     </div>
                                     <div class="col-md-6 text-end">
                                         <button type="button" class="btn btn-primary btn-tambah-repeater">
-                                            <i class="bi bi-plus"></i>&nbsp;<span class="d-none d-md-inline">&nbsp;Tambah Tindak Lanjut</span>
+                                            <i class="bi bi-plus"></i><span class="d-none d-md-inline">&nbsp;Tambah Tindak Lanjut</span>
                                         </button>
                                     </div>
                                 </div>
                                 <div id="formContainer">
-                                    @foreach($rekomendasi->tindakLanjut as $index => $tindakLanjut)
-                                        <input type="hidden" name="id[]" value="{{ $tindakLanjut->id }}">
-                                        <input type="hidden" name="status_tindak_lanjut[]" value="{{ $tindakLanjut->status_tindak_lanjut }}">
-                                        <input type="hidden" name="bukti_tindak_lanjut[]" value="{{ $tindakLanjut->bukti_tindak_lanjut }}">
-                                        <div class="form-repeater mb-4">
-                                            <div class="form-row mb-3">
-                                                <div class="col-12 form-group mandatory">
-                                                    <label class="form-label" for="tindak_lanjut{{$index}}">Tindak Lanjut</label>
-                                                    <textarea class="form-control" rows="3" name="tindak_lanjut[]" id="tindak_lanjut{{$index}}" placeholder="Tindak lanjut" data-parsley-required="true" required>{{ old('tindak_lanjut.' . $index, $tindakLanjut->tindak_lanjut) }}</textarea>
-                                                    @error('tindak_lanjut.' . $index)
-                                                        <div class="text-danger">{{ $message }}</div>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                            <div class="row mb-3">
-                                                <div class="col-md-4 mb-3 form-group mandatory">
-                                                    <label class="form-label" for="unit_kerja{{$index}}">PIC Unit Kerja</label>
-                                                    <select class="form-select select-unit-kerja" name="unit_kerja[]" id="unit_kerja{{$index}}">
-                                                        <option value="{{ $tindakLanjut->unit_kerja }}">{{ $tindakLanjut->unit_kerja }}</option>
-                                                        @foreach ($unit_kerja as $unit)
-                                                            <option value="{{ $unit->nama }}">{{ $unit->nama }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    @error('unit_kerja.' . $index)
-                                                        <div class="text-danger">{{ $message }}</div>
-                                                    @enderror
-                                                </div>
-                                                <div class="col-md-4 mb-3 form-group mandatory">
-                                                    <label class="form-label" for="tim_pemantauan{{$index}}">PIC Tim Pemantauan</label>
-                                                    <select class="form-select select-tim-pemantauan" name="tim_pemantauan[]">
-                                                        <option value="{{ $tindakLanjut->tim_pemantauan }}">{{ $tindakLanjut->tim_pemantauan }}</option>
-                                                        <option value="Tim Pemantauan Wilayah I">Tim Pemantauan Wilayah I</option>
-                                                        <option value="Tim Pemantauan Wilayah II">Tim Pemantauan Wilayah II</option>
-                                                        <option value="Tim Pemantauan Wilayah III">Tim Pemantauan Wilayah III</option>
-                                                    </select>
-                                                    @error('tim_pemantauan.' . $index)
-                                                        <div class="text-danger">{{ $message }}</div>
-                                                    @enderror
-                                                </div>
-                                                <div class="col-md-4 mb-3 form-group mandatory">
-                                                    <label class="form-label" for="tenggat_waktu{{$index}}">Tenggat Waktu</label>
-                                                    <input type="date" class="form-control flatpickr-no-config" name="tenggat_waktu[]" placeholder="Tenggat Waktu" value="{{ $tindakLanjut->tenggat_waktu }}">
-                                                    @error('tenggat_waktu.' . $index)
-                                                        <div class="text-danger">{{ $message }}</div>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                            <div class="form-row mb-3">
-                                                <div class="col-12 text-end">
-                                                    <button type="button" class="btn btn-danger btn-delete-repeater" onclick="confirmDelete(event)">
-                                                        <i class="bi bi-trash"></i><span class="d-none d-md-inline">&nbsp;Hapus</span>
-                                                    </button>
-                                                </div>
+                                    <div class="form-repeater mb-4">
+                                        <div class="form-row mb-3">
+                                            <div class="col-12 form-group mandatory">
+                                                <label class="form-label" for="tindak_lanjut">Tindak Lanjut</label>
+                                                <textarea class="form-control" rows="3" name="tindak_lanjut[]" placeholder="Tindak lanjut" data-parsley-required="true" required>{{ old('tindak_lanjut.0') }}</textarea>
+                                                @error('tindak_lanjut.0')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         </div>
-                                    @endforeach
+                                        <div class="row mb-3">
+                                            <div class="col-md-4 mb-3 form-group mandatory">
+                                                <label class="form-label" for="unit_kerja">PIC Unit Kerja</label>
+                                                <select class="form-select select-unit-kerja" name="unit_kerja[]">
+                                                    <option value="">Pilih PIC Unit Kerja</option>
+                                                    @foreach ($unit_kerja as $unit)
+                                                        <option value="{{ $unit->nama }}" {{ old('unit_kerja.0') == $unit->nama ? 'selected' : '' }}>{{ $unit->nama }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('unit_kerja.0')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                            <div class="col-md-4 mb-3 form-group mandatory">
+                                                <label class="form-label" for="tim_pemantauan">PIC Tim Pemantauan</label>
+                                                <select class="form-select select-tim-pemantauan" name="tim_pemantauan[]">
+                                                    <option value="">Pilih PIC Tim Pemantauan</option>
+                                                    <option value="Tim Pemantauan Wilayah I" {{ old('tim_pemantauan.0') == 'Tim Pemantauan Wilayah I' ? 'selected' : '' }}>Tim Pemantauan Wilayah I</option>
+                                                    <option value="Tim Pemantauan Wilayah II" {{ old('tim_pemantauan.0') == 'Tim Pemantauan Wilayah II' ? 'selected' : '' }}>Tim Pemantauan Wilayah II</option>
+                                                    <option value="Tim Pemantauan Wilayah III" {{ old('tim_pemantauan.0') == 'Tim Pemantauan Wilayah III' ? 'selected' : '' }}>Tim Pemantauan Wilayah III</option>
+                                                </select>
+                                                @error('tim_pemantauan.0')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                            <div class="col-md-4 mb-3 form-group mandatory">
+                                                <label class="form-label" for="tenggat_waktu">Tenggat Waktu</label>
+                                                <input type="date" class="form-control flatpickr-no-config" name="tenggat_waktu[]" placeholder="Tenggat Waktu" value="{{ old('tenggat_waktu.0') }}">
+                                                @error('tenggat_waktu.0')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="form-row mb-3">
+                                            <div class="col-12 text-end">
+                                                <button type="button" class="btn btn-danger btn-delete-repeater" onclick="confirmDelete(event)">
+                                                    <i class="bi bi-trash"></i><span class="d-none d-md-inline">&nbsp;Hapus</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

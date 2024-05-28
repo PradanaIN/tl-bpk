@@ -292,6 +292,8 @@
                                                     <a class="dropdown-item text-center" href="/master-kamus"><h6>Master Kamus</h6></a>
                                                     <div class="dropdown-divider"></div>
                                                     <a class="dropdown-item text-center" href="/master-pengguna"><h6>Master Pengguna</h6></a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item text-center" href="/master-rekomendasi"><h6>Master Rekomendasi</h6></a>
                                                 </div>
                                             </li>
                                             @endcan
@@ -602,6 +604,20 @@
             showConfirmButton: false,
             timer: 1500,
             text: '{{ session('delete') }}'
+        });
+
+    @elseif (session()->has('error'))
+        Swal.fire({
+            title: 'Error',
+            icon: 'error',
+            text: '{{ session('error') }}'
+        });
+
+    @elseif (session()->has('info'))
+    Swal.fire({
+            title: 'Info',
+            icon: 'info',
+            text: '{{ session('info') }}'
         });
     @endif
 </script>

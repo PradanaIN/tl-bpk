@@ -265,16 +265,18 @@
                                 <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                     <div class="col-auto d-flex align-items-center">
                                         <span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }} me-2">{{ $tindak_lanjut->status_tindak_lanjut }}</span>
-                                        @if (($tindak_lanjut->status_tindak_lanjut === null || $tindak_lanjut->status_tindak_lanjut === 'Identifikasi'))
-                                        <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tambah Hasil Identifikasi">
-                                            <i class="bi bi-plus"></i>
-                                            <span class="d-none d-md-inline">&nbsp;Tambah Identifikasi</span>
-                                        </button>
-                                        @else
-                                        <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Hasil Identifikasi">
-                                            <i class="bi bi-pencil"></i>
-                                            <span class="d-none d-md-inline">&nbsp;Ubah Identifikasi</span>
-                                        </button>
+                                        @if ($rekomendasi->pemutakhiran_at === null && $rekomendasi->pemutakhiran_by === null)
+                                            @if ($tindak_lanjut->status_tindak_lanjut_at === null && $tindak_lanjut->status_tindak_lanjut_by === null)
+                                                <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tambah Hasil Identifikasi">
+                                                    <i class="bi bi-plus"></i>
+                                                    <span class="d-none d-md-inline">&nbsp;Tambah Identifikasi</span>
+                                                </button>
+                                            @else
+                                                <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Hasil Identifikasi">
+                                                    <i class="bi bi-pencil"></i>
+                                                    <span class="d-none d-md-inline">&nbsp;Ubah Identifikasi</span>
+                                                </button>
+                                            @endif
                                         @endif
                                     </div>
                                 </div>
@@ -312,17 +314,19 @@
                                 <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                     <div class="col-auto d-flex align-items-center">
                                         <span class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }} me-2">{{ $tindak_lanjut->status_tindak_lanjut }}</span>
-                                        @if (($tindak_lanjut->status_tindak_lanjut_at === null && $tindak_lanjut->status_tindak_lanjut_by === null))
-                                        <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tambah Hasil Identifikasi">
-                                            <i class="bi bi-plus"></i>
-                                            <span class="d-none d-md-inline">&nbsp;Tambah Identifikasi</span>
-                                        </button>
+                                        @if ($rekomendasi->pemutakhiran_at === null && $rekomendasi->pemutakhiran_by === null)
+                                        @if ($tindak_lanjut->status_tindak_lanjut_at === null && $tindak_lanjut->status_tindak_lanjut_by === null)
+                                            <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tambah Hasil Identifikasi">
+                                                <i class="bi bi-plus"></i>
+                                                <span class="d-none d-md-inline">&nbsp;Tambah Identifikasi</span>
+                                            </button>
                                         @else
-                                        <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Hasil Identifikasi">
-                                            <i class="bi bi-pencil"></i>
-                                            <span class="d-none d-md-inline">&nbsp;Ubah Identifikasi</span>
-                                        </button>
+                                            <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ubah Hasil Identifikasi">
+                                                <i class="bi bi-pencil"></i>
+                                                <span class="d-none d-md-inline">&nbsp;Ubah Identifikasi</span>
+                                            </button>
                                         @endif
+                                    @endif
                                     </div>
                                 </div>
                             </div>

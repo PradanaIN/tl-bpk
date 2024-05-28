@@ -71,7 +71,8 @@ class PemutakhiranController extends Controller
 
         $rekomendasi->update([
             'status_rekomendasi' => $request->status_rekomendasi,
-            'catatan_pemutakhiran' => $request->catatan_pemutakhiran,
+            // apabila status rekoemndasi "Sesuai" maka catatan pemutakhiran kosong
+            'catatan_pemutakhiran' => $request->status_rekomendasi === 'Sesuai' ? null : $request->catatan_pemutakhiran,
             'semester_pemutakhiran' => $semester_tahun,
             'pemutakhiran_by' => auth()->user()->nama,
             'pemutakhiran_at' => now(),
