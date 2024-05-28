@@ -280,7 +280,8 @@ class RekomendasiController extends Controller
                 }
             }
 
-            return redirect('/rekomendasi/'.$rekomendasi->id)->with('update', 'Data berhasil diubah!');
+            // kembali ke halaman detail rekomendasi dengan pesan sukses
+            return redirect('/rekomendasi/' . $rekomendasi->id)->with('update', 'Data berhasil diperbarui!');
         } catch (\Exception $e) {
             // Tangani error
             $errorMessage = $e->getMessage(); // Dapatkan pesan error
@@ -422,11 +423,6 @@ class RekomendasiController extends Controller
      */
     public function destroy(Rekomendasi $rekomendasi)
     {
-        // Hapus notifikasi yang terkait dengan rekomendasi
-        $tindakLanjut = TindakLanjut::where('rekomendasi_id', $rekomendasi->id)->get();
-        foreach ($tindakLanjut as $tindak) {
-            $tindak->notifications()->delete();
-        }
         BuktiInputSIPTL::where('rekomendasi_id', $rekomendasi->id)->delete();
         TindakLanjut::where('rekomendasi_id', $rekomendasi->id)->delete();
         Rekomendasi::destroy($rekomendasi->id);

@@ -121,6 +121,25 @@ class TindakLanjutController extends Controller
         }
     }
 
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(TindakLanjut $tindakLanjut)
+    {
+        // Cari data tindak lanjut berdasarkan ID
+        $tindakLanjut = TindakLanjut::find($tindakLanjut->id);
+
+        // Periksa apakah data ditemukan
+        if (!$tindakLanjut) {
+            return redirect()->back()->with('error', 'Data tidak ditemukan.');
+        }
+
+        // Hapus data
+        $tindakLanjut->delete();
+
+        return redirect()->back()->with('success', 'Tindak Lanjut berhasil dihapus.');
+    }
+
     public static function word(TindakLanjut $tindakLanjut)
     {
         // get berita_acara.rtf ftom public folder

@@ -217,7 +217,7 @@
                                             </div>
                                             <div class="form-row mb-3">
                                                 <div class="col-12 text-end">
-                                                    <button type="button" class="btn btn-danger btn-delete-repeater" onclick="confirmDelete(event)">
+                                                    <button type="button" class="btn btn-danger btn-delete-repeater" data-id="{{ $tindakLanjut->id }}">
                                                         <i class="bi bi-trash"></i><span class="d-none d-md-inline">&nbsp;Hapus</span>
                                                     </button>
                                                 </div>
@@ -238,6 +238,11 @@
         </div>
     </div>
 </section>
+
+<form id="deleteFormTL" action="{{ route('tindaklanjut.destroy', $tindakLanjut->id) }}" method="POST" class="d-none">
+    @method('DELETE')
+    @csrf
+</form>
 
 @endsection
 
@@ -419,6 +424,7 @@
         },
     });
 </script>
+<!-- Script JavaScript untuk menambahkan form repeater -->
 <!-- repeater js -->
 <script>
     // Fungsi untuk menghitung jumlah form repeater yang tersedia
@@ -465,7 +471,7 @@
                 </div>
                 <div class="form-row mb-3">
                     <div class="col-12 text-end">
-                        <button type="button" class="btn btn-danger btn-delete-repeater" onclick="confirmDelete(event)">
+                        <button type="button" class="btn btn-danger btn-delete-repeater" data-id="{{ $tindakLanjut->id }}">
                             <i class="bi bi-trash"></i><span class="d-none d-md-inline">&nbsp;Hapus</span>
                         </button>
                     </div>
@@ -521,31 +527,63 @@
         countRepeater();
     });
 
-    // Fungsi untuk menampilkan pesan konfirmasi sebelum menghapus repeater
-    function confirmDelete(event) {
-        Swal.fire({
-            title: 'Apakah Anda yakin?',
-            text: 'Anda tidak akan dapat mengembalikan tindakan ini!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Ya, hapus!',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Jika pengguna menekan tombol Ya pada pesan konfirmasi, hapus elemen form repeater
-                event.target.closest('.form-repeater').remove();
-                // Mengupdate counter setelah menghapus repeater
-                countRepeater();
-            } else {
-                // Jika pengguna memilih opsi "Batal", hentikan aksi default (tidak hapus)
-                event.preventDefault();
-            }
-        });
-    }
+    // Event listener untuk tombol delete di dalam form repeater
+    document.querySelectorAll('.btn-delete-repeater').forEach(button => {
+        button.addEventListener('click', function() {
+            // Ambil ID dari atribut data-id
+            const id = this.getAttribute('data-id');
 
+            // Tampilkan SweetAlert konfirmasi sebelum menghapus
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: 'Anda tidak akan dapat mengembalikan tindakan ini!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Set nilai action form delete sesuai dengan ID tindak lanjut yang dipilih
+                    document.getElementById('deleteFormTL').setAttribute('action', '/tindak-lanjut/' + id);
+                    // Submit form delete
+                    document.getElementById('deleteFormTL').submit();
+                }
+            });
+        });
+    });
     // Memanggil fungsi countRepeater saat halaman dimuat
     countRepeater();
 </script>
+<!-- Script JavaScript dengan SweetAlert -->
+<script>
+    // Event listener untuk tombol delete di dalam form repeater
+    document.querySelectorAll('.btn-delete-repeater').forEach(button => {
+        button.addEventListener('click', function() {
+            // Ambil ID dari atribut data-id
+            const id = this.getAttribute('data-id');
+
+            // Tampilkan SweetAlert konfirmasi sebelum menghapus
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: 'Anda tidak akan dapat mengembalikan tindakan ini!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Set nilai action form delete sesuai dengan ID tindak lanjut yang dipilih
+                    document.getElementById('deleteFormTL').setAttribute('action', '/tindak-lanjut/' + id);
+                    // Submit form delete
+                    document.getElementById('deleteFormTL').submit();
+                }
+            });
+        });
+    });
+</script>
+
 @endsection

@@ -87,6 +87,7 @@ Route::middleware(['auth', 'prevent-back-button'])->group(function () {
         Route::get('/tindak-lanjut/{tindak_lanjut:id}/edit', [TindakLanjutController::class, 'edit'])->middleware('permission:edit tindak lanjut');
         Route::put('/tindak-lanjut/{tindak_lanjut:id}', [TindakLanjutController::class, 'update'])->middleware('permission:edit tindak lanjut');
         Route::delete('/tindak-lanjut/{tindak_lanjut:id}', [TindakLanjutController::class, 'destroy'])->middleware('permission:delete tindak lanjut');
+        Route::delete('/tindak-lanjut/{tindak_lanjut?}', [TindakLanjutController::class, 'destroy'])->name('tindaklanjut.destroy');
         Route::get('/tindak-lanjut/{tindak_lanjut:id}/generate', [TindakLanjutController::class, 'word']);
         Route::put('/tindak-lanjut/{tindak_lanjut:id}/updateDeadline', [TindakLanjutController::class, 'updateDeadline']);
     });
