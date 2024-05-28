@@ -25,7 +25,8 @@ class RekomendasiController extends Controller
     {
         return view('rekomendasi.index', [
             'title' => 'Daftar Rekomendasi',
-            'rekomendasi' => Rekomendasi::all(),
+            'rekomendasi' => Rekomendasi::all()->sortByDesc('created_at'),
+            'semesterRekomendasi' => Rekomendasi::distinct()->pluck('semester_rekomendasi')->toArray(),
             'kamus_pemeriksaan' => Kamus::where('jenis', 'Pemeriksaan')->get(),
         ]);
     }
@@ -62,11 +63,33 @@ class RekomendasiController extends Controller
             'uraian_temuan' => 'required',
             'rekomendasi' => 'required',
             'catatan_rekomendasi' => 'required',
+            'lhp' => 'required|mimes:pdf|max:100000',
             'status_rekomendasi' => 'required',
         ]);
 
+        // Validasi file LHP
+        if ($request->hasFile('lhp')) {
+            $lhp = $request->file('lhp');
+            $lhpFileName = $lhp->getClientOriginalName();
+            $lhp->storeAs('public/uploads/lhp', $lhpFileName);
+            // Simpan nama file LHP ke dalam array $validatedData
+            $validatedData['lhp'] = $lhpFileName;
+        } else {
+            return redirect()->back()->withInput()->with('error', 'File LHP tidak diunggah!');
+        }
+
         // memberikan id pada rekomendasi berupa uuid
         $validatedData['id'] = Str::uuid()->toString();
+
+        // Menentukan semester rekomendasi
+        $tahun = date('Y');
+        $bulan = date('n');
+        // Tentukan semester berdasarkan bulan
+        $semester = $bulan <= 6 ? 'Semester 1' : 'Semester 2';
+        // Gabungkan semester dengan tahun
+        $semester_tahun = $semester . ' ' . $tahun;
+        // Assign ke validatedData
+        $validatedData['semester_rekomendasi'] = $semester_tahun;
 
         // Aturan validasi untuk entri TindakLanjut
         $tindakLanjutValidationRules = [
@@ -86,27 +109,36 @@ class RekomendasiController extends Controller
             $rekomendasi = Rekomendasi::create($validatedData);
 
             foreach ($request->tindak_lanjut as $key => $tindak_lanjut) {
-                // Buat entri baru dalam tabel TindakLanjut
-                $tindakLanjut = TindakLanjut::create([
+                // Mendapatkan nilai tenggat waktu dari input pengguna
+                $tenggat_waktu = $request->tenggat_waktu[$key];
+
+                // Hitung semester tindak lanjut berdasarkan tenggat waktu
+                $bulan = date('n', strtotime($tenggat_waktu));
+                $tahun = date('Y', strtotime($tenggat_waktu));
+                $semester = $bulan <= 6 ? 'Semester 1' : 'Semester 2';
+                $semester_tindak_lanjut = $semester . ' ' . $tahun;
+
+                // Simpan data tindak lanjut beserta semester tindak lanjut ke dalam database
+                TindakLanjut::create([
                     'id' => Str::uuid()->toString(),
                     'rekomendasi_id' => $rekomendasi->id,
                     'tindak_lanjut' => $tindak_lanjut,
                     'unit_kerja' => $request->unit_kerja[$key],
                     'tim_pemantauan' => $request->tim_pemantauan[$key],
-                    'tenggat_waktu' => $request->tenggat_waktu[$key],
+                    'tenggat_waktu' => $tenggat_waktu,
+                    'semester_tindak_lanjut' => $semester_tindak_lanjut,
                     'status_tindak_lanjut' => 'Belum Sesuai',
                     'bukti_tindak_lanjut' => 'Belum Diunggah!',
                 ]);
 
                 // Kirim notifikasi ke pengguna terkait
-                $usersWithRole = User::where('role', $tindakLanjut->tim_pemantauan)
-                    ->orWhere('unit_kerja', $tindakLanjut->unit_kerja)
+                $usersWithRole = User::where('role', $request->tim_pemantauan[$key])
+                    ->orWhere('unit_kerja', $request->unit_kerja[$key])
                     ->get();
 
                 foreach ($usersWithRole as $user) {
-                    $user->notify(new RekomendasiNotification($tindakLanjut));
+                    $user->notify(new RekomendasiNotification(TindakLanjut::latest()->first()));
                 }
-
             }
 
             // masukkan value id rekomendasi ke dalam tabel bukti_input_siptl
@@ -128,6 +160,7 @@ class RekomendasiController extends Controller
             return redirect()->back()->withInput()->with('error', $errorMessage);
         }
     }
+
 
     /**
      * Display the specified resource.
@@ -169,6 +202,18 @@ class RekomendasiController extends Controller
     public function update(Request $request, Rekomendasi $rekomendasi)
     {
         try {
+            // Validasi file LHP
+            if ($request->hasFile('lhp')) {
+                $request->validate([
+                    'lhp' => 'required|mimes:pdf|max:100000',
+                ]);
+                $lhp = $request->file('lhp');
+                $lhpFileName = $lhp->getClientOriginalName();
+                $lhp->storeAs('public/uploads/lhp', $lhpFileName);
+                $validatedData['lhp'] = $lhpFileName;
+            }
+
+            // Validasi data rekomendasi
             $validatedData = $request->validate([
                 'pemeriksaan' => 'required',
                 'jenis_pemeriksaan' => 'required',
@@ -181,36 +226,37 @@ class RekomendasiController extends Controller
                 'status_rekomendasi' => 'required'
             ]);
 
+            // Update data rekomendasi
             $rekomendasi->update($validatedData);
 
+            // Proses tindak lanjut
             foreach ($request->tindak_lanjut as $key => $tindak_lanjut) {
-                $validatedData = $request->validate([
+                $validatedTindakLanjutData = $request->validate([
                     'tindak_lanjut.' . $key => 'required',
                     'unit_kerja.' . $key => 'required',
                     'tim_pemantauan.' . $key => 'required',
                     'tenggat_waktu.' . $key => 'required',
                 ]);
 
+                // Hitung semester berdasarkan tenggat waktu
+                $bulan = date('n', strtotime($request->tenggat_waktu[$key]));
+                $tahun = date('Y', strtotime($request->tenggat_waktu[$key]));
+                $semester = $bulan <= 6 ? 'Semester 1' : 'Semester 2';
+                $semester_tindak_lanjut = $semester . ' ' . $tahun;
+
                 if (isset($request->id[$key]) && $request->id[$key] != null) {
+                    // Update tindak lanjut yang sudah ada
                     TindakLanjut::where('id', $request->id[$key])->update([
                         'tindak_lanjut' => $tindak_lanjut,
                         'unit_kerja' => $request->unit_kerja[$key],
                         'tim_pemantauan' => $request->tim_pemantauan[$key],
                         'tenggat_waktu' => $request->tenggat_waktu[$key],
+                        'semester_tindak_lanjut' => $semester_tindak_lanjut,
                         'bukti_tindak_lanjut' => $request->bukti_tindak_lanjut[$key],
                         'status_tindak_lanjut' => $request->status_tindak_lanjut[$key],
                     ]);
-
-                    // Kirim notifikasi ke pengguna terkait
-                    $usersWithRole = User::where('role', $request->tim_pemantauan[$key])
-                        ->orWhere('unit_kerja', $request->unit_kerja[$key])
-                        ->get();
-
-                    foreach ($usersWithRole as $user) {
-                        $user->notify(new RekomendasiNotification(TindakLanjut::find($request->id[$key])));
-                    }
-
                 } else {
+                    // Buat tindak lanjut baru
                     TindakLanjut::create([
                         'id' => Str::uuid()->toString(),
                         'rekomendasi_id' => $rekomendasi->id,
@@ -218,18 +264,19 @@ class RekomendasiController extends Controller
                         'unit_kerja' => $request->unit_kerja[$key],
                         'tim_pemantauan' => $request->tim_pemantauan[$key],
                         'tenggat_waktu' => $request->tenggat_waktu[$key],
+                        'semester_tindak_lanjut' => $semester_tindak_lanjut,
                         'bukti_tindak_lanjut' => 'Belum Diunggah!',
                         'status_tindak_lanjut' => 'Belum Sesuai',
                     ]);
+                }
 
-                    // Kirim notifikasi ke pengguna terkait
-                    $usersWithRole = User::where('role', $request->tim_pemantauan[$key])
-                        ->orWhere('unit_kerja', $request->unit_kerja[$key])
-                        ->get();
+                // Kirim notifikasi ke pengguna terkait
+                $usersWithRole = User::where('role', $request->tim_pemantauan[$key])
+                    ->orWhere('unit_kerja', $request->unit_kerja[$key])
+                    ->get();
 
-                    foreach ($usersWithRole as $user) {
-                        $user->notify(new RekomendasiNotification(TindakLanjut::latest()->first()));
-                    }
+                foreach ($usersWithRole as $user) {
+                    $user->notify(new RekomendasiNotification(TindakLanjut::latest()->first())); // Sesuaikan dengan notifikasi yang ingin dikirim
                 }
             }
 
@@ -248,7 +295,11 @@ class RekomendasiController extends Controller
      */
     public function destroy(Rekomendasi $rekomendasi)
     {
-
+        // Hapus notifikasi yang terkait dengan rekomendasi
+        $tindakLanjut = TindakLanjut::where('rekomendasi_id', $rekomendasi->id)->get();
+        foreach ($tindakLanjut as $tindak) {
+            $tindak->notifications()->delete();
+        }
         BuktiInputSIPTL::where('rekomendasi_id', $rekomendasi->id)->delete();
         TindakLanjut::where('rekomendasi_id', $rekomendasi->id)->delete();
         Rekomendasi::destroy($rekomendasi->id);

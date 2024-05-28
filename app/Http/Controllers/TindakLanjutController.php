@@ -21,7 +21,8 @@ class TindakLanjutController extends Controller
     {
         return view('tindak-lanjut.index', [
             'title' => 'Daftar Tindak Lanjut',
-            'tindak_lanjut' => TindakLanjut::all(),
+            'tindak_lanjut' => TindakLanjut::all()->sortByDesc('created_at'),
+            'semesterTindakLanjut' => TindakLanjut::distinct()->pluck('semester_tindak_lanjut')->toArray(),
         ]);
     }
 

@@ -5,6 +5,13 @@
 .stats-icon i {
     font-size: 16px; /* Ubah ukuran ikon sesuai kebutuhan */
 }
+
+caption {
+        caption-side: top;
+        text-align: left;
+        padding-bottom: 10px;
+        font-weight: bold;
+    }
 </style>
 @endsection
 
@@ -47,6 +54,81 @@
                     </div>
                 </div>
             @endforeach
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table" id="table1">
+                        <caption class="float-left"><h6>Progres Penyelesaian Tindak Lanjut Menurut Unit Kerja</h6></caption>
+                        <thead class="thead-light">
+                            <tr>
+                                <th>No</th>
+                                <th>Unit Kerja</th>
+                                <th>Jumlah Tindak Lanjut</th>
+                                <th>Sesuai</th>
+                                <th>Belum Sesuai</th>
+                                <th>Belum Ditindaklanjuti</th>
+                                <th>Tidak Ditindaklanjuti</th>
+                                <th>Persentase Penyelesaian</th>
+                                <th>Sudah Upload</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php $no = 1 @endphp
+                            @php $totalTindakLanjut = 0 @endphp
+                            @php $totalSesuai = 0 @endphp
+                            @php $totalBelumSesuai = 0 @endphp
+                            @php $totalBelumDitindaklanjuti = 0 @endphp
+                            @php $totalTidakDitindaklanjuti = 0 @endphp
+                            @php $totalPersentasePenyelesaian = 0 @endphp
+                            @php $totalSudahUpload = 0 @endphp
+                            @foreach($unitKerjaList as $unitKerja)
+                            <tr>
+                                <td class="text-center">{{ $no }}</td>
+                                <td>{{ $unitKerja['unit_kerja'] }}</td>
+                                <td class="text-center">{{ $unitKerja['jumlah_tindak_lanjut'] }}</td>
+                                <td class="text-center">{{ $unitKerja['jumlah_sesuai'] }}</td>
+                                <td class="text-center">{{ $unitKerja['jumlah_belum_sesuai'] }}</td>
+                                <td class="text-center">{{ $unitKerja['jumlah_belum_ditindaklanjuti'] }}</td>
+                                <td class="text-center">{{ $unitKerja['jumlah_tidak_ditindaklanjuti'] }}</td>
+                                <td class="text-center">
+                                    <div class="progress" style="height: 10px;">
+                                        <div class="progress-bar" role="progressbar" style="width: {{ $unitKerja['persentase_penyelesaian'] }}%;" aria-valuenow="{{ $unitKerja['persentase_penyelesaian'] }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    {{ number_format($unitKerja['persentase_penyelesaian'], 2) }}%
+                                </td>
+                                <td class="text-center">{{ $unitKerja['sudah_upload'] }}</td>
+                            </tr>
+                            @php
+                                $totalTindakLanjut += $unitKerja['jumlah_tindak_lanjut'];
+                                $totalSesuai += $unitKerja['jumlah_sesuai'];
+                                $totalBelumSesuai += $unitKerja['jumlah_belum_sesuai'];
+                                $totalBelumDitindaklanjuti += $unitKerja['jumlah_belum_ditindaklanjuti'];
+                                $totalTidakDitindaklanjuti += $unitKerja['jumlah_tidak_ditindaklanjuti'];
+                                $totalPersentasePenyelesaian += $unitKerja['persentase_penyelesaian'];
+                                $totalSudahUpload += $unitKerja['sudah_upload'];
+                                $no++
+                            @endphp
+                            @endforeach
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2" class="font-weight-bold text-center"><strong>Total</strong></td>
+                                <td class="text-center"><strong>{{ $totalTindakLanjut }}</strong></td>
+                                <td class="text-center"><strong>{{ $totalSesuai }}</strong></td>
+                                <td class="text-center"><strong>{{ $totalBelumSesuai }}</strong></td>
+                                <td class="text-center"><strong>{{ $totalBelumDitindaklanjuti }}</strong></td>
+                                <td class="text-center"><strong>{{ $totalTidakDitindaklanjuti }}</strong></td>
+                                <td class="text-center"><strong>{{ number_format($totalPersentasePenyelesaian / count($unitKerjaList), 2) }}%</strong></td>
+                                <td class="text-center"><strong>{{ $totalSudahUpload }}</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -120,5 +202,34 @@
         }
     });
 
+</script>
+
+<script>
+    new DataTable('#table1', {
+        info: true,
+        ordering: true,
+        paging: true,
+        searching: true,
+        lengthChange: true,
+        lengthMenu: [5, 10, 25, 50, 75, 100],
+        destroy: true,
+
+        // Bahasa Indonesia
+        language: {
+            "info": "<sup><big>dari _TOTAL_ entri</big></sup>",
+            "infoEmpty": "<sup><big>0 entri</big></sup>",
+            "infoFiltered": "<sup><big>(filter dari _MAX_ total entri)</big></sup>",
+            "lengthMenu": "_MENU_ &nbsp;",
+            "search": "<i class='bi bi-search'></i>  ",
+            "zeroRecords": "Tidak ada data yang cocok",
+            "paginate": {
+                "next": "<i class='bi bi-chevron-right'></i>",
+                "previous": "<i class='bi bi-chevron-left'></i>"
+            }
+        },
+
+        // Mengatur dom untuk memposisikan kotak pencarian di pojok kanan atas tabel
+        dom: '<"d-flex justify-content-end mb-4"fB>rt<"d-flex justify-content-between mt-4"<"d-flex justify-content-start"li><"col-md-6"p>>',
+    });
 </script>
 @endsection

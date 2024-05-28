@@ -21,10 +21,13 @@ return new class extends Migration
             $table->text('uraian_temuan');
             $table->text('rekomendasi');
             $table->text('catatan_rekomendasi');
+            $table->string('lhp');
+            $table->string('semester_rekomendasi');
             $table->string('status_rekomendasi')->default('Belum Sesuai');
             $table->string('catatan_pemutakhiran')->nullable();
             $table->string('pemutakhiran_by')->nullable();
             $table->dateTime('pemutakhiran_at')->nullable();
+            $table->string('semester_pemutakhiran')->nullable();
             $table->timestamps();
         });
     }

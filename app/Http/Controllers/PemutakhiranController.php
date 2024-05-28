@@ -22,9 +22,14 @@ class PemutakhiranController extends Controller
             'title' => 'Pemutakhiran Status Rekomendasi',
             'rekomendasi' => Rekomendasi::whereHas('tindakLanjut', function ($query) {
                 $query->where('status_tindak_lanjut', 'Sesuai');
-            })->whereDoesntHave('tindakLanjut', function ($query) {
-                $query->where('status_tindak_lanjut', '!=', 'Sesuai');
-            })->get(),
+            })->where(function ($query) {
+                $query->whereDoesntHave('tindakLanjut', function ($subquery) {
+                    $subquery->where('status_tindak_lanjut', '!=', 'Sesuai');
+                })->orWhereHas('tindakLanjut', function ($subquery) {
+                    $subquery->where('tenggat_waktu', '<', now());
+                });
+            })->orderByDesc('created_at')->get(),
+            'semesterRekomendasi' => Rekomendasi::distinct()->pluck('semester_rekomendasi')->toArray(),
             'kamus_pemeriksaan' => Kamus::where('jenis', 'Pemeriksaan')->get(),
             'TindakLanjut' => TindakLanjut::all(),
             'buktiInputSIPTL' => BuktiInputSIPTL::all(),
@@ -56,10 +61,18 @@ class PemutakhiranController extends Controller
      */
     public function update(Request $request, Rekomendasi $rekomendasi)
     {
+        // Menentukan semester pemutakhiran
+        $tahun = date('Y');
+        $bulan = date('n');
+        // Tentukan semester berdasarkan bulan
+        $semester = $bulan <= 6 ? 'Semester 1' : 'Semester 2';
+        // Gabungkan semester dengan tahun
+        $semester_tahun = $semester . ' ' . $tahun;
 
         $rekomendasi->update([
             'status_rekomendasi' => $request->status_rekomendasi,
             'catatan_pemutakhiran' => $request->catatan_pemutakhiran,
+            'semester_pemutakhiran' => $semester_tahun,
             'pemutakhiran_by' => auth()->user()->nama,
             'pemutakhiran_at' => now(),
         ]);

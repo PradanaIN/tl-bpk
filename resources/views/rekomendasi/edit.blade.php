@@ -22,6 +22,10 @@
                                 aria-controls="rekomendasi" aria-selected="false"><h6>Rekomendasi</h6></a>
                         </li>
                         <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="lhp-tab" data-bs-toggle="tab" href="#lhp" role="tab"
+                                aria-controls="lhp" aria-selected="false"><h6>Dokumen LHP</h6></a>
+                        </li>
+                        <li class="nav-item" role="presentation">
                             <a class="nav-link" id="tindaklanjut-tab" data-bs-toggle="tab" href="#tindaklanjut" role="tab"
                                 aria-controls="tindaklanjut" aria-selected="false"><h6>Tindak Lanjut</h6></a>
                         </li>
@@ -29,7 +33,7 @@
                 </div>
             </div>
             <div class="card">
-                <form class="form form-vertical" action="/rekomendasi/{{ $rekomendasi->id }}" method="post" data-parsley-validate id="formTambahRekomendasi">
+                <form class="form form-vertical" action="/rekomendasi/{{ $rekomendasi->id }}" method="post" data-parsley-validate id="formTambahRekomendasi" enctype="multipart/form-data">
                     @method('put')
                     @csrf
                     <input type="hidden" name="status_rekomendasi" value="{{ $rekomendasi->status_rekomendasi }}">
@@ -131,6 +135,21 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="tab-pane fade" id="lhp" role="tabpanel" aria-labelledby="lhp-tab">
+                                <div class="alert alert-warning" role="alert">
+                                    <h4 class="alert-heading">Info!</h4>
+                                    <p>Jika dokumen Laporan Hasil Pemeriksaan (LHP) tidak mengalami perubahan, tidak perlu mengunggah ulang.</p>
+                                    <hr>
+                                    <p class="mb-0">Dokumen LHP yang terakhir diunggah: <strong>{{ $rekomendasi->lhp }}</strong></p>
+                                </div>
+                                <div class="form-group mandatory">
+                                    <label for="lhp" class="form-label">Dokumen Laporan Hasil Pemeriksaan (LHP)</label>
+                                    <input type="file" class="basic-filepond" name="lhp" id="lhp">
+                                    @error('lhp')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
                             <div class="tab-pane fade" id="tindaklanjut" role="tabpanel" aria-labelledby="tindaklanjut-tab">
                                 <div class="row mb-5">
                                     <div class="col-md-6">
@@ -224,7 +243,55 @@
 
 
 @section('script')
+<!-- filepond js -->
+<script>
+    FilePond.registerPlugin(
+        FilePondPluginFileValidateSize,
+        FilePondPluginFileValidateType,
+        FilePondPluginImagePreview,
+        FilePondPluginImageResize,
+        FilePondPluginImageExifOrientation,
+        FilePondPluginImageCrop,
+        FilePondPluginImageFilter
+    );
 
+    FilePond.setOptions({
+        credits: false,
+        allowMultiple: false,
+        maxFiles: 1,
+        allowFileTypeValidation: true,
+        acceptedFileTypes: [
+            'application/pdf',
+        ],
+        fileValidateTypeLabelExpectedTypes: 'Hanya menerima file PDF.',
+        fileValidateTypeLabelExpectedTypesMap: {
+            'application/pdf': '.pdf',
+        },
+        allowFileSizeValidation: true,
+        maxFileSize: '100MB',
+        labelIdle: 'Seret & Letakkan file atau <span class="filepond--label-action"> Telusuri </span>',
+        labelFileProcessing: 'Sedang memproses',
+        labelFileProcessingComplete: 'Proses selesai',
+        labelTapToCancel: 'tap untuk membatalkan',
+        labelTapToRetry: 'tap untuk mencoba lagi',
+        labelTapToUndo: 'tap untuk membatalkan',
+        labelButtonRemoveItem: 'Hapus',
+        labelButtonAbortItemLoad: 'Batal',
+        labelButtonRetryItemLoad: 'Coba lagi',
+        labelButtonAbortItemProcessing: 'Batal',
+        labelButtonUndoItemProcessing: 'Kembali',
+        labelButtonRetryItemProcessing: 'Coba lagi',
+        labelButtonProcessItem: 'Unggah',
+        labelMaxFileSizeExceeded: 'Ukuran file terlalu besar',
+        labelMaxFileSize: 'Ukuran file maksimum adalah {filesize}',
+        labelMaxTotalFileSizeExceeded: 'Ukuran total file terlalu besar',
+        labelMaxTotalFileSize: 'Ukuran total file maksimum adalah {filesize}',
+        fileValidateTypeLabelExpectedTypes: 'Hanya menerima file PDF',
+    });
+
+    FilePond.parse(document.body);
+</script>
+<!-- tooltip -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -239,7 +306,7 @@
         document.getElementById('formTambahRekomendasi').submit();
     });
 </script>
-
+<!-- button actions js -->
 <script>
     // Sembunyikan tombol-tombol "Back" dan "Next" secara default
     document.getElementById('btnBack').style.display = 'none';
@@ -267,7 +334,21 @@
             document.getElementById('pemeriksaan-tab').click();
         });
         document.getElementById('btnNext').addEventListener('click', function() {
-            // Ketika tombol "Next" pada tab "Rekomendasi" diklik, pindahkan ke tab "Tindak Lanjut"
+            // Ketika tombol "Next" pada tab "Rekomendasi" diklik, pindahkan ke tab "LHP"
+            document.getElementById('lhp-tab').click();
+        });
+    }
+
+    function showLHPActions() {
+        document.getElementById('btnBack').style.display = 'block';
+        document.getElementById('btnNext').style.display = 'block';
+        document.getElementById('btnTambah').style.display = 'none';
+        document.getElementById('btnBack').addEventListener('click', function() {
+            // Ketika tombol "Back" pada tab "LHP" diklik, pindahkan ke tab "Rekomendasi"
+            document.getElementById('rekomendasi-tab').click();
+        });
+        document.getElementById('btnNext').addEventListener('click', function() {
+            // Ketika tombol "Next" pada tab "LHP" diklik, pindahkan ke tab "Tindak Lanjut"
             document.getElementById('tindaklanjut-tab').click();
         });
     }
@@ -278,8 +359,8 @@
         document.getElementById('btnTambah').style.display = 'block';
         document.getElementById('btnNext').style.display = 'none';
         document.getElementById('btnBack').addEventListener('click', function() {
-            // Ketika tombol "Back" pada tab "Tindak Lanjut" diklik, pindahkan ke tab "Rekomendasi"
-            document.getElementById('rekomendasi-tab').click();
+            // Ketika tombol "Back" pada tab "Tindak Lanjut" diklik, pindahkan ke tab "LHP"
+            document.getElementById('lhp-tab').click();
         });
     }
 
@@ -295,15 +376,16 @@
                 showPemeriksaanActions(); // Jika tab "Pemeriksaan" aktif, tampilkan tombol "Next" saja
             } else if (this.getAttribute('aria-controls') === 'rekomendasi') {
                 showRekomendasiActions(); // Jika tab "Rekomendasi" aktif, tampilkan tombol "Back" dan "Next"
+            } else if (this.getAttribute('aria-controls') === 'lhp') {
+                showLHPActions(); // Jika tab "LHP" aktif, tampilkan tombol "Back" dan "Next"
             } else if (this.getAttribute('aria-controls') === 'tindaklanjut') {
                 showTindakLanjutActions(); // Jika tab "Tindak Lanjut" aktif, tampilkan tombol "Back" dan "Tambah"
             }
         });
     });
 </script>
-
+<!-- select2 js -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
 <script>
     // Inisialisasi Select2 pada elemen dengan class "select-unit-kerja"
     $('.select-unit-kerja').select2({
@@ -336,7 +418,7 @@
         },
     });
 </script>
-
+<!-- repeater js -->
 <script>
     // Fungsi untuk menghitung jumlah form repeater yang tersedia
     function countRepeater() {
@@ -465,23 +547,4 @@
     // Memanggil fungsi countRepeater saat halaman dimuat
     countRepeater();
 </script>
-
-{{-- <script>
-    // warning batal button
-    document.querySelector('.btn-light-secondary').addEventListener('click', function(e) {
-        Swal.fire({
-            title: 'Apakah Anda yakin?',
-            text: "Data yang diinputkan tidak akan disimpan!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Ya, batalkan!',
-            cancelButtonText: 'Tidak, tetap disini'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location = '/rekomendasi';
-            }
-        })
-    });
-</script> --}}
-
 @endsection

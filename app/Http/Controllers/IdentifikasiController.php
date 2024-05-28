@@ -17,11 +17,13 @@ class IdentifikasiController extends Controller
      */
     public function index()
     {
-        $tindak_lanjut = TindakLanjut::all();
+        // urutkan berdasarkan data terbaru
+        $tindak_lanjut = TindakLanjut::all()->sortByDesc('created_at');
 
         return view('identifikasi.index', [
             'title' => 'Identifikasi Tindak Lanjut',
             'tindak_lanjut' => $tindak_lanjut,
+            'semesterTindakLanjut' => TindakLanjut::distinct()->pluck('semester_tindak_lanjut')->toArray(),
         ]);
     }
 

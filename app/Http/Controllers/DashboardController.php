@@ -139,6 +139,62 @@ class DashboardController extends Controller
                 ->orderBy('rekomendasi.tahun_pemeriksaan', 'asc')
                 ->get();
 
+                $tindakLanjutList = $data;
+
+                // Inisialisasi objek $unitKerjaList
+                $unitKerjaList = [];
+
+                // Kelompokkan data tindak lanjut berdasarkan unit kerja
+                $groupedTindakLanjut = $tindakLanjutList->groupBy('unit_kerja');
+
+                // Loop untuk setiap kelompok unit kerja
+                foreach ($groupedTindakLanjut as $unitKerja => $tindakLanjut) {
+                    // Hitung jumlah tindak lanjut untuk unit kerja ini
+                    $jumlahTindakLanjut = 0;
+
+                    // Hitung jumlah tindak lanjut untuk unit kerja ini berdasarkan status
+                    $jumlahSesuai = 0;
+                    $jumlahBelumSesuai = 0;
+                    $jumlahBelumDitindaklanjuti = 0;
+                    $jumlahTidakDitindaklanjuti = 0;
+
+                    // Loop untuk setiap tindak lanjut
+                    foreach ($tindakLanjut as $tindak) {
+                        // Hitung jumlah tindak lanjut unit kerja ini
+                        $jumlahTindakLanjut++;
+
+                        // Hitung jumlah tindak lanjut berdasarkan status
+                        if ($tindak->status_tindak_lanjut == 'Sesuai') {
+                            $jumlahSesuai++;
+                        } elseif ($tindak->status_tindak_lanjut == 'Belum Sesuai') {
+                            $jumlahBelumSesuai++;
+                        } elseif ($tindak->status_tindak_lanjut == 'Belum Ditindaklanjuti') {
+                            $jumlahBelumDitindaklanjuti++;
+                        } elseif ($tindak->status_tindak_lanjut == 'Tidak Dapat Ditindaklanjuti') {
+                            $jumlahTidakDitindaklanjuti++;
+                        }
+                    }
+
+                    // Hitung persentase penyelesaian
+                    $totalTindakLanjut = $jumlahSesuai + $jumlahBelumSesuai + $jumlahBelumDitindaklanjuti + $jumlahTidakDitindaklanjuti;
+                    $persentasePenyelesaian = ($jumlahSesuai / $totalTindakLanjut) * 100;
+
+                    // Hitung jumlah yang sudah upload
+                    $sudahUpload = $tindakLanjut->whereNotNull('upload_at')->count();
+
+                    // Simpan data ke dalam objek $unitKerjaList
+                    $unitKerjaList[] = [
+                        'unit_kerja' => $unitKerja,
+                        'jumlah_tindak_lanjut' => $jumlahTindakLanjut,
+                        'jumlah_sesuai' => $jumlahSesuai,
+                        'jumlah_belum_sesuai' => $jumlahBelumSesuai,
+                        'jumlah_belum_ditindaklanjuti' => $jumlahBelumDitindaklanjuti,
+                        'jumlah_tidak_ditindaklanjuti' => $jumlahTidakDitindaklanjuti,
+                        'persentase_penyelesaian' => $persentasePenyelesaian,
+                        'sudah_upload' => $sudahUpload,
+                    ];
+                }
+
                 return view('dashboard.pemantauan', [
                     'title' => 'Dashboard',
                     'role' => $role,
@@ -150,6 +206,7 @@ class DashboardController extends Controller
                     'jumlah_data_per_tahun' => $jumlah_data_per_tahun,
                     'data_sudah_diidentifikasi' => $data_sudah_diidentifikasi,
                     'data_belum_diidentifikasi' => $data_belum_diidentifikasi,
+                    'unitKerjaList' => $unitKerjaList,
                 ]);
         } else {
             // Jika kondisi else if tidak terpenuhi, buat variabel kosong atau null

@@ -47,10 +47,13 @@ class Rekomendasi extends Model
         'uraian_temuan',
         'rekomendasi',
         'catatan_rekomendasi',
+        'lhp',
+        'semester_rekomendasi',
         'status_rekomendasi',
         'catatan_pemutakhiran',
         'pemutakhiran_by',
         'pemutakhiran_at',
+        'semester_pemutakhiran',
     ];
 
 

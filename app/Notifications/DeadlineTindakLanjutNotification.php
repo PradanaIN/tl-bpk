@@ -50,6 +50,7 @@ class DeadlineTindakLanjutNotification extends Notification
     {
         return [
             'tindak_lanjut_id' => $this->tindakLanjut->id,
+            'rekomentasi_id' => $this->tindakLanjut->rekomendasi_id,
             'title' => 'Pengubahan Tenggat Waktu',
             'message' => 'Tenggat waktu tindak lanjut telah diubah.',
             'url' => '/tindak-lanjut/' . $this->tindakLanjut->id,

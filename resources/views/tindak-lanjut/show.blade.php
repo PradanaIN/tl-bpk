@@ -1,9 +1,6 @@
 @extends('layouts.horizontal')
 
 @section('style')
-<link rel="stylesheet" href="{{ asset('mazer/assets/extensions/filepond/filepond.css')}}" />
-<link rel="stylesheet" href="{{ asset('mazer/assets/extensions/toastify-js/src/toastify.css') }}"/>
-
 <style>
     .status-badge {
             padding: 5px 10px;
@@ -325,13 +322,6 @@
                                     <p>Diunggah oleh {{ $tindak_lanjut->upload_by }} pada {{ \Carbon\Carbon::parse($tindak_lanjut->upload_at )->translatedFormat('d M Y')}}</p>
                                 </div>
                             </div>
-                            {{-- @if (\Carbon\Carbon::now()->gt(\Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu)))
-                                <div class="alert alert-warning mt-3" role="alert">
-                                    <p>Tidak dapat melakukan pengubahan karena telah melewati batas waktu untuk mengunggah bukti tindak lanjut.</p>
-                                    <hr>
-                                    <p class="mb-0"><strong>Silakan hubungi Inspektorat Utama untuk mendapatkan informasi lebih lanjut.</strong></p>
-                                </div>
-                            @endif --}}
                         @endif
                     </div>
                 </div>
@@ -529,17 +519,6 @@
 </div>
 
 @section('script')
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-file-validate-size/filepond-plugin-file-validate-size.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-file-validate-type/filepond-plugin-file-validate-type.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-crop/filepond-plugin-image-crop.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-exif-orientation/filepond-plugin-image-exif-orientation.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-filter/filepond-plugin-image-filter.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-preview/filepond-plugin-image-preview.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-resize/filepond-plugin-image-resize.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond/filepond.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/toastify-js/src/toastify.js') }}"></script>
-<script src="{{ asset('mazer/assets/static/js/pages/filepond.js') }}"></script>
-
 <!-- filepond -->
 <script>
     FilePond.registerPlugin(
@@ -661,7 +640,7 @@
         });
     });
 </script>
-
+<!-- Tooltip -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -670,18 +649,7 @@
         })
     }, false);
 </script>
-
-<script>
-    // Tangani klik tombol
-    document.getElementById('btnStatus').addEventListener('click', function() {
-    // Dapatkan elemen target yang ingin diarahkan atau di-scroll
-    var uploadSection = document.getElementById('uploadBtn');
-
-    // Lakukan scroll ke elemen target
-    uploadSection.scrollIntoView({ behavior: 'smooth' });
-    });
-</script>
-
+<!-- Modal -->
 <script>
     // Ambil tombol "Upload Dokumen TL"
     var uploadBtn = document.getElementById('uploadBtn');
@@ -693,7 +661,7 @@
     });
 
 </script>
-
+<!-- SweetAlert2 -->
 <script>
     @if (session()->has('update'))
         Swal.fire({

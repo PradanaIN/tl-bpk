@@ -52,6 +52,7 @@ class IdentifikasiNotification extends Notification
         if ($notifiable->unit_kerja == $this->tindakLanjut->unit_kerja) {
             return [
                 'tindak_lanjut_id' => $this->tindakLanjut->id,
+                'rekomentasi_id' => $this->tindakLanjut->rekomendasi_id,
                 'title' => 'Hasil Identifikasi Bukti Tindak Lanjut',
                 // 'message' => $this->tindakLanjut->status_tindak_lanjut_by . ' telah mengidentifikasi bukti tindak lanjut ' . strip_tags(html_entity_decode($this->tindakLanjut->tindak_lanjut)) . '.',
                 'message' => $this->tindakLanjut->status_tindak_lanjut_by . ' telah mengidentifikasi bukti tindak lanjut.',

@@ -207,7 +207,7 @@
                                 @else
                                     <div class="col-auto d-flex ms-auto">
                                         <span class="status-badge bg-success text-white me-2">{{ $tindak_lanjut->bukti_tindak_lanjut }}</span>
-                                        @canany(['Tim Koordinator Wilayah I', 'Tim Koordinator Wilayah II', 'Tim Koordinator Wilayah III', 'Super Admin'])
+                                        @canany(['Tim Pemantauan Wilayah I', 'Tim Pemantauan Wilayah II', 'Tim Pemantauan Wilayah III', 'Super Admin'])
                                             <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->bukti_tindak_lanjut) }}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Download Bukti TL">
                                                 <i class="bi bi-download"></i>
                                                 <span class="d-none d-md-inline">&nbsp;Unduh Bukti</span>

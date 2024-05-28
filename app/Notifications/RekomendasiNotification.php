@@ -53,6 +53,7 @@ class RekomendasiNotification extends Notification
         if ($notifiable->hasRole($tindakLanjut->tim_pemantauan)) {
             return [
                 'tindak_lanjut_id' => $tindakLanjut->id,
+                'rekomentasi_id' => $tindakLanjut->rekomendasi_id,
                 'title' => 'Tugas Identifikasi',
                 'message' => 'Anda memiliki tugas identifikasi baru.',
                 'url' => '/identifikasi/' . $tindakLanjut->id,
@@ -60,6 +61,7 @@ class RekomendasiNotification extends Notification
         } elseif ($notifiable->unit_kerja === $tindakLanjut->unit_kerja) {
             return [
                 'tindak_lanjut_id' => $tindakLanjut->id,
+                'rekomentasi_id' => $tindakLanjut->rekomendasi_id,
                 'title' => 'Tugas Tindak Lanjut',
                 'message' => 'Anda memiliki tugas tindak lanjut baru.',
                 'url' => '/tindak-lanjut/' . $tindakLanjut->id,

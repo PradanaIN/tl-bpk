@@ -52,6 +52,7 @@ class BuktiTindakLanjutNotification extends Notification
         if ($notifiable->hasRole($this->tindakLanjut->tim_pemantauan)) {
             return [
                 'tindak_lanjut_id' => $this->tindakLanjut->id,
+                'rekomentasi_id' => $this->tindakLanjut->rekomendasi_id,
                 'title' => 'Bukti Tindak Lanjut',
                 // 'message' => $this->tindakLanjut->upload_by . ' telah mengunggah bukti tindak lanjut ' . strip_tags(html_entity_decode($this->tindakLanjut->tindak_lanjut)) . '.',
                 'message' => $this->tindakLanjut->upload_by . ' telah mengunggah bukti tindak lanjut.',

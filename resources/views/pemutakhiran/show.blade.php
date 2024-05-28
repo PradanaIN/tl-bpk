@@ -1,11 +1,5 @@
 @extends('layouts.horizontal')
 
-@section('style')
-
-<link rel="stylesheet" href="{{ asset('mazer/assets/extensions/filepond/filepond.css')}}" />
-<link rel="stylesheet" href="{{ asset('mazer/assets/extensions/toastify-js/src/toastify.css') }}"/>
-@endsection
-
 @php
 function getStatusClass($status) {
     $statusClasses = [
@@ -68,6 +62,10 @@ function getStatusClass($status) {
                 <li class="nav-item" role="presentation">
                     <a class="nav-link" id="rekomendasi-tab" data-bs-toggle="tab" href="#rekomendasi" role="tab"
                         aria-controls="rekomendasi" aria-selected="false"><h6>Rekomendasi</h6></a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="lhp-tab" data-bs-toggle="tab" href="#lhp" role="tab"
+                        aria-controls="lhp" aria-selected="false"><h6>Dokumen LHP</h6></a>
                 </li>
                 <li class="nav-item" role="presentation">
                     <a class="nav-link" id="tindaklanjut-tab" data-bs-toggle="tab" href="#tindaklanjut" role="tab"
@@ -163,6 +161,27 @@ function getStatusClass($status) {
                             <div class="col-auto d-none d-md-block" id="limiter">:</div>
                             <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                 <p>{{ strip_tags(html_entity_decode($rekomendasi->catatan_rekomendasi)) }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="lhp" role="tabpanel" aria-labelledby="lhp-tab">
+                    <div class="card-body">
+                        <div class="row custom-row">
+                            <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
+                                <p class="fw-bold">Laporan Hasil Pemeriksaan</p>
+                            </div>
+                            <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                            <div class="col-lg-8 col-md-9 col-sm-12" id="text">
+                                <div class="col-auto d-flex ms-auto">
+                                    <span class="status-badge bg-success text-white me-2">{{ $rekomendasi->lhp }}</span>
+                                    <div class="col-auto d-flex align-content-center">
+                                        <a href="{{ asset('storage/uploads/lhp/' . $rekomendasi->lhp) }}" class="btn btn-secondary me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unduh LHP">
+                                            <i class="bi bi-download"></i>
+                                            <span class="d-none d-md-inline">&nbsp;Unduh LHP</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -444,18 +463,6 @@ function getStatusClass($status) {
 
 
 @section('script')
-
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-file-validate-size/filepond-plugin-file-validate-size.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-file-validate-type/filepond-plugin-file-validate-type.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-crop/filepond-plugin-image-crop.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-exif-orientation/filepond-plugin-image-exif-orientation.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-filter/filepond-plugin-image-filter.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-preview/filepond-plugin-image-preview.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond-plugin-image-resize/filepond-plugin-image-resize.min.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/filepond/filepond.js') }}"></script>
-<script src="{{ asset('mazer/assets/extensions/toastify-js/src/toastify.js') }}"></script>
-<script src="{{ asset('mazer/assets/static/js/pages/filepond.js') }}"></script>
-
 <!-- filepond validation -->
 <script>
     FilePond.registerPlugin(

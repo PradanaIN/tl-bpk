@@ -51,6 +51,7 @@ class TindakLanjut extends Model
         'status_tindak_lanjut_at',
         'status_tindak_lanjut_by',
         'catatan_tindak_lanjut',
+        'semester_tindak_lanjut',
         'rekomendasi_id',
     ];
 
