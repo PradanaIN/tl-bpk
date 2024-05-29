@@ -448,7 +448,13 @@ class RekomendasiController extends Controller
 
     public function export(Rekomendasi $rekomendasi)
     {
-        return Excel::download(new DetailRekomendasiExport($rekomendasi->id), 'rekomendasi.xlsx');
+        $rekomendasi = Rekomendasi::findOrFail($rekomendasi->id);
+
+        $rekomendasiName = 'Rekomendasi_' . $rekomendasi->semester_rekomendasi . '_' . $rekomendasi->id;
+
+        $fileName = $rekomendasiName . '.xlsx';
+
+        return Excel::download(new DetailRekomendasiExport($rekomendasi->id), $fileName);
     }
 
 }

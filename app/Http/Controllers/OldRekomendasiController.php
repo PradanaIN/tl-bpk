@@ -10,6 +10,9 @@ use App\Models\OldRekomendasi;
 use App\Models\OldTindakLanjut;
 use App\Models\OldBuktiInputSIPTL;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DetailRekomendasiExport;
+use App\Exports\DetailRekomendasiOldExport;
 
 class OldRekomendasiController extends Controller
 {
@@ -424,5 +427,19 @@ class OldRekomendasiController extends Controller
         OldRekomendasi::destroy($rekomendasi->id);
 
         return redirect('/old-rekomendasi')->with('delete', 'Data berhasil dihapus!');
+    }
+
+    /**
+     * Export data rekomendasi to Excel
+     */
+    public function export(OldRekomendasi $rekomendasi)
+    {
+        $rekomendasi = OldRekomendasi::findOrFail($rekomendasi->id);
+
+        $rekomendasiName = 'Rekomendasi_' . $rekomendasi->semester_rekomendasi . '_' . $rekomendasi->id;
+
+        $fileName = $rekomendasiName . '.xlsx';
+
+        return Excel::download(new DetailRekomendasiOldExport($rekomendasi->id), $fileName);
     }
 }

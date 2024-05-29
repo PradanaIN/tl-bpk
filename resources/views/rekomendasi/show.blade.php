@@ -24,11 +24,13 @@
                     <i class="bi bi-arrow-left"></i>
                     <span class="d-none d-md-inline">Kembali</span>
                 </a>
-                <a href="/rekomendasi/{{ $rekomendasi->id }}/export" class="btn btn-success ms-2" data-bs-toggle="tooltip"
-                    data-bs-placement="top" title="Export Rekomendasi">
-                    <i class="bi bi-file-earmark-excel"></i>
-                    <span class="d-none d-md-inline">Export Rekomendasi</span>
-                </a>
+                @if ($rekomendasi->pemutakhiran_at !== null && $rekomendasi->pemutakhiran_by !== null)
+                    <a href="/rekomendasi/{{ $rekomendasi->id }}/export" class="btn btn-success ms-2" data-bs-toggle="tooltip"
+                        data-bs-placement="top" title="Export Rekomendasi">
+                        <i class="bi bi-file-earmark-excel"></i>
+                        <span class="d-none d-md-inline">Export Rekomendasi</span>
+                    </a>
+                @endif
             </div>
             <div class="col-auto d-flex ms-auto">
                 <div class="col-auto">

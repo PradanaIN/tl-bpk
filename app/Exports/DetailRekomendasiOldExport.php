@@ -4,12 +4,14 @@ namespace App\Exports;
 
 use App\Models\Rekomendasi;
 use App\Models\TindakLanjut;
+use App\Models\OldRekomendasi;
+use App\Models\OldTindakLanjut;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Database\Eloquent\Collection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
-class DetailRekomendasiExport implements FromCollection, WithHeadings
+class DetailRekomendasiOldExport implements FromCollection, WithHeadings
 {
 
     protected $id;
@@ -25,10 +27,10 @@ class DetailRekomendasiExport implements FromCollection, WithHeadings
     public function collection()
     {
         // Mengambil data rekomendasi berdasarkan ID
-        $rekomendasi = Rekomendasi::findOrFail($this->id);
+        $rekomendasi = OldRekomendasi::findOrFail($this->id);
 
         // Mengambil data tindak lanjut yang terkait dengan rekomendasi
-        $tindakLanjut = TindakLanjut::where('rekomendasi_id', $this->id)->get();
+        $tindakLanjut = OldTindakLanjut::where('rekomendasi_id', $this->id)->get();
 
         // Membuat array untuk menampung data rekomendasi dan tindak lanjut
         $data = new Collection();
