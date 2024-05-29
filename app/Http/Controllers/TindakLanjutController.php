@@ -49,16 +49,20 @@ class TindakLanjutController extends Controller
         try {
             // Validasi jenis file
             $request->validate([
-                'bukti_tindak_lanjut' => 'required|file|mimes:pdf,zip,rar,tar|max:100000',
+                'bukti_tindak_lanjut' => 'required|file|mimes:pdf,zip,rar|max:100000',
                 'detail_bukti_tindak_lanjut' => 'required',
             ]);
 
             // Memeriksa apakah file telah diunggah
             if ($request->hasFile('bukti_tindak_lanjut')) {
                 $file = $request->file('bukti_tindak_lanjut');
-                $currentTime = now()->format('dmY');
-                $fileName = $currentTime . '_' . $file->getClientOriginalName();
+                $fileName = $file->getClientOriginalName();
                 $file->move(public_path('uploads/tindak_lanjut'), $fileName);
+
+                // hapus file lama jika ada
+                if ($tindakLanjut->bukti_tindak_lanjut) {
+                    unlink(public_path('uploads/tindak_lanjut/' . $tindakLanjut->bukti_tindak_lanjut));
+                }
 
                 // Update informasi tindak lanjut
                 $tindakLanjut->update([

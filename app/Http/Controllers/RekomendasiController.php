@@ -221,6 +221,12 @@ class RekomendasiController extends Controller
                 $lhp = $request->file('lhp');
                 $lhpFileName = $lhp->getClientOriginalName();
                 $lhp->storeAs('public/uploads/lhp', $lhpFileName);
+
+                // Hapus file lama jika ada
+                if ($rekomendasi->lhp) {
+                    unlink(public_path('storage/uploads/lhp/' . $rekomendasi->lhp));
+                }
+
                 $validatedData['lhp'] = $lhpFileName;
             } else {
                 $validatedData['lhp'] = $request->lhp_lama;
@@ -329,6 +335,12 @@ class RekomendasiController extends Controller
             // Gunakan nama yang sesuai
             $lhpFileName = $lhp->getClientOriginalName();
             $lhp->storeAs('public/uploads/lhp', $lhpFileName);
+
+            // Hapus file lama jika ada
+            if ($request->lhp) {
+                unlink(public_path('storage/uploads/lhp/' . $request->lhp));
+            }
+
             // Simpan nama file LHP ke dalam array $validatedData
             $validatedData['lhp'] = $lhpFileName;
         } else {

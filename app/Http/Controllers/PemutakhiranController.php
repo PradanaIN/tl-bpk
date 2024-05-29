@@ -89,19 +89,25 @@ class PemutakhiranController extends Controller
     {
         try {
             $request->validate([
-                'bukti_input_siptl' => 'required|file|mimes:jpg,jpeg,png,pdf,zip,rar,tar',
+                'bukti_input_siptl' => 'required|file|mimes:jpg,png,pdf|max:100000',
                 'detail_bukti_input_siptl' => 'required',
             ]);
 
             if ($request->hasFile('bukti_input_siptl')) {
                 $file = $request->file('bukti_input_siptl');
-                $currentTime = now()->format('dmY');
-                $fileName = $currentTime . '_' . $file->getClientOriginalName();
+                $fileName = $file->getClientOriginalName();
                 $file->move(public_path('uploads/bukti_input_siptl'), $fileName);
 
                 $buktiInput = BuktiInputSIPTL::where('rekomendasi_id', $rekomendasi->id)->first();
 
                 if ($buktiInput) {
+
+                    // hapus file lama
+                    $oldFile = public_path('uploads/bukti_input_siptl/' . $buktiInput->bukti_input_siptl);
+                    if (file_exists($oldFile)) {
+                        unlink($oldFile);
+                    }
+
                     $buktiInput->update([
                         'bukti_input_siptl' => $fileName,
                         'detail_bukti_input_siptl' => $request->detail_bukti_input_siptl,

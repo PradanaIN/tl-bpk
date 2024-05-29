@@ -19,7 +19,7 @@ class DashboardController extends Controller
             $data_sesuai = $data->where('status_rekomendasi', 'Sesuai');
             $data_belum_sesuai = $data->whereIn('status_rekomendasi', ['Belum Sesuai']);
             $data_belum_ditindaklanjuti = $data->where('status_rekomendasi', 'Belum Ditindaklanjuti');
-            $data_tidak_dapat_ditindaklanjuti = $data->where('status_rekomendasi', 'Tidak Dapat Ditindaklanjuti');
+            $data_tidak_dapat_ditindaklanjuti = $data->where('status_rekomendasi', 'Tidak Ditindaklanjuti');
             $jumlah_data_per_tahun = Rekomendasi::select(DB::raw('tahun_pemeriksaan as tahun'), DB::raw('COUNT(*) as jumlah'))
             ->groupBy('tahun_pemeriksaan')
             ->orderBy('tahun_pemeriksaan', 'asc')
@@ -56,7 +56,7 @@ class DashboardController extends Controller
                         $jumlahBelumSesuai++;
                     } elseif ($tindak->status_tindak_lanjut == 'Belum Ditindaklanjuti') {
                         $jumlahBelumDitindaklanjuti++;
-                    } elseif ($tindak->status_tindak_lanjut == 'Tidak Dapat Ditindaklanjuti') {
+                    } elseif ($tindak->status_tindak_lanjut == 'Tidak Ditindaklanjuti') {
                         $jumlahTidakDitindaklanjuti++;
                     }
                 }
@@ -101,7 +101,7 @@ class DashboardController extends Controller
             $data_sesuai = $data->where('status_tindak_lanjut', 'Sesuai');
             $data_belum_sesuai = $data->whereIn('status_tindak_lanjut', ['Belum Sesuai', 'Identifikasi']);
             $data_belum_ditindaklanjuti = $data->where('status_tindak_lanjut', 'Belum Ditindaklanjuti');
-            $data_tidak_dapat_ditindaklanjuti = $data->where('status_tindak_lanjut', 'Tidak Dapat Ditindaklanjuti');
+            $data_tidak_dapat_ditindaklanjuti = $data->where('status_tindak_lanjut', 'Tidak Ditindaklanjuti');
 
             $jumlah_data_per_tahun = TindakLanjut::join('rekomendasi', 'tindak_lanjut.rekomendasi_id', '=', 'rekomendasi.id')
                 ->where('tindak_lanjut.unit_kerja', $unit_kerja)
@@ -128,7 +128,7 @@ class DashboardController extends Controller
             $data_sesuai = $data->where('status_tindak_lanjut', 'Sesuai');
             $data_belum_sesuai = $data->whereIn('status_tindak_lanjut', ['Belum Sesuai', 'Identifikasi']);
             $data_belum_ditindaklanjuti = $data->where('status_tindak_lanjut', 'Belum Ditindaklanjuti');
-            $data_tidak_dapat_ditindaklanjuti = $data->where('status_tindak_lanjut', 'Tidak Dapat Ditindaklanjuti');
+            $data_tidak_dapat_ditindaklanjuti = $data->where('status_tindak_lanjut', 'Tidak Ditindaklanjuti');
             $data_sudah_diidentifikasi = $data->where('status_tindak_lanjut_at', '!=', null);
             $data_belum_diidentifikasi = $data->where('status_tindak_lanjut_at', null);
 
@@ -170,7 +170,7 @@ class DashboardController extends Controller
                             $jumlahBelumSesuai++;
                         } elseif ($tindak->status_tindak_lanjut == 'Belum Ditindaklanjuti') {
                             $jumlahBelumDitindaklanjuti++;
-                        } elseif ($tindak->status_tindak_lanjut == 'Tidak Dapat Ditindaklanjuti') {
+                        } elseif ($tindak->status_tindak_lanjut == 'Tidak Ditindaklanjuti') {
                             $jumlahTidakDitindaklanjuti++;
                         }
                     }

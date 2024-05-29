@@ -20,7 +20,7 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        return view('master-pengguna.index', [
+        return view('kelola-pengguna.index', [
             'title' => 'Daftar Pengguna',
             'users' => $users,
         ]);
@@ -34,7 +34,7 @@ class UserController extends Controller
         $unit_kerja = UnitKerja::all();
         $role = Role::all();
 
-        return view('master-pengguna.create', [
+        return view('kelola-pengguna.create', [
             'title' => 'Tambah Pengguna',
             'unit_kerja' => $unit_kerja,
             'role' => $role,
@@ -65,7 +65,7 @@ class UserController extends Controller
             $user = User::where('email', $validatedData['email'])->first();
             $user->assignRole($validatedData['role']);
 
-            return redirect('/master-pengguna')->with('create', 'Data berhasil ditambahkan!');
+            return redirect('/kelola-pengguna')->with('create', 'Data berhasil ditambahkan!');
         } catch (ValidationException $e) {
             // Tangkap pengecualian validasi dan teruskan pesan kesalahan ke view
             return redirect()->back()->withInput()->withErrors($e->errors());
@@ -83,7 +83,7 @@ class UserController extends Controller
         $unit_kerja = UnitKerja::all();
         $role = Role::all();
 
-        return view('master-pengguna.edit', [
+        return view('kelola-pengguna.edit', [
             'title' => 'Edit Pengguna',
             'user' => $user,
             'unit_kerja' => $unit_kerja,
@@ -117,7 +117,7 @@ class UserController extends Controller
             $user = User::where('id', $user->id)->first();
             $user->syncRoles($validatedData['role']);
 
-            return redirect('/master-pengguna')->with('update', 'Data berhasil diubah!');
+            return redirect('/kelola-pengguna')->with('update', 'Data berhasil diubah!');
         } catch (ValidationException $e) {
             return back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
@@ -132,6 +132,6 @@ class UserController extends Controller
     {
         User::destroy($user->id);
 
-        return redirect('/master-pengguna')->with('delete', 'Data berhasil dihapus!');
+        return redirect('/kelola-pengguna')->with('delete', 'Data berhasil dihapus!');
     }
 }

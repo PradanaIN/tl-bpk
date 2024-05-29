@@ -10,7 +10,8 @@ use App\Http\Controllers\IdentifikasiController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PemutakhiranController;
 use App\Http\Controllers\TindakLanjutController;
-use App\Http\Controllers\MasterRekomendasiController;
+use App\Http\Controllers\OldRekomendasiController;
+use App\Http\Controllers\OldTindakLanjutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,13 +36,13 @@ Route::middleware(['auth', 'prevent-back-button'])->group(function () {
 
     Route::middleware(['role:Super Admin||Super Admin'])->group(function () {
         // Master Pengguna
-        Route::get('/master-pengguna', [UserController::class, 'index'])->middleware('permission:view user');
-        Route::get('/master-pengguna/create', [UserController::class, 'create'])->middleware('permission:create user');
-        Route::post('/master-pengguna', [UserController::class, 'store'])->middleware('permission:create user');
-        Route::get('/master-pengguna/{user:id}', [UserController::class, 'show'])->middleware('permission:view user');
-        Route::get('/master-pengguna/{user:id}/edit', [UserController::class, 'edit'])->middleware('permission:edit user');
-        Route::put('/master-pengguna/{user:id}', [UserController::class, 'update'])->middleware('permission:edit user');
-        Route::delete('/master-pengguna/{user:id}', [UserController::class, 'destroy'])->middleware('permission:delete user');
+        Route::get('/kelola-pengguna', [UserController::class, 'index'])->middleware('permission:view user');
+        Route::get('/kelola-pengguna/create', [UserController::class, 'create'])->middleware('permission:create user');
+        Route::post('/kelola-pengguna', [UserController::class, 'store'])->middleware('permission:create user');
+        Route::get('/kelola-pengguna/{user:id}', [UserController::class, 'show'])->middleware('permission:view user');
+        Route::get('/kelola-pengguna/{user:id}/edit', [UserController::class, 'edit'])->middleware('permission:edit user');
+        Route::put('/kelola-pengguna/{user:id}', [UserController::class, 'update'])->middleware('permission:edit user');
+        Route::delete('/kelola-pengguna/{user:id}', [UserController::class, 'destroy'])->middleware('permission:delete user');
         // Master Kamus
         Route::get('/master-kamus', [KamusController::class, 'index'])->middleware('permission:view kamus');
         Route::get('/master-kamus/create', [KamusController::class, 'create'])->middleware('permission:create kamus');
@@ -67,15 +68,21 @@ Route::middleware(['auth', 'prevent-back-button'])->group(function () {
     });
 
     Route::middleware(['role:Super Admin'])->group(function () {
-        // Master Rekomendasi
-        Route::get('/master-rekomendasi', [MasterRekomendasiController::class, 'index']);
-        Route::get('/master-rekomendasi/create', [MasterRekomendasiController::class, 'create']);
-        Route::post('/master-rekomendasi', [MasterRekomendasiController::class, 'store']);
-        Route::get('/master-rekomendasi/{rekomendasi:id}', [MasterRekomendasiController::class, 'show']);
-        Route::get('/master-rekomendasi/{rekomendasi:id}/edit', [MasterRekomendasiController::class, 'edit']);
-        Route::put('/master-rekomendasi/{rekomendasi:id}', [MasterRekomendasiController::class, 'update']);
-        Route::delete('/master-rekomendasi/{rekomendasi:id}', [MasterRekomendasiController::class, 'destroy']);
-        Route::get('/master-rekomendasi/{rekomendasi:id}/export', [MasterRekomendasiController::class, 'export']);
+        // Old Rekomendasi
+        Route::get('/old-rekomendasi', [OldRekomendasiController::class, 'index']);
+        Route::get('/old-rekomendasi/create', [OldRekomendasiController::class, 'create']);
+        Route::post('/old-rekomendasi', [OldRekomendasiController::class, 'store']);
+        Route::get('/old-rekomendasi/{rekomendasi:id}', [OldRekomendasiController::class, 'show']);
+        Route::get('/old-rekomendasi/{rekomendasi:id}/edit', [OldRekomendasiController::class, 'edit']);
+        Route::put('/old-rekomendasi/{rekomendasi:id}', [OldRekomendasiController::class, 'update']);
+        Route::delete('/old-rekomendasi/{rekomendasi:id}', [OldRekomendasiController::class, 'destroy']);
+        Route::get('/old-rekomendasi/{rekomendasi:id}/export', [OldRekomendasiController::class, 'export']);
+    });
+
+    Route::middleware(['role:Super Admin'])->group(function () {
+        // Old Tindak Lanjut
+        Route::delete('/old-tindak-lanjut/{tindak_lanjut:id}', [OldTindakLanjutController::class, 'destroy']);
+        Route::delete('/old-tindak-lanjut/{tindak_lanjut?}', [OldTindakLanjutController::class, 'destroy'])->name('oldtindaklanjut.destroy');
     });
 
     Route::middleware(['role:Pimpinan|Tim Koordinator|Operator Unit Kerja|Super Admin'])->group(function () {
