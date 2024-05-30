@@ -140,26 +140,4 @@
             });
         });
     </script>
-
-
-    <script>
-        // warning batal button
-        document.querySelector('.btn-light-secondary').addEventListener('click', function(e) {
-            e.preventDefault();
-            Swal.fire({
-                title: 'Apakah Anda Yakin?',
-                text: "Data yang sudah diinputkan tidak akan tersimpan",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Batalkan!',
-                cancelButtonText: 'Tidak'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = "/kelola-pengguna";
-                }
-            })
-        });
-    </script>
 @endsection

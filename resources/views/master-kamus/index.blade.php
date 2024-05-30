@@ -33,10 +33,10 @@
                                                 <i class="bi bi-pencil"></i>
                                             </a>
                                             <form action="/master-kamus/{{ $kamus->id }}" method="post" class="d-inline"
-                                                id="deleteForm">
+                                                id="deleteFormKamus{{ $kamus->id }}">
                                                 @method('delete')
                                                 @csrf
-                                                <button class="btn btn-danger" type="button" id="deleteButton"
+                                                <button class="btn btn-danger" type="button" id="deleteButtonKamus" data-form-id="deleteFormKamus{{ $kamus->id }}"
                                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Kamus">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
@@ -99,4 +99,58 @@
             }]
         });
     </script>
+
+<script>
+    $(document).ready(function () {
+        $(document).on('click', '.deleteButtonKamus', function () {
+            let formId = $(this).attr('data-form-id');
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Data yang dihapus tidak dapat dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#' + formId).submit();
+                }
+            })
+        });
+    });
+
+        @if (session()->has('create'))
+            Swal.fire({
+                title: 'Success',
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500,
+                text: '{{ session('create') }}'
+            });
+        @elseif (session()->has('update'))
+            Swal.fire({
+                title: 'Success',
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500,
+                text: '{{ session('update') }}'
+            });
+        @elseif (session()->has('delete'))
+            Swal.fire({
+                title: 'Success',
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500,
+                text: '{{ session('delete') }}'
+            });
+        @elseif (session()->has('error'))
+            Swal.fire({
+                title: 'Error',
+                icon: 'error',
+                text: '{{ session('error') }}'
+            });
+        @endif
+</script>
 @endsection
