@@ -49,7 +49,7 @@ class UserController extends Controller
         try {
             $validatedData = $request->validate([
                 'nama' => 'required',
-                'email' => ['required', 'email', Rule::unique('users')],
+                'email' => ['required', 'email:rfc,dns', Rule::unique('users')],
                 'unit_kerja' => 'required',
                 'unit_kerja_id' => 'required',
                 'role' => 'required',
