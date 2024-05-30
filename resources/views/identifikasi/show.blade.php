@@ -238,7 +238,7 @@
                                                 Pemantauan Wilayah III', 'Super Admin'])
                                                 <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->bukti_tindak_lanjut) }}"
                                                     class="btn btn-secondary" data-bs-toggle="tooltip"
-                                                    data-bs-placement="bottom" title="Download Bukti TL">
+                                                    data-bs-placement="bottom" title="Download Bukti TL" target="_blank">
                                                     <i class="bi bi-download"></i>
                                                     <span class="d-none d-md-inline">&nbsp;Unduh Bukti</span>
                                                 </a>

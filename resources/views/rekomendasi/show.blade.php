@@ -26,7 +26,7 @@
                 </a>
                 @if ($rekomendasi->pemutakhiran_at !== null && $rekomendasi->pemutakhiran_by !== null)
                     <a href="/rekomendasi/{{ $rekomendasi->id }}/export" class="btn btn-success ms-2" data-bs-toggle="tooltip"
-                        data-bs-placement="top" title="Export Rekomendasi">
+                        data-bs-placement="top" title="Export Rekomendasi" target="_blank">
                         <i class="bi bi-file-earmark-excel"></i>
                         <span class="d-none d-md-inline">Export Rekomendasi</span>
                     </a>
@@ -199,7 +199,7 @@
                                         <div class="col-auto d-flex align-content-center">
                                             <a href="{{ asset('uploads/lhp/' . $rekomendasi->lhp) }}"
                                                 class="btn btn-secondary me-2" data-bs-toggle="tooltip"
-                                                data-bs-placement="bottom" title="Unduh LHP">
+                                                data-bs-placement="bottom" title="Unduh LHP" target="_blank">
                                                 <i class="bi bi-download"></i>
                                                 <span class="d-none d-md-inline">&nbsp;Unduh LHP</span>
                                             </a>
@@ -244,7 +244,7 @@
                                                                 class="status-badge status-sesuai mb-1">{{ Str::limit($tindakLanjut->bukti_tindak_lanjut, 10) }}...</span>
                                                             <a href="{{ asset('uploads/tindak_lanjut/' . $tindakLanjut->bukti_tindak_lanjut) }}"
                                                                 class="btn btn-secondary btn-sm" data-bs-toggle="tooltip"
-                                                                data-bs-placement="bottom" title="Download Bukti">
+                                                                data-bs-placement="bottom" title="Download Bukti" target="_blank">
                                                                 <i class="bi bi-download"></i>
                                                             </a>
                                                         </div>
@@ -278,7 +278,7 @@
                                                 <div class="col-auto d-flex align-content-center">
                                                     <a href="{{ asset('uploads/bukti_input_siptl/' . $rekomendasi->buktiInputSIPTL->bukti_input_siptl) }}"
                                                         class="btn btn-secondary me-2" data-bs-toggle="tooltip"
-                                                        data-bs-placement="bottom" title="Unduh Bukti Input SIPTL">
+                                                        data-bs-placement="bottom" title="Unduh Bukti Input SIPTL" target="_blank">
                                                         <i class="bi bi-download"></i>
                                                         <span class="d-none d-md-inline">&nbsp;Unduh Bukti</span>
                                                     </a>

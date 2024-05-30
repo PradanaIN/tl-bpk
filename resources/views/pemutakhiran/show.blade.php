@@ -288,7 +288,7 @@
                                                 <div class="col-auto d-flex align-content-center">
                                                     <a href="{{ asset('uploads/bukti_input_siptl/' . $rekomendasi->buktiInputSIPTL->bukti_input_siptl) }}"
                                                         class="btn btn-secondary me-2" data-bs-toggle="tooltip"
-                                                        data-bs-placement="bottom" title="Unduh Bukti Input SIPTL">
+                                                        data-bs-placement="bottom" title="Unduh Bukti Input SIPTL" target="_blank">
                                                         <i class="bi bi-download"></i>
                                                         <span class="d-none d-md-inline">&nbsp;Unduh Bukti</span>
                                                     </a>

@@ -293,7 +293,7 @@
                                                 <div class="col-auto d-flex align-content-center">
                                                     <a href="{{ asset('uploads/tindak_lanjut/' . $tindak_lanjut->bukti_tindak_lanjut) }}"
                                                         class="btn btn-secondary me-2" data-bs-toggle="tooltip"
-                                                        data-bs-placement="bottom" title="Unduh Bukti TL">
+                                                        data-bs-placement="bottom" title="Unduh Bukti TL" target="_blank">
                                                         <i class="bi bi-download"></i>
                                                         <span class="d-none d-md-inline">&nbsp;Unduh Bukti</span>
                                                     </a>
