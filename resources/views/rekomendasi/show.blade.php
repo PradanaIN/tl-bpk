@@ -197,7 +197,7 @@
                                         <span
                                             class="status-badge bg-success text-white me-2">{{ $rekomendasi->lhp }}</span>
                                         <div class="col-auto d-flex align-content-center">
-                                            <a href="{{ asset('storage/uploads/lhp/' . $rekomendasi->lhp) }}"
+                                            <a href="{{ asset('uploads/lhp/' . $rekomendasi->lhp) }}"
                                                 class="btn btn-secondary me-2" data-bs-toggle="tooltip"
                                                 data-bs-placement="bottom" title="Unduh LHP">
                                                 <i class="bi bi-download"></i>

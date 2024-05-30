@@ -72,7 +72,11 @@ class OldRekomendasiController extends Controller
             ]);
             $lhp = $request->file('lhp');
             $lhpFileName = $lhp->getClientOriginalName();
-            $lhp->storeAs('public/uploads/lhp', $lhpFileName);
+            // apabila file sudah ada, maka tambahkan angka di belakang nama file
+            if (file_exists(public_path('uploads/lhp/' . $lhpFileName))) {
+                $lhpFileName = pathinfo($lhpFileName, PATHINFO_FILENAME) . '_' . time() . '.' . $lhp->getClientOriginalExtension();
+            }
+            $lhp->move(public_path('uploads/lhp'), $lhpFileName);
             $validatedData['lhp'] = $lhpFileName;
         } else {
             return redirect()->back()->withInput()->with('error', 'File LHP tidak diunggah!');
@@ -150,6 +154,10 @@ class OldRekomendasiController extends Controller
                 if ($request->hasFile('bukti_tindak_lanjut')) {
                     $file = $request->file('bukti_tindak_lanjut')[$key];
                     $fileName = $file->getClientOriginalName();
+                    // apabila file sudah ada, maka tambahkan angka di belakang nama file
+                    if (file_exists(public_path('uploads/tindak_lanjut/' . $fileName))) {
+                        $fileName = pathinfo($fileName, PATHINFO_FILENAME) . '_' . time() . '.' . $file->getClientOriginalExtension();
+                    }
                     $file->move(public_path('uploads/tindak_lanjut'), $fileName);
                     $tindakLanjutData['bukti_tindak_lanjut'] = $fileName;
                 }
@@ -163,6 +171,10 @@ class OldRekomendasiController extends Controller
                 ]);
                 $file = $request->file('bukti_input_siptl');
                 $fileName = $file->getClientOriginalName();
+                // apabila file sudah ada, maka tambahkan angka di belakang nama file
+                if (file_exists(public_path('uploads/bukti_input_siptl/' . $fileName))) {
+                    $fileName = pathinfo($fileName, PATHINFO_FILENAME) . '_' . time() . '.' . $file->getClientOriginalExtension();
+                }
                 $file->move(public_path('uploads/bukti_input_siptl'), $fileName);
 
                 $buktiInput = OldBuktiInputSIPTL::where('rekomendasi_id', $rekomendasi->id)->first();
@@ -261,10 +273,14 @@ class OldRekomendasiController extends Controller
                 ]);
                 $lhp = $request->file('lhp');
                 $lhpFileName = $lhp->getClientOriginalName();
-                $lhp->storeAs('public/uploads/lhp', $lhpFileName);
+                // apabila file sudah ada, maka tambahkan angka di belakang nama file
+                if (file_exists(public_path('uploads/lhp/' . $lhpFileName))) {
+                    $lhpFileName = pathinfo($lhpFileName, PATHINFO_FILENAME) . '_' . time() . '.' . $lhp->getClientOriginalExtension();
+                }
+                $lhp->move(public_path('uploads/lhp'), $lhpFileName);
 
                 // hapus file lama jika ada
-                if ($rekomendasi->lhp) {
+                if ($rekomendasi->lhp !== null && file_exists(public_path('uploads/lhp/' . $rekomendasi->lhp))) {
                     unlink(public_path('uploads/lhp/' . $rekomendasi->lhp));
                 }
 
@@ -327,10 +343,14 @@ class OldRekomendasiController extends Controller
                     if ($request->hasFile('bukti_tindak_lanjut') && isset($request->file('bukti_tindak_lanjut')[$key])) {
                         $file = $request->file('bukti_tindak_lanjut')[$key];
                         $fileName = $file->getClientOriginalName();
+                        // apabila file sudah ada, maka tambahkan angka di belakang nama file
+                        if (file_exists(public_path('uploads/tindak_lanjut/' . $fileName))) {
+                            $fileName = pathinfo($fileName, PATHINFO_FILENAME) . '_' . time() . '.' . $file->getClientOriginalExtension();
+                        }
                         $file->move(public_path('uploads/tindak_lanjut'), $fileName);
 
                         // hapus file lama
-                        if ($oldTindakLanjut->bukti_tindak_lanjut) {
+                        if ($oldTindakLanjut->bukti_tindak_lanjut !== null && file_exists(public_path('uploads/tindak_lanjut/' . $oldTindakLanjut->bukti_tindak_lanjut))) {
                             unlink(public_path('uploads/tindak_lanjut/' . $oldTindakLanjut->bukti_tindak_lanjut));
                         }
 
@@ -365,6 +385,10 @@ class OldRekomendasiController extends Controller
                     if ($request->hasFile('bukti_tindak_lanjut')) {
                         $file = $request->file('bukti_tindak_lanjut')[$key];
                         $fileName = $file->getClientOriginalName();
+                        // apabila file sudah ada, maka tambahkan angka di belakang nama file
+                        if (file_exists(public_path('uploads/tindak_lanjut/' . $fileName))) {
+                            $fileName = pathinfo($fileName, PATHINFO_FILENAME) . '_' . time() . '.' . $file->getClientOriginalExtension();
+                        }
                         $file->move(public_path('uploads/tindak_lanjut'), $fileName);
                         $tindakLanjutData['bukti_tindak_lanjut'] = $fileName;
                     }
@@ -381,6 +405,10 @@ class OldRekomendasiController extends Controller
 
                 $file = $request->file('bukti_input_siptl');
                 $fileName = $file->getClientOriginalName();
+                // apabila file sudah ada, maka tambahkan angka di belakang nama file
+                if (file_exists(public_path('uploads/bukti_input_siptl/' . $fileName))) {
+                    $fileName = pathinfo($fileName, PATHINFO_FILENAME) . '_' . time() . '.' . $file->getClientOriginalExtension();
+                }
                 $file->move(public_path('uploads/bukti_input_siptl'), $fileName);
 
                 $buktiInput = OldBuktiInputSIPTL::where('rekomendasi_id', $rekomendasi->id)->first();
@@ -388,7 +416,7 @@ class OldRekomendasiController extends Controller
                 if ($buktiInput) {
 
                     // hapus file lama
-                    if ($buktiInput->bukti_input_siptl) {
+                    if ($buktiInput->bukti_input_siptl !== null && file_exists(public_path('uploads/bukti_input_siptl/' . $buktiInput->bukti_input_siptl))) {
                         unlink(public_path('uploads/bukti_input_siptl/' . $buktiInput->bukti_input_siptl));
                     }
 
@@ -422,8 +450,25 @@ class OldRekomendasiController extends Controller
      */
     public function destroy(OldRekomendasi $rekomendasi)
     {
-        OldBuktiInputSIPTL::where('rekomendasi_id', $rekomendasi->id)->delete();
-        OldTindakLanjut::where('rekomendasi_id', $rekomendasi->id)->delete();
+        // hapus file bukti siptl
+        $buktiInputSIPTL = OldBuktiInputSIPTL::where('rekomendasi_id', $rekomendasi->id)->first();
+        if ($buktiInputSIPTL) {
+            if ($buktiInputSIPTL->bukti_input_siptl !== null && file_exists(public_path('uploads/bukti_input_siptl/' . $buktiInputSIPTL->bukti_input_siptl))) {
+                unlink(public_path('uploads/bukti_input_siptl/' . $buktiInputSIPTL->bukti_input_siptl));
+            }
+            $buktiInputSIPTL->delete();
+        }
+        // hapus file bukti tindak lanjut
+        $tindakLanjut = OldTindakLanjut::where('rekomendasi_id', $rekomendasi->id)->get();
+        foreach ($tindakLanjut as $tindak) {
+            if ($tindak->bukti_tindak_lanjut !== null && file_exists(public_path('uploads/tindak_lanjut/' . $tindak->bukti_tindak_lanjut))) {
+                unlink(public_path('uploads/tindak_lanjut/' . $tindak->bukti_tindak_lanjut));
+            }
+        }
+        // hapus file lhp
+        if ($rekomendasi->lhp !== null && file_exists(public_path('uploads/lhp/' . $rekomendasi->lhp))) {
+            unlink(public_path('uploads/lhp/' . $rekomendasi->lhp));
+        }
         OldRekomendasi::destroy($rekomendasi->id);
 
         return redirect('/old-rekomendasi')->with('delete', 'Data berhasil dihapus!');

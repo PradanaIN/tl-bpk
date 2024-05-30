@@ -96,6 +96,10 @@ class PemutakhiranController extends Controller
             if ($request->hasFile('bukti_input_siptl')) {
                 $file = $request->file('bukti_input_siptl');
                 $fileName = $file->getClientOriginalName();
+                // apabila file sudah ada, maka tambahkan angka di belakang nama file
+                if (file_exists(public_path('uploads/bukti_input_siptl/' . $fileName))) {
+                    $fileName = pathinfo($fileName, PATHINFO_FILENAME) . '_' . time() . '.' . $file->getClientOriginalExtension();
+                }
                 $file->move(public_path('uploads/bukti_input_siptl'), $fileName);
 
                 $buktiInput = BuktiInputSIPTL::where('rekomendasi_id', $rekomendasi->id)->first();
@@ -103,9 +107,8 @@ class PemutakhiranController extends Controller
                 if ($buktiInput) {
 
                     // hapus file lama
-                    $oldFile = public_path('uploads/bukti_input_siptl/' . $buktiInput->bukti_input_siptl);
-                    if (file_exists($oldFile)) {
-                        unlink($oldFile);
+                    if ($buktiInput->bukti_input_siptl !== null && file_exists(public_path('uploads/bukti_input_siptl/' . $buktiInput->bukti_input_siptl))) {
+                        unlink(public_path('uploads/bukti_input_siptl/' . $buktiInput->bukti_input_siptl));
                     }
 
                     $buktiInput->update([

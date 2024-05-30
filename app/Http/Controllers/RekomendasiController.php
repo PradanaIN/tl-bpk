@@ -71,13 +71,16 @@ class RekomendasiController extends Controller
         if ($request->hasFile('lhp')) {
             $lhp = $request->file('lhp');
             $lhpFileName = $lhp->getClientOriginalName();
-            $lhp->storeAs('public/uploads/lhp', $lhpFileName);
+            // apabila nama file sudah ada, maka tambahkan angka di belakang nama file
+            if (file_exists(public_path('uploads/lhp/' . $lhpFileName))) {
+                $lhpFileName = pathinfo($lhpFileName, PATHINFO_FILENAME) . '_' . time() . '.' . $lhp->getClientOriginalExtension();
+            }
+            $lhp->move(public_path('uploads/lhp'), $lhpFileName);
             // Simpan nama file LHP ke dalam array $validatedData
             $validatedData['lhp'] = $lhpFileName;
         } else {
             return redirect()->back()->withInput()->with('error', 'File LHP tidak diunggah!');
         }
-
         // memberikan id pada rekomendasi berupa uuid
         $validatedData['id'] = Str::uuid()->toString();
 
@@ -220,11 +223,15 @@ class RekomendasiController extends Controller
                 ]);
                 $lhp = $request->file('lhp');
                 $lhpFileName = $lhp->getClientOriginalName();
-                $lhp->storeAs('public/uploads/lhp', $lhpFileName);
+                // apabila nama file sudah ada, maka tambahkan angka di belakang nama file
+                if (file_exists(public_path('uploads/lhp/' . $lhpFileName))) {
+                    $lhpFileName = pathinfo($lhpFileName, PATHINFO_FILENAME) . '_' . time() . '.' . $lhp->getClientOriginalExtension();
+                }
+                $lhp->move(public_path('uploads/lhp'), $lhpFileName);
 
                 // Hapus file lama jika ada
-                if ($rekomendasi->lhp) {
-                    unlink(public_path('storage/uploads/lhp/' . $rekomendasi->lhp));
+                if ($rekomendasi->lhp != null && file_exists(public_path('uploads/lhp/' . $rekomendasi->lhp))) {
+                    unlink(public_path('uploads/lhp/' . $rekomendasi->lhp));
                 }
 
                 $validatedData['lhp'] = $lhpFileName;
@@ -334,11 +341,15 @@ class RekomendasiController extends Controller
             $lhp = $request->file('lhp');
             // Gunakan nama yang sesuai
             $lhpFileName = $lhp->getClientOriginalName();
-            $lhp->storeAs('public/uploads/lhp', $lhpFileName);
+            // apabila nama file sudah ada, maka tambahkan angka di belakang nama file
+            if (file_exists(public_path('uploads/lhp/' . $lhpFileName))) {
+                $lhpFileName = pathinfo($lhpFileName, PATHINFO_FILENAME) . '_' . time() . '.' . $lhp->getClientOriginalExtension();
+            }
+            $lhp->move(public_path('uploads/lhp'), $lhpFileName);
 
             // Hapus file lama jika ada
-            if ($request->lhp) {
-                unlink(public_path('storage/uploads/lhp/' . $request->lhp));
+            if ($request->lhp != null && file_exists(public_path('uploads/lhp/' . $request->lhp))) {
+                unlink(public_path('uploads/lhp/' . $request->lhp));
             }
 
             // Simpan nama file LHP ke dalam array $validatedData
@@ -435,8 +446,27 @@ class RekomendasiController extends Controller
      */
     public function destroy(Rekomendasi $rekomendasi)
     {
+        // Hapus file bukti input SIPTL
+        $buktiInputSIPTL = BuktiInputSIPTL::where('rekomendasi_id', $rekomendasi->id)->first();
+        // jika file bukti input SIPTL tidak ada atau "Belum Diunggah!", maka do nothing
+        if ($buktiInputSIPTL->bukti_input_siptl !== null && file_exists(public_path('uploads/bukti_input_siptl/' . $buktiInputSIPTL->bukti_input_siptl))) {
+            unlink(public_path('uploads/bukti_input_siptl/' . $buktiInputSIPTL->bukti_input_siptl));
+        }
         BuktiInputSIPTL::where('rekomendasi_id', $rekomendasi->id)->delete();
+        // hapus file tindak lanjut
+        $buktiTindakLanjut = TindakLanjut::where('rekomendasi_id', $rekomendasi->id)->get();
+        foreach ($buktiTindakLanjut as $bukti) {
+            if ($bukti->bukti_tindak_lanjut !== 'Belum Diunggah!' && $bukti->bukti_tindak_lanjut !== null && file_exists(public_path('uploads/bukti_tindak_lanjut/' . $bukti->bukti_tindak_lanjut))) {
+                unlink(public_path('uploads/bukti_tindak_lanjut/' . $bukti->bukti_tindak_lanjut));
+            }
+        }
         TindakLanjut::where('rekomendasi_id', $rekomendasi->id)->delete();
+
+        // hapus file LHP tapi cek dulu apakah file LHP ada atau tidak
+        if ($rekomendasi->lhp != null && file_exists(public_path('uploads/lhp/' . $rekomendasi->lhp))) {
+            unlink(public_path('uploads/lhp/' . $rekomendasi->lhp));
+        }
+
         Rekomendasi::destroy($rekomendasi->id);
 
         return redirect('/rekomendasi')->with('delete', 'Data berhasil dihapus!');

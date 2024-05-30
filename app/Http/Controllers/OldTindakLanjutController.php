@@ -21,7 +21,7 @@ class OldTindakLanjutController extends Controller
         }
 
         // Hapus file bukti tindak lanjut
-        if ($tindakLanjut->bukti_tindak_lanjut) {
+        if ($tindakLanjut->bukti_tindak_lanjut !== null && file_exists(public_path('uploads/tindak_lanjut/' . $tindakLanjut->bukti_tindak_lanjut))) {
             unlink(public_path('uploads/tindak_lanjut/' . $tindakLanjut->bukti_tindak_lanjut));
         }
 

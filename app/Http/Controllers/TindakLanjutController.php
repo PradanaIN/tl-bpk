@@ -57,10 +57,14 @@ class TindakLanjutController extends Controller
             if ($request->hasFile('bukti_tindak_lanjut')) {
                 $file = $request->file('bukti_tindak_lanjut');
                 $fileName = $file->getClientOriginalName();
+                // apabila file sudah ada, maka tambahkan angka di belakang nama file
+                if (file_exists(public_path('uploads/tindak_lanjut/' . $fileName))) {
+                    $fileName = pathinfo($fileName, PATHINFO_FILENAME) . '_' . time() . '.' . $file->getClientOriginalExtension();
+                }
                 $file->move(public_path('uploads/tindak_lanjut'), $fileName);
 
                 // hapus file lama jika ada
-                if ($tindakLanjut->bukti_tindak_lanjut) {
+                if ($tindakLanjut->bukti_tindak_lanjut !== null && file_exists(public_path('uploads/tindak_lanjut/' . $tindakLanjut->bukti_tindak_lanjut))) {
                     unlink(public_path('uploads/tindak_lanjut/' . $tindakLanjut->bukti_tindak_lanjut));
                 }
 
@@ -139,7 +143,7 @@ class TindakLanjutController extends Controller
         }
 
         // Hapus file bukti tindak lanjut
-        if ($tindakLanjut->bukti_tindak_lanjut) {
+        if ($tindakLanjut->bukti_tindak_lanjut !== null && file_exists(public_path('uploads/tindak_lanjut/' . $tindakLanjut->bukti_tindak_lanjut))) {
             unlink(public_path('uploads/tindak_lanjut/' . $tindakLanjut->bukti_tindak_lanjut));
         }
 
