@@ -100,7 +100,7 @@ class UserController extends Controller
             $validatedData = $request->validate([
                 'id'=> Str::uuid()->toString(),
                 'nama' => 'required',
-                'email' => 'required',
+                'email' => ['required', 'email:rfc,dns', Rule::unique('users')],
                 'unit_kerja' => 'required',
                 'unit_kerja_id' => 'required',
                 'role' => 'required',
