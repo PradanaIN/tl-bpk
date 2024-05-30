@@ -29,7 +29,7 @@
                     <span class="d-none d-md-inline">Export Rekomendasi</span>
                 </a>
             </div>
-            @canany(['Tim Koordinator', 'Super Admin'])
+            @canany(['Tim Koordinator', 'Super Admin', 'Admin'])
             <div class="col-auto d-flex ms-auto">
                 <div class="col-auto">
                     <a href="/old-rekomendasi/{{ $rekomendasi->id }}/edit" class="btn btn-light" data-bs-toggle="tooltip"
