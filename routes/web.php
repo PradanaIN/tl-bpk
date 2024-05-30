@@ -23,6 +23,11 @@ use App\Http\Controllers\OldTindakLanjutController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+// default route
+Route::get('/', function () {
+    return redirect('/auth/login');
+});
 // Login
 Route::get('/auth/login', [LoginController::class, 'index'])->name('login');
 Route::post('/auth/login', [LoginController::class, 'authenticate']);

@@ -367,7 +367,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'id' => Str::uuid()->toString(),
             'nama' => 'Badan Pemeriksa Keuangan',
-            'email' => 'Badan Pemeriksa Keuangan',
+            'email' => 'bpk@example.com',
             'password' => Hash::make('password'),
             'unit_kerja' => 'Badan Pemeriksa Keuangan',
             'role' => 'Badan Pemeriksa Keuangan',
