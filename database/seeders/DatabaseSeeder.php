@@ -106,8 +106,9 @@ class DatabaseSeeder extends Seeder
 
         // Assign Permission to Role
         $permissions = [
-            // Admin hanya kamus dan user
+            // Admin hanya kamus dan user dan old rekomendasi
             'Admin' => [
+                'view dashboard',
                 'view kamus',
                 'create kamus',
                 'edit kamus',
@@ -116,6 +117,12 @@ class DatabaseSeeder extends Seeder
                 'create user',
                 'edit user',
                 'delete user',
+                'view old rekomendasi',
+                'create old rekomendasi',
+                'edit old rekomendasi',
+                'delete old rekomendasi',
+                'show old rekomendasi',
+                'export old rekomendasi',
             ],
             // Tim Koordinator dashboard, rekomendasi, tindak lanjut, pemutakhiran, old rekomendasi
             'Tim Koordinator' => [
@@ -250,7 +257,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'id' => Str::uuid()->toString(),
             'nama' => 'Super Admin',
-            'email' => 'superadmin@example.com',
+            'email' => 'superadmin@bps.go.id',
             'password' => Hash::make('password'),
             'unit_kerja' => 'Inspektorat Utama',
             'role' => 'Super Admin',
@@ -259,7 +266,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'id' => Str::uuid()->toString(),
             'nama' => 'Admin',
-            'email' => 'admin@example.com',
+            'email' => 'admin@bps.go.id',
             'password' => Hash::make('password'),
             'unit_kerja' => 'Inspektorat Utama',
             'role' => 'Admin',
@@ -268,7 +275,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'id' => Str::uuid()->toString(),
             'nama' => 'BPS Provinsi Jawa Tengah',
-            'email' => 'bpsjateng@example.com',
+            'email' => 'bpsjateng@bps.go.id',
             'password' => Hash::make('password'),
             'unit_kerja' => 'BPS PROVINSI JAWA TENGAH',
             'role' => 'Operator Unit Kerja',
@@ -277,7 +284,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'id' => Str::uuid()->toString(),
             'nama' => 'Pimpinan BPS Provinsi Jawa Tengah',
-            'email' => 'pimpinanbpsjateng@example.com',
+            'email' => 'pimpinanbpsjateng@bps.go.id',
             'password' => Hash::make('password'),
             'unit_kerja' => 'BPS PROVINSI JAWA TENGAH',
             'role' => 'Pimpinan Unit Kerja',
@@ -286,7 +293,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'id' => Str::uuid()->toString(),
             'nama' => 'Biro Umum',
-            'email' => 'biroumum@example.com',
+            'email' => 'biroumum@bps.go.id',
             'password' => Hash::make('password'),
             'unit_kerja' => 'Biro Umum',
             'role' => 'Operator Unit Kerja',
@@ -295,7 +302,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'id' => Str::uuid()->toString(),
             'nama' => 'Pimpinan Biro Umum',
-            'email' => 'pimpinanbiroumum@example.com',
+            'email' => 'pimpinanbiroumum@bps.go.id',
             'password' => Hash::make('password'),
             'unit_kerja' => 'Biro Umum',
             'role' => 'Pimpinan Unit Kerja',
@@ -304,7 +311,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'id' => Str::uuid()->toString(),
             'nama' => 'Polstat STIS',
-            'email' => 'polstatstis@example.com',
+            'email' => 'polstatstis@bps.go.id',
             'password' => Hash::make('password'),
             'unit_kerja' => 'Politeknik Statistika STIS',
             'role' => 'Operator Unit Kerja',
@@ -313,7 +320,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'id' => Str::uuid()->toString(),
             'nama' => 'Pimpinan Polstat STIS',
-            'email' => 'pimpinanpolstatstis@example.com',
+            'email' => 'pimpinanpolstatstis@bps.go.id',
             'password' => Hash::make('password'),
             'unit_kerja' => 'Politeknik Statistika STIS',
             'role' => 'Pimpinan Unit Kerja',
@@ -322,7 +329,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'id' => Str::uuid()->toString(),
             'nama' => 'Tim Koordinator',
-            'email' => 'timkoordinator@example.com',
+            'email' => 'timkoordinator@bps.go.id',
             'password' => Hash::make('password'),
             'unit_kerja' => 'Inspektorat Utama',
             'role' => 'Tim Koordinator',
@@ -331,7 +338,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'id' => Str::uuid()->toString(),
             'nama' => 'Tim Pemantauan Wilayah I',
-            'email' => 'timpemantauanwilayahsatu@example.com',
+            'email' => 'timpemantauanwilayahsatu@bps.go.id',
             'password' => Hash::make('password'),
             'unit_kerja' => 'Inspektorat Wilayah I',
             'role' => 'Tim Pemantauan Wilayah I',
@@ -340,7 +347,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'id' => Str::uuid()->toString(),
             'nama' => 'Tim Pemantauan Wilayah II',
-            'email' => 'timpemantauanwilayahdua@example.com',
+            'email' => 'timpemantauanwilayahdua@bps.go.id',
             'password' => Hash::make('password'),
             'unit_kerja' => 'Inspektorat Wilayah II',
             'role' => 'Tim Pemantauan Wilayah II',
@@ -349,7 +356,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'id' => Str::uuid()->toString(),
             'nama' => 'Tim Pemantauan Wilayah III',
-            'email' => 'timpemantauanwilayahtiga@example.com',
+            'email' => 'timpemantauanwilayahtiga@bps.go.id',
             'password' => Hash::make('password'),
             'unit_kerja' => 'Inspektorat Wilayah III',
             'role' => 'Tim Pemantauan Wilayah III',
@@ -358,7 +365,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'id' => Str::uuid()->toString(),
             'nama' => 'Pimpinan Inspektorat Utama',
-            'email' => 'pimpinan@example.com',
+            'email' => 'pimpinan@bps.go.id',
             'password' => Hash::make('password'),
             'unit_kerja' => 'Inspektorat Utama',
             'role' => 'Pimpinan',
@@ -367,7 +374,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'id' => Str::uuid()->toString(),
             'nama' => 'Badan Pemeriksa Keuangan',
-            'email' => 'bpk@example.com',
+            'email' => 'bpk@bps.go.id',
             'password' => Hash::make('password'),
             'unit_kerja' => 'Badan Pemeriksa Keuangan',
             'role' => 'Badan Pemeriksa Keuangan',

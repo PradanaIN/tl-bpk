@@ -331,14 +331,31 @@
                                             </a>
                                         </li>
                                     @endcan
-                                    @canany(['Tim Koordinator', 'Pimpinan'])
+                                    {{-- @canany(['Tim Koordinator', 'Pimpinan'])
                                         <li class="nav-item">
                                             <a class="nav-link" id="navbar-link" href="/old-rekomendasi">
                                                 <h6>Rekomendasi Lama</h6>
                                             </a>
                                         </li>
+                                    @endcan --}}
+                                    @canany(['Admin'])
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="navbar-link" href="/master-kamus">
+                                            <h6>Master Kamus</h6>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="navbar-link" href="/kelola-pengguna">
+                                            <h6>Kelola Pengguna</h6>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="navbar-link" href="/old-rekomendasi">
+                                            <h6>Rekomendasi Lama</h6>
+                                        </a>
+                                    </li>
                                     @endcan
-                                    @canany(['Super Admin', 'Admin'])
+                                    @canany(['Super Admin'])
                                         <li class="nav-item dropdown">
                                             <a class="nav-link dropdown-toggle bold-blue-text" href="#"
                                                 id="navbarDropdown" role="button" data-bs-toggle="dropdown"

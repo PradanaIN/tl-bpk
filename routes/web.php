@@ -24,6 +24,12 @@ use App\Http\Controllers\OldTindakLanjutController;
 |
 */
 
+// storage link
+Route::get('/storage-link', function(){
+    \Illuminate\Support\Facades\Artisan::call('storage:link');
+    echo 'success';
+});
+
 // default route
 Route::get('/', function () {
     return redirect('/auth/login');
