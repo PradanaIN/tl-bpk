@@ -32,26 +32,28 @@
                     </a>
                 @endif
             </div>
-            <div class="col-auto d-flex ms-auto">
-                <div class="col-auto">
-                    @if ($rekomendasi->pemutakhiran_at === null && $rekomendasi->pemutakhiran_by === null)
-                        <a href="/rekomendasi/{{ $rekomendasi->id }}/edit" class="btn btn-light" data-bs-toggle="tooltip"
-                            data-bs-placement="top" title="Edit Rekomendasi">
-                            <i class="bi bi-pencil"></i>
-                            <span class="d-none d-md-inline">&nbsp;Ubah</span>
-                        </a>
-                    @endif
-                    <form action="/rekomendasi/{{ $rekomendasi->id }}" method="post" class="d-inline" id="deleteForm">
-                        @method('delete')
-                        @csrf
-                        <button class="btn btn-danger" type="button" id="deleteButton" data-bs-toggle="tooltip"
-                            data-bs-placement="top" title="Hapus Rekomendasi">
-                            <i class="bi bi-trash"></i>
-                            <span class="d-none d-md-inline">&nbsp;Hapus</span>
-                        </button>
-                    </form>
+            @canany(['Tim Koordinator', 'Super Admin'])
+                <div class="col-auto d-flex ms-auto">
+                    <div class="col-auto">
+                        @if ($rekomendasi->pemutakhiran_at === null && $rekomendasi->pemutakhiran_by === null)
+                            <a href="/rekomendasi/{{ $rekomendasi->id }}/edit" class="btn btn-light" data-bs-toggle="tooltip"
+                                data-bs-placement="top" title="Edit Rekomendasi">
+                                <i class="bi bi-pencil"></i>
+                                <span class="d-none d-md-inline">&nbsp;Ubah</span>
+                            </a>
+                        @endif
+                        <form action="/rekomendasi/{{ $rekomendasi->id }}" method="post" class="d-inline" id="deleteForm">
+                            @method('delete')
+                            @csrf
+                            <button class="btn btn-danger" type="button" id="deleteButton" data-bs-toggle="tooltip"
+                                data-bs-placement="top" title="Hapus Rekomendasi">
+                                <i class="bi bi-trash"></i>
+                                <span class="d-none d-md-inline">&nbsp;Hapus</span>
+                            </button>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            @endcan
         </div>
         <div class="card">
             <div class="card-body">

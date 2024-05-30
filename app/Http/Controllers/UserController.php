@@ -18,7 +18,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::all()->sortBy('nama');
 
         return view('kelola-pengguna.index', [
             'title' => 'Daftar Pengguna',
@@ -32,7 +32,7 @@ class UserController extends Controller
     public function create()
     {
         $unit_kerja = UnitKerja::all();
-        $role = Role::all();
+        $role = Role::all()->sortBy('name');
 
         return view('kelola-pengguna.create', [
             'title' => 'Tambah Pengguna',
@@ -81,7 +81,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $unit_kerja = UnitKerja::all();
-        $role = Role::all();
+        $role = Role::all()->sortBy('name');
 
         return view('kelola-pengguna.edit', [
             'title' => 'Edit Pengguna',

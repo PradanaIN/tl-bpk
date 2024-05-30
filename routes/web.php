@@ -34,8 +34,8 @@ Route::middleware(['auth', 'prevent-back-button'])->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('permission:view dashboard');
 
-    Route::middleware(['role:Super Admin||Super Admin'])->group(function () {
-        // Master Pengguna
+    Route::middleware(['role:Super Admin|Admin'])->group(function () {
+        // Kelola Pengguna
         Route::get('/kelola-pengguna', [UserController::class, 'index'])->middleware('permission:view user');
         Route::get('/kelola-pengguna/create', [UserController::class, 'create'])->middleware('permission:create user');
         Route::post('/kelola-pengguna', [UserController::class, 'store'])->middleware('permission:create user');
@@ -58,64 +58,64 @@ Route::middleware(['auth', 'prevent-back-button'])->group(function () {
         Route::get('/rekomendasi', [RekomendasiController::class, 'index'])->middleware('permission:view rekomendasi');
         Route::get('/rekomendasi/create', [RekomendasiController::class, 'create'])->middleware('permission:create rekomendasi');
         Route::post('/rekomendasi', [RekomendasiController::class, 'store'])->middleware('permission:create rekomendasi');
-        Route::get('/rekomendasi/{rekomendasi:id}', [RekomendasiController::class, 'show'])->middleware('permission:view rekomendasi');
+        Route::get('/rekomendasi/{rekomendasi:id}', [RekomendasiController::class, 'show'])->middleware('permission:show rekomendasi');
         Route::get('/rekomendasi/{rekomendasi:id}/edit', [RekomendasiController::class, 'edit'])->middleware('permission:edit rekomendasi');
-        Route::put('/rekomendasi/{rekomendasi:id}', [RekomendasiController::class, 'update']);
-        Route::get('/rekomendasi/{rekomendasi:id}/nextSemester', [RekomendasiController::class, 'nextSemester'])->middleware('permission:edit rekomendasi');
-        Route::post('/rekomendasi/{rekomendasi:id}', [RekomendasiController::class, 'createNextSemester']);
+        Route::put('/rekomendasi/{rekomendasi:id}', [RekomendasiController::class, 'update'])->middleware('permission:edit rekomendasi');
         Route::delete('/rekomendasi/{rekomendasi:id}', [RekomendasiController::class, 'destroy'])->middleware('permission:delete rekomendasi');
-        Route::get('/rekomendasi/{rekomendasi:id}/export', [RekomendasiController::class, 'export']);
+        Route::get('/rekomendasi/{rekomendasi:id}/export', [RekomendasiController::class, 'export'])->middleware('permission:export rekomendasi');
+        Route::get('/rekomendasi/{rekomendasi:id}/nextSemester', [RekomendasiController::class, 'nextSemester'])->middleware('permission:edit rekomendasi');
+        Route::post('/rekomendasi/{rekomendasi:id}', [RekomendasiController::class, 'createNextSemester'])->middleware('permission:edit rekomendasi');
     });
 
-    Route::middleware(['role:Super Admin'])->group(function () {
+    Route::middleware(['role:Super Admin|Tim Koordinator|Admin|Pimpinan'])->group(function () {
         // Old Rekomendasi
-        Route::get('/old-rekomendasi', [OldRekomendasiController::class, 'index']);
-        Route::get('/old-rekomendasi/create', [OldRekomendasiController::class, 'create']);
-        Route::post('/old-rekomendasi', [OldRekomendasiController::class, 'store']);
-        Route::get('/old-rekomendasi/{rekomendasi:id}', [OldRekomendasiController::class, 'show']);
-        Route::get('/old-rekomendasi/{rekomendasi:id}/edit', [OldRekomendasiController::class, 'edit']);
-        Route::put('/old-rekomendasi/{rekomendasi:id}', [OldRekomendasiController::class, 'update']);
-        Route::delete('/old-rekomendasi/{rekomendasi:id}', [OldRekomendasiController::class, 'destroy']);
-        Route::get('/old-rekomendasi/{rekomendasi:id}/export', [OldRekomendasiController::class, 'export']);
+        Route::get('/old-rekomendasi', [OldRekomendasiController::class, 'index'])->middleware('permission:view old rekomendasi');
+        Route::get('/old-rekomendasi/create', [OldRekomendasiController::class, 'create'])->middleware('permission:create old rekomendasi');
+        Route::post('/old-rekomendasi', [OldRekomendasiController::class, 'store'])->middleware('permission:create old rekomendasi');
+        Route::get('/old-rekomendasi/{rekomendasi:id}', [OldRekomendasiController::class, 'show'])->middleware('permission:show old rekomendasi');
+        Route::get('/old-rekomendasi/{rekomendasi:id}/edit', [OldRekomendasiController::class, 'edit'])->middleware('permission:edit old rekomendasi');
+        Route::put('/old-rekomendasi/{rekomendasi:id}', [OldRekomendasiController::class, 'update'])->middleware('permission:edit old rekomendasi');
+        Route::delete('/old-rekomendasi/{rekomendasi:id}', [OldRekomendasiController::class, 'destroy'])->middleware('permission:delete old rekomendasi');
+        Route::get('/old-rekomendasi/{rekomendasi:id}/export', [OldRekomendasiController::class, 'export'])->middleware('permission:export old rekomendasi');
     });
 
-    Route::middleware(['role:Super Admin'])->group(function () {
+    Route::middleware(['role:Super Admin|Tim Koordinator|Admin'])->group(function () {
         // Old Tindak Lanjut
-        Route::delete('/old-tindak-lanjut/{tindak_lanjut:id}', [OldTindakLanjutController::class, 'destroy']);
-        Route::delete('/old-tindak-lanjut/{tindak_lanjut?}', [OldTindakLanjutController::class, 'destroy'])->name('oldtindaklanjut.destroy');
+        Route::delete('/old-tindak-lanjut/{tindak_lanjut:id}', [OldTindakLanjutController::class, 'destroy'])->middleware('permission:delete old tindak rekomendasi');
+        Route::delete('/old-tindak-lanjut/{tindak_lanjut?}', [OldTindakLanjutController::class, 'destroy'])->name('oldtindaklanjut.destroy')->middleware('permission:delete old rekomendasi');
     });
 
-    Route::middleware(['role:Pimpinan|Tim Koordinator|Operator Unit Kerja|Super Admin'])->group(function () {
+    Route::middleware(['role:Pimpinan|Tim Koordinator|Operator Unit Kerja|Pimpinan Unit Kerja|Super Admin'])->group(function () {
         // Kelola Tindak Lanjut
         Route::get('/tindak-lanjut', [TindakLanjutController::class, 'index'])->middleware('permission:view tindak lanjut');
         Route::get('/tindak-lanjut/create', [TindakLanjutController::class, 'create'])->middleware('permission:create tindak lanjut');
         Route::post('/tindak-lanjut', [TindakLanjutController::class, 'store'])->middleware('permission:create tindak lanjut');
-        Route::get('/tindak-lanjut/{tindak_lanjut:id}', [TindakLanjutController::class, 'show'])->middleware('permission:view tindak lanjut');
+        Route::get('/tindak-lanjut/{tindak_lanjut:id}', [TindakLanjutController::class, 'show'])->middleware('permission:show tindak lanjut');
         Route::get('/tindak-lanjut/{tindak_lanjut:id}/edit', [TindakLanjutController::class, 'edit'])->middleware('permission:edit tindak lanjut');
         Route::put('/tindak-lanjut/{tindak_lanjut:id}', [TindakLanjutController::class, 'update'])->middleware('permission:edit tindak lanjut');
         Route::delete('/tindak-lanjut/{tindak_lanjut:id}', [TindakLanjutController::class, 'destroy'])->middleware('permission:delete tindak lanjut');
-        Route::delete('/tindak-lanjut/{tindak_lanjut?}', [TindakLanjutController::class, 'destroy'])->name('tindaklanjut.destroy');
-        Route::get('/tindak-lanjut/{tindak_lanjut:id}/generate', [TindakLanjutController::class, 'word']);
-        Route::put('/tindak-lanjut/{tindak_lanjut:id}/updateDeadline', [TindakLanjutController::class, 'updateDeadline']);
+        Route::delete('/tindak-lanjut/{tindak_lanjut?}', [TindakLanjutController::class, 'destroy'])->name('tindaklanjut.destroy')->middleware('permission:delete tindak lanjut');
+        Route::get('/tindak-lanjut/{tindak_lanjut:id}/generate', [TindakLanjutController::class, 'word'])->middleware('permission:export tindak lanjut');
+        Route::put('/tindak-lanjut/{tindak_lanjut:id}/updateDeadline', [TindakLanjutController::class, 'updateDeadline'])->middleware('permission:edit tindak lanjut');
     });
 
-    Route::middleware(['role:Tim Pemantauan Wilayah I|Tim Pemantauan Wilayah II|Tim Pemantauan Wilayah III|Pengendali Teknis|Super Admin'])->group(function () {
+    Route::middleware(['role:Tim Pemantauan Wilayah I|Tim Pemantauan Wilayah II|Tim Pemantauan Wilayah III|Super Admin'])->group(function () {
         // Kelola Identifikasi Dokumen
         Route::get('/identifikasi', [IdentifikasiController::class, 'index'])->middleware('permission:view identifikasi');
         Route::get('/identifikasi/create', [IdentifikasiController::class, 'create'])->middleware('permission:create identifikasi');
         Route::post('/identifikasi', [IdentifikasiController::class, 'store'])->middleware('permission:create identifikasi');
-        Route::get('/identifikasi/{tindak_lanjut:id}', [IdentifikasiController::class, 'show'])->middleware('permission:view identifikasi');
+        Route::get('/identifikasi/{tindak_lanjut:id}', [IdentifikasiController::class, 'show'])->middleware('permission:show identifikasi');
         Route::get('/identifikasi/{tindak_lanjut:id}/edit', [IdentifikasiController::class, 'edit'])->middleware('permission:edit identifikasi');
         Route::put('/identifikasi/{tindak_lanjut:id}', [IdentifikasiController::class, 'update'])->middleware('permission:edit identifikasi');
     });
 
     Route::middleware(['role:Pimpinan|Tim Koordinator|Super Admin'])->group(function () {
         // Pemutakhiran Status
-        Route::get('pemutakhiran-status', [PemutakhiranController::class, 'index']);
-        Route::get('pemutakhiran-status/{rekomendasi:id}', [PemutakhiranController::class, 'show']);
-        Route::get('pemutakhiran-status/{rekomendasi:id}/edit', [PemutakhiranController::class, 'edit']);
-        Route::put('pemutakhiran-status/{rekomendasi:id}', [PemutakhiranController::class, 'update']);
-        Route::put('pemutakhiran-status/{rekomendasi:id}/siptl', [PemutakhiranController::class, 'uploadBuktiInputSIPTL']);
+        Route::get('pemutakhiran-status', [PemutakhiranController::class, 'index'])->middleware('permission:view pemutakhiran');
+        Route::get('pemutakhiran-status/{rekomendasi:id}', [PemutakhiranController::class, 'show'])->middleware('permission:show pemutakhiran');
+        Route::get('pemutakhiran-status/{rekomendasi:id}/edit', [PemutakhiranController::class, 'edit'])->middleware('permission:edit pemutakhiran');
+        Route::put('pemutakhiran-status/{rekomendasi:id}', [PemutakhiranController::class, 'update'])->middleware('permission:edit pemutakhiran');
+        Route::put('pemutakhiran-status/{rekomendasi:id}/siptl', [PemutakhiranController::class, 'uploadBuktiInputSIPTL'])->middleware('permission:edit pemutakhiran');
     });
 
     // Error 404

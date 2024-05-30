@@ -20,6 +20,11 @@ class OldTindakLanjutController extends Controller
             return redirect()->back()->with('error', 'Data tidak ditemukan.');
         }
 
+        // Hapus file bukti tindak lanjut
+        if ($tindakLanjut->bukti_tindak_lanjut) {
+            unlink(public_path('uploads/tindak_lanjut/' . $tindakLanjut->bukti_tindak_lanjut));
+        }
+
         // Hapus data
         $tindakLanjut->delete();
 

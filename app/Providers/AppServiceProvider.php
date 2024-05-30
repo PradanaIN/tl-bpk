@@ -46,16 +46,31 @@ class AppServiceProvider extends ServiceProvider
             'edit rekomendasi',
             'delete rekomendasi',
             'show rekomendasi',
+            'export rekomendasi',
             // Tindak Lanjut
             'view tindak lanjut',
             'create tindak lanjut',
             'edit tindak lanjut',
-            'delete tindak lanjut',
             'show tindak lanjut',
+            'delete tindak lanjut',
+            'export tindak lanjut',
             // Identifikasi
             'view identifikasi',
             'create identifikasi',
             'edit identifikasi',
+            'show identifikasi',
+            // pemutakhiran
+            'view pemutakhiran',
+            'create pemutakhiran',
+            'edit pemutakhiran',
+            'show pemutakhiran',
+            // old rekomendasi
+            'view old rekomendasi',
+            'create old rekomendasi',
+            'edit old rekomendasi',
+            'delete old rekomendasi',
+            'show old rekomendasi',
+            'export old rekomendasi',
         ];
 
         foreach ($permissions as $permission) {
@@ -68,19 +83,12 @@ class AppServiceProvider extends ServiceProvider
         $roles = [
             'Admin',
             'Pimpinan',
-            'Unit Kerja',
+            'Pimpinan Unit Kerja',
             'Operator Unit Kerja',
             'Tim Koordinator',
-            // 'Ketua Tim Pemantauan',
-            // 'Ketua Tim Pemantauan II',
-            // 'Ketua Tim Pemantauan III',
-            // 'Anggota Tim Pemantauan',
             'Tim Pemantauan Wilayah I',
             'Tim Pemantauan Wilayah II',
             'Tim Pemantauan Wilayah III',
-            // 'Anggota Tim Pemantauan II',
-            // 'Anggota Tim Pemantauan III',
-            'Pengendali Teknis',
             'Badan Pemeriksa Keuangan',
             'Super Admin'
         ];

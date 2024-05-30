@@ -285,7 +285,6 @@
                                         <div class="col-auto d-flex ms-auto">
                                             <span
                                                 class="status-badge bg-success text-white me-2">{{ $rekomendasi->buktiInputSIPTL->bukti_input_siptl }}</span>
-                                            @canany(['Tim Koordinator', 'Super Admin'])
                                                 <div class="col-auto d-flex align-content-center">
                                                     <a href="{{ asset('uploads/bukti_input_siptl/' . $rekomendasi->buktiInputSIPTL->bukti_input_siptl) }}"
                                                         class="btn btn-secondary me-2" data-bs-toggle="tooltip"
@@ -293,13 +292,14 @@
                                                         <i class="bi bi-download"></i>
                                                         <span class="d-none d-md-inline">&nbsp;Unduh Bukti</span>
                                                     </a>
+                                                    @canany(['Tim Koordinator', 'Super Admin'])
                                                     <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip"
                                                         data-bs-placement="bottom" title="Ubah Bukti Input SIPTL">
                                                         <i class="bi bi-pencil"></i>
                                                         <span class="d-none d-md-inline">&nbsp;Ubah Bukti</span>
                                                     </button>
+                                                    @endcan
                                                 </div>
-                                            @endcan
                                         </div>
                                     @endif
                                 </div>
@@ -409,10 +409,12 @@
                                         berikutnya.</p>
                                     <hr>
                                     <p class="mb-0">Silakan cek menu rekomendasi untuk melanjutkan.</p>
+                                    @canany(['Tim Koordinator', 'Super Admin'])
                                     <a href="/rekomendasi/{{ $rekomendasi->id }}" class="btn btn-primary mt-2">
                                         <i class="bi bi-eye"></i>
                                         &nbsp;Menu Rekomendasi
                                     </a>
+                                    @endcan
                                 </div>
                             @endif
                         @else

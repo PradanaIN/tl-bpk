@@ -14,7 +14,7 @@ class DashboardController extends Controller
     {
         $role = Auth::user()->role;
 
-        if ($role === 'Tim Koordinator' || $role === 'Super Admin') { // data rekomendasi
+        if ($role === 'Tim Koordinator' || $role === 'Super Admin' || $role === 'Pimpinan') { // data rekomendasi
             $data = Rekomendasi::all();
             $data_sesuai = $data->where('status_rekomendasi', 'Sesuai');
             $data_belum_sesuai = $data->whereIn('status_rekomendasi', ['Belum Sesuai']);
@@ -94,7 +94,7 @@ class DashboardController extends Controller
                 'unitKerjaList' => $unitKerjaList,
             ]);
 
-        } else if ($role === 'Operator Unit Kerja') { // data tindak lanjut berdasarkan unit kerja
+        } else if ($role === 'Operator Unit Kerja' || $role === 'Pimpinan Unit Kerja') { // data tindak lanjut berdasarkan unit kerja
             $unit_kerja = Auth::user()->unit_kerja;
 
             $data = TindakLanjut::where('unit_kerja', $unit_kerja)->get();

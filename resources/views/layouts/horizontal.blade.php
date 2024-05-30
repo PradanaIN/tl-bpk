@@ -296,14 +296,15 @@
                                             <h6>Dashboard</h6>
                                         </a>
                                     </li>
-                                    @canany(['Tim Koordinator', 'Super Admin'])
+                                    @canany(['Tim Koordinator', 'Super Admin', 'Pimpinan'])
                                         <li class="nav-item">
                                             <a class="nav-link" id="navbar-link" href="/rekomendasi">
                                                 <h6>Rekomendasi</h6>
                                             </a>
                                         </li>
                                     @endcan
-                                    @canany(['Super Admin', 'Tim Koordinator', 'Unit Kerja', 'Operator Unit Kerja'])
+                                    @canany(['Super Admin', 'Tim Koordinator', 'Operator Unit Kerja', 'Pimpinan',
+                                        'Pimpinan Unit Kerja'])
                                         <li class="nav-item">
                                             <a class="nav-link" id="navbar-link" href="/tindak-lanjut">
                                                 <h6>Tindak Lanjut</h6>
@@ -323,14 +324,21 @@
                                             </a>
                                         </li>
                                     @endcan
-                                    @canany(['Super Admin', 'Tim Koordinator'])
+                                    @canany(['Super Admin', 'Tim Koordinator', 'Pimpinan'])
                                         <li class="nav-item">
                                             <a class="nav-link" id="navbar-link" href="/pemutakhiran-status">
                                                 <h6>Pemutakhiran</h6>
                                             </a>
                                         </li>
                                     @endcan
-                                    @can('Super Admin')
+                                    @canany(['Tim Koordinator', 'Pimpinan'])
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="navbar-link" href="/old-rekomendasi">
+                                                <h6>Rekomendasi Lama</h6>
+                                            </a>
+                                        </li>
+                                    @endcan
+                                    @canany(['Super Admin', 'Admin'])
                                         <li class="nav-item dropdown">
                                             <a class="nav-link dropdown-toggle bold-blue-text" href="#"
                                                 id="navbarDropdown" role="button" data-bs-toggle="dropdown"

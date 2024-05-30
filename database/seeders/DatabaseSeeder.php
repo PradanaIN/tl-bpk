@@ -33,12 +33,12 @@ class DatabaseSeeder extends Seeder
         $roles = [
             'Admin',
             'Pimpinan',
+            'Pimpinan Unit Kerja',
             'Operator Unit Kerja',
             'Tim Koordinator',
             'Tim Pemantauan Wilayah I',
             'Tim Pemantauan Wilayah II',
             'Tim Pemantauan Wilayah III',
-            'Pengendali Teknis',
             'Badan Pemeriksa Keuangan',
             'Super Admin'
         ];
@@ -70,16 +70,31 @@ class DatabaseSeeder extends Seeder
             'edit rekomendasi',
             'delete rekomendasi',
             'show rekomendasi',
+            'export rekomendasi',
             // Tindak Lanjut
             'view tindak lanjut',
             'create tindak lanjut',
             'edit tindak lanjut',
-            'delete tindak lanjut',
             'show tindak lanjut',
+            'delete tindak lanjut',
+            'export tindak lanjut',
             // Identifikasi
             'view identifikasi',
             'create identifikasi',
             'edit identifikasi',
+            'show identifikasi',
+            // pemutakhiran
+            'view pemutakhiran',
+            'create pemutakhiran',
+            'edit pemutakhiran',
+            'show pemutakhiran',
+            // old rekomendasi
+            'view old rekomendasi',
+            'create old rekomendasi',
+            'edit old rekomendasi',
+            'delete old rekomendasi',
+            'show old rekomendasi',
+            'export old rekomendasi',
         ];
 
         foreach ($permissions as $permission) {
@@ -91,16 +106,138 @@ class DatabaseSeeder extends Seeder
 
         // Assign Permission to Role
         $permissions = [
-            'Admin' => ['view dashboard', 'view kamus', 'create kamus', 'edit kamus', 'delete kamus', 'view user', 'create user', 'edit user', 'delete user'],
-            'Pimpinan' => ['view dashboard', 'view rekomendasi', 'view tindak lanjut', 'show rekomendasi', 'show tindak lanjut'],
-            'Operator Unit Kerja' => ['view dashboard', 'view rekomendasi', 'view tindak lanjut', 'show rekomendasi', 'show tindak lanjut', 'edit tindak lanjut'],
-            'Tim Koordinator' => ['view dashboard', 'view rekomendasi', 'create rekomendasi', 'edit rekomendasi', 'delete rekomendasi', 'show rekomendasi', 'view tindak lanjut', 'create tindak lanjut', 'edit tindak lanjut', 'delete tindak lanjut', 'show tindak lanjut'],
-            'Tim Pemantauan Wilayah I' => ['view dashboard', 'view rekomendasi', 'show rekomendasi', 'view tindak lanjut', 'show tindak lanjut', 'edit tindak lanjut', 'view identifikasi', 'create identifikasi', 'edit identifikasi'],
-            'Tim Pemantauan Wilayah II' => ['view dashboard', 'view rekomendasi', 'show rekomendasi', 'view tindak lanjut', 'show tindak lanjut', 'edit tindak lanjut', 'view identifikasi', 'create identifikasi', 'edit identifikasi'],
-            'Tim Pemantauan Wilayah III' => ['view dashboard', 'view rekomendasi', 'show rekomendasi', 'view tindak lanjut', 'show tindak lanjut', 'edit tindak lanjut', 'view identifikasi', 'create identifikasi', 'edit identifikasi'],
-            'Pengendali Teknis' => ['view dashboard', 'view rekomendasi', 'show rekomendasi', 'view tindak lanjut', 'show tindak lanjut', 'edit tindak lanjut', 'view identifikasi', 'create identifikasi', 'edit identifikasi'],
-            'Badan Pemeriksa Keuangan' => ['view rekomendasi', 'show rekomendasi'],
-            'Super Admin' => ['view dashboard', 'view kamus', 'create kamus', 'edit kamus', 'delete kamus', 'view user', 'create user', 'edit user', 'delete user', 'view rekomendasi', 'create rekomendasi', 'edit rekomendasi', 'delete rekomendasi', 'show rekomendasi', 'view tindak lanjut', 'create tindak lanjut', 'edit tindak lanjut', 'delete tindak lanjut', 'show tindak lanjut', 'view identifikasi', 'create identifikasi', 'edit identifikasi'],
+            // Admin hanya kamus dan user
+            'Admin' => [
+                'view kamus',
+                'create kamus',
+                'edit kamus',
+                'delete kamus',
+                'view user',
+                'create user',
+                'edit user',
+                'delete user',
+            ],
+            // Tim Koordinator dashboard, rekomendasi, tindak lanjut, pemutakhiran, old rekomendasi
+            'Tim Koordinator' => [
+                'view dashboard',
+                'view rekomendasi',
+                'create rekomendasi',
+                'edit rekomendasi',
+                'delete rekomendasi',
+                'show rekomendasi',
+                'view tindak lanjut',
+                'create tindak lanjut',
+                'edit tindak lanjut',
+                'show tindak lanjut',
+                'delete tindak lanjut',
+                'view pemutakhiran',
+                'create pemutakhiran',
+                'edit pemutakhiran',
+                'show pemutakhiran',
+                'view old rekomendasi',
+                'create old rekomendasi',
+                'edit old rekomendasi',
+                'delete old rekomendasi',
+                'show old rekomendasi',
+            ],
+            // Pimpinan sama dengan Tim Koordinator namun tidak bisa create, edit, dan delete
+            'Pimpinan' => [
+                'view dashboard',
+                'view rekomendasi',
+                'show rekomendasi',
+                'view tindak lanjut',
+                'show tindak lanjut',
+                'view pemutakhiran',
+                'show pemutakhiran',
+                'view old rekomendasi',
+                'show old rekomendasi',
+            ],
+            // Badan Pemeriksa Keuangan mirip dengan Pimpinan
+            'Badan Pemeriksa Keuangan' => [
+                'view dashboard',
+                'view rekomendasi',
+                'show rekomendasi',
+                'view tindak lanjut',
+                'show tindak lanjut',
+                'view pemutakhiran',
+                'show pemutakhiran',
+                'view old rekomendasi',
+                'show old rekomendasi',
+            ],
+            // Operator Unit Kerja hanya dashboard dan tindak lanjut
+            'Operator Unit Kerja' => [
+                'view dashboard',
+                'view tindak lanjut',
+                'create tindak lanjut',
+                'edit tindak lanjut',
+                'show tindak lanjut',
+            ],
+            // Pimpinan Unit Kerja sama dengan Operator Unit Kerja namun tidak bisa create, edit
+            'Pimpinan Unit Kerja' => [
+                'view dashboard',
+                'view tindak lanjut',
+                'show tindak lanjut',
+            ],
+            // Tim Pemantauan Wilayah I, II, III, hanya dashboard dan identifikasi
+            'Tim Pemantauan Wilayah I' => [
+                'view dashboard',
+                'view identifikasi',
+                'create identifikasi',
+                'edit identifikasi',
+                'show identifikasi',
+            ],
+            'Tim Pemantauan Wilayah II' => [
+                'view dashboard',
+                'view identifikasi',
+                'create identifikasi',
+                'edit identifikasi',
+                'show identifikasi',
+            ],
+            'Tim Pemantauan Wilayah III' => [
+                'view dashboard',
+                'view identifikasi',
+                'create identifikasi',
+                'edit identifikasi',
+                'show identifikasi',
+            ],
+            // Super Admin bisa semua
+            'Super Admin' => [
+                'view dashboard',
+                'view kamus',
+                'create kamus',
+                'edit kamus',
+                'delete kamus',
+                'view user',
+                'create user',
+                'edit user',
+                'delete user',
+                'view rekomendasi',
+                'create rekomendasi',
+                'edit rekomendasi',
+                'delete rekomendasi',
+                'show rekomendasi',
+                'export rekomendasi',
+                'view tindak lanjut',
+                'create tindak lanjut',
+                'edit tindak lanjut',
+                'show tindak lanjut',
+                'delete tindak lanjut',
+                'export tindak lanjut',
+                'view identifikasi',
+                'create identifikasi',
+                'edit identifikasi',
+                'show identifikasi',
+                'view pemutakhiran',
+                'create pemutakhiran',
+                'edit pemutakhiran',
+                'show pemutakhiran',
+                'view old rekomendasi',
+                'create old rekomendasi',
+                'edit old rekomendasi',
+                'delete old rekomendasi',
+                'show old rekomendasi',
+                'export old rekomendasi',
+            ],
         ];
 
         foreach ($permissions as $roleName => $permissionList) {
@@ -109,7 +246,7 @@ class DatabaseSeeder extends Seeder
         }
 
 
-        // create Super Admin
+        // create User
         User::create([
             'id' => Str::uuid()->toString(),
             'nama' => 'Super Admin',
@@ -121,24 +258,67 @@ class DatabaseSeeder extends Seeder
         ]);
         User::create([
             'id' => Str::uuid()->toString(),
+            'nama' => 'Admin',
+            'email' => 'admin@example.com',
+            'password' => Hash::make('password'),
+            'unit_kerja' => 'Inspektorat Utama',
+            'role' => 'Admin',
+            'unit_kerja_id' => 546
+        ]);
+        User::create([
+            'id' => Str::uuid()->toString(),
             'nama' => 'BPS Provinsi Jawa Tengah',
-            'email' => 'bpsjateng@example.org',
+            'email' => 'bpsjateng@example.com',
             'password' => Hash::make('password'),
             'unit_kerja' => 'BPS PROVINSI JAWA TENGAH',
             'role' => 'Operator Unit Kerja',
             'unit_kerja_id' => 194
         ]);
-
+        User::create([
+            'id' => Str::uuid()->toString(),
+            'nama' => 'Pimpinan BPS Provinsi Jawa Tengah',
+            'email' => 'pimpinanbpsjateng@example.com',
+            'password' => Hash::make('password'),
+            'unit_kerja' => 'BPS PROVINSI JAWA TENGAH',
+            'role' => 'Pimpinan Unit Kerja',
+            'unit_kerja_id' => 194
+        ]);
         User::create([
             'id' => Str::uuid()->toString(),
             'nama' => 'Biro Umum',
-            'email' => 'biroumum@example.org',
+            'email' => 'biroumum@example.com',
             'password' => Hash::make('password'),
             'unit_kerja' => 'Biro Umum',
             'role' => 'Operator Unit Kerja',
             'unit_kerja_id' => 519
         ]);
-
+        User::create([
+            'id' => Str::uuid()->toString(),
+            'nama' => 'Pimpinan Biro Umum',
+            'email' => 'pimpinanbiroumum@example.com',
+            'password' => Hash::make('password'),
+            'unit_kerja' => 'Biro Umum',
+            'role' => 'Pimpinan Unit Kerja',
+            'unit_kerja_id' => 519
+        ]);
+        User::create([
+            'id' => Str::uuid()->toString(),
+            'nama' => 'Polstat STIS',
+            'email' => 'polstatstis@example.com',
+            'password' => Hash::make('password'),
+            'unit_kerja' => 'Politeknik Statistika STIS',
+            'role' => 'Operator Unit Kerja',
+            'unit_kerja_id' => 521
+        ]);
+        User::create([
+            'id' => Str::uuid()->toString(),
+            'nama' => 'Pimpinan Polstat STIS',
+            'email' => 'pimpinanpolstatstis@example.com',
+            'password' => Hash::make('password'),
+            'unit_kerja' => 'Politeknik Statistika STIS',
+            'role' => 'Pimpinan Unit Kerja',
+            'unit_kerja_id' => 521
+        ]);
         User::create([
             'id' => Str::uuid()->toString(),
             'nama' => 'Tim Koordinator',
@@ -148,25 +328,50 @@ class DatabaseSeeder extends Seeder
             'role' => 'Tim Koordinator',
             'unit_kerja_id' => 546
         ]);
-
+        User::create([
+            'id' => Str::uuid()->toString(),
+            'nama' => 'Tim Pemantauan Wilayah I',
+            'email' => 'timpemantauanwilayahsatu@example.com',
+            'password' => Hash::make('password'),
+            'unit_kerja' => 'Inspektorat Wilayah I',
+            'role' => 'Tim Pemantauan Wilayah I',
+            'unit_kerja_id' => 537
+        ]);
         User::create([
             'id' => Str::uuid()->toString(),
             'nama' => 'Tim Pemantauan Wilayah II',
-            'email' => 'timpemantauanwilayahdua@example.org',
+            'email' => 'timpemantauanwilayahdua@example.com',
             'password' => Hash::make('password'),
             'unit_kerja' => 'Inspektorat Wilayah II',
             'role' => 'Tim Pemantauan Wilayah II',
             'unit_kerja_id' => 538
         ]);
-
         User::create([
             'id' => Str::uuid()->toString(),
-            'nama' => 'Tim Pemantauan Wilayah I',
-            'email' => 'timpemantauanwilayahsatu@example.org',
+            'nama' => 'Tim Pemantauan Wilayah III',
+            'email' => 'timpemantauanwilayahtiga@example.com',
             'password' => Hash::make('password'),
-            'unit_kerja' => 'Inspektorat Wilayah I',
-            'role' => 'Tim Pemantauan Wilayah I',
-            'unit_kerja_id' => 537
+            'unit_kerja' => 'Inspektorat Wilayah III',
+            'role' => 'Tim Pemantauan Wilayah III',
+            'unit_kerja_id' => 539
+        ]);
+        User::create([
+            'id' => Str::uuid()->toString(),
+            'nama' => 'Pimpinan Inspektorat Utama',
+            'email' => 'pimpinan@example.com',
+            'password' => Hash::make('password'),
+            'unit_kerja' => 'Inspektorat Utama',
+            'role' => 'Pimpinan',
+            'unit_kerja_id' => 546
+        ]);
+        User::create([
+            'id' => Str::uuid()->toString(),
+            'nama' => 'Badan Pemeriksa Keuangan',
+            'email' => 'Badan Pemeriksa Keuangan',
+            'password' => Hash::make('password'),
+            'unit_kerja' => 'Badan Pemeriksa Keuangan',
+            'role' => 'Badan Pemeriksa Keuangan',
+            'unit_kerja_id' => 547
         ]);
 
 
@@ -180,6 +385,9 @@ class DatabaseSeeder extends Seeder
                 case 'Pimpinan':
                     $user->assignRole('Pimpinan');
                     break;
+                case 'Pimpinan Unit Kerja':
+                    $user->assignRole('Pimpinan Unit Kerja');
+                    break;
                 case 'Operator Unit Kerja':
                     $user->assignRole('Operator Unit Kerja');
                     break;
@@ -189,7 +397,6 @@ class DatabaseSeeder extends Seeder
                 case 'Tim Pemantauan Wilayah I':
                 case 'Tim Pemantauan Wilayah II':
                 case 'Tim Pemantauan Wilayah III':
-                case 'Pengendali Teknis':
                     $role = Role::where('name', $user->role)->first(); // Dapatkan objek peran berdasarkan nama peran
                     if ($role) {
                         $user->assignRole($role); // Gunakan objek peran untuk menetapkan peran ke pengguna

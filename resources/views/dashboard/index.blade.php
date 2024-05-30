@@ -20,7 +20,7 @@
     <section class="row">
         <div class="col-12">
             <div class="row">
-                @foreach ([['color' => 'green', 'icon' => 'bi bi-bookmark-check-fill', 'title' => $role === 'Operator Unit Kerja' ? 'Tindak Lanjut Sesuai/Selesai' : 'Rekomendasi Sesuai/Selesai', 'count' => $data_sesuai->count()], ['color' => 'red', 'icon' => 'bi bi-stopwatch-fill', 'title' => $role === 'Operator Unit Kerja' ? 'Tindak Lanjut Belum Sesuai/Selesai' : 'Rekomendasi Belum Sesuai/Selesai', 'count' => $data_belum_sesuai->count()], ['color' => 'blue', 'icon' => 'bi bi-clipboard-data-fill', 'title' => $role === 'Operator Unit Kerja' ? 'Tindak Lanjut Belum Ditindaklanjuti' : 'Rekomendasi Belum Ditindaklanjuti', 'count' => $data_belum_ditindaklanjuti->count()], ['color' => 'black', 'icon' => 'bi bi-bookmark-x-fill', 'title' => $role === 'Operator Unit Kerja' ? 'Tindak Lanjut Tidak Ditindaklanjuti' : 'Rekomendasi Tidak Ditindaklanjuti', 'count' => $data_tidak_dapat_ditindaklanjuti->count()]] as $item)
+                @foreach ([['color' => 'green', 'icon' => 'bi bi-bookmark-check-fill', 'title' => ($role === 'Operator Unit Kerja' || $role === 'Pimpinan Unit Kerja') ? 'Tindak Lanjut Sesuai/Selesai' : 'Rekomendasi Sesuai/Selesai', 'count' => $data_sesuai->count()], ['color' => 'red', 'icon' => 'bi bi-stopwatch-fill', 'title' => ($role === 'Operator Unit Kerja' || $role === 'Pimpinan Unit Kerja') ? 'Tindak Lanjut Belum Sesuai/Selesai' : 'Rekomendasi Belum Sesuai/Selesai', 'count' => $data_belum_sesuai->count()], ['color' => 'blue', 'icon' => 'bi bi-clipboard-data-fill', 'title' => ($role === 'Operator Unit Kerja' || $role === 'Pimpinan Unit Kerja') ? 'Tindak Lanjut Belum Ditindaklanjuti' : 'Rekomendasi Belum Ditindaklanjuti', 'count' => $data_belum_ditindaklanjuti->count()], ['color' => 'black', 'icon' => 'bi bi-bookmark-x-fill', 'title' => ($role === 'Operator Unit Kerja' || $role === 'Pimpinan Unit Kerja') ? 'Tindak Lanjut Tidak Ditindaklanjuti' : 'Rekomendasi Tidak Ditindaklanjuti', 'count' => $data_tidak_dapat_ditindaklanjuti->count()]] as $item)
                     <div class="col-6 col-lg-3 col-md-6">
                         <div class="card">
                             <div class="card-body px-4 py-4-5">
@@ -49,7 +49,7 @@
                 <div class="col-12 col-lg-6"> <!-- Kolom untuk pie chart -->
                     <div class="card">
                         <div class="card-header text-center">
-                            <h4>Persentase Status {{ $role === 'Operator Unit Kerja' ? 'Tindak Lanjut' : 'Rekomendasi' }}
+                            <h4>Persentase Status {{ ($role === 'Operator Unit Kerja' || $role === 'Pimpinan Unit Kerja') ? 'Tindak Lanjut' : 'Rekomendasi' }}
                                 BPK</h4>
                         </div>
                         <div class="card-body">
@@ -60,7 +60,7 @@
                 <div class="col-12 col-lg-6"> <!-- Kolom untuk line chart -->
                     <div class="card">
                         <div class="card-header text-center">
-                            <h4>Jumlah {{ $role === 'Operator Unit Kerja' ? 'Tindak Lanjut' : 'Rekomendasi' }} Pertahun
+                            <h4>Jumlah {{ ($role === 'Operator Unit Kerja' || $role === 'Pimpinan Unit Kerja') ? 'Tindak Lanjut' : 'Rekomendasi' }} Pertahun
                             </h4>
                         </div>
                         <div class="card-body">
@@ -71,7 +71,7 @@
             </div>
         </div>
 
-        @if ($role === 'Super Admin' || $role === 'Tim Koordinator')
+        @if ($role === 'Super Admin' || $role === 'Tim Koordinator' || $role === 'Pimpinan')
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
@@ -143,7 +143,9 @@
                                         <td class="text-center"><strong>{{ $totalBelumDitindaklanjuti }}</strong></td>
                                         <td class="text-center"><strong>{{ $totalTidakDitindaklanjuti }}</strong></td>
                                         <td class="text-center">
-                                            <strong>{{ number_format($totalPersentasePenyelesaian / count($unitKerjaList), 2) }}%</strong>
+                                            <strong>
+                                                {{ count($unitKerjaList) > 0 ? number_format($totalPersentasePenyelesaian / count($unitKerjaList), 2) . '%' : '0.00%' }}
+                                            </strong>
                                         </td>
                                         <td class="text-center"><strong>{{ $totalSudahUpload }}</strong></td>
                                     </tr>

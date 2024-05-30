@@ -125,7 +125,9 @@
                                     <td class="text-center"><strong>{{ $totalBelumDitindaklanjuti }}</strong></td>
                                     <td class="text-center"><strong>{{ $totalTidakDitindaklanjuti }}</strong></td>
                                     <td class="text-center">
-                                        <strong>{{ number_format($totalPersentasePenyelesaian / count($unitKerjaList), 2) }}%</strong>
+                                        <strong>
+                                            {{ count($unitKerjaList) > 0 ? number_format($totalPersentasePenyelesaian / count($unitKerjaList), 2) . '%' : '0.00%' }}
+                                        </strong>
                                     </td>
                                     <td class="text-center"><strong>{{ $totalSudahUpload }}</strong></td>
                                 </tr>

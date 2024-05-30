@@ -67,11 +67,11 @@
                     <i class="bi bi-arrow-left"></i>
                     <span class="d-none d-md-inline">&nbsp;Kembali</span>
                 </a>
-                <a href="/tindak-lanjut/{{ $tindak_lanjut->id }}/generate" class="btn btn-primary ms-2"
+                {{-- <a href="/tindak-lanjut/{{ $tindak_lanjut->id }}/generate" class="btn btn-primary ms-2"
                     data-bs-toggle="tooltip" data-bs-placement="top" title="Generate Berita Acara">
                     <i class="bi bi-file-earmark-word"></i>
                     <span class="d-none d-md-inline">&nbsp;Generate Berita Acara</span>
-                </a>
+                </a> --}}
             </div>
             <div class="col-auto d-flex ms-auto">
                 <div class="col-auto">
@@ -338,11 +338,13 @@
                                         <hr>
                                         <p class="mb-0"><strong>Anda dapat membuka kembali unggah bukti tindak lanjut
                                                 dengan mengubah tenggat waktu.</strong></p>
+                                        @canany(['Tim Koordinator', 'Super Admin'])
                                         <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal"
                                             data-bs-target="#ubahTenggatWaktuModal">
                                             <i class="bi bi-pencil"></i>
                                             <span class="d-none d-sm-inline">&nbsp;Ubah Tenggat Waktu</span>
                                         </button>
+                                        @endcan
                                     </div>
                                 @endif
                             @elseif (

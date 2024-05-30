@@ -117,13 +117,17 @@
                 },
 
                 dom: '<"d-flex justify-content-between mb-4"fB>rt<"d-flex justify-content-between mt-4"<"d-flex justify-content-start"li><"col-md-6"p>>',
-                buttons: [{
-                    text: '<i class="bi bi-plus"></i><span class="d-none d-md-inline"> Tambah Rekomendasi<span>',
-                    className: 'btn btn-primary',
-                    action: function(e, dt, node, config) {
-                        window.location.href = '/old-rekomendasi/create';
-                    }
-                }]
+                buttons: [
+                    @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Tim Koordinator')
+                        {
+                            text: '<i class="bi bi-plus"></i><span class="d-none d-md-inline"> Tambah Rekomendasi<span>',
+                            className: 'btn btn-primary',
+                            action: function(e, dt, node, config) {
+                                window.location.href = '/old-rekomendasi/create';
+                            }
+                        },
+                    @endif
+                ],
             });
 
             filterSemester.addEventListener('change', function() {
