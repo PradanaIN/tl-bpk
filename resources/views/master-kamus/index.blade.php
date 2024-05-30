@@ -36,7 +36,7 @@
                                                 id="deleteFormKamus{{ $kamus->id }}">
                                                 @method('delete')
                                                 @csrf
-                                                <button class="btn btn-danger" type="button" id="deleteButtonKamus" data-form-id="deleteFormKamus{{ $kamus->id }}"
+                                                <button class="btn btn-danger deleteButtonKamus" type="button" id="deleteButtonKamus" data-form-id="deleteFormKamus{{ $kamus->id }}"
                                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Kamus">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
@@ -117,40 +117,41 @@
                 if (result.isConfirmed) {
                     $('#' + formId).submit();
                 }
-            })
+            });
         });
     });
 
-        @if (session()->has('create'))
-            Swal.fire({
-                title: 'Success',
-                icon: 'success',
-                showConfirmButton: false,
-                timer: 1500,
-                text: '{{ session('create') }}'
-            });
-        @elseif (session()->has('update'))
-            Swal.fire({
-                title: 'Success',
-                icon: 'success',
-                showConfirmButton: false,
-                timer: 1500,
-                text: '{{ session('update') }}'
-            });
-        @elseif (session()->has('delete'))
-            Swal.fire({
-                title: 'Success',
-                icon: 'success',
-                showConfirmButton: false,
-                timer: 1500,
-                text: '{{ session('delete') }}'
-            });
-        @elseif (session()->has('error'))
-            Swal.fire({
-                title: 'Error',
-                icon: 'error',
-                text: '{{ session('error') }}'
-            });
-        @endif
+
+    @if (session()->has('create'))
+        Swal.fire({
+            title: 'Success',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 1500,
+            text: '{{ session('create') }}'
+        });
+    @elseif (session()->has('update'))
+        Swal.fire({
+            title: 'Success',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 1500,
+            text: '{{ session('update') }}'
+        });
+    @elseif (session()->has('delete'))
+        Swal.fire({
+            title: 'Success',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 1500,
+            text: '{{ session('delete') }}'
+        });
+    @elseif (session()->has('error'))
+        Swal.fire({
+            title: 'Error',
+            icon: 'error',
+            text: '{{ session('error') }}'
+        });
+    @endif
 </script>
 @endsection
