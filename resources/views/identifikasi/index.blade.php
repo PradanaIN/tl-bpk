@@ -58,7 +58,8 @@
                                 <th>Tindak Lanjut</th>
                                 <th>Unit Kerja</th>
                                 <th>Tenggat Waktu</th>
-                                <th>Hasil Identifikasi</th>
+                                <th>Status Tindak Lanut</th>
+                                <th>Sudah Identifikasi</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -84,6 +85,13 @@
                                         <td class="text-center">
                                             <span
                                                 class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }}">{{ $tindak_lanjut->status_tindak_lanjut }}</span>
+                                        </td>
+                                        <td class="text-center">
+                                            @if ($tindak_lanjut->status_tindak_lanjut_at != null)
+                                                <i class="bi bi-check-circle-fill text-success"></i>
+                                            @else
+                                                <i class="bi bi-x-circle-fill text-danger"></i>
+                                            @endif
                                         </td>
                                         <td>
                                             <div class="d-flex justify-content-around align-items-center">

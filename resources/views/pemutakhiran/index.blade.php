@@ -53,7 +53,8 @@
                                 <th>Temuan</th>
                                 <th>Rekomendasi</th>
                                 <th>Semester Rekomendasi</th>
-                                <th>Status Rekomendasi</th>
+                                <th>Status</th>
+                                <th>Sudah Dimutakhirkan</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -70,6 +71,13 @@
                                     <td class="text-center">
                                         <span
                                             class="status-badge {{ getStatusClass($rekomendasi->status_rekomendasi) }}">{{ $rekomendasi->status_rekomendasi }}</span>
+                                    </td>
+                                    <td class="text-center">
+                                        @if ($rekomendasi->pemutakhiran_at != null)
+                                            <i class="bi bi-check-circle-fill text-success"></i>
+                                        @else
+                                            <i class="bi bi-x-circle-fill text-danger"></i>
+                                        @endif
                                     </td>
                                     <td>
                                         <div class="d-flex justify-content-around align-items-center">
