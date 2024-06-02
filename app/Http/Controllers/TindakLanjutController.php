@@ -21,7 +21,7 @@ class TindakLanjutController extends Controller
     {
         $tindakLanjut = TindakLanjut::orderByRaw("SUBSTRING_INDEX(SUBSTRING_INDEX(semester_tindak_lanjut, ' ', -1), ' ', 1) + 0 DESC")
         ->orderByRaw("CASE WHEN bukti_tindak_lanjut = 'Belum Diunggah!' THEN 0 ELSE 1 END")
-        ->orderBy('created_at', 'desc')
+        ->orderByDesc('created_at')
         ->get();
 
         $semesterTindakLanjut = TindakLanjut::distinct()

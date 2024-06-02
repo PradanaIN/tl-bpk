@@ -29,6 +29,7 @@ class PemutakhiranController extends Controller
         })
         ->orderByRaw("SUBSTRING_INDEX(SUBSTRING_INDEX(semester_rekomendasi, ' ', -1), ' ', 1) + 0 DESC")
         ->orderByRaw("CASE WHEN pemutakhiran_at IS NULL THEN 0 ELSE 1 END")
+        ->orderBy('tahun_pemeriksaan', 'desc')
         ->orderBy('created_at', 'desc')
         ->get();
 

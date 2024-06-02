@@ -24,6 +24,7 @@ class RekomendasiController extends Controller
     public function index()
     {
         $rekomendasi = Rekomendasi::orderByRaw("SUBSTRING_INDEX(SUBSTRING_INDEX(semester_rekomendasi, ' ', -1), ' ', 1) + 0 DESC")
+        ->orderBy('tahun_pemeriksaan', 'desc')
         ->orderBy('created_at', 'desc')
         ->get();
 

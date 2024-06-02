@@ -22,6 +22,7 @@ class OldRekomendasiController extends Controller
     {
         // where('is_active', 0) digunakan untuk menampilkan data yang tidak aktif
         $rekomendasi = Rekomendasi::where('is_active', 0)->orderByRaw("SUBSTRING_INDEX(SUBSTRING_INDEX(semester_rekomendasi, ' ', -1), ' ', 1) + 0 DESC")
+        ->orderBy('tahun_pemeriksaan', 'asc')
         ->orderBy('created_at', 'desc')
         ->get();
 
