@@ -24,10 +24,31 @@ class TindakLanjutController extends Controller
         ->orderBy('created_at', 'desc')
         ->get();
 
+        $semesterTindakLanjut = TindakLanjut::distinct()
+        ->pluck('semester_tindak_lanjut')
+        ->toArray();
+
+        // Urutkan koleksi secara manual
+        usort($semesterTindakLanjut, function($a, $b) {
+            // Pisahkan tahun dan semester dari string
+            $tahunA = substr($a, 10);
+            $tahunB = substr($b, 10);
+            $semesterA = substr($a, 9, 1);
+            $semesterB = substr($b, 9, 1);
+
+            // Urutkan berdasarkan tahun secara menurun
+            if ($tahunA != $tahunB) {
+                return $tahunB - $tahunA;
+            }
+
+            // Jika tahun sama, urutkan berdasarkan semester secara menurun
+            return $semesterB - $semesterA;
+        });
+
         return view('tindak-lanjut.index', [
             'title' => 'Daftar Tindak Lanjut',
             'tindak_lanjut' => $tindakLanjut,
-            'semesterTindakLanjut' => TindakLanjut::distinct()->pluck('semester_tindak_lanjut')->toArray(),
+            'semesterTindakLanjut' => $semesterTindakLanjut,
         ]);
     }
 

@@ -268,7 +268,7 @@
                             class="bi bi-arrow-left"></i>&nbsp;Back</button>
                     <button type="button" class="btn btn-primary me-1 mb-1" id="btnNext">Next&nbsp;<i
                             class="bi bi-arrow-right"></i></button>
-                    <button type="submit" class="btn btn-primary me-1 mb-1" id="btnTambah">Simpan</button>
+                    <button type="submit" class="btn btn-primary me-1 mb-1" id="btnTambah">Tambah</button>
                 </div>
             </div>
         </div>

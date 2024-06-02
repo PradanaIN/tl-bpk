@@ -165,7 +165,7 @@
                                     <p>{{ strip_tags(html_entity_decode($rekomendasi->rekomendasi)) }}</p>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row custom-row">
                                 <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                     <p class="fw-bold">Catatan Rekomendasi</p>
                                 </div>
@@ -174,6 +174,21 @@
                                     <p>{{ strip_tags(html_entity_decode($rekomendasi->catatan_rekomendasi)) }}</p>
                                 </div>
                             </div>
+                            @if ($rekomendasi->rekomendasi_old_id !== null)
+                            <div class="row">
+                                <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
+                                    <p class="fw-bold">Riwayat Rekomendasi</p>
+                                </div>
+                                <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                                <div class="col-lg-8 col-md-9 col-sm-12" id="text">
+                                    <a href="/rekomendasi/{{ $rekomendasi->rekomendasi_old_id }}"
+                                        class="btn btn-secondary mt-2">
+                                        <i class="bi bi-eye"></i>
+                                        &nbsp;Lihat Semester Sebelumnya
+                                    </a>
+                                </div>
+                            </div>
+                            @endif
                         </div>
                     </div>
                     <div class="tab-pane fade" id="lhp" role="tabpanel" aria-labelledby="lhp-tab">
@@ -348,7 +363,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @if ($rekomendasi->pemutakhiran_at !== null && $rekomendasi->status_rekomendasi === 'Belum Sesuai')
+                            @if ($rekomendasi->pemutakhiran_at !== null && $rekomendasi->status_rekomendasi === 'Belum Sesuai' && $rekomendasi->is_active === 1)
                                 <div class="alert alert-warning" role="alert">
                                     <h4 class="alert-heading">Info!</h4>
                                     <p>Rekomendasi yang <strong>Belum Sesuai</strong> akan dilanjutkan di semester

@@ -25,10 +25,30 @@ class OldRekomendasiController extends Controller
         ->orderBy('created_at', 'desc')
         ->get();
 
+        $semesterRekomendasi = Rekomendasi::where('is_active', 0)->distinct()
+        ->pluck('semester_rekomendasi')
+        ->toArray();
+
+        // Urutkan koleksi secara manual
+        usort($semesterRekomendasi, function($a, $b) {
+            // Pisahkan tahun dan semester dari string
+            $tahunA = substr($a, 10);
+            $tahunB = substr($b, 10);
+            $semesterA = substr($a, 9, 1);
+            $semesterB = substr($b, 9, 1);
+
+            // Urutkan berdasarkan tahun secara menurun
+            if ($tahunA != $tahunB) {
+                return $tahunB - $tahunA;
+            }
+
+            // Jika tahun sama, urutkan berdasarkan semester secara menurun
+            return $semesterB - $semesterA;
+        });
         return view('old-rekomendasi.index', [
             'title' => 'Daftar Rekomendasi Lama',
             'rekomendasi' => $rekomendasi,
-            'semesterRekomendasi' => Rekomendasi::distinct()->pluck('semester_rekomendasi')->toArray(),
+            'semesterRekomendasi' => $semesterRekomendasi,
             'kamus_pemeriksaan' => Kamus::where('jenis', 'Pemeriksaan')->get(),
         ]);
     }
