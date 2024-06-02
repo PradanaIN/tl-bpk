@@ -28,7 +28,7 @@ return new class extends Migration
             $table->dateTime('pemutakhiran_at')->nullable();
             $table->string('semester_pemutakhiran')->nullable();
             $table->uuid('rekomendasi_old_id')->nullable();
-            $table->integer('is_active')->default(1);
+            $table->integer('is_active')->nullable();
             $table->timestamps();
         });
     }

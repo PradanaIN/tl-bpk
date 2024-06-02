@@ -721,6 +721,37 @@
                         <label class="form-label" for="tenggat_waktu">Tenggat Waktu</label>
                         <input type="date" class="form-control flatpickr-no-config" name="tenggat_waktu[]" placeholder="Tenggat Waktu">
                     </div>
+                    <div class="row mb-3">
+                    <div class="col-md-6 mb-3 form-group mandatory">
+                        <label class="form-label" for="bukti_tindak_lanjut">Bukti Tindak Lanjut</label>
+                        <input type="file" class="form-control" name="bukti_tindak_lanjut[]" required accept=".pdf,.zip,.rar">
+                        @error('bukti_tindak_lanjut.0')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-6 mb-3 form-group mandatory">
+                        <label class="form-label" for="status_tindak_lanjut">Status Tindak Lanjut</label>
+                        <select class="form-select" name="status_tindak_lanjut[]">
+                            <option value="">Pilih Status Tindak Lanjut</option>
+                            <option value="Sesuai" {{ old('status_tindak_lanjut.0') == 'Sesuai' ? 'selected' : '' }}>Sesuai</option>
+                            <option value="Belum Sesuai" {{ old('status_tindak_lanjut.0') == 'Belum Sesuai' ? 'selected' : '' }}>Belum Sesuai</option>
+                            <option value="Belum Ditindaklanjuti" {{ old('status_tindak_lanjut.0') == 'Belum Ditindaklanjuti' ? 'selected' : '' }}>Belum Ditindaklanjuti</option>
+                            <option value="Tidak Ditindaklanjuti" {{ old('status_tindak_lanjut.0') == 'Tidak Ditindaklanjuti' ? 'selected' : '' }}>Tidak Ditindaklanjuti</option>
+                        </select>
+                        @error('status_tindak_lanjut.0')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-12 form-group mandatory">
+                        <label class="form-label" for="detail_bukti_tindak_lanjut">Detail Bukti Tindak Lanjut</label>
+                        <textarea class="form-control" rows="3" name="detail_bukti_tindak_lanjut[]" placeholder="Detail Bukti Tindak Lanjut">{{ old('detail_bukti_tindak_lanjut.0') }}</textarea>
+                        @error('detail_bukti_tindak_lanjut.0')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
                 </div>
                 <div class="form-row mb-3">
                     <div class="col-12 text-end">

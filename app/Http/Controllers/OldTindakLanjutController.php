@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TindakLanjut;
+use Illuminate\Http\Request;
 
 class OldTindakLanjutController extends Controller
 {

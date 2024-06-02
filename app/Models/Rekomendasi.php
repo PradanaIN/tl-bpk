@@ -54,6 +54,7 @@ class Rekomendasi extends Model
         'pemutakhiran_at',
         'semester_pemutakhiran',
         'rekomendasi_old_id',
+        'is_active',
     ];
 
 
