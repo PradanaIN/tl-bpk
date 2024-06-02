@@ -14,6 +14,14 @@
     }
 @endphp
 
+@section('style')
+    <!-- select2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+@endsection
+
+
 @section('section')
     <section class="row">
         <div class="card">
@@ -93,76 +101,82 @@
 @endsection
 
 @section('script')
+    <!-- select2 -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- filter -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const filterSemester = document.getElementById('filterSemester');
-            const filterStatus = document.getElementById('filterStatus');
+            // Inisialisasi Select2 pada elemen dengan ID filterSemester
+            $('#filterSemester').select2(
+                {
+                    theme: 'bootstrap-5',
+                }
+            );
+
+            // Inisialisasi Select2 pada elemen dengan ID filterStatus
+            $('#filterStatus').select2(
+                {
+                    theme: 'bootstrap-5',
+                }
+            );
+
+            // Inisialisasi DataTable
             const table = new DataTable('#table1', {
-                info: true,
-                ordering: true,
-                paging: true,
-                searching: true,
-                lengthChange: true,
-                lengthMenu: [5, 10, 25, 50, 75, 100],
-                destroy: true,
+                    info: true,
+                    ordering: true,
+                    paging: true,
+                    searching: true,
+                    lengthChange: true,
+                    lengthMenu: [5, 10, 25, 50, 75, 100],
+                    destroy: true,
 
-                // bahasa indonesia
-                language: {
-                    "info": "<sup><big>dari _TOTAL_ entri</big></sup>",
-                    "infoEmpty": "<sup><big>0 entri</big></sup>",
-                    "infoFiltered": "<sup><big>(filter dari _MAX_ total entri)</big></sup>",
-                    "lengthMenu": "_MENU_ &nbsp;",
-                    "search": "<i class='bi bi-search'></i>  ",
-                    "zeroRecords": "Tidak ada data yang cocok",
-                    "paginate": {
-                        "next": "<i class='bi bi-chevron-right'></i>",
-                        "previous": "<i class='bi bi-chevron-left'></i>"
-                    }
-                },
+                    // bahasa indonesia
+                    language: {
+                        "info": "<sup><big>dari _TOTAL_ entri</big></sup>",
+                        "infoEmpty": "<sup><big>0 entri</big></sup>",
+                        "infoFiltered": "<sup><big>(filter dari _MAX_ total entri)</big></sup>",
+                        "lengthMenu": "_MENU_ &nbsp;",
+                        "search": "<i class='bi bi-search'></i>  ",
+                        "zeroRecords": "Tidak ada data yang cocok",
+                        "paginate": {
+                            "next": "<i class='bi bi-chevron-right'></i>",
+                            "previous": "<i class='bi bi-chevron-left'></i>"
+                        }
+                    },
 
-                dom: '<"d-flex justify-content-between mb-4"fB>rt<"d-flex justify-content-between mt-4"<"d-flex justify-content-start"li><"col-md-6"p>>',
-                buttons: [
-                    @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Tim Koordinator')
-                        {
-                            text: '<i class="bi bi-plus"></i><span class="d-none d-md-inline"> Tambah Rekomendasi<span>',
-                            className: 'btn btn-primary',
-                            action: function(e, dt, node, config) {
-                                window.location.href = '/rekomendasi/create';
-                            }
-                        },
-                    @endif
-                ],
-            });
+                    dom: '<"d-flex justify-content-between mb-4"fB>rt<"d-flex justify-content-between mt-4"<"d-flex justify-content-start"li><"col-md-6"p>>',
+                    buttons: [
+                        @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Tim Koordinator')
+                            {
+                                text: '<i class="bi bi-plus"></i><span class="d-none d-md-inline"> Tambah Rekomendasi<span>',
+                                className: 'btn btn-primary',
+                                action: function(e, dt, node, config) {
+                                    window.location.href = '/rekomendasi/create';
+                                }
+                            },
+                        @endif
+                    ],
+                });
 
-            filterSemester.addEventListener('change', function() {
+
+            // Memanggil fungsi filterTable saat filterSemester atau filterStatus berubah
+            $('#filterSemester, #filterStatus').on('change', function() {
                 filterTable();
             });
 
-            filterStatus.addEventListener('change', function() {
-                filterTable();
-            });
-
+            // Fungsi untuk memfilter tabel berdasarkan nilai filterSemester dan filterStatus
             function filterTable() {
-                const selectedSemester = filterSemester.value;
-                const selectedStatus = filterStatus.value;
+                const selectedSemester = $('#filterSemester').val();
+                const selectedStatus = $('#filterStatus').val();
 
-                table.search(selectedSemester).draw();
-                table.search(selectedStatus).draw();
-
+                // Lakukan filter sesuai dengan nilai yang dipilih
                 if (selectedSemester === 'all' && selectedStatus === 'all') {
                     table.search('').draw();
-                }
-
-                if (selectedSemester === 'all' && selectedStatus !== 'all') {
+                } else if (selectedSemester === 'all' && selectedStatus !== 'all') {
                     table.search(selectedStatus).draw();
-                }
-
-                if (selectedSemester !== 'all' && selectedStatus === 'all') {
+                } else if (selectedSemester !== 'all' && selectedStatus === 'all') {
                     table.search(selectedSemester).draw();
-                }
-
-                if (selectedSemester !== 'all' && selectedStatus !== 'all') {
+                } else {
                     table.search(selectedSemester + ' ' + selectedStatus).draw();
                 }
             }

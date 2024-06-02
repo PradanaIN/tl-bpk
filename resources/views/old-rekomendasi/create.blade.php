@@ -209,7 +209,7 @@
                                             <div class="form-row mb-3">
                                                 <div class="col-12 form-group mandatory">
                                                     <label class="form-label" for="tindak_lanjut">Rencana Tindak Lanjut</label>
-                                                    <textarea class="form-control" rows="3" name="tindak_lanjut[]" placeholder="Tindak lanjut"
+                                                    <textarea class="form-control" rows="3" name="tindak_lanjut[]" placeholder="Rencana Tindak lanjut"
                                                         data-parsley-required="true" required>{{ old('tindak_lanjut.0') }}</textarea>
                                                     @error('tindak_lanjut.0')
                                                         <div class="text-danger">{{ $message }}</div>

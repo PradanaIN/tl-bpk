@@ -19,8 +19,8 @@
         href="{{ asset('mazer/assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}">
     <link rel="stylesheet" href="{{ asset('mazer/assets/extensions/perfect-scrollbar/perfect-scrollbar.css') }}">
     <link rel="stylesheet" href="{{ asset('mazer/assets/extensions/flatpickr/flatpickr.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('mazer/assets/extensions/filepond/filepond.css') }}" />
-    <link rel="stylesheet" href="{{ asset('mazer/assets/extensions/toastify-js/src/toastify.css') }}" />
+    <link rel="stylesheet" href="{{ asset('mazer/assets/extensions/filepond/filepond.css') }}">
+    <link rel="stylesheet" href="{{ asset('mazer/assets/extensions/toastify-js/src/toastify.css') }}">
 
 
     <style>

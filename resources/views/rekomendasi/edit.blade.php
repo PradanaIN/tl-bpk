@@ -203,7 +203,7 @@
                                                         <label class="form-label"
                                                             for="tindak_lanjut{{ $index }}">Rencana Tindak Lanjut</label>
                                                         <textarea class="form-control" rows="3" name="tindak_lanjut[]" id="tindak_lanjut{{ $index }}"
-                                                            placeholder="Tindak lanjut" data-parsley-required="true" required>{{ old('tindak_lanjut.' . $index, $tindakLanjut->tindak_lanjut) }}</textarea>
+                                                            placeholder="Rencana Tindak lanjut" data-parsley-required="true" required>{{ old('tindak_lanjut.' . $index, $tindakLanjut->tindak_lanjut) }}</textarea>
                                                         @error('tindak_lanjut.' . $index)
                                                             <div class="text-danger">{{ $message }}</div>
                                                         @enderror
