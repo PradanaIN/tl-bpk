@@ -18,17 +18,24 @@ class PemutakhiranController extends Controller
      */
     public function index()
     {
+        $rekomendasi = Rekomendasi::whereHas('tindakLanjut', function ($query) {
+            $query->where('status_tindak_lanjut', 'Sesuai');
+        })->where(function ($query) {
+            $query->whereDoesntHave('tindakLanjut', function ($subquery) {
+                $subquery->where('status_tindak_lanjut', '!=', 'Sesuai');
+            })->orWhereHas('tindakLanjut', function ($subquery) {
+                $subquery->where('tenggat_waktu', '<', now());
+            });
+        })
+        ->orderByRaw("SUBSTRING_INDEX(SUBSTRING_INDEX(semester_rekomendasi, ' ', -1), ' ', 1) + 0 DESC")
+        ->orderByRaw("CASE WHEN pemutakhiran_at IS NULL THEN 0 ELSE 1 END")
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+
         return view('pemutakhiran.index', [
             'title' => 'Pemutakhiran Status Rekomendasi',
-            'rekomendasi' => Rekomendasi::whereHas('tindakLanjut', function ($query) {
-                $query->where('status_tindak_lanjut', 'Sesuai');
-            })->where(function ($query) {
-                $query->whereDoesntHave('tindakLanjut', function ($subquery) {
-                    $subquery->where('status_tindak_lanjut', '!=', 'Sesuai');
-                })->orWhereHas('tindakLanjut', function ($subquery) {
-                    $subquery->where('tenggat_waktu', '<', now());
-                });
-            })->orderByDesc('created_at')->get(),
+            'rekomendasi' => $rekomendasi,
             'semesterRekomendasi' => Rekomendasi::distinct()->pluck('semester_rekomendasi')->toArray(),
             'kamus_pemeriksaan' => Kamus::where('jenis', 'Pemeriksaan')->get(),
             'TindakLanjut' => TindakLanjut::all(),

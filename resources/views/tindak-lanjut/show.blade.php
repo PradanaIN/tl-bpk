@@ -171,15 +171,6 @@
                                     <p>{{ $rekomendasi->jenis_pemeriksaan }}</p>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
-                                    <p class="fw-bold">Hasil Pemeriksaan</p>
-                                </div>
-                                <div class="col-auto d-none d-md-block" id="limiter">:</div>
-                                <div class="col-lg-8 col-md-9 col-sm-12" id="text">
-                                    <p>{{ strip_tags(html_entity_decode($rekomendasi->hasil_pemeriksaan)) }}</p>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="rekomendasi" role="tabpanel" aria-labelledby="rekomendasi-tab">
@@ -227,15 +218,6 @@
                         <div class="card-body">
                             <div class="row custom-row">
                                 <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
-                                    <p class="fw-bold">Tindak Lanjut</p>
-                                </div>
-                                <div class="col-auto d-none d-md-block" id="limiter">:</div>
-                                <div class="col-lg-8 col-md-9 col-sm-12" id="text">
-                                    <p>{{ strip_tags(html_entity_decode($tindak_lanjut->tindak_lanjut)) }}</p>
-                                </div>
-                            </div>
-                            <div class="row custom-row">
-                                <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                     <p class="fw-bold">Unit Kerja</p>
                                 </div>
                                 <div class="col-auto d-none d-md-block" id="limiter">:</div>
@@ -260,6 +242,15 @@
                                 <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                     <p>{{ \Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu)->translatedFormat('d M Y') }}
                                     </p>
+                                </div>
+                            </div>
+                            <div class="row custom-row">
+                                <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
+                                    <p class="fw-bold">Rencana Tindak Lanjut</p>
+                                </div>
+                                <div class="col-auto d-none d-md-block" id="limiter">:</div>
+                                <div class="col-lg-8 col-md-9 col-sm-12" id="text">
+                                    <p>{{ strip_tags(html_entity_decode($tindak_lanjut->tindak_lanjut)) }}</p>
                                 </div>
                             </div>
                             <div class="row custom-row">

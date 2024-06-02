@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\OldTindakLanjut;
-use Illuminate\Http\Request;
+use App\Models\TindakLanjut;
 
 class OldTindakLanjutController extends Controller
 {
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(OldTindakLanjut $tindakLanjut)
+    public function destroy(TindakLanjut $tindakLanjut)
     {
         // Cari data tindak lanjut berdasarkan ID
-        $tindakLanjut = OldTindakLanjut::find($tindakLanjut->id);
+        $tindakLanjut = TindakLanjut::find($tindakLanjut->id);
 
         // Periksa apakah data ditemukan
         if (!$tindakLanjut) {

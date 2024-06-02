@@ -131,12 +131,14 @@ class DatabaseSeeder extends Seeder
                 'create rekomendasi',
                 'edit rekomendasi',
                 'delete rekomendasi',
+                'export rekomendasi',
                 'show rekomendasi',
                 'view tindak lanjut',
                 'create tindak lanjut',
                 'edit tindak lanjut',
                 'show tindak lanjut',
                 'delete tindak lanjut',
+                'export tindak lanjut',
                 'view pemutakhiran',
                 'create pemutakhiran',
                 'edit pemutakhiran',
@@ -146,6 +148,7 @@ class DatabaseSeeder extends Seeder
                 'edit old rekomendasi',
                 'delete old rekomendasi',
                 'show old rekomendasi',
+                'export old rekomendasi'
             ],
             // Pimpinan sama dengan Tim Koordinator namun tidak bisa create, edit, dan delete
             'Pimpinan' => [
@@ -178,6 +181,7 @@ class DatabaseSeeder extends Seeder
                 'create tindak lanjut',
                 'edit tindak lanjut',
                 'show tindak lanjut',
+                'export tindak lanjut',
             ],
             // Pimpinan Unit Kerja sama dengan Operator Unit Kerja namun tidak bisa create, edit
             'Pimpinan Unit Kerja' => [

@@ -42,7 +42,6 @@ class Rekomendasi extends Model
         'pemeriksaan',
         'jenis_pemeriksaan',
         'tahun_pemeriksaan',
-        'hasil_pemeriksaan',
         'jenis_temuan',
         'uraian_temuan',
         'rekomendasi',
@@ -54,6 +53,7 @@ class Rekomendasi extends Model
         'pemutakhiran_by',
         'pemutakhiran_at',
         'semester_pemutakhiran',
+        'rekomendasi_old_id',
     ];
 
 

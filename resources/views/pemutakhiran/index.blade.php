@@ -48,13 +48,12 @@
                         <thead class="thead-light">
                             <tr>
                                 <th>No</th>
-                                <th>Tahun</th>
+                                <th>Tahun Pemeriksaan</th>
                                 <th>Pemeriksaan</th>
-                                <th>Temuan</th>
                                 <th>Rekomendasi</th>
-                                <th>Semester Rekomendasi</th>
-                                <th>Status</th>
+                                <th>Status Rekomendasi</th>
                                 <th>Sudah Dimutakhirkan</th>
+                                <th>Semester Rekomendasi</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -64,10 +63,13 @@
                                     <td class="text-center">{{ $loop->iteration }}</td>
                                     <td class="text-center">{{ $rekomendasi->tahun_pemeriksaan }}</td>
                                     <td>{{ $rekomendasi->pemeriksaan }}</td>
-                                    <td>{{ strip_tags(html_entity_decode($rekomendasi->jenis_temuan)) }}</td>
-                                    <td>{{ implode(' ', array_slice(str_word_count(strip_tags(html_entity_decode($rekomendasi->rekomendasi)), 1), 0, 10)) }}{{ str_word_count(strip_tags(html_entity_decode($rekomendasi->rekomendasi))) > 10 ? '...' : '' }}
+                                    <td>
+                                    @php
+                                        $text = strip_tags($rekomendasi->rekomendasi);
+                                        $shortText = str_word_count($text) > 10 ? implode(' ', array_slice(explode(' ', $text), 0, 10)) . '...' : $text;
+                                        echo $shortText;
+                                    @endphp
                                     </td>
-                                    <td class="text-center">{{ $rekomendasi->semester_rekomendasi }}</td>
                                     <td class="text-center">
                                         <span
                                             class="status-badge {{ getStatusClass($rekomendasi->status_rekomendasi) }}">{{ $rekomendasi->status_rekomendasi }}</span>
@@ -87,6 +89,7 @@
                                             </a>
                                         </div>
                                     </td>
+                                    <td class="text-center">{{ $rekomendasi->semester_rekomendasi }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

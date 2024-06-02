@@ -63,10 +63,13 @@
                                     <div class="col-12">
                                         <div class="form-group mandatory">
                                             <label class="form-label" for="tahun_pemeriksaan">Tahun Pemeriksaan</label>
-                                            <input type="number" id="tahun_pemeriksaan" class="form-control"
-                                                name="tahun_pemeriksaan" placeholder="Tahun Pemeriksaan"
-                                                data-parsley-required="true" required value="{{ old('tahun_pemeriksaan') }}"
-                                                min="1900" max="2099" pattern="\d{4}">
+                                            <select id="tahun_pemeriksaan" class="form-control" name="tahun_pemeriksaan"
+                                                data-parsley-required="true" required>
+                                                <option value="">Pilih Tahun Pemeriksaan</option>
+                                                @for ($year = date('Y'); $year >= 2000; $year--)
+                                                    <option value="{{ $year }}" {{ old('tahun_pemeriksaan') == $year ? 'selected' : '' }}>{{ $year }}</option>
+                                                @endfor
+                                            </select>
                                             @error('tahun_pemeriksaan')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
@@ -85,16 +88,6 @@
                                                 @endforeach
                                             </select>
                                             @error('jenis_pemeriksaan')
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-group mandatory">
-                                            <label class="form-label" for="hasil_pemeriksaan">Hasil Pemeriksaan</label>
-                                            <textarea class="form-control" id="hasil_pemeriksaan" rows="3" name="hasil_pemeriksaan"
-                                                placeholder="Hasil Pemeriksaan" data-parsley-required="true" required>{{ old('hasil_pemeriksaan') }}</textarea>
-                                            @error('hasil_pemeriksaan')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -169,24 +162,29 @@
                                             <button type="button" class="btn btn-warning counter" disabled>
                                                 <div class="d-flex align-items-center">
                                                     <i class="bi bi-clipboard-data me-2 mb-3"></i>
-                                                    <h6 class="mb-0 text-black">Jumlah Tindak Lanjut: <span
+                                                    <h6 class="mb-0 text-black">Jumlah Rencana Tindak Lanjut: <span
                                                             id="repeaterCount">0</span></h6>
                                                 </div>
                                             </button>
                                         </div>
                                         <div class="col-md-6 text-end">
                                             <button type="button" class="btn btn-primary btn-tambah-repeater">
-                                                <i class="bi bi-plus"></i><span class="d-none d-md-inline">&nbsp;Tambah
+                                                <i class="bi bi-plus"></i><span class="d-none d-md-inline">&nbsp;Tambah Rencana
                                                     Tindak Lanjut</span>
                                             </button>
                                         </div>
                                     </div>
                                     <div id="formContainer">
                                         <div class="form-repeater mb-4">
+                                            <div class="divider" id="dividerText">
+                                                <div class="divider-text">
+                                                    <strong>Rencana Tindak Lanjut <span id="formRepeaterCount">0</span></strong>
+                                                </div>
+                                            </div>
                                             <div class="form-row mb-3">
                                                 <div class="col-12 form-group mandatory">
-                                                    <label class="form-label" for="tindak_lanjut">Tindak Lanjut</label>
-                                                    <textarea class="form-control" rows="3" name="tindak_lanjut[]" placeholder="Tindak lanjut"
+                                                    <label class="form-label" for="tindak_lanjut">Rencana Tindak Lanjut</label>
+                                                    <textarea class="form-control" rows="3" name="tindak_lanjut[]" placeholder="Rencana Tindak lanjut"
                                                         data-parsley-required="true" required>{{ old('tindak_lanjut.0') }}</textarea>
                                                     @error('tindak_lanjut.0')
                                                         <div class="text-danger">{{ $message }}</div>
@@ -329,6 +327,35 @@
             theme: 'bootstrap-5',
             placeholder: 'Pilih PIC Tim Pemantauan'
         });
+
+        // Inisialisasi select js pada tahun_pemeriksaan
+        $('#tahun_pemeriksaan').select2({
+            theme: 'bootstrap-5',
+            placeholder: 'Pilih Tahun Pemeriksaan',
+        });
+    </script>
+    <!-- flatpickr js -->
+    <script>
+        flatpickr('.flatpickr-no-config', {
+            altInput: true,
+            altFormat: "j F Y",
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            locale: {
+                firstDayOfWeek: 1,
+                weekdays: {
+                    shorthand: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+                    longhand: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
+                },
+                months: {
+                    shorthand: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+                    longhand: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus',
+                        'September',
+                        'Oktober', 'November', 'Desember'
+                    ],
+                },
+            },
+        });
     </script>
     <!-- tooltip js -->
     <script>
@@ -433,16 +460,30 @@
             document.getElementById('repeaterCount').textContent = repeaterCount;
         }
 
+        function countFormRepeater() {
+            var repeaters = document.querySelectorAll('.form-repeater');
+            repeaters.forEach(function (repeater, index) {
+                var formRepeaterCount = repeater.querySelector('.divider-text #formRepeaterCount');
+                if (formRepeaterCount) {
+                    formRepeaterCount.textContent = index + 1;
+                }
+            });
+        }
+
         // Event listener untuk menambahkan formulir tindak lanjut baru
         document.querySelector('.btn-tambah-repeater').addEventListener('click', function() {
             var formContainer = document.getElementById('formContainer');
             var formItem = `
-            <hr>
             <div class="form-repeater mb-4">
+                <div class="divider" id="dividerText">
+                    <div class="divider-text">
+                        <strong>Rencana Tindak Lanjut <span id="formRepeaterCount">0</span></strong>
+                    </div>
+                </div>
                 <div class="form-row mb-3">
                     <div class="col-12 form-group mandatory">
-                        <label class="form-label" for="tindak_lanjut">Tindak Lanjut</label>
-                        <textarea class="form-control" rows="3" name="tindak_lanjut[]" placeholder="Tindak lanjut" data-parsley-required="true" required></textarea>
+                        <label class="form-label" for="tindak_lanjut">Rencana Tindak Lanjut</label>
+                        <textarea class="form-control" rows="3" name="tindak_lanjut[]" placeholder="Rencana Tindak lanjut" data-parsley-required="true" required></textarea>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -509,7 +550,7 @@
                 altInput: true,
                 altFormat: "j F Y",
                 dateFormat: "Y-m-d",
-                // minDate: "today",
+                minDate: "today",
                 locale: {
                     firstDayOfWeek: 1,
                     weekdays: {
@@ -529,6 +570,7 @@
 
             // Mengupdate counter setelah menambahkan repeater baru
             countRepeater();
+            countFormRepeater();
         });
 
         // Fungsi untuk menampilkan pesan konfirmasi sebelum menghapus repeater
@@ -548,6 +590,7 @@
                     event.target.closest('.form-repeater').remove();
                     // Mengupdate counter setelah menghapus repeater
                     countRepeater();
+                    countFormRepeater();
                 } else {
                     // Jika pengguna memilih opsi "Batal", hentikan aksi default (tidak hapus)
                     event.preventDefault();
@@ -557,5 +600,6 @@
 
         // Memanggil fungsi countRepeater saat halaman dimuat
         countRepeater();
+        countFormRepeater();
     </script>
 @endsection

@@ -116,22 +116,13 @@
                                     <p>{{ $rekomendasi->tahun_pemeriksaan }}</p>
                                 </div>
                             </div>
-                            <div class="row custom-row">
+                            <div class="row">
                                 <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
                                     <p class="fw-bold">Jenis Pemeriksaan</p>
                                 </div>
                                 <div class="col-auto d-none d-md-block" id="limiter">:</div>
                                 <div class="col-lg-8 col-md-9 col-sm-12" id="text">
                                     <p>{{ $rekomendasi->jenis_pemeriksaan }}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-2 col-md-3 col-sm-auto" id="judul">
-                                    <p class="fw-bold">Hasil Pemeriksaan</p>
-                                </div>
-                                <div class="col-auto d-none d-md-block" id="limiter">:</div>
-                                <div class="col-lg-8 col-md-9 col-sm-12" id="text">
-                                    <p>{{ strip_tags(html_entity_decode($rekomendasi->hasil_pemeriksaan)) }}</p>
                                 </div>
                             </div>
                         </div>
@@ -207,7 +198,7 @@
                                     <thead class="thead-light">
                                         <tr>
                                             <th>No</th>
-                                            <th>Tindak Lanjut</th>
+                                            <th>Rencana Tindak Lanjut</th>
                                             <th>Unit Kerja</th>
                                             <th>Tim Pemantauan</th>
                                             <th>Tenggat Waktu</th>

@@ -19,9 +19,14 @@ class TindakLanjutController extends Controller
      */
     public function index()
     {
+        $tindakLanjut = TindakLanjut::orderByRaw("SUBSTRING_INDEX(SUBSTRING_INDEX(semester_tindak_lanjut, ' ', -1), ' ', 1) + 0 DESC")
+        ->orderByRaw("CASE WHEN bukti_tindak_lanjut = 'Belum Diunggah!' THEN 0 ELSE 1 END")
+        ->orderBy('created_at', 'desc')
+        ->get();
+
         return view('tindak-lanjut.index', [
             'title' => 'Daftar Tindak Lanjut',
-            'tindak_lanjut' => TindakLanjut::all()->sortByDesc('created_at'),
+            'tindak_lanjut' => $tindakLanjut,
             'semesterTindakLanjut' => TindakLanjut::distinct()->pluck('semester_tindak_lanjut')->toArray(),
         ]);
     }

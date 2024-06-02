@@ -53,13 +53,16 @@
                         <thead class="thead-light">
                             <tr>
                                 <th>No</th>
+                                <th>Tahun Pemeriksaan</th>
+                                <th>Pemeriksaan</th>
                                 <th>Rekomendasi</th>
-                                <th>Tindak Lanjut</th>
+                                <th>Rencana Tindak Lanjut</th>
                                 @if ($loggedInUserRole == 'Super Admin' || $loggedInUserRole == 'Tim Koordinator')
                                     <th>Unit Kerja</th>
                                 @endif
-                                <th>Semester Tindak lanjut</th>
+                                <th>Sudah Upload Bukti TL</th>
                                 <th>Status Tindak Lanjut</th>
+                                <th>Semester Tindak lanjut</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -71,18 +74,37 @@
                                         $tindak_lanjut->unit_kerja == $loggedInUserUnitKerja)
                                     <tr class="clickable-row" data-href="/tindak-lanjut/{{ $tindak_lanjut->id }}">
                                         <td class="text-center">{{ $no++ }}</td>
-                                        <td>{{ implode(' ', array_slice(str_word_count(strip_tags(html_entity_decode($tindak_lanjut->rekomendasi->rekomendasi)), 1), 0, 10)) }}{{ str_word_count(strip_tags(html_entity_decode($tindak_lanjut->rekomendasi->rekomendasi))) > 10 ? '...' : '' }}
-                                        </td>
-                                        <td>{{ implode(' ', array_slice(str_word_count(strip_tags(html_entity_decode($tindak_lanjut->tindak_lanjut)), 1), 0, 10)) }}{{ str_word_count(strip_tags(html_entity_decode($tindak_lanjut->tindak_lanjut))) > 10 ? '...' : '' }}
-                                        </td>
+                                        <td class="text-center">{{ $tindak_lanjut->rekomendasi->tahun_pemeriksaan }}</td>
+                                        <td>{{ $tindak_lanjut->rekomendasi->pemeriksaan }}</td>
+                                        <td>
+                                            @php
+                                                $text = strip_tags($tindak_lanjut->rekomendasi->rekomendasi);
+                                                $shortText = str_word_count($text) > 10 ? implode(' ', array_slice(explode(' ', $text), 0, 10)) . '...' : $text;
+                                                echo $shortText;
+                                            @endphp
+                                            </td>
+                                            <td>
+                                                @php
+                                                    $text = strip_tags($tindak_lanjut->tindak_lanjut);
+                                                    $shortText = str_word_count($text) > 10 ? implode(' ', array_slice(explode(' ', $text), 0, 10)) . '...' : $text;
+                                                    echo $shortText;
+                                                @endphp
+                                            </td>
                                         @if ($loggedInUserRole == 'Super Admin' || $loggedInUserRole == 'Tim Koordinator')
                                             <td>{{ $tindak_lanjut->unit_kerja }}</td>
                                         @endif
-                                        <td class="text-center">{{ $tindak_lanjut->semester_tindak_lanjut }}</td>
+                                        <td class="text-center">
+                                            @if ($tindak_lanjut->bukti_tindak_lanjut !== 'Belum Diunggah!' && $tindak_lanjut->bukti_tindak_lanjut !== null)
+                                                <i class="bi bi-check-circle-fill text-success"></i>
+                                            @else
+                                                <i class="bi bi-x-circle-fill text-danger"></i>
+                                            @endif
+                                        </td>
                                         <td class="text-center">
                                             <span
                                                 class="status-badge {{ getStatusClass($tindak_lanjut->status_tindak_lanjut) }}">{{ $tindak_lanjut->status_tindak_lanjut }}</span>
                                         </td>
+                                        <td class="text-center">{{ $tindak_lanjut->semester_tindak_lanjut }}</td>
                                         <td>
                                             <div class="d-flex justify-content-around align-items-center">
                                                 <a href="/tindak-lanjut/{{ $tindak_lanjut->id }}" class="btn btn-light"

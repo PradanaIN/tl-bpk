@@ -21,7 +21,6 @@ class RekomendasiFactory extends Factory
             'jenis_pemeriksaan' => $this->faker->word,
             // year from 2010 to 2024
             'tahun_pemeriksaan' => $this->faker->numberBetween(2010, 2024),
-            'hasil_pemeriksaan' => $this->faker->sentence,
             'jenis_temuan' => $this->faker->word,
             'uraian_temuan' => $this->faker->sentence,
             'rekomendasi' => $this->faker->sentence,

@@ -17,12 +17,15 @@ class IdentifikasiController extends Controller
      */
     public function index()
     {
-        // urutkan berdasarkan data terbaru
-        $tindak_lanjut = TindakLanjut::all()->sortByDesc('created_at');
+        $tindakLanjut = TindakLanjut::orderByRaw("SUBSTRING_INDEX(SUBSTRING_INDEX(semester_tindak_lanjut, ' ', -1), ' ', 1) + 0 DESC")
+        ->orderByRaw("CASE WHEN bukti_tindak_lanjut = 'Belum Diunggah!' THEN 0 ELSE 1 END")
+        ->orderByRaw("CASE WHEN status_tindak_lanjut_at IS NULL THEN 0 ELSE 1 END")
+        ->orderBy('created_at', 'desc')
+        ->get();
 
         return view('identifikasi.index', [
-            'title' => 'Identifikasi Tindak Lanjut',
-            'tindak_lanjut' => $tindak_lanjut,
+            'title' => 'Daftar Identifikasi Tindak Lanjut',
+            'tindak_lanjut' => $tindakLanjut,
             'semesterTindakLanjut' => TindakLanjut::distinct()->pluck('semester_tindak_lanjut')->toArray(),
         ]);
     }

@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('pemeriksaan');
             $table->string('jenis_pemeriksaan');
             $table->year('tahun_pemeriksaan');
-            $table->text('hasil_pemeriksaan');
             $table->string('jenis_temuan');
             $table->text('uraian_temuan');
             $table->text('rekomendasi');
@@ -28,6 +27,8 @@ return new class extends Migration
             $table->string('pemutakhiran_by')->nullable();
             $table->dateTime('pemutakhiran_at')->nullable();
             $table->string('semester_pemutakhiran')->nullable();
+            $table->uuid('rekomendasi_old_id')->nullable();
+            $table->integer('is_active')->default(1);
             $table->timestamps();
         });
     }

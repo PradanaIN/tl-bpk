@@ -6,13 +6,12 @@ use App\Models\Kamus;
 use App\Models\UnitKerja;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Models\OldRekomendasi;
-use App\Models\OldTindakLanjut;
-use App\Models\OldBuktiInputSIPTL;
+use App\Models\Rekomendasi;
+use App\Models\TindakLanjut;
+use App\Models\BuktiInputSIPTL;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\DetailRekomendasiExport;
-use App\Exports\DetailRekomendasiOldExport;
 
 class OldRekomendasiController extends Controller
 {
@@ -21,10 +20,15 @@ class OldRekomendasiController extends Controller
      */
     public function index()
     {
+        // where('is_active', 0) digunakan untuk menampilkan data yang tidak aktif
+        $rekomendasi = Rekomendasi::where('is_active', 0)->orderByRaw("SUBSTRING_INDEX(SUBSTRING_INDEX(semester_rekomendasi, ' ', -1), ' ', 1) + 0 DESC")
+        ->orderBy('created_at', 'desc')
+        ->get();
+
         return view('old-rekomendasi.index', [
             'title' => 'Daftar Rekomendasi Lama',
-            'rekomendasi' => OldRekomendasi::all()->sortByDesc('created_at'),
-            'semesterRekomendasi' => OldRekomendasi::distinct()->pluck('semester_rekomendasi')->toArray(),
+            'rekomendasi' => $rekomendasi,
+            'semesterRekomendasi' => Rekomendasi::distinct()->pluck('semester_rekomendasi')->toArray(),
             'kamus_pemeriksaan' => Kamus::where('jenis', 'Pemeriksaan')->get(),
         ]);
     }
@@ -56,7 +60,6 @@ class OldRekomendasiController extends Controller
             'pemeriksaan' => 'required',
             'jenis_pemeriksaan' => 'required',
             'tahun_pemeriksaan' => 'required|integer|min:1900|max:2099',
-            'hasil_pemeriksaan' => 'required',
             'jenis_temuan' => 'required',
             'uraian_temuan' => 'required',
             'rekomendasi' => 'required',
@@ -99,6 +102,8 @@ class OldRekomendasiController extends Controller
         $validatedData['semester_pemutakhiran'] = $semester_rekomendasi;
         // catatan pemutakhiran jika sesuai maka kosong jika tidak maka diisi
         $validatedData['catatan_pemutakhiran'] = $request->status_rekomendasi === 'Sesuai' ? null : $request->catatan_pemutakhiran;
+        // is active
+        $validatedData['is_active'] = 0;
 
         // Aturan validasi untuk entri TindakLanjut
         $tindakLanjutValidationRules = [
@@ -118,7 +123,7 @@ class OldRekomendasiController extends Controller
 
         try {
             // Simpan data rekomendasi ke dalam tabel OldRekomendasi
-            $rekomendasi = OldRekomendasi::create($validatedData);
+            $rekomendasi = Rekomendasi::create($validatedData);
 
             // Simpan data TindakLanjut ke dalam tabel OldTindakLanjut
             foreach ($validatedTindakLanjutData['tindak_lanjut'] as $key => $tindak_lanjut) {
@@ -162,7 +167,7 @@ class OldRekomendasiController extends Controller
                     $tindakLanjutData['bukti_tindak_lanjut'] = $fileName;
                 }
 
-                OldTindakLanjut::create($tindakLanjutData);
+                TindakLanjut::create($tindakLanjutData);
             }
 
             if ($request->hasFile('bukti_input_siptl')) {
@@ -177,7 +182,7 @@ class OldRekomendasiController extends Controller
                 }
                 $file->move(public_path('uploads/bukti_input_siptl'), $fileName);
 
-                $buktiInput = OldBuktiInputSIPTL::where('rekomendasi_id', $rekomendasi->id)->first();
+                $buktiInput = BuktiInputSIPTL::where('rekomendasi_id', $rekomendasi->id)->first();
 
                 if ($buktiInput) {
                     $buktiInput->update([
@@ -187,7 +192,7 @@ class OldRekomendasiController extends Controller
                         'upload_at' => now(),
                     ]);
                 } else {
-                    OldBuktiInputSIPTL::create([
+                    BuktiInputSIPTL::create([
                         'id' => Str::uuid()->toString(),
                         'bukti_input_siptl' => $fileName,
                         'detail_bukti_input_siptl' => $request->detail_bukti_input_siptl,
@@ -211,11 +216,11 @@ class OldRekomendasiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(OldRekomendasi $rekomendasi)
+    public function show(Rekomendasi $rekomendasi)
     {
         // tindak lanjut dan bukti input SIPTL
-        $tindakLanjut = OldTindakLanjut::where('rekomendasi_id', $rekomendasi->id)->get();
-        $buktiInputSIPTL = OldBuktiInputSIPTL::where('rekomendasi_id', $rekomendasi->id)->first();
+        $tindakLanjut = TindakLanjut::where('rekomendasi_id', $rekomendasi->id)->get();
+        $buktiInputSIPTL = BuktiInputSIPTL::where('rekomendasi_id', $rekomendasi->id)->first();
 
         $rekomendasi->tindakLanjut = $tindakLanjut;
         $rekomendasi->buktiInputSIPTL = $buktiInputSIPTL;
@@ -229,11 +234,11 @@ class OldRekomendasiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(OldRekomendasi $rekomendasi)
+    public function edit(Rekomendasi $rekomendasi)
     {
         $kamus_temuan = Kamus::where('jenis', 'Temuan')->get();
         $kamus_pemeriksaan = Kamus::where('jenis', 'Pemeriksaan')->get();
-        $oldRekomendasi = OldRekomendasi::with('tindakLanjut')->find($rekomendasi->id);
+        $oldRekomendasi = Rekomendasi::with('tindakLanjut')->find($rekomendasi->id);
         $unit_kerja = UnitKerja::all();
 
         return view('old-rekomendasi.edit', [
@@ -248,7 +253,7 @@ class OldRekomendasiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, OldRekomendasi $rekomendasi)
+    public function update(Request $request, Rekomendasi $rekomendasi)
     {
 
         try {
@@ -257,7 +262,6 @@ class OldRekomendasiController extends Controller
                 'pemeriksaan' => 'required',
                 'jenis_pemeriksaan' => 'required',
                 'tahun_pemeriksaan' => 'required|integer|min:1900|max:2099',
-                'hasil_pemeriksaan' => 'required',
                 'jenis_temuan' => 'required',
                 'uraian_temuan' => 'required',
                 'rekomendasi' => 'required',
@@ -325,7 +329,7 @@ class OldRekomendasiController extends Controller
 
                 if (isset($request->id[$key]) && $request->id[$key] !== null) {
                     // update tindak lanjut yang sudah ada
-                    $oldTindakLanjut = OldTindakLanjut::find($request->id[$key]);
+                    $oldTindakLanjut = TindakLanjut::find($request->id[$key]);
                     $oldTindakLanjut->update([
                         'tindak_lanjut' => $tindak_lanjut,
                         'unit_kerja' => $validatedTindakLanjutData['unit_kerja'][$key],
@@ -393,7 +397,7 @@ class OldRekomendasiController extends Controller
                         $tindakLanjutData['bukti_tindak_lanjut'] = $fileName;
                     }
 
-                    OldTindakLanjut::create($tindakLanjutData);
+                    TindakLanjut::create($tindakLanjutData);
                 }
             }
 
@@ -411,7 +415,7 @@ class OldRekomendasiController extends Controller
                 }
                 $file->move(public_path('uploads/bukti_input_siptl'), $fileName);
 
-                $buktiInput = OldBuktiInputSIPTL::where('rekomendasi_id', $rekomendasi->id)->first();
+                $buktiInput = BuktiInputSIPTL::where('rekomendasi_id', $rekomendasi->id)->first();
 
                 if ($buktiInput) {
 
@@ -427,7 +431,7 @@ class OldRekomendasiController extends Controller
                         'upload_at' => now(),
                     ]);
                 } else {
-                    OldBuktiInputSIPTL::create([
+                    BuktiInputSIPTL::create([
                         'id' => Str::uuid()->toString(),
                         'bukti_input_siptl' => $fileName,
                         'detail_bukti_input_siptl' => $request->detail_bukti_input_siptl,
@@ -448,10 +452,10 @@ class OldRekomendasiController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(OldRekomendasi $rekomendasi)
+    public function destroy(Rekomendasi $rekomendasi)
     {
         // hapus file bukti siptl
-        $buktiInputSIPTL = OldBuktiInputSIPTL::where('rekomendasi_id', $rekomendasi->id)->first();
+        $buktiInputSIPTL = BuktiInputSIPTL::where('rekomendasi_id', $rekomendasi->id)->first();
         if ($buktiInputSIPTL) {
             if ($buktiInputSIPTL->bukti_input_siptl !== null && file_exists(public_path('uploads/bukti_input_siptl/' . $buktiInputSIPTL->bukti_input_siptl))) {
                 unlink(public_path('uploads/bukti_input_siptl/' . $buktiInputSIPTL->bukti_input_siptl));
@@ -459,7 +463,7 @@ class OldRekomendasiController extends Controller
             $buktiInputSIPTL->delete();
         }
         // hapus file bukti tindak lanjut
-        $tindakLanjut = OldTindakLanjut::where('rekomendasi_id', $rekomendasi->id)->get();
+        $tindakLanjut = TindakLanjut::where('rekomendasi_id', $rekomendasi->id)->get();
         foreach ($tindakLanjut as $tindak) {
             if ($tindak->bukti_tindak_lanjut !== null && file_exists(public_path('uploads/tindak_lanjut/' . $tindak->bukti_tindak_lanjut))) {
                 unlink(public_path('uploads/tindak_lanjut/' . $tindak->bukti_tindak_lanjut));
@@ -469,7 +473,7 @@ class OldRekomendasiController extends Controller
         if ($rekomendasi->lhp !== null && file_exists(public_path('uploads/lhp/' . $rekomendasi->lhp))) {
             unlink(public_path('uploads/lhp/' . $rekomendasi->lhp));
         }
-        OldRekomendasi::destroy($rekomendasi->id);
+        Rekomendasi::destroy($rekomendasi->id);
 
         return redirect('/old-rekomendasi')->with('delete', 'Data berhasil dihapus!');
     }
@@ -477,14 +481,14 @@ class OldRekomendasiController extends Controller
     /**
      * Export data rekomendasi to Excel
      */
-    public function export(OldRekomendasi $rekomendasi)
+    public function export(Rekomendasi $rekomendasi)
     {
-        $rekomendasi = OldRekomendasi::findOrFail($rekomendasi->id);
+        $rekomendasi = Rekomendasi::findOrFail($rekomendasi->id);
 
         $rekomendasiName = 'Rekomendasi_' . $rekomendasi->semester_rekomendasi . '_' . $rekomendasi->id;
 
         $fileName = $rekomendasiName . '.xlsx';
 
-        return Excel::download(new DetailRekomendasiOldExport($rekomendasi->id), $fileName);
+        return Excel::download(new DetailRekomendasiExport($rekomendasi->id), $fileName);
     }
 }

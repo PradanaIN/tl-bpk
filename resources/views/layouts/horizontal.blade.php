@@ -245,6 +245,17 @@
             margin-right: 5px;
             margin-left: 5px;
         }
+
+        #dividerText {
+            background-color: #d0e2ff;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .divider-text {
+            border-radius: 2px;
+        }
+
     </style>
 
     @yield('style')
@@ -616,30 +627,6 @@
     <!-- flatpickr -->
     <script src="{{ asset('mazer/assets/extensions/flatpickr/flatpickr.min.js') }}"></script>
     <script src="{{ asset('mazer/assets/static/js/pages/date-picker.js') }}"></script>
-
-    <!-- custom flatpickr -->
-    <script>
-        flatpickr('.flatpickr-no-config', {
-            altInput: true,
-            altFormat: "j F Y",
-            dateFormat: "Y-m-d",
-            // minDate: "today",
-            locale: {
-                firstDayOfWeek: 1,
-                weekdays: {
-                    shorthand: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
-                    longhand: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
-                },
-                months: {
-                    shorthand: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
-                    longhand: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus',
-                        'September',
-                        'Oktober', 'November', 'Desember'
-                    ],
-                },
-            },
-        });
-    </script>
 
     <!-- parsley -->
     <script src="{{ asset('mazer/assets/extensions/parsleyjs/parsley.min.js') }}"></script>

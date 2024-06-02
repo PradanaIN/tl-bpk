@@ -23,9 +23,13 @@ class RekomendasiController extends Controller
      */
     public function index()
     {
+        $rekomendasi = Rekomendasi::orderByRaw("SUBSTRING_INDEX(SUBSTRING_INDEX(semester_rekomendasi, ' ', -1), ' ', 1) + 0 DESC")
+        ->orderBy('created_at', 'desc')
+        ->get();
+
         return view('rekomendasi.index', [
             'title' => 'Daftar Rekomendasi',
-            'rekomendasi' => Rekomendasi::all()->sortByDesc('created_at'),
+            'rekomendasi' => $rekomendasi,
             'semesterRekomendasi' => Rekomendasi::distinct()->pluck('semester_rekomendasi')->toArray(),
             'kamus_pemeriksaan' => Kamus::where('jenis', 'Pemeriksaan')->get(),
         ]);
@@ -58,7 +62,6 @@ class RekomendasiController extends Controller
             'pemeriksaan' => 'required',
             'jenis_pemeriksaan' => 'required',
             'tahun_pemeriksaan' => 'required|integer|min:1900|max:2099',
-            'hasil_pemeriksaan' => 'required',
             'jenis_temuan' => 'required',
             'uraian_temuan' => 'required',
             'rekomendasi' => 'required',
@@ -93,6 +96,10 @@ class RekomendasiController extends Controller
         $semester_tahun = $semester . ' ' . $tahun;
         // Assign ke validatedData
         $validatedData['semester_rekomendasi'] = $semester_tahun;
+        // rekomendasi semester sebelumnya
+        $validatedData['rekomendasi_old_id'] = null;
+        // is active
+        $validatedData['is_active'] = 1;
 
         // Aturan validasi untuk entri TindakLanjut
         $tindakLanjutValidationRules = [
@@ -208,7 +215,6 @@ class RekomendasiController extends Controller
                 'pemeriksaan' => 'required',
                 'jenis_pemeriksaan' => 'required',
                 'tahun_pemeriksaan' => 'required|integer|min:1900|max:2099',
-                'hasil_pemeriksaan' => 'required',
                 'jenis_temuan' => 'required',
                 'uraian_temuan' => 'required',
                 'rekomendasi' => 'required',
@@ -328,7 +334,6 @@ class RekomendasiController extends Controller
             'pemeriksaan' => 'required',
             'jenis_pemeriksaan' => 'required',
             'tahun_pemeriksaan' => 'required|integer|min:1900|max:2099',
-            'hasil_pemeriksaan' => 'required',
             'jenis_temuan' => 'required',
             'uraian_temuan' => 'required',
             'rekomendasi' => 'required',
@@ -370,6 +375,11 @@ class RekomendasiController extends Controller
         $semester_tahun = $semester . ' ' . $tahun;
         // Assign ke validatedData
         $validatedData['semester_rekomendasi'] = $semester_tahun;
+
+        // rekomendasi semester sebelumnya
+        $validatedData['rekomendasi_old_id'] = $request->rekomendasi_old_id;
+        // is active
+        $validatedData['is_active'] = 1;
 
         // Aturan validasi untuk entri TindakLanjut
         $tindakLanjutValidationRules = [
