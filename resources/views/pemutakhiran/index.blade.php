@@ -59,7 +59,7 @@
                         </thead>
                         <tbody>
                             @foreach ($rekomendasi as $rekomendasi)
-                                <tr class='clickable-row' data-href="/pemutakhiran-status/{{ $rekomendasi->id }}}}">
+                                <tr class='clickable-row' data-href="/pemutakhiran-status/{{ $rekomendasi->id }}">
                                     <td class="text-center">{{ $loop->iteration }}</td>
                                     <td class="text-center">{{ $rekomendasi->tahun_pemeriksaan }}</td>
                                     <td>{{ $rekomendasi->pemeriksaan }}</td>
@@ -81,6 +81,7 @@
                                             <i class="bi bi-x-circle-fill text-danger"></i>
                                         @endif
                                     </td>
+                                    <td class="text-center">{{ $rekomendasi->semester_rekomendasi }}</td>
                                     <td>
                                         <div class="d-flex justify-content-around align-items-center">
                                             <a href="/pemutakhiran-status/{{ $rekomendasi->id }}" class="btn btn-light"
@@ -89,7 +90,6 @@
                                             </a>
                                         </div>
                                     </td>
-                                    <td class="text-center">{{ $rekomendasi->semester_rekomendasi }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

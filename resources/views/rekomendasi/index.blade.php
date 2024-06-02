@@ -58,7 +58,7 @@
                         </thead>
                         <tbody>
                             @foreach ($rekomendasi as $rekomendasi)
-                                <tr class='clickable-row' data-href="/rekomendasi/{{ $rekomendasi->id }}}}">
+                                <tr class='clickable-row' data-href="/rekomendasi/{{ $rekomendasi->id }}">
                                     <td class="text-center">{{ $loop->iteration }}</td>
                                     <td class="text-center">{{ $rekomendasi->tahun_pemeriksaan }}</td>
                                     <td>{{ $rekomendasi->pemeriksaan }}</td>

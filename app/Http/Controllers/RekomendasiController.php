@@ -466,7 +466,7 @@ class RekomendasiController extends Controller
         // hapus file tindak lanjut
         $buktiTindakLanjut = TindakLanjut::where('rekomendasi_id', $rekomendasi->id)->get();
         foreach ($buktiTindakLanjut as $bukti) {
-            if ($bukti->bukti_tindak_lanjut !== 'Belum Diunggah!' && $bukti->bukti_tindak_lanjut !== null && file_exists(public_path('uploads/bukti_tindak_lanjut/' . $bukti->bukti_tindak_lanjut))) {
+            if ($bukti->bukti_tindak_lanjut !== null && file_exists(public_path('uploads/bukti_tindak_lanjut/' . $bukti->bukti_tindak_lanjut))) {
                 unlink(public_path('uploads/bukti_tindak_lanjut/' . $bukti->bukti_tindak_lanjut));
             }
         }
