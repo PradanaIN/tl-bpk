@@ -284,7 +284,7 @@
                                             <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip"
                                                 data-bs-placement="bottom" title="Upload Bukti Input SIPTL">
                                                 <i class="bi bi-upload"></i>
-                                                <span class="d-none d-md-inline">&nbsp;Upload Bukti</span>
+                                                <span class="d-none d-md-inline">&nbsp;Tambah Bukti</span>
                                             </button>
                                         @endcan
                                     @else
@@ -446,7 +446,7 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="uploadModalLabel">Upload Bukti Input SIPTL</h5>
+                <h5 class="modal-title" id="uploadModalLabel">Unggah Bukti Input SIPTL</h5>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <i data-feather="x"></i>
                 </button>
@@ -491,7 +491,7 @@
                     @else
                         <button type="submit" class="btn btn-primary ms-1" data-bs-dismiss="modal">
                             <i class="bx bx-x d-block d-sm-none"></i>
-                            <span class="d-none d-sm-block">Ubah</span>
+                            <span class="d-none d-sm-block">Simpan</span>
                         </button>
                     @endif
                     </button>
