@@ -575,7 +575,7 @@
                     </button>
                     <button type="submit" class="btn btn-primary ms-1" data-bs-dismiss="modal">
                         <i class="bx bx-x d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Ubah</span>
+                        <span class="d-none d-sm-block">Simpan</span>
                     </button>
                 </div>
             </form>

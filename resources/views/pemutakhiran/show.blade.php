@@ -351,7 +351,6 @@
                                             <span
                                                 class="status-badge {{ getStatusClass($rekomendasi->status_rekomendasi) }} me-2">{{ $rekomendasi->status_rekomendasi }}</span>
                                             @canany(['Tim Koordinator', 'Super Admin'])
-                                            @if ($rekomendasi->is_active === 1)
                                                 @if (
                                                     $rekomendasi->pemutakhiran_at === null)
                                                     <button class="btn btn-primary" id="pemutakhiranBtn"
@@ -368,7 +367,6 @@
                                                         <span class="d-none d-md-inline">&nbsp;Ubah Pemutakhiran</span>
                                                     </button>
                                                 @endif
-                                            @endif
                                             @endcanany
                                         </div>
                                     </div>
