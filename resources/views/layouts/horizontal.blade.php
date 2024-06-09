@@ -352,7 +352,7 @@
                                     @canany(['Admin'])
                                     <li class="nav-item">
                                         <a class="nav-link" id="navbar-link" href="/master-kamus">
-                                            <h6>Master Kamus</h6>
+                                            <h6>Kelola Kamus</h6>
                                         </a>
                                     </li>
                                     <li class="nav-item">
@@ -376,7 +376,7 @@
                                             <div class="dropdown-menu dropdown-menu-end dropright"
                                                 aria-labelledby="navbarDropdown">
                                                 <a class="dropdown-item text-center" href="/master-kamus">
-                                                    <h6>Master Kamus</h6>
+                                                    <h6>Kelola Kamus</h6>
                                                 </a>
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item text-center" href="/kelola-pengguna">
