@@ -299,7 +299,7 @@
                                                         <span class="d-none d-md-inline">&nbsp;Unduh Bukti</span>
                                                     </a>
                                                     @canany(['Tim Koordinator', 'Super Admin'])
-                                                    @if ($rekomendasi->is_active === 1)
+                                                    @if ($rekomendasi->pemutakhiran_at === null)
                                                     <button class="btn btn-primary" id="uploadBtn" data-bs-toggle="tooltip"
                                                         data-bs-placement="bottom" title="Ubah Bukti Input SIPTL">
                                                         <i class="bi bi-pencil"></i>
