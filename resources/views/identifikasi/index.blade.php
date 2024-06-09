@@ -63,6 +63,9 @@
                         <thead class="thead-light">
                             <tr>
                                 <th>No</th>
+                                <th>Tahun Pemeriksaan</th>
+                                <th>Pemeriksaan</th>
+                                <th>Rekomendasi</th>
                                 <th>Unit Kerja</th>
                                 <th>Rencana Tindak Lanjut</th>
                                 <th>Sudah Upload Bukti TL</th>
@@ -84,6 +87,14 @@
                                             $tindak_lanjut->tim_pemantauan == 'Tim Pemantauan Wilayah III'))
                                     <tr class="clickable-row" data-href="/identifikasi/{{ $tindak_lanjut->id }}">
                                         <td class="text-center">{{ $no++ }}</td>
+                                        <td class="text-center">{{ $tindak_lanjut->rekomendasi->tahun_pemeriksaan }}</td>
+                                        <td>{{ $tindak_lanjut->rekomendasi->pemeriksaan }}</td>
+                                        <td>
+                                        @php
+                                            $text = strip_tags($tindak_lanjut->rekomendasi->rekomendasi);
+                                            $shortText = str_word_count($text) > 10 ? implode(' ', array_slice(explode(' ', $text), 0, 10)) . '...' : $text;
+                                            echo $shortText;
+                                        @endphp
                                         </td>
                                         <td>{{ $tindak_lanjut->unit_kerja }}</td>
                                         <td>
