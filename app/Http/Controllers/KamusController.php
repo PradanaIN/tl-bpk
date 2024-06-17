@@ -36,10 +36,11 @@ class KamusController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'id' => Str::uuid()->toString(),
                 'nama' => 'required',
                 'jenis' => 'required',
             ]);
+
+            $validatedData['id'] = Str::uuid()->toString();
 
             Kamus::create($validatedData);
 
@@ -71,7 +72,7 @@ class KamusController extends Controller
                 'jenis' => 'required',
             ]);
 
-            $kamus->update($validatedData);
+            Kamus::where('id', $kamus->id)->update($validatedData);
 
             return redirect('/master-kamus')->with('update', 'Data berhasil diubah!');
         } catch (\Exception $e) {
