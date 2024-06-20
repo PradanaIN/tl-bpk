@@ -307,8 +307,8 @@
                                     $tindak_lanjut->bukti_tindak_lanjut === 'Belum Diunggah!')
                                 @php
                                     $waktuUpload = \Carbon\Carbon::parse($tindak_lanjut->tenggat_waktu)
-                                        ->addDays(1)
-                                        ->translatedFormat('l, d M Y');
+                                        ->setTime(23, 59)
+                                        ->translatedFormat('l, d M Y H:i');
                                 @endphp
                                 @if (Auth::user()->hasRole('Operator Unit Kerja'))
                                     <div class="alert alert-warning mt-3" role="alert">

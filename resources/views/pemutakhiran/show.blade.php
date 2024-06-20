@@ -351,17 +351,14 @@
                                             <span
                                                 class="status-badge {{ getStatusClass($rekomendasi->status_rekomendasi) }} me-2">{{ $rekomendasi->status_rekomendasi }}</span>
                                             @canany(['Tim Koordinator', 'Super Admin'])
-                                                @if (
-                                                    $rekomendasi->pemutakhiran_at === null)
-                                                    <button class="btn btn-primary" id="pemutakhiranBtn"
-                                                        data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                @if ($rekomendasi->pemutakhiran_at === null)
+                                                    <button class="btn btn-primary pemutakhiranBtn" data-bs-toggle="tooltip" data-bs-placement="bottom"
                                                         title="Tambah Status Pemutakhiran">
                                                         <i class="bi bi-plus"></i>
                                                         <span class="d-none d-md-inline">&nbsp;Tambah Pemutakhiran</span>
                                                     </button>
                                                 @else
-                                                    <button class="btn btn-primary" id="pemutakhiranBtn"
-                                                        data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                    <button class="btn btn-primary pemutakhiranBtn" data-bs-toggle="tooltip" data-bs-placement="bottom"
                                                         title="Ubah Status Pemutakhiran">
                                                         <i class="bi bi-pencil"></i>
                                                         <span class="d-none d-md-inline">&nbsp;Ubah Pemutakhiran</span>
@@ -519,17 +516,10 @@
                     <div class="form-group mandatory">
                         <label for="status_rekomendasi" class="form-label">Status Rekomendasi</label>
                         <select class="form-select" name="status_rekomendasi" id="status_rekomendasi" required>
-                            <option value="Sesuai"
-                                {{ $rekomendasi->status_rekomendasi === 'Sesuai' ? 'selected' : '' }}>Sesuai</option>
-                            <option value="Belum Sesuai"
-                                {{ $rekomendasi->status_rekomendasi === 'Belum Sesuai' ? 'selected' : '' }}>Belum
-                                Sesuai</option>
-                            <option value="Belum Ditindaklanjuti"
-                                {{ $rekomendasi->status_rekomendasi === 'Belum Ditindaklanjuti' ? 'selected' : '' }}>
-                                Belum Ditindaklanjuti</option>
-                            <option value="Tidak Ditindaklanjuti"
-                                {{ $rekomendasi->status_rekomendasi === 'Tidak Ditindaklanjuti' ? 'selected' : '' }}>
-                                Tidak Ditindaklanjuti</option>
+                            <option value="Sesuai" {{ $rekomendasi->status_rekomendasi === 'Sesuai' ? 'selected' : '' }}>Sesuai</option>
+                            <option value="Belum Sesuai" {{ $rekomendasi->status_rekomendasi === 'Belum Sesuai' ? 'selected' : '' }}>Belum Sesuai</option>
+                            <option value="Belum Ditindaklanjuti" {{ $rekomendasi->status_rekomendasi === 'Belum Ditindaklanjuti' ? 'selected' : '' }}>Belum Ditindaklanjuti</option>
+                            <option value="Tidak Ditindaklanjuti" {{ $rekomendasi->status_rekomendasi === 'Tidak Ditindaklanjuti' ? 'selected' : '' }}>Tidak Ditindaklanjuti</option>
                         </select>
                     </div>
                     <div class="form-group mandatory" id="catatan_pemutakhiran_group" style="display: none;">
@@ -607,7 +597,7 @@
             });
         });
     </script>
-    <!-- script untuk menampilkan modal saat tombol di klik -->
+    <!-- script untuk menampilkan modal input siptl saat tombol di klik -->
     <script>
         // Ambil tombol "Upload Bukti Input SIPTL"
         var uploadBtn = document.getElementById('uploadBtn');
@@ -617,15 +607,19 @@
             var uploadModal = new bootstrap.Modal(document.getElementById('siptlModal'));
             uploadModal.show();
         });
-
-        // Ambil tombol "Pemutakhiran Status"
-        var pemutakhiranBtn = document.getElementById('pemutakhiranBtn');
+    </script>
+    <!-- script untuk menampilkan modal pemutakhiran saat tombol di klik -->
+    <script>
+        // Ambil tombol "Tambah Status Pemutakhiran"
+        var pemutakhiranBtn = document.getElementsByClassName('pemutakhiranBtn');
 
         // Tambahkan event listener untuk menampilkan modal saat tombol diklik
-        pemutakhiranBtn.addEventListener('click', function() {
-            var pemutakhiranModal = new bootstrap.Modal(document.getElementById('pemutakhiranModal'));
-            pemutakhiranModal.show();
-        });
+        for (var i = 0; i < pemutakhiranBtn.length; i++) {
+            pemutakhiranBtn[i].addEventListener('click', function() {
+                var pemutakhiranModal = new bootstrap.Modal(document.getElementById('pemutakhiranModal'));
+                pemutakhiranModal.show();
+            });
+        }
     </script>
     <!-- script untuk menampilkan tombol sesuai dengan tab yang aktif -->
     <script>

@@ -42,7 +42,6 @@ class DetailRekomendasiExport implements FromCollection, WithHeadings
                 'Pemeriksaan' => $rekomendasi->pemeriksaan,
                 'Jenis Pemeriksaan' => $rekomendasi->jenis_pemeriksaan,
                 'Tahun Pemeriksaan' => $rekomendasi->tahun_pemeriksaan,
-                'Hasil Pemeriksaan' => strip_tags($rekomendasi->hasil_pemeriksaan),
                 // data rekomendasi
                 'Jenis Temuan' => $rekomendasi->jenis_temuan,
                 'Uraian Temuan' => strip_tags($rekomendasi->uraian_temuan),
