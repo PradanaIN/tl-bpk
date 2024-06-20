@@ -49,8 +49,7 @@
                 <div class="col-12 col-lg-6"> <!-- Kolom untuk pie chart -->
                     <div class="card">
                         <div class="card-header text-center">
-                            <h4>Persentase Status {{ ($role === 'Operator Unit Kerja' || $role === 'Pimpinan Unit Kerja') ? 'Tindak Lanjut' : 'Rekomendasi' }}
-                                BPK</h4>
+                            <h4>Persentase Status {{ ($role === 'Operator Unit Kerja' || $role === 'Pimpinan Unit Kerja') ? 'Tindak Lanjut' : 'Rekomendasi' }}</h4>
                         </div>
                         <div class="card-body">
                             <canvas id="pie-chart" width="300" height="300"></canvas>
@@ -60,7 +59,7 @@
                 <div class="col-12 col-lg-6"> <!-- Kolom untuk line chart -->
                     <div class="card">
                         <div class="card-header text-center">
-                            <h4>Jumlah {{ ($role === 'Operator Unit Kerja' || $role === 'Pimpinan Unit Kerja') ? 'Tindak Lanjut' : 'Rekomendasi' }} Pertahun
+                            <h4>Jumlah {{ ($role === 'Operator Unit Kerja' || $role === 'Pimpinan Unit Kerja') ? 'Tindak Lanjut' : 'Rekomendasi' }} Pertahun Pemeriksaan
                             </h4>
                         </div>
                         <div class="card-body">
@@ -163,77 +162,98 @@
 @section('script')
     <script src="{{ asset('mazer/assets/extensions/chart.js/chart.umd.js') }}"></script>
     <script src="{{ asset('mazer/assets/static/js/pages/ui-chartjs.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
     <!-- Pie Chart Rekomendasi -->
     <script>
-        var ctx = document.getElementById('pie-chart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: [
-                    'Sesuai',
-                    'Belum Sesuai',
-                    'Belum Ditindaklanjuti',
-                    'Tidak Ditindaklanjuti'
-                ],
-                datasets: [{
-                    data: [
-                        {{ $data_sesuai->count() }},
-                        {{ $data_belum_sesuai->count() }},
-                        {{ $data_belum_ditindaklanjuti->count() }},
-                        {{ $data_tidak_dapat_ditindaklanjuti->count() }}
+        document.addEventListener('DOMContentLoaded', function() {
+            var ctx = document.getElementById('pie-chart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        'Sesuai',
+                        'Belum Sesuai',
+                        'Belum Ditindaklanjuti',
+                        'Tidak Ditindaklanjuti'
                     ],
-                    backgroundColor: [
-                        'rgba(75, 192, 192, 0.6)',
-                        'rgba(255, 206, 86, 0.6)',
-                        'rgba(54, 162, 235, 0.6)',
-                        'rgba(255, 99, 132, 0.6)'
-                    ],
-                    borderColor: [
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 99, 132, 1)'
-                    ],
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true, // Membuat chart responsif
-                maintainAspectRatio: false, // Membuat chart tidak mempertahankan aspek rasio
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            color: 'rgba(0, 0, 0, 0.8)', // Warna teks legenda
+                    datasets: [{
+                        data: [
+                            {{ $data_sesuai->count() }},
+                            {{ $data_belum_sesuai->count() }},
+                            {{ $data_belum_ditindaklanjuti->count() }},
+                            {{ $data_tidak_dapat_ditindaklanjuti->count() }}
+                        ],
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.6)',
+                            'rgba(255, 206, 86, 0.6)',
+                            'rgba(54, 162, 235, 0.6)',
+                            'rgba(255, 99, 132, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 99, 132, 1)'
+                        ],
+                        borderWidth: 2,
+                        hoverOffset: 10 // Tambahkan offset saat hover
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: 'rgba(0, 0, 0, 0.8)',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    var label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    var value = context.raw || '';
+                                    var dataset = context.dataset || {};
+                                    var total = dataset.data.reduce((previousValue, currentValue) => previousValue + currentValue, 0);
+                                    var percentage = Math.round((value / total) * 100);
+                                    if (percentage > 0) {
+                                        label += value + ' (' + percentage + '%)';
+                                    }
+                                    return label;
+                                }
+                            }
+                        },
+                        datalabels: {
+                            display: true,
+                            color: 'rgba(0, 0, 0, 0.8)',
                             font: {
-                                size: 12 // Ukuran font legenda
+                                size: 12,
+                                weight: 'bold'
+                            },
+                            formatter: (value, context) => {
+                                var dataset = context.chart.data.datasets[0];
+                                var total = dataset.data.reduce((previousValue, currentValue) => previousValue + currentValue, 0);
+                                var percentage = Math.round((value / total) * 100);
+                                return percentage > 0 ? percentage + '%' : '';
                             }
                         }
                     },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                var label = context.label || '';
-                                if (label) {
-                                    label += ': ';
-                                }
-                                var value = context.formattedValue || '';
-                                var dataset = context.dataset || {};
-                                var total = dataset.data.reduce((previousValue, currentValue) => previousValue +
-                                    currentValue, 0);
-                                var percentage = Math.round((value / total) * 100);
-                                value += ' (' + percentage + '%)';
-                                return label + value;
-                            }
-                        }
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeInOutQuart'
                     }
                 },
-                animation: {
-                    duration: 2000, // Durasi animasi
-                    easing: 'easeInOutQuart' // Jenis animasi
-                }
-            }
+                plugins: [ChartDataLabels] // Pastikan Anda telah mengimpor ChartDataLabels
+            });
         });
     </script>
 
@@ -245,7 +265,7 @@
             data: {
                 labels: {!! collect($jumlah_data_per_tahun)->pluck('tahun') !!},
                 datasets: [{
-                    label: 'Jumlah Rekomendasi per Tahun',
+                    label: 'Jumlah {{ ($role === 'Operator Unit Kerja' || $role === 'Pimpinan Unit Kerja ') ? 'Tindak Lanjut' : 'Rekomendasi' }}',
                     data: {!! collect($jumlah_data_per_tahun)->pluck('jumlah') !!},
                     backgroundColor: 'rgba(54, 162, 235, 0.2)', // Warna area di bawah garis
                     borderColor: 'rgba(54, 162, 235, 1)', // Warna garis
@@ -275,7 +295,7 @@
                     },
                     x: {
                         grid: {
-                            display: false // Sembunyikan gridlines untuk sumbu X
+                            color: 'rgba(0, 0, 0, 0.1)' // Warna gridlines untuk sumbu X
                         },
                         ticks: {
                             color: 'rgba(0, 0, 0, 0.7)', // Warna label
@@ -296,15 +316,43 @@
                                 weight: 'bold' // Ketebalan font legenda
                             }
                         }
+                    },
+                    tooltip: {
+                        enabled: true,
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleFont: {
+                            size: 14,
+                            weight: 'bold'
+                        },
+                        bodyFont: {
+                            size: 12,
+                            weight: 'normal'
+                        },
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.raw;
+                            }
+                        }
+                    },
+                    datalabels: {
+                        display: true,
+                        align: 'top',
+                        color: 'rgba(54, 162, 235, 1)',
+                        font: {
+                            size: 10,
+                            weight: 'bold'
+                        }
                     }
                 },
                 animation: {
                     duration: 2000, // Durasi animasi
                     easing: 'easeInOutQuart' // Jenis animasi
                 }
-            }
+            },
+            plugins: [ChartDataLabels]
         });
     </script>
+
 
     <script>
         new DataTable('#table1', {

@@ -21,4 +21,9 @@ class UnitKerja extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function tindakLanjut()
+    {
+        return $this->hasMany(TindakLanjut::class);
+    }
 }

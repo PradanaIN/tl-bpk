@@ -56,8 +56,8 @@ class BuktiInputSIPTL extends Model
         'rekomendasi_id',
     ];
 
-    // Bukti Input SIPTL dimiliki oleh satu tindak lanjut
-    public function tindakLanjut()
+    // Bukti Input SIPTL dimiliki oleh Rekomendasi
+    public function rekomendasi()
     {
         return $this->belongsTo(Rekomendasi::class);
     }

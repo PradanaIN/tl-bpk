@@ -60,4 +60,10 @@ class TindakLanjut extends Model
     {
         return $this->belongsTo(Rekomendasi::class);
     }
+
+    // tindak lanjut milik satu unit kerja
+    public function unitKerja()
+    {
+        return $this->belongsTo(UnitKerja::class);
+    }
 }
