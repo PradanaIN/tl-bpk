@@ -78,7 +78,6 @@ class DetailRekomendasiExport implements FromCollection, WithHeadings
             'Pemeriksaan',
             'Jenis Pemeriksaan',
             'Tahun Pemeriksaan',
-            'Hasil Pemeriksaan',
             'Jenis Temuan',
             'Uraian Temuan',
             'Rekomendasi',
